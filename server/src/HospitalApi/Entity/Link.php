@@ -55,6 +55,8 @@ class Link extends EntityAbstract
     }
     public function setId($id){
         $this->id = $id;
+        
+        return $this;
     }
     
     public function getUrl(){
@@ -62,6 +64,8 @@ class Link extends EntityAbstract
     }
     public function setUrl($url){
         $this->url = $url;
+        
+        return $this;
     }
 
     public function getTitle(){
@@ -69,6 +73,8 @@ class Link extends EntityAbstract
     }
     public function setTitle($title){
         $this->title = $title;
+        
+        return $this;
     }
 
     public function getIcon(){
@@ -76,6 +82,8 @@ class Link extends EntityAbstract
     }
     public function setIcon($icon){
         $this->icon = $icon;
+        
+        return $this;
     }
 
     public function isExternalLink(){
@@ -83,6 +91,8 @@ class Link extends EntityAbstract
     }
     public function setExternalLink($externalLink){
         $this->externalLink = $externalLink;
+        
+        return $this;
     }
 
 }
