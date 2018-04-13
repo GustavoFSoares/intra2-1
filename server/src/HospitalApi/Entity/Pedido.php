@@ -26,16 +26,11 @@ private $hora;
 	 * @JoinColumn(name="usuario_id", referencedColumnName="id")
 	 */
 private $usuario;
-/**
-* @OneToMany(targetEntity="Item", mappedBy="pedido",cascade={"persist","remove"})
-**/
-private $itens;
 
-public function __construct($id = 0,$hora = null,$usuario = 0,$itens = array()){
+public function __construct($id = 0,$hora = null,$usuario = 0){
 $this->id = $id;
 $this->hora = $hora;
 $this->usuario = $usuario;
-$this->itens = $itens;
 
 }
 
@@ -44,7 +39,6 @@ $obj = new Pedido();
 $obj->setId( $array['id']);
 $obj->setHora( $array['hora']);
 $obj->setUsuario( $array['usuario']);
-$obj->setItens( $array['itens']);
 return $obj;
 
 }
@@ -73,13 +67,6 @@ public function setUsuario($usuario){
  $this->usuario=$usuario;
 }
 
-public function getItens(){
-return $this->itens;
-}
-
-public function setItens($itens){
- $this->itens=$itens;
-}
 public function equals($object){
 if($object instanceof Pedido){
 
@@ -98,11 +85,6 @@ return false;
 
 }
 
-if($this->itens!=$object->itens){
-return false;
-
-}
-
 return true;
 
 }
@@ -113,7 +95,7 @@ return false;
 }
 public function toString(){
 
- return "  [id:" .$this->id. "]  [hora:" .$this->hora. "]  [usuario:" .$this->usuario. "]  [itens:" .$this->itens. "]  " ;
+ return "  [id:" .$this->id. "]  [hora:" .$this->hora. "]  [usuario:" .$this->usuario. "]" ;
 }
 
  public function toArray(){
@@ -121,7 +103,6 @@ public function toString(){
   "id"=>$this->id,
    "hora"=>$this->hora,
    "usuario"=>$this->usuario->toArray(),
-   "itens"=>$this->itens
    ];
  }
 
