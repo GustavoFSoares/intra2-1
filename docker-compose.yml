@@ -11,8 +11,8 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: 'root'
             MYSQL_DATABASE: 'hospital_api'
-        # volumes:
-        #     - dados:/var/lib/mysql
+        volumes:
+            - dados:/var/lib/mysql
 
     # nginx: 
     #     image: nginx
@@ -58,11 +58,11 @@ services:
         image: gustavosoares97/php-pdo
         container_name: slim_1
         working_dir: /var/www
-        command: bash -c "composer start"
+        command: bash -c "composer db-update && composer start"
         environment:
             docker: "true"
         ports:
-            - 3003:3001
+            - 3001:3001
         networks:
             hospital-network:
                 ipv4_address: 172.19.0.8
@@ -70,7 +70,7 @@ services:
             - mysql
         volumes:
             - ./server:/var/www
-            # - ./logs:/var/www/logs
+            - ./logs:/var/www/logs
     
 networks: 
     hospital-network:
