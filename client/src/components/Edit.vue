@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getContact, editContact } from "../services/contacts"
+// import { getContact, editContact } from "../services/contacts"
 export default {
     
     data() {
@@ -61,14 +61,14 @@ export default {
     },
     mounted() {
         let id = this.$route.params.id
-        getContact(id).then(res => { this.contact = res.contact })
+        // getContact(id).then(res => { this.contact = res.contact })
     },
     methods: {
         save(contact) {
             let id = this.$route.params.id
-            editContact(id, contact).then(res => {
-                this.$router.push({ path: '/' })
-            })
+            // editContact(id, contact).then(res => {
+            //     this.$router.push({ path: '/' })
+            // })
             
         }
     },

@@ -20,14 +20,14 @@
 
             </li>
         </ul>
-
+        <h1 v-if="contacts.links">Tem Link</h1>
     </div>
 </template>
 
 <script>
 import Panel from '@/components/shared/Panel.vue'
 import links from '@/rows.js'
-import { getContacts, deleteContact } from '@/services/contacts'
+import { getLinks } from '@/services/contacts'
 export default {
 
     data() {
@@ -41,21 +41,10 @@ export default {
         'panel': Panel,
     },
     created() {
-        // this.getContacts()
         this.getFigures()
     },
-    updated() {
-        // this.getContacts()
-    },
+    updated() { },
     methods: {
-        remove(id, index) {
-            deleteContact(id).then(res => {
-                this.contacts.splice(index, 1)
-            })
-        },
-        getContacts(){
-            getContacts().then(res => { this.contacts = res.contacts })
-        },
         getFigures(){
             this.fotos = links
         }

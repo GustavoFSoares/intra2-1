@@ -8,7 +8,6 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                 <router-link class="nav-item nav-link active" to="/add">Add<span class="sr-only">(current)</span></router-link>
-                <router-link class="nav-item nav-link active" to="/" @click.native="insert()">Insert Defaults</router-link>
                 <router-link class="nav-item nav-link disabled" to="/cv">Resume</router-link>
                 <router-link class="nav-item nav-link disabled" to="/test">Teste</router-link>
                 </div>
@@ -25,22 +24,13 @@
 </template>
 
 <script>
-import { insertDefaultContacts } from "@/services/contacts";
 export default {
     data(){
         return {
             "message": ""
         }
     },
-    methods: {
-        insert(){
-            insertDefaultContacts().then(res => {
-                this.message = "Contatos Adicionados"
-                this.$router.push({ path: '/'})
-                setTimeout(()=>{ this.message = false }, 2000)
-            })
-        }
-    }
+    methods: { }
 }
 </script>
 
