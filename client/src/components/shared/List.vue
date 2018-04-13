@@ -27,7 +27,7 @@
 <script>
 import Panel from '@/components/shared/Panel.vue'
 import links from '@/rows.js'
-import { getLinks } from '@/services/contacts'
+import { getLinks } from '@/services/links'
 export default {
 
     data() {
@@ -52,8 +52,6 @@ export default {
      computed: {
         searchList() {
             if(this.filter) {
-                console.log(this.filter);
-                
                 let exp = new RegExp(this.filter.trim(), 'i')
                 return this.fotos.filter(fotos => exp.test(fotos.title))
             } else {
