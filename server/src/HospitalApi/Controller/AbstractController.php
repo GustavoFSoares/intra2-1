@@ -2,24 +2,23 @@
 
 namespace HospitalApi\Controller;
 
-use HospitalApi\Model\AbstractDAO;
+use HospitalApi\Model\EntityAbstract;
 use Exception;
 
-abstract class AbstractController {
-	// attr
-	private $dao;
-	public function __construct($dao) {
-        if(!$dao instanceof AbstractDAO){
+abstract class AbstractController 
+{
+	
+	private $model;
+
+	public function __construct($model) {
+        if(!$model instanceof EntityAbstract){
             throw new Exception("error");
         }
-        $this->dao = $dao;
+        $this->model = $model;
 	}
 	
-	public function getDao() {
-		return $this->dao;
-	}
-	public function setDao($dao) {
-		$this->dao = $dao;
+	public function getModel() {
+		return $this->model;
 	}
 	
 	public function get($id) {
@@ -41,7 +40,7 @@ abstract class AbstractController {
 
 		return $data;
 	}
-    abstract public  function insert($json);
-	abstract public  function update($id, $json);
-	abstract public  function delete($id);
+    abstract public function insert($json);
+	abstract public function update($id, $json);
+	abstract public function delete($id);
 }
