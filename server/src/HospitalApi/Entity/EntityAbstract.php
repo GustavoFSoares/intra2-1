@@ -6,11 +6,15 @@ abstract class EntityAbstract
 {
     private $classVars;
     
-    public function __construct(){
+    public function __construct() {
         $className = get_class($this);
         $this->classVars = get_class_vars($className);
 
         unset($this->classVars['classVars']);
+    }
+
+    public function getClassName() {
+        return get_class($this);
     }
 
     public function toString(){
@@ -28,5 +32,5 @@ abstract class EntityAbstract
         }
         return $obj;
     }
-    
+
 }
