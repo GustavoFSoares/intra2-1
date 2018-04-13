@@ -11,10 +11,13 @@ abstract class ModelAbstract
 	public $em;
 	private $entityPath;
 
-	public function __construct($entityPath) {
-		$this->entityPath = $entityPath;
-		$this->em = $this->createEntityManager();
-	}
+	public function __construct($entityPath) 
+	{
+		
+		$this->entityPath = get_class($this->entity);
+		$this->entityPath ? 
+			$this->em = $this->createEntityManager() : "";
+		}
 
 	public function createEntityManager() {
 
@@ -24,14 +27,13 @@ abstract class ModelAbstract
 		$config = Setup::createAnnotationMetadataConfiguration($path, $devMode);
 
 		$connectionOptions = [
-		    'dbname' => 'hospital_api',
-		    'user' => 'root',
-		    'password' => 'root',
-		    'host' => 'localhost',
-		    'driver' => 'pdo_mysql'
+			'dbname' => 'hospital_api',
+			'user' => 'root',
+			'password' => 'root',
+			'host' => 'localhost',
+			'driver' => 'pdo_mysql'
 		];
 
-		//Passo 3 - Objeto de persistencia
 		return EntityManager::create($connectionOptions, $config);
 	}
 
