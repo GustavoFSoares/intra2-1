@@ -1,0 +1,80 @@
+version: '3'
+volumes: 
+    dados:
+services: 
+    mysql:
+        image: mysql
+        container_name: mysql
+        networks:
+            - hospital-network
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: 'hospital_api'
+        # volumes:
+        #     - dados:/var/lib/mysql
+
+    # nginx: 
+    #     image: nginx
+    #     # volumes:
+    #     #     - ./minhapastaraiz:/use/share/nginx/html
+    #     ports:
+    #         - 81:80
+        
+    #     # build: 
+    #     #     dockerfile: ./docker/nginx.dockerfile
+    #     #     context: .
+    #     # image: nginx:latest
+    #     # container_name: nginx
+    #     # ports:
+    #     #     - "80:3030"
+    #     # networks: 
+    #     #     hospital-network:
+    #     #         ipv4_address: 172.19.0.6 
+    #     # volumes:
+    #     #     - ./docker/config/:/etc/nginx/
+    #     #     - ./client-teste:/var/www
+    #     # # depends_on:
+    #     # #     - node1
+    #     # #     - node2
+    #     # #     - node3
+
+    front:
+        image: node
+        container_name: front
+        networks:
+            hospital-network:
+                ipv4_address: 172.19.0.6
+        ports:
+            - 80:8080
+        depends_on:
+             - slim_1
+        working_dir: /app
+        volumes:
+            - ./client:/app
+        command: bash -c "npm i && npm start"
+    
+    slim_1:
+        image: gustavosoares97/php-pdo
+        container_name: slim_1
+        working_dir: /var/www
+        command: bash -c "composer start"
+        environment:
+            docker: "true"
+        ports:
+            - 3003:3001
+        networks:
+            hospital-network:
+                ipv4_address: 172.19.0.8
+        depends_on:
+            - mysql
+        volumes:
+            - ./server:/var/www
+            # - ./logs:/var/www/logs
+    
+networks: 
+    hospital-network:
+        driver: bridge
+        ipam:
+         config:
+           - subnet: 172.19.0.0/16
