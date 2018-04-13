@@ -11,13 +11,11 @@ abstract class ModelAbstract
 	public $em;
 	private $entityPath;
 
-	public function __construct($entityPath) 
-	{
-		
+	public function __construct() {
 		$this->entityPath = get_class($this->entity);
 		$this->entityPath ? 
 			$this->em = $this->createEntityManager() : "";
-		}
+	}
 
 	public function createEntityManager() {
 
@@ -30,7 +28,7 @@ abstract class ModelAbstract
 			'dbname' => 'hospital_api',
 			'user' => 'root',
 			'password' => 'root',
-			'host' => 'localhost',
+			'host' => 'mysql',
 			'driver' => 'pdo_mysql'
 		];
 
