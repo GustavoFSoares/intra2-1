@@ -1,13 +1,13 @@
 <?php
 namespace HospitalApi\Entity;
 
- use HospitalApi\Entity\Entidade;
+ use HospitalApi\Entity\EntityAbstract;
 
 /**
  * @Entity
  * @Table(name="usuario")
  */
-class Usuario extends Entidade{
+class Usuario extends EntityAbstract{
 
   /**
   *	@var integer @Id
@@ -41,13 +41,12 @@ $this->endereco = $endereco;
 }
 
 public static function construct($array){
-$obj = new Usuario();
-$obj->setId( $array['id']);
-$obj->setEmail( $array['email']);
-$obj->setSenha( $array['senha']);
-$obj->setEndereco( $array['endereco']);
-return $obj;
-
+  $obj = new Usuario();
+    $obj->setId( $array['id']);
+    $obj->setEmail( $array['email']);
+    $obj->setSenha( $array['senha']);
+    $obj->setEndereco( $array['endereco']);
+  return $obj;
 }
 
 public function getId(){

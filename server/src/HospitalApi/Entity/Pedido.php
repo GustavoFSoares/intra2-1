@@ -1,13 +1,13 @@
 <?php
 namespace HospitalApi\Entity;
 
-use HospitalApi\Entity\Entidade;
+use HospitalApi\Entity\EntityAbstract;
 
 /**
  * @Entity
  * @Table(name="pedido")
  */
-class Pedido extends Entidade{
+class Pedido extends EntityAbstract{
 
   /**
   *	@var integer @Id

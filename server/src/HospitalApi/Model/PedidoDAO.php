@@ -5,7 +5,7 @@ namespace HospitalApi\Model;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use HospitalApi\Entity\Pedido;
-use HospitalApi\Model\AbstractDAO;
+use HospitalApi\Model\ModelAbstract;
 use HospitalApi\Model\UsuarioDAO;
 
 class PedidoDAO extends AbstractDAO{
