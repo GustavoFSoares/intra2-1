@@ -2,8 +2,20 @@
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Doctrine\DBAL\Driver\PDOException;
+
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
 
 // Routes
+// $app->get('/', HospitalApi\Controller\RoutesController::class);
+// $app->get('/', HospitalApi\Controller\RoutesController::class. ':add');
+
 
 $app->get('/[{name}]', function (Request $request, Response $response, array $args) {
     // Sample log message
@@ -22,14 +34,8 @@ $app->get('/link/{id}', function(Request $req, Response $res, array $args) {
     return $res;
 });
 
-$app->get('/links', function(Request $req, Response $res, array $args) {
-    $this->logger->info("Get all links");
+// $app->get('/links', function(Request $req, Response $res, array $args) {
+//     $this->logger->info("Get all links");
 
-    $res = $res->withHeader('Content-Type', 'application/json');
-    $res = $res->withHeader('Access-Control-Allow-Origin', '*');
-    $res = $res->withHeader('Access-Control-Allow-Methods', '*');
-    $res = $res->withHeader('Access-Control-Allow-Headers', '*');
-    
-    $res->getBody()->write(json_encode(['links' => true]));
-    return $res;
-});
+//     return $res->withJson(['links' => true]);
+// });
