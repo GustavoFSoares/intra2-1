@@ -1,7 +1,7 @@
 import http from '../client'
 
 export const getLinks = () => {
-    return http.get(`/links`).then( res => res.data )
+    return http.get(`/link/`).then( res => res.data )
 }
 
 export const getLink = ($id) => {
