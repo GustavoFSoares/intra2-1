@@ -5,35 +5,33 @@
             <input type="search" class="filter form-control" @input="filter = $event.target.value" placeholder="Nome:"/>
         </div>
 
-        <ul class="form-group lista-fotos">
-            <li class="lista-fotos-item" v-for="(foto, index) in searchList" :key="index">
-                <a :href=foto.url v-if="foto.external">
-                    <panel :titulo="foto.title">
-                        <img class="img-thumbnail" :src="foto.icon" :alt="foto.title"/>
+        <ul class="form-group lista-links">
+            <li class="lista-links-item" v-for="(link, index) in searchList" :key="index">
+                <a :href=link.url v-if="link.external">
+                    <panel :titulo="link.title">
+                        <img class="img-thumbnail" :src="link.icon" :alt="link.title"/>
                     </panel>
                 </a>
-                <router-link :to=foto.url v-else>
-                    <panel :titulo="foto.title">
-                        <img class="img-thumbnail" :src="foto.icon" :alt="foto.title"/>
+                <router-link :to=link.url v-else>
+                    <panel :titulo="link.title">
+                        <img class="img-thumbnail" :src="link.icon" :alt="link.title"/>
                     </panel>
                 </router-link>
 
             </li>
         </ul>
-        <h1 v-if="contacts.links">Tem Link</h1>
     </div>
 </template>
 
 <script>
 import Panel from '@/components/shared/Panel.vue'
-import links from '@/rows.js'
 import { getLinks } from '@/services/links'
 export default {
 
     data() {
         return {
             contacts: [ ],
-            fotos: [ ],
+            links: [ ],
             filter: '',
         }
     },
@@ -41,21 +39,25 @@ export default {
         'panel': Panel,
     },
     created() {
-        this.getFigures()
+        this.getLinks()
     },
     updated() { },
     methods: {
-        getFigures(){
-            this.fotos = links
+        getLinks(){
+            getLinks().then(res => {
+                this.links = res
+                // console.log(res);
+            });
+            
         }
     },
      computed: {
         searchList() {
             if(this.filter) {
                 let exp = new RegExp(this.filter.trim(), 'i')
-                return this.fotos.filter(fotos => exp.test(fotos.title))
+                return this.links.filter(links => exp.test(links.title))
             } else {
-                return this.fotos
+                return this.links
             }
         }
     },
@@ -69,11 +71,11 @@ export default {
         width: 100%
     }
 
-    .lista-fotos {
+    .lista-links {
         list-style: none;
     }
 
-    .lista-fotos .lista-fotos-item {
+    .lista-links .lista-links-item {
         display: inline-block;
     }
 
