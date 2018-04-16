@@ -6,10 +6,10 @@ use HospitalApi\Model\PedidoDAO;
 use HospitalApi\Entity\Pedido;
 use HospitalApi\Entity\Item;
 use HospitalApi\Entity\Usuario;
-use HospitalApi\Controller\AbstractController;
 use DateTime;
 
-class PedidoController extends AbstractController{
+class PedidoController extends ControllerAbstract
+{
 
 public function __construct() {
     parent::__construct(new PedidoDAO ());

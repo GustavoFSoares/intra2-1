@@ -4,12 +4,11 @@ namespace HospitalApi\Controller;
 
 use HospitalApi\Model\UsuarioDAO;
 use HospitalApi\Entity\Usuario;
-use HospitalApi\Controller\AbstractController;
 
-class UsuarioController extends AbstractController {
+class UsuarioController extends ControllerAbstract {
 
 	public function __construct() {
-    parent::__construct(new UsuarioDAO ());
+    	parent::__construct(new UsuarioDAO ());
 	}
 
 

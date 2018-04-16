@@ -4,7 +4,7 @@ namespace HospitalApi\Controller;
 use HospitalApi\Model\ModelAbstract;
 use Exception;
 
-abstract class AbstractController 
+abstract class ControllerAbstract
 {
 	
 	private $model;
