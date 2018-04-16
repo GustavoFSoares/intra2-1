@@ -4,7 +4,6 @@ namespace HospitalApi\Entity;
 
 abstract class EntityAbstract
 {
-    // private $classVars;
     
     public function __construct() {
 

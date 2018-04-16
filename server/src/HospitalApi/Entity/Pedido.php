@@ -1,8 +1,6 @@
 <?php
 namespace HospitalApi\Entity;
 
-use HospitalApi\Entity\EntityAbstract;
-
 /**
  * @Entity
  * @Table(name="pedido")

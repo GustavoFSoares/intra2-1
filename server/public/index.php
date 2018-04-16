@@ -9,12 +9,24 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
-use HospitalApi\Entity\Usuario;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Setup;
+
 
 require __DIR__ . '/../vendor/autoload.php';
+
+use HospitalApi\Entity\Email;
+$e = new Email();
+
+echo '<br><br>';
+echo '!!!'.__FILE__.':<b>'.__LINE__.'</b>'.'!!!';
+echo '<pre>';
+print_r($e);
+echo '</pre>';
+die('');
+
+
 session_start();
+
+date_default_timezone_set('America/Sao_Paulo');
 
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
@@ -29,37 +41,6 @@ require __DIR__ . '/../src/middleware.php';
 
 // Register routes
 require __DIR__ . '/../src/routes.php';
-
-//Passo 2 - Configuração
-    $path = [
-        'HospitalApi/Entity'
-    ];
-    $devMode = true;
-
-    $config = Setup::createAnnotationMetadataConfiguration($path, $devMode);
-
-    $connectionOptions = [
-        'dbname' => 'hospital_api',
-        'user' => 'root',
-        'password' => 'root',
-        'host' => 'mysql',
-        'driver' => 'pdo_mysql',
-        // 'path' => __DIR__ . 'db.sqlite',
-    ];
-
-    //Passo 3 - Objeto de persistencia
-    $entityManager = EntityManager::create($connectionOptions, $config);
-
-    // $entityManager
-    //     ->getConnection()
-    //     ->getConfiguration()
-	// 	->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
-		
-	$u = new Usuario();
-    $u->setEmail('jp@gmail.com');
-    // INSERT
-	$entityManager->persist($u);
-	$entityManager->flush();
 
 // Run app
 $app->run();
