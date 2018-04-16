@@ -1,8 +1,7 @@
 <?php
-
 namespace HospitalApi\Controller;
 
-use HospitalApi\Model\EntityAbstract;
+use HospitalApi\Model\ModelAbstract;
 use Exception;
 
 abstract class AbstractController 
@@ -11,36 +10,39 @@ abstract class AbstractController
 	private $model;
 
 	public function __construct($model) {
-        if(!$model instanceof EntityAbstract){
+		if(!$model instanceof ModelAbstract){
             throw new Exception("error");
-        }
-        $this->model = $model;
+		}
+		$this->model = $model;
 	}
 	
 	public function getModel() {
 		return $this->model;
 	}
 	
-	public function get($id) {
+	public function get($req, $res, $args) {
+		$id = $args['id'];
 		if ($id === null) {
 			$data = array ();
-			$result = $this->getDao()->findAll ();
+			$result = $this->model->findAll();
 
 			foreach ( $result as $obj ) {
-				$data [] = $obj->toArray ();
+				$data [] = $obj->toArray();
 			}
 		} else {
-			$obj = $this->getDao ()->findById ( $id );
+			$obj = $this->model->findById( $id );
 			if ($obj != null) {
 
-				$data = $obj->toArray ();
+				$data = $obj->toArray();
 			} else
 				$data = [];
 		}
-
-		return $data;
+		
+		return $res->withJson($data);
+		// return $data;
 	}
-    abstract public function insert($json);
-	abstract public function update($id, $json);
-	abstract public function delete($id);
+	
+    public function insert($json){ }
+	public function update($id, $json){ }
+	public function delete($id){ }
 }
