@@ -4,22 +4,24 @@ namespace HospitalApi\Entity;
 
 abstract class EntityAbstract
 {
-    private $classVars;
+    // private $classVars;
     
     public function __construct() {
-        $className = get_class($this);
-        $this->classVars = get_class_vars($className);
 
-        unset($this->classVars['classVars']);
     }
 
     public function getClassName() {
         return get_class($this);
     }
 
+    public function getClassVars()
+    {
+        return get_class_vars($this->getClassName());
+    }
+
     public function toString(){
         $obj;
-        foreach ($this->classVars as $var => $value) {
+        foreach ($this->getClassVars() as $var => $value) {
             $obj.="[$var:".$this->$var."]";
         }
         return $obj;
@@ -27,7 +29,7 @@ abstract class EntityAbstract
 
     public function toArray(){
         $obj;
-        foreach ($this->classVars as $var => $value) {
+        foreach ($this->getClassVars() as $var => $value) {
             $obj[$var] = $this->$var;
         }
         return $obj;
