@@ -4,6 +4,10 @@ namespace HospitalApi\Controller;
 use HospitalApi\Model\ModelAbstract;
 use Exception;
 
+/**
+ * @abstract <b> ControllerAbstract </b>
+ * Classe responsável por incluir métodos básicos de CRUD
+ */
 abstract class ControllerAbstract
 {
 	
