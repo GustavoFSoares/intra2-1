@@ -2,14 +2,9 @@
 
 namespace HospitalApi\Controller;
 
-class RoutesController 
+class RoutesController extends ControllerAbstract
 {
 
-    public function __construct(){
-        echo 'parou';
-    }
+    public function __construct(){ }
 
-    public function add(){
-        echo " aqui";
-    }
 }
