@@ -13,17 +13,6 @@ if (PHP_SAPI == 'cli-server') {
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use HospitalApi\Entity\Email;
-$e = new Email();
-
-echo '<br><br>';
-echo '!!!'.__FILE__.':<b>'.__LINE__.'</b>'.'!!!';
-echo '<pre>';
-print_r($e);
-echo '</pre>';
-die('');
-
-
 session_start();
 
 date_default_timezone_set('America/Sao_Paulo');

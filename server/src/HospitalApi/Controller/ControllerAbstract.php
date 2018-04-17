@@ -7,10 +7,10 @@ use Exception;
 abstract class ControllerAbstract
 {
 	
-	private $model;
+	protected $model;
 
 	public function __construct($model) {
-		if(!$model instanceof ModelAbstract){
+		if(!$model instanceof ModelAbstract) {
             throw new Exception("error");
 		}
 		$this->model = $model;
@@ -26,11 +26,11 @@ abstract class ControllerAbstract
 			$data = array ();
 			$result = $this->model->findAll();
 
-			foreach ( $result as $obj ) {
-				$data [] = $obj->toArray();
+			foreach ($result as $obj) {
+				$data[] = $obj->toArray();
 			}
 		} else {
-			$obj = $this->model->findById( $id );
+			$obj = $this->model->findById($id);
 			if ($obj != null) {
 
 				$data = $obj->toArray();
@@ -39,7 +39,6 @@ abstract class ControllerAbstract
 		}
 		
 		return $res->withJson($data);
-		// return $data;
 	}
 	
     public function insert($json){ }
