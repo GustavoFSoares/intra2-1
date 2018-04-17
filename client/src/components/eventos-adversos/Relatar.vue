@@ -21,7 +21,7 @@
                     <h4 class="mb-3">{{ titles.unit }}</h4>
                     
                     <row id="unit" label="Selecione a Unidade">
-                        <select class="custom-select d-block w-100 text-center" @change="loadSectors" id="unit" v-model="story.init">
+                        <select class="custom-select d-block w-100 text-center" @change="loadSectors" id="unit" v-model="story.unit">
                             <option value=""> </option>
                             <option v-for="unit in options.units" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
                         </select>
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { getSectorsHu, getSectorHpsc, getUnits, getEvents } from "@/model/eventos-adversos"
+import { getSectorsHu, getSectorsHpsc, getUnits, getEvents, buildMail } from "@/model/eventos-adversos"
 import { FormRw, FormRws } from "@/components/shared/Form/index.js"
 export default {
     data() {
@@ -105,7 +105,7 @@ export default {
             title: "Relatar Evento",
             story: {
                 mustReturn: '',
-                init: 'hu',
+                unit: 'hu',
                 setor: '',
                 event: '',
                 complement: '',
@@ -133,14 +133,14 @@ export default {
     },
     methods: {
         loadSectors(){
-            if(this.story.init == 'hu'){
+            if(this.story.unit == 'hu'){
                 this.options.sectors = getSectorsHu()
-            } else if(this.story.init == 'hpsc') {
-                this.options.sectors = getSectorHpsc()
+            } else if(this.story.unit == 'hpsc') {
+                this.options.sectors = getSectorsHpsc()
             }
         },
         submit() {
-           alert(JSON.stringify(this.story));
+           buildMail(this.story);
         }
     },
     mounted() {
