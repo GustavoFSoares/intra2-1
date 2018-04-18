@@ -54,14 +54,3 @@ class EmailController extends ControllerAbstract
     }
 
 }
-
-/**
- * sender {
- *  "mail","name","password"
- * }
- * receiver(email)
- * body(html)
- * cc(email)
- * subject(string)
- * 
- */
