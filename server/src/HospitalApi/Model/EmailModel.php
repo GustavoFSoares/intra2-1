@@ -125,7 +125,8 @@ class EmailModel extends ModelAbstract
         try{
             $send = $this->_mail->send();
             if($send) {
-                $this->_mail->ClearAllRecipients();
+                $this->createLog();
+
                 return [ 'status' => true ];
             } else {
                 return [ 'status' => false ];
@@ -133,6 +134,29 @@ class EmailModel extends ModelAbstract
         }catch(Exception $e){
             return [ 'status' => false ];
         }
+    }
+
+    /**
+     * @method buildLog()
+     * Recebe as informações do POST e utiliza os valores
+     * para "construir" um email, que será salvo no Banco de Dados
+     * @param POST $mail
+     * @return void
+     */
+    public function buildLog($mail){
+        $this->entity
+            ->setSender($mail['sender']['mail'])
+            ->setReceiver($mail['receiver'])
+            ->setBody($mail['body']);
+    }
+
+    /**
+     * @method createLog()
+     * Faz a inserção do Email no Banco de Dados para criar Log
+     * @return void
+     */
+    public function createLog(){
+        $this->insert($this->entity);
     }
 
 }

@@ -19,7 +19,7 @@ class Email extends EntityAbstract
 
     /**
      * @var DateTime
-     *      @Column(type="datetime")
+     *      @Column(type="string")
      */
     protected $time;
 

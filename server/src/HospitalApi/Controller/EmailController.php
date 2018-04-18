@@ -32,6 +32,7 @@ class EmailController extends ControllerAbstract
         $values = $req->getParsedBody();
         
         $this->writeMail($values['subject'], $values['body']);
+        $this->model->buildLog($values);
 
         $this->model->setSender($values['sender']);
         $this->model->setReceiver($values['receiver']);
