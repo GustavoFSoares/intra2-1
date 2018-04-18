@@ -5,31 +5,43 @@ use HospitalApi\Entity\Email;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+/**
+ * <b>EmailModel</b>
+ * Classe responsável pela estruturação do Email
+ * como também realizar o envio do mesmo
+ */
 class EmailModel extends ModelAbstract
 {
 
     public $entity;
-    public $mail;
+    private $_mail;
 
     public function __construct() {
         $this->entity = new Email();
         parent::__construct();
         
-        $this->mail = new PHPMailer(true);                    // Passing `true` enables exceptions
-        $this->configureMail();
+        $this->_mail = new PHPMailer(true);                          // Passing `true` enables exceptions
+        $this->configureMail();     
     }
 
-    public function configureMail(){
+    /**
+     * @method configureMail()
+     * Método responsável por configurar a infraestrutura
+     * do email, setando configurações de domínio, erros,
+     * formato e tipo de conexão que será realizada
+     * @return void
+     */
+    public function configureMail() {
         //Server settings
-        $this->mail->isSMTP();                                      // Set mailer to use SMTP
-        $this->mail->SMTPDebug = true;                              // Enable verbose debug output
-        $this->mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $this->mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-        $this->mail->CharSet = 'UTF-8';                             // Specify main and backup SMTP servers
-        $this->mail->Host = 'smtp.office365.com';                   // Specify main and backup SMTP servers
-        $this->mail->Port = 587;                                    // TCP port to connect to
-        $this->mail->IsHTML(true);                                  // Enable HTML
-        $this->mail->SMTPOptions = [
+        $this->_mail->isSMTP();                                      // Set mailer to use SMTP
+        $this->_mail->SMTPDebug = false;                             // Enable verbose debug output
+        $this->_mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $this->_mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+        $this->_mail->CharSet = 'UTF-8';                             // Specify main and backup SMTP servers
+        $this->_mail->Host = 'smtp.office365.com';                   // Specify main and backup SMTP servers
+        $this->_mail->Port = 587;                                    // TCP port to connect to
+        $this->_mail->IsHTML(true);                                  // Enable HTML
+        $this->_mail->SMTPOptions = [
             'ssl' => [
                 'verify_peer' => false,
                 'verify_peer_name' => false,
@@ -38,37 +50,82 @@ class EmailModel extends ModelAbstract
         ];
     }
 
+    /**
+     * @method setSender()
+     * Recebe um Array contendo as informações do rementente,
+     * contendo "email", "senha" e "nome", que será utilizado
+     * para autenticação do usuário
+     * @param Array $user
+     * @return void
+     */
     public function setSender($user) {
-        
-        $this->mail->Username = $user['mail'];                      // SMTP username
-        $this->mail->Password = $user['password'];                  // SMTP password
-        $this->mail->setFrom($user['mail'], $user['name']);
+        $this->_mail->Username = $user['mail'];                      // SMTP username
+        $this->_mail->Password = $user['password'];                  // SMTP password
+        $this->_mail->setFrom($user['mail'], $user['name']);
     }
 
+    /**
+     * @method setReceiver()
+     * Recebe uma String contendo o "email", para quem o email
+     * será enviado
+     * @param String $receiver
+     * @return void
+     */
     public function setReceiver($receiver) {
         //Recipients
-        $this->mail->addAddress($receiver);                         // Add a recipient
+        $this->_mail->addAddress($receiver);                         // Add a recipient
     }
     
+    /**
+     * @method setCopy()
+     * Recebe um Array de chave padrão ([0]=>"email2", [1]=>"email2")
+     * com a lista de emails para o qual o email deve ser enviado em cópia
+     * @param Array $copys
+     * @return void
+     */
     public function setCopy($copys = []) {
         foreach ($copys as $copy) {
-            $this->mail->addCC($copy);
+            $this->_mail->addCC($copy);
         }
     }
-    
+
+    /**
+     * @method setAttachment()
+     * Recebe uma String contendo o <i>caminho</i> para o arquivo
+     * que irá ser enviado como anexo no email
+     * @param String $attachmentFile
+     * @return void
+     */
     public function setAttachment($attachmentFile) {
-        $this->mail->addAttachment($attachmentFile);                // Add attachments
+        $this->_mail->addAttachment($attachmentFile);                // Add attachments
     }
     
+    /**
+     * @method writeMail()
+     * Responsável por adicionar a mensagem ao corpo do email. 
+     * Recebe o "Assunto" e uma String em formato de HTML contendo 
+     * o "corpo" do email
+     * @param String $subject
+     * @param Html $body
+     * @return void
+     */
     public function writeMail($subject, $body) {
-        $this->mail->Subject = $subject;
-        $this->mail->Body = $body;
+        $this->_mail->Subject = $subject;
+        $this->_mail->Body = $body;
     }
 
+    /**
+     * @method send()
+     * Envia o Emmail. Testa se o email conseguiu ser enviado
+     * e retorna um Array ([status]=>Boolean) com situação de envio
+     * <i>true</i> para enviado e <i>false</i> problemas de envio
+     * @return Array[Boolean]
+     */
     public function send() {
         try{
-            $send = $this->mail->send();
+            $send = $this->_mail->send();
             if($send) {
+                $this->_mail->ClearAllRecipients();
                 return [ 'status' => true ];
             } else {
                 return [ 'status' => false ];
