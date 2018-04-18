@@ -4,11 +4,14 @@ namespace HospitalApi\Entity;
 /**
  * @Entity
  * @Table(name="link")
+ * <b>Link</b>
+ * Classe POJO responsável por manter os atributos de um Link,
+ * como também fazer as relações e mapeamento com banco de dados
  */
 class Link extends EntityAbstract
 {
     
-        /**
+    /**
      * @var integer @Id
      *     @Column(name="id", type="integer")
      *     @GeneratedValue(strategy="AUTO")

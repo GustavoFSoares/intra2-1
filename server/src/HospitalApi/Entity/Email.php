@@ -4,6 +4,9 @@ namespace HospitalApi\Entity;
 /**
  * @Entity
  * @Table(name="email")
+ * <b>Email</b>
+ * Classe POJO responsável por manter os atributos de um email,
+ * como também fazer as relações e mapeamento com banco de dados
  */
 class Email extends EntityAbstract
 {
