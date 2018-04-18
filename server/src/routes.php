@@ -21,3 +21,8 @@ $app->get('/[{name}]', function (Request $request, Response $response, array $ar
     // Render index view
     return $this->renderer->render($response, 'index.phtml', $args);
 });
+
+$app->get('/script/execute/{file}', function(Request $req, Response $res, array $args){
+    $file = $args['file'].'.php';
+    require "HospitalApi/Scripts/$file";
+});
