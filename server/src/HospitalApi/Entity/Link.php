@@ -43,7 +43,7 @@ class Link extends EntityAbstract
     protected $externalLink;
     // public $externalLink;
 
-    public function __contruct($url = '', $title = '', $icon = '', $externalLink = false){
+    public function __contruct($url = '', $title = '', $icon = '', $externalLink = false) {
         $this->id = 0;
         $this->url = $url;
         $this->title = $title;
@@ -51,46 +51,46 @@ class Link extends EntityAbstract
         $this->externalLink = $externalLink;
     }
 
-    public function getId(){
+    public function getId() {
         return $this->id;
     }
-    public function setId($id){
+    public function setId($id) {
         $this->id = $id;
         
         return $this;
     }
     
-    public function getUrl(){
+    public function getUrl() {
         return $this->url;
     }
-    public function setUrl($url){
+    public function setUrl($url) {
         $this->url = $url;
         
         return $this;
     }
 
-    public function getTitle(){
+    public function getTitle() {
         return $this->title;
     }
-    public function setTitle($title){
+    public function setTitle($title) {
         $this->title = $title;
         
         return $this;
     }
 
-    public function getIcon(){
+    public function getIcon() {
         return $this->icon;
     }
-    public function setIcon($icon){
+    public function setIcon($icon) {
         $this->icon = $icon;
         
         return $this;
     }
 
-    public function isExternalLink(){
+    public function isExternalLink() {
         return $this->externalLink;
     }
-    public function setExternalLink($externalLink){
+    public function setExternalLink($externalLink) {
         $this->externalLink = $externalLink;
         
         return $this;

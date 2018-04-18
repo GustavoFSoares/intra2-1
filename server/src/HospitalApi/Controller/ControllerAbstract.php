@@ -45,7 +45,7 @@ abstract class ControllerAbstract
 		return $res->withJson($data);
 	}
 	
-    public function insert($json){ }
-	public function update($id, $json){ }
-	public function delete($id){ }
+    public function insert($json) { }
+	public function update($id, $json) { }
+	public function delete($id) { }
 }

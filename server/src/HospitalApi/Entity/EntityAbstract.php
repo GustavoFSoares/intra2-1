@@ -40,7 +40,7 @@ abstract class EntityAbstract
      * contendo os o nome do atributo e valor associado a ele
      * @return String atributos
      */
-    public function toString(){
+    public function toString() {
         $obj;
         foreach ($this->getClassVars() as $var => $value) {
             $obj.="[$var:".$this->$var."]";
@@ -54,7 +54,7 @@ abstract class EntityAbstract
      * contendo o nome do atributo e valor associado a ele
      * @return Array atributos
      */
-    public function toArray(){
+    public function toArray() {
         $obj;
         foreach ($this->getClassVars() as $var => $value) {
             $obj[$var] = $this->$var;
