@@ -1,24 +1,46 @@
 <?php
 namespace HospitalApi\Entity;
 
-
+/**
+ * @abstract EntityAbstract
+ * <b>EntityAbstract</b>
+ * Classe Abstrata das Entidades. Responsável
+ * pela abstração e implementação de métodos 
+ * como <i>toArray()</i> e <i>toString()</i>
+ */
 abstract class EntityAbstract
 {
     
-    public function __construct() {
+    public function __construct() { }
 
-    }
-
+    /**
+     * @method getClassName()
+     * Retorna uma string com nome da classe 
+     * com nome da classe atual<i>($this)</i>
+     * @return String NomeClase
+     */
     public function getClassName() {
         return get_class($this);
     }
 
+    /**
+     * @method getClassVars()
+     * Retorna um array contendo o nome dos 
+     * atributos da classe atual<i>($this)</i>
+     * @return Array vars
+     */
     public function getClassVars()
     {
         return get_class_vars($this->getClassName());
     }
 
-    public function toString(){
+    /**
+     * @method toString()
+     * Retorna uma String no formato de chave:valor
+     * contendo os o nome do atributo e valor associado a ele
+     * @return String atributos
+     */
+    public function toString() {
         $obj;
         foreach ($this->getClassVars() as $var => $value) {
             $obj.="[$var:".$this->$var."]";
@@ -26,7 +48,13 @@ abstract class EntityAbstract
         return $obj;
     }
 
-    public function toArray(){
+    /**
+     * @method toArray()
+     * Restorna um Array no formato de chave => valor
+     * contendo o nome do atributo e valor associado a ele
+     * @return Array atributos
+     */
+    public function toArray() {
         $obj;
         foreach ($this->getClassVars() as $var => $value) {
             $obj[$var] = $this->$var;

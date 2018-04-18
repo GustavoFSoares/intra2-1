@@ -4,6 +4,9 @@ namespace HospitalApi\Entity;
 /**
  * @Entity
  * @Table(name="email")
+ * <b>Email</b>
+ * Classe POJO responsável por manter os atributos de um email,
+ * como também fazer as relações e mapeamento com banco de dados
  */
 class Email extends EntityAbstract
 {
@@ -12,75 +15,71 @@ class Email extends EntityAbstract
      *      @Column(name="id", type="integer")
      *      @GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var DateTime
      *      @Column(type="datetime")
      */
-    private $time;
+    protected $time;
 
     /**
      * @var String
      *      @Column(type="string")
      */
-    private $sender;
+    protected $sender;
 
     /**
      * @var String
      *      @Column(type="string")
      */
-    private $receiver;
+    protected $receiver;
 
     /**
      * @var Text
      *      @Column(type="text")
      */
-    private $body;
+    protected $body;
 
-    public function __construct($sender = "", $receiver = "", $body = ""){
+    public function __construct($sender = "", $receiver = "", $body = "") {
         $this->sender = $sender;
         $this->receiver = $receiver;
         $this->body = $body;
         $this->time = date('Y-m-d H:i');
     }
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getSender(){
+    public function getSender() {
         return $this->sender;
     }
-    public function setSender($sender)
-    {
+    public function setSender($sender) {
         $this->sender = $sender;
 
         return $this;
     }
 
-    public function getReceiver(){
+    public function getReceiver() {
         return $this->receiver;
     }
-    public function setReceiver($receiver)
-    {
+    public function setReceiver($receiver) {
         $this->receiver = $receiver;
 
         return $this;
     }
 
-    public function getBody(){
+    public function getBody() {
         return $this->body;
     }
-    public function setBody($body)
-    {
+    public function setBody($body) {
         $this->body = $body;
 
         return $this;
     }
 
-    public function getTime(){
+    public function getTime() {
         return $this->time;
     }
 
