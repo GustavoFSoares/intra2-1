@@ -24,6 +24,15 @@ abstract class ControllerAbstract
 		return $this->model;
 	}
 	
+	/**
+	 * @method get()
+	 * Recebe um Id (opcionalmente) e realiza busca no
+	 * Banco de Dados contendo os resultados correspondentes
+	 * @param Request $req
+	 * @param Response $res
+	 * @param Args $args
+	 * @return Response $data
+	 */
 	public function get($req, $res, $args) {
 		$id = $args['id'];
 		if ($id === null) {
