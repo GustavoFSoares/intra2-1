@@ -86,7 +86,7 @@
                         <row id="events" label="Selecione o Motivo do Evento">
                             <select class="custom-select d-block w-100 text-center" id="events" v-model="story.event">
                                 <option value=""> </option>
-                                <!-- <option v-for="event in options.events" :key="event.value" :value="event.value">{{ event.text }}</option> -->
+                                <option v-for="event in options.events" :key="event.text" :value="event.value">{{ event.text }}</option>
                             </select>
                             <div class="invalid-feedback">
                                 Please select a valid country.
@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { getSectorsHu, getSectorsHpsc, getUnits, getEvents, buildMail } from "@/model/eventos-adversos"
+import { getSectorsHu, getSectorsHpsc, getUnits, getEvents, buildMail } from "@/model/adverse-events"
 import { FormRw, FormRws } from "@/components/shared/Form/index.js"
 export default {
     data() {
@@ -188,6 +188,8 @@ export default {
         this.options.units = getUnits()
         this.options.events = getEvents();
         this.loadSectors()
+        console.log(this.options.events);
+        
     },
     
 }
