@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <h1>teste</h1>
         <h1>{{ title }}</h1>
         <div class="row">
 
@@ -12,20 +11,42 @@
             
                 <div id="what-is-it">
                     <row :text_left="false">
-
                         <div class="card border-primary" style="">
+
                             <div class="card-body">
                                 <h5 class="card-title text-primary">{{card.whatIsIt.title}}</h5>
-                                <p class="card-text">{{card.whatIsIt.text}}</p>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <p class="card-text">{{card.whatIsIt.text}}</p>
+                                    </div>
+                                    <div class="col">
+                                        <img id="interrogation-icon" src="@/../static/img/signals/interrogation.png" alt="?">
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
-                        
                     </row>
+
                 </div>
 
                 <div id="divided-by">
                     <row :text_left="false">
-                        <h3>São Divididos em:</h3>
+                        <div class="container">
+                        
+                            <div class="row justify-content-center">
+                                <div class="col subtopic">
+                                    <img id="division-icon" class="col-md" src="@/../static/img/signals/division.png" alt="">
+                                </div>
+                                <div class="col subtopic">
+                                    <span>
+                                        <h3>São divididos em:</h3>
+                                    </span>
+                                </div>
+                                
+                            </div>
+
+                        </div>
                     </row>
                 </div>
 
@@ -150,7 +171,7 @@ export default {
     #submit {
         display: block;
         position: fixed;
-        top: 60%;
+        top: 40%;
         margin-left: 5%;
     }
 
@@ -161,5 +182,24 @@ export default {
     .border-purple {
         border-color: #6f42c1 !important;
     }
+
+    img {
+        width: 80px;
+        height: 70px;
+    }
+
+    #interrogation-icon {
+        margin-top: -30%;
+    }
+
+    #division-icon {
+        margin-left: 30%;
+    }
+
+    .subtopic span h3 {
+        margin-top: 7%;
+        margin-left: -100%
+    }
+
 
 </style>
