@@ -6,8 +6,7 @@ import Edit from '@/components/Edit.vue'
 import Teste from '@/components/Teste.vue'
 import NotFound from '@/components/NotFound.vue'
 
-import EventosAdversos from '@/components/eventos-adversos';
-import EventosAdversos_Relatar from '@/components/eventos-adversos/Relatar.vue';
+import adverseEventsRoutes from './adverse-events-routes'
 const routes = [
     {
         path: `/`,
@@ -21,23 +20,13 @@ const routes = [
         path: '*',
         component: NotFound
     },
-    {
-        path: '/teste',
-        component: Teste
-    },
-    {
-        path: '/eventos-adversos',
-        component: EventosAdversos
-    },
-    {
-        path: '/eventos-adversos/relatar',
-        component: EventosAdversos_Relatar
-    },
 ]
 
-Vue.use(Router)
-export default new Router({
+const Routes = new Router({
     routes: routes,
-    mode: 'history'
+    mode: 'history',
 })
+Routes.addRoutes(adverseEventsRoutes)
 
+Vue.use(Router)
+export default Routes
