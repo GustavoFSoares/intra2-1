@@ -38,20 +38,11 @@ export default {
     components: {
         'panel': Panel,
     },
-    created() {
-        this.getLinks()
-    },
     updated() { },
-    methods: {
-        getLinks(){
-            getLinks().then(res => {
-                this.links = res
-                // console.log(res);
-            });
-            
-        }
+    beforeCreate() {        
+        getLinks().then(res => this.links = res );
     },
-     computed: {
+    computed: {
         searchList() {
             if(this.filter) {
                 let exp = new RegExp(this.filter.trim(), 'i')
