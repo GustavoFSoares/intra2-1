@@ -86,7 +86,7 @@
                         <row id="events" label="Selecione o Motivo do Evento">
                             <select class="custom-select d-block w-100 text-center" id="events" v-model="story.event">
                                 <option value=""> </option>
-                                <option v-for="event in options.events" :key="event.value" :value="event.value">{{ event.text }}</option>
+                                <!-- <option v-for="event in options.events" :key="event.value" :value="event.value">{{ event.text }}</option> -->
                             </select>
                             <div class="invalid-feedback">
                                 Please select a valid country.
