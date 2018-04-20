@@ -9,6 +9,7 @@ import translate from 'vee-validate/dist/locale/pt_BR';
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
+import 'font-awesome/css/font-awesome.css'
 
 Vue.config.productionTip = false
 
