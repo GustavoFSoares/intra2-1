@@ -3,7 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
- * @Table(name="link")
+ * @Table(name="Link")
  * <b>Link</b>
  * Classe POJO responsável por manter os atributos de um Link,
  * como também fazer as relações e mapeamento com banco de dados
