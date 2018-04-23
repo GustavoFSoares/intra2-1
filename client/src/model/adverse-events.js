@@ -14,7 +14,7 @@ export const getSectorsHpsc = () => {
     ]
 }
 
-export const getUnits = () => {
+export const getEnterprises = () => {
     return [
         { text: 'Hospital Universitário - HU', value: 'hu' },
         { text: 'Hospital Pronto Socorro - HPSC', value: 'hpsc' },
@@ -52,7 +52,8 @@ export const getEvents = () => {
     ]
 }
 
-export const buildMail = (mail) => {
+export const sendData = (mail) => {
+    
     console.log(mail);
     
     mail = {
@@ -66,5 +67,21 @@ export const buildMail = (mail) => {
         }
     }
 
-    return sendMail(mail)
+    // mustReturn: true,
+    // unit: 'hu', X
+    // sector: 'ti',X
+    //     event: 'ab', X
+    //     complement: { description: 'Descrição Aqui', conduct: 'Conduta Aqui', }, X
+    //     person: { name: 'Gustavo', phonenumber: '984700974', mail: 'email@email.com', }, X
+    //     patient: { involved: true, name: "Joao", number: "123", }, X
+
+    //enviar informações para rota, direto para banco,
+    //com rota separada para email
+
+    //mudar de seTor para seCtor
+    // return sendMail(mail)
+}
+
+const verifyEmail = (sender) => {
+
 }

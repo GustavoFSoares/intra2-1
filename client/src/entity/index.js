@@ -1,12 +1,11 @@
 export const AdverseEventsStory = {
             mustReturn: '',
-            unit: '',
+            enterprise: '',
             setor: '',
             event: '',
             complement: { description: '', conduct: '', },
             person: { name: '', phonenumber: '', mail: '', },
-            patient: { involved: true, name: "", number: "",
-            }
+            patient: { involved: true, name: "", number: "", },
         }
 
 export const Mail = {
@@ -19,4 +18,11 @@ export const Mail = {
                 text: "Email não pode ser enviado. Por favor tente novamente"
             }
         }
+
+export const EmailDefault = {
+    user: {
+        email: "default@gampcanoas.com.br",
+        password: "default123"
+    }
+}
     

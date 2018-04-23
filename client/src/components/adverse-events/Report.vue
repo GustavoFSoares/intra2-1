@@ -54,18 +54,18 @@
                         </row>
                     </div>
 
-                    <div id="unit">
+                    <div id="enterprise">
                         <hr class="md-4">
-                        <h4 class="mb-3">{{ subtitles.unit }}</h4>
-                        <row id="unit" label="Selecione a Unidade">
-                            <select data-vv-as="Unidade" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" @change="loadSectors" name="units" v-model="story.unit">
+                        <h4 class="mb-3">{{ subtitles.enterprise }}</h4>
+                        <row id="enterprise" label="Selecione a Unidade">
+                            <select data-vv-as="Unidade" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" @change="loadSectors" name="enterprises" v-model="story.enterprise">
                                 <option value=""> </option>
-                                <option v-for="unit in options.units" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
+                                <option v-for="enterprise in options.enterprises" :key="enterprise.value" :value="enterprise.value">{{ enterprise.text }}</option>
                             </select>
-                            <require-text :error="errors.has('units')" :text="errors.first('units')" :attribute="story.unit"/>
+                            <require-text :error="errors.has('enterprises')" :text="errors.first('enterprises')" :attribute="story.enterprise"/>
                         </row>
                         
-                        <row id="sector" label="Selecione o Setor" v-if="story.unit == 'hu' || story.unit == 'hpsc'">
+                        <row id="sector" label="Selecione o Setor" v-if="story.enterprise == 'hu' || story.enterprise == 'hpsc'">
                             <select class="custom-select d-block w-100 text-center" id="sector" v-model="story.setor">
                                 <option value=""> </option>
                                 <option v-for="sector in options.sectors" :key="sector.value" :value="sector.value">{{ sector.text }}</option>
@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { getSectorsHu, getSectorsHpsc, getUnits, getEvents, sendData } from "@/model/adverse-events"
+import { getSectorsHu, getSectorsHpsc, getenterprises, getEvents, sendData } from "@/model/adverse-events"
 import { AdverseEventsStory, Mail } from "@/entity";
 import { FormRw, FormRws, Require } from "@/components/shared/Form/index.js"
 import Modal from "@/components/shared/EmailModal.vue";
@@ -144,13 +144,13 @@ export default {
             error: '',
             sending: false,
             options: {
-                units: [ ],
+                enterprises: [ ],
                 sectors: [ ],
                 events: [ ],
                 disabled: false
             },
             subtitles: {
-                unit: 'Unidades',
+                enterprise: 'Unidades',
                 event: 'Evento',
                 person: 'Dados Pessoais',
                 patient: 'Paciente',
@@ -166,9 +166,9 @@ export default {
     },
     methods: {
         loadSectors(){
-            if(this.story.unit == 'hu'){
+            if(this.story.enterprise == 'hu'){
                 this.options.sectors = getSectorsHu()
-            } else if(this.story.unit == 'hpsc') {
+            } else if(this.story.enterprise == 'hpsc') {
                 this.options.sectors = getSectorsHpsc()
             }
         },
@@ -193,7 +193,7 @@ export default {
         
     },
     mounted() {
-        this.options.units = getUnits()
+        this.options.enterprises = getenterprises()
         this.options.events = getEvents();
         this.loadSectors()
     },
