@@ -19,25 +19,25 @@ class Email extends EntityAbstract
 
     /**
      * @var DateTime
-     *      @Column(type="string")
+     *      @Column(name="horario", type="string")
      */
     protected $time;
 
     /**
      * @var String
-     *      @Column(type="string")
+     *      @Column(name="remetente", type="string", length=255)
      */
     protected $sender;
 
     /**
      * @var String
-     *      @Column(type="string")
+     *      @Column(name="destinatario", type="string", length=255)
      */
     protected $receiver;
 
     /**
      * @var Text
-     *      @Column(type="text")
+     *      @Column(name="corpo", type="text")
      */
     protected $body;
 
