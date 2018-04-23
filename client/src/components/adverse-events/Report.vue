@@ -7,7 +7,7 @@
             <div class="col-md-4 order-md-2 mb-4">
                 <div id="send">
                     <row>
-                        <button class="btn btn-outline-secondary btn-lg" id="submit" type="button" @click="isValidateForm" :disabled="options.disabled">
+                        <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidateForm" :disabled="options.disabled">
                             <i v-show="sending" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
                             Enviar Relato
                         </button>
@@ -206,7 +206,7 @@ export default {
         max-width: 960px;
     } */
 
-    #submit {
+    #submit-button {
         display: block;
         position: fixed;
         top: 40%;
