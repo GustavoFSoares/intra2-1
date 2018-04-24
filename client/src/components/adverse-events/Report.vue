@@ -129,10 +129,10 @@
 </template>
 
 <script>
-import { getSectorsHu, getSectorsHpsc, getenterprises, getEvents, sendData } from "@/model/adverse-events"
+import { getSectorsHu, getSectorsHpsc, getEnterprises, getEvents, sendData } from "@/model/adverse-events"
 import { AdverseEventsStory, Mail } from "@/entity";
 import { FormRw, FormRws, Require } from "@/components/shared/Form/index.js"
-import Modal from "@/components/shared/EmailModal.vue";
+import Modal from "@/components/shared/Modal.vue";
 import AlertMessage from "@/components/shared/AlertMessage.vue"
 
 export default {
@@ -193,7 +193,7 @@ export default {
         
     },
     mounted() {
-        this.options.enterprises = getenterprises()
+        this.options.enterprises = getEnterprises()
         this.options.events = getEvents();
         this.loadSectors()
     },
