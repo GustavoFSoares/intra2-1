@@ -4,7 +4,7 @@ export const AdverseEventsStory = {
             setor: '',
             event: '',
             complement: { description: '', conduct: '', },
-            person: { name: '', phonenumber: '', mail: '', },
+    person: { name: '', phonenumber: '', mail: '', password: '', anonymous: false },
             patient: { involved: true, name: "", number: "", },
         }
 

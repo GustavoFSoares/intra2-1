@@ -7,7 +7,7 @@
             <div class="col-md-4 order-md-2 mb-4">
                 <div id="send">
                     <row>
-                        <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidateForm" :disabled="options.disabled">
+                        <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" :disabled="options.disabled" data-toggle="modal" data-target="#content-modal">
                             <i v-show="sending" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
                             Enviar Relato
                         </button>
@@ -123,7 +123,19 @@
             </div>
 
         </div> 
-        
+        <modal title="E-mail" submitlabel="Enviar Email" @modal-close="isValidateForm">
+            <div class="float-right">
+                Enviar Anonimamente: 
+                <input type="checkbox" v-model="story.person.anonymous">
+            </div>
+            <row label="E-mail">
+                <input class="form-control" type="text" v-model="story.person.mail">
+            </row>
+            <row label="Senha">
+                <input class="form-control" type="password" v-model="story.person.password">
+            </row>
+            <row></row>
+        </modal>
     </div>
 
 </template>

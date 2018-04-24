@@ -10,7 +10,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <slot name="content">
+                        <slot>
 
                         </slot>
                     </div>
