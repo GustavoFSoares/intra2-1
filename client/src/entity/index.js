@@ -1,10 +1,10 @@
-export const AdverseEventsStory = {
+export const AdverseEventsReport = {
             mustReturn: '',
             enterprise: '',
             setor: '',
             event: '',
             complement: { description: '', conduct: '', },
-    person: { name: '', phonenumber: '', mail: '', password: '', anonymous: false },
+            sender: { name: '', phonenumber: '', mail: '', password: '', anonymous: false },
             patient: { involved: true, name: "", number: "", },
         }
 
@@ -20,9 +20,8 @@ export const Mail = {
         }
 
 export const EmailDefault = {
-    user: {
-        email: "default@gampcanoas.com.br",
-        password: "default123"
-    }
+            email: "default@gampcanoas.com.br",
+            password: "default123",
+            anonymous: true
 }
-    
+

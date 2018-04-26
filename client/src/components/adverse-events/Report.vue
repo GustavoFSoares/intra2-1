@@ -26,31 +26,31 @@
                     <div id="return">
                         <row>
                             <label class="" for="same-address">Receber Retorno: </label>
-                            <input type="checkbox" class="" id="return" v-model="story.mustReturn">
+                            <input type="checkbox" class="" name="mustReturn" v-model="report.mustReturn">
                         </row>
                     </div>
             
-                    <div id="contact" v-if="story.mustReturn">
+                    <div id="contact" v-if="report.mustReturn">
                         <hr class="md-4">
                         <div class="mb-3">
-                            <h4>{{ subtitles.person }}</h4>
+                            <h4>{{ subtitles.sender }}</h4>
                             <small class="text-muted">estes dados são opcionais e não serão expostos</small>
                         </div>
 
                         <div class="row">
                             <rows id="name" label="Nome">
-                                <input type="text" class="form-control" id="name" v-model="story.person.name">
+                                <input type="text" class="form-control" name="name" v-model="report.sender.name">
                                 <small class="text-muted">Digite seu Nome Completo</small>
                             </rows>
 
                             <rows id="number" label="Telefone">
-                                <input v-mask="['(##) ####-####', '(##) #####-####']" type="tel" class="form-control" name="phone" placeholder="(51) 99999-9999" v-model="story.person.phonenumber">
+                                <input v-mask="['(##) ####-####', '(##) #####-####']" type="tel" class="form-control" name="phone" placeholder="(51) 99999-9999" v-model="report.sender.phonenumber">
                             </rows>
                         </div>
 
                         <row id="mail" label="E-mail">
-                            <input data-vv-as="E-mail" v-validate data-vv-rules="email" type="mail" class="form-control" name="mail" v-model="story.person.mail">
-                            <require-text :error="errors.has('mail')" :text="errors.first('mail')" :show="true" :attribute="story.person.mail"/>
+                            <input data-vv-as="E-mail" v-validate data-vv-rules="email" type="mail" class="form-control" name="mail" v-model="report.sender.mail">
+                            <require-text :error="errors.has('mail')" :text="errors.first('mail')" :show="true" :attribute="report.sender.mail"/>
                         </row>
                     </div>
 
@@ -58,15 +58,15 @@
                         <hr class="md-4">
                         <h4 class="mb-3">{{ subtitles.enterprise }}</h4>
                         <row id="enterprise" label="Selecione a Unidade">
-                            <select data-vv-as="Unidade" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" @change="loadSectors" name="enterprises" v-model="story.enterprise">
+                            <select data-vv-as="Unidade" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" @change="loadSectors" name="enterprises" v-model="report.enterprise">
                                 <option value=""> </option>
                                 <option v-for="enterprise in options.enterprises" :key="enterprise.value" :value="enterprise.value">{{ enterprise.text }}</option>
                             </select>
-                            <require-text :error="errors.has('enterprises')" :text="errors.first('enterprises')" :attribute="story.enterprise"/>
+                            <require-text :error="errors.has('enterprises')" :text="errors.first('enterprises')" :attribute="report.enterprise"/>
                         </row>
                         
-                        <row id="sector" label="Selecione o Setor" v-if="story.enterprise == 'hu' || story.enterprise == 'hpsc'">
-                            <select class="custom-select d-block w-100 text-center" id="sector" v-model="story.setor">
+                        <row id="sector" label="Selecione o Setor" v-if="report.enterprise == 'hu' || report.enterprise == 'hpsc'">
+                            <select class="custom-select d-block w-100 text-center" v-model="report.setor">
                                 <option value=""> </option>
                                 <option v-for="sector in options.sectors" :key="sector.value" :value="sector.value">{{ sector.text }}</option>
                             </select>
@@ -77,21 +77,21 @@
                         <hr class="mb-4">
                         <h4 class="mb-3">{{ subtitles.event }}</h4>
                         <row id="events" label="Selecione o Motivo do Evento">
-                            <select data-vv-as="Evento" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" name="events" v-model="story.event">
+                            <select data-vv-as="Evento" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" name="events" v-model="report.event">
                                 <option value=""> </option>
                                 <option v-for="event in options.events" :key="event.text" :value="event.value">{{ event.text }}</option>
                             </select>
-                            <require-text :error="errors.has('events')" :text="errors.first('events')" :attribute="story.event"/>
+                            <require-text :error="errors.has('events')" :text="errors.first('events')" :attribute="report.event"/>
                         </row>
 
                         <row>
-                            <textarea data-vv-as="Descrição do Ocorrido" v-validate data-vv-rules="required|min:10|" class="form-control" name="description" cols="30" rows="4" placeholder="Descrição do ocorrido: " v-model="story.complement.description"></textarea>
-                            <require-text :error="errors.has('description')" :text="errors.first('description')" :show="true" :attribute="story.complement.description"/>
+                            <textarea data-vv-as="Descrição do Ocorrido" v-validate data-vv-rules="required|min:10|" class="form-control" name="description" cols="30" rows="4" placeholder="Descrição do ocorrido: " v-model="report.complement.description"></textarea>
+                            <require-text :error="errors.has('description')" :text="errors.first('description')" :show="true" :attribute="report.complement.description"/>
                         </row>
 
                         <row>
-                            <textarea data-vv-as="Conduta" v-validate data-vv-rules="required|min:10|" class="form-control" name="conduct" cols="30" rows="4" placeholder="Conduta adotada frente ao ocorrido: " v-model="story.complement.conduct"></textarea>
-                            <require-text :error="errors.has('conduct')" :text="errors.first('conduct')" :show="true" :attribute="story.complement.conduct"/>
+                            <textarea data-vv-as="Conduta" v-validate data-vv-rules="required|min:10|" class="form-control" name="conduct" cols="30" rows="4" placeholder="Conduta adotada frente ao ocorrido: " v-model="report.complement.conduct"></textarea>
+                            <require-text :error="errors.has('conduct')" :text="errors.first('conduct')" :show="true" :attribute="report.complement.conduct"/>
                         </row>
                     </div>
 
@@ -100,22 +100,22 @@
                         <h4 class="mb-3">{{subtitles.patient}}</h4>
                         <row id="patientEnvolver" label="Envolveu Paciente">
                             <span>
-                                <input type="radio" class="" :value="true" name="patient" id="return" v-model="story.patient.involved">Sim
+                                <input type="radio" class="" :value="true" name="patient" v-model="report.patient.involved">Sim
                             </span>
                             
                             <span>
-                                <input type="radio" class="" :value="false" name="patient" id="return" v-model="story.patient.involved">Não
+                                <input type="radio" class="" :value="false" name="patient" v-model="report.patient.involved">Não
                             </span>
                         </row>
 
-                        <div v-if="story.patient.involved">
+                        <div v-if="report.patient.involved">
                             <row id="patientName" label="Nome do Paciente">
-                                <input class="form-control" type="text" v-model="story.patient.name">
+                                <input class="form-control" type="text" v-model="report.patient.name">
                             </row>
 
                             <row id="patientNumber" label="Número de Atendimento do Paciente">
-                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="numeric" class="form-control" type="tel" name="patient-number" v-model="story.patient.number">
-                                <require-text :error="errors.has('patient-number')" :text="errors.first('patient-number')" :show="true" :attribute="story.patient.number"/>
+                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="numeric" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
+                                <require-text :error="errors.has('patient-number')" :text="errors.first('patient-number')" :show="true" :attribute="report.patient.number"/>
                             </row>
                         </div>
                     </div>
@@ -126,13 +126,13 @@
         <modal title="E-mail" submitlabel="Enviar Email" @modal-close="isValidateForm">
             <div class="float-right">
                 Enviar Anonimamente: 
-                <input type="checkbox" v-model="story.person.anonymous">
+                <input type="checkbox" v-model="report.sender.anonymous">
             </div>
             <row label="E-mail">
-                <input class="form-control" type="text" v-model="story.person.mail">
+                <input class="form-control" type="text" v-model="report.sender.mail">
             </row>
             <row label="Senha">
-                <input class="form-control" type="password" v-model="story.person.password">
+                <input class="form-control" type="password" v-model="report.sender.password">
             </row>
             <row></row>
         </modal>
@@ -141,8 +141,8 @@
 </template>
 
 <script>
-import { getSectorsHu, getSectorsHpsc, getEnterprises, getEvents, sendData } from "@/model/adverse-events"
-import { AdverseEventsStory, Mail } from "@/entity";
+import model from "@/model/adverse-events"
+import { AdverseEventsReport, Mail } from "@/entity";
 import { FormRw, FormRws, Require } from "@/components/shared/Form/index.js"
 import Modal from "@/components/shared/Modal.vue";
 import AlertMessage from "@/components/shared/AlertMessage.vue"
@@ -151,7 +151,7 @@ export default {
     data() {
         return {
             title: "Relatar Evento",
-            story: AdverseEventsStory,
+            report: AdverseEventsReport,
             mail: '',
             error: '',
             sending: false,
@@ -164,7 +164,7 @@ export default {
             subtitles: {
                 enterprise: 'Unidades',
                 event: 'Evento',
-                person: 'Dados Pessoais',
+                sender: 'Dados Pessoais',
                 patient: 'Paciente',
             }
         }
@@ -178,17 +178,17 @@ export default {
     },
     methods: {
         loadSectors(){
-            if(this.story.enterprise == 'hu'){
-                this.options.sectors = getSectorsHu()
-            } else if(this.story.enterprise == 'hpsc') {
-                this.options.sectors = getSectorsHpsc()
+            if(this.report.enterprise == 'hu'){
+                this.options.sectors = model.getSectorsHu()
+            } else if(this.report.enterprise == 'hpsc') {
+                this.options.sectors = model.getSectorsHpsc()
             }
         },
         submit() {
-            this.options.disabled = true;
+            this.options.disabled = true
             this.sending = true
             
-            sendData(this.story).then(res => {
+            model.sendData(this.report).then(res => {
                     if(res.status){
                         this.mail=Mail.success
                         setTimeout(() => { this.$router.push('/') }, 2000)
@@ -205,18 +205,14 @@ export default {
         
     },
     mounted() {
-        this.options.enterprises = getEnterprises()
-        this.options.events = getEvents();
-        this.loadSectors()
+        this.options.enterprises = model.getEnterprises()
+        this.options.events = model.getEvents();
     },
     
 }
 </script>
 
 <style scoped>
-    /* .container {
-        max-width: 960px;
-    } */
 
     #submit-button {
         display: block;
