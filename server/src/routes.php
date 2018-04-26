@@ -12,6 +12,7 @@ $app->add(function ($req, $res, $next) {
 
 require 'Routes/link.php';
 require 'Routes/email.php';
+require 'Routes/adverseEvents.php';
 
 // Routes
 $app->get('/[{name}]', function (Request $request, Response $response, array $args) {
