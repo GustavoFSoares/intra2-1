@@ -3,11 +3,11 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
- * @Table(name="Eventos")
+ * @Table(name="Evento")
  * <b>Events</b>
  * Classe POJO descrição dos <b>Tipos<b> de Evento Adversos possíveis
  */
-class Events extends EntityAbstract
+class Event extends EntityAbstract
 {
     /**
      * @var integer @Id
