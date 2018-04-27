@@ -60,7 +60,7 @@
                         <row id="enterprise" label="Selecione a Unidade">
                             <select data-vv-as="Unidade" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" @change="loadSectors" name="enterprises" v-model="report.enterprise">
                                 <option value=""> </option>
-                                <option v-for="enterprise in options.enterprises" :key="enterprise.value" :value="enterprise.value">{{ enterprise.text }}</option>
+                                <option v-for="enterprise in options.enterprises" :key="enterprise.id" :value="enterprise.id">{{ enterprise.name }}</option>
                             </select>
                             <require-text :error="errors.has('enterprises')" :text="errors.first('enterprises')" :attribute="report.enterprise"/>
                         </row>
@@ -79,7 +79,7 @@
                         <row id="events" label="Selecione o Motivo do Evento">
                             <select data-vv-as="Evento" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" name="events" v-model="report.event">
                                 <option value=""> </option>
-                                <option v-for="event in options.events" :key="event.text" :value="event.value">{{ event.text }}</option>
+                                <option v-for="event in options.events" :key="event.id" :value="event.id">{{ event.description }}</option>
                             </select>
                             <require-text :error="errors.has('events')" :text="errors.first('events')" :attribute="report.event"/>
                         </row>
@@ -206,7 +206,8 @@ export default {
     },
     mounted() {
         this.options.enterprises = model.getEnterprises()
-        this.options.events = model.getEvents();
+        model.getEnterprises().then(res => this.options.enterprises = res)
+        model.getEvents().then(res => this.options.events = res)
     },
     
 }
