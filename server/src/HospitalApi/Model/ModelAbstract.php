@@ -102,12 +102,16 @@ abstract class ModelAbstract
 	 */
 	public function findAll() {
 		$collection = $this->em->getRepository($this->entityPath)->findAll();
-
+		
 		$data = [ ];
 		foreach ($collection as $obj) {
 			$data[] = $obj;
 		}
 
 		return $data;
+	}
+
+	public function getEntityPath(){
+		return $this->entityPath;
 	}
 }
