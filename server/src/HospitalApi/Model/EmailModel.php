@@ -21,7 +21,7 @@ class EmailModel extends ModelAbstract
         parent::__construct();
         
         $this->_mail = new PHPMailer(true);                          // Passing `true` enables exceptions
-        $this->configureMail();     
+        $this->configureMail();
     }
 
     /**
@@ -61,7 +61,7 @@ class EmailModel extends ModelAbstract
     public function setSender($user) {
         $this->_mail->Username = $user['mail'];                      // SMTP username
         $this->_mail->Password = $user['password'];                  // SMTP password
-        $this->_mail->setFrom($user['mail'], $user['name']);
+        $this->_mail->setFrom($user['mail']);
     }
 
     /**
