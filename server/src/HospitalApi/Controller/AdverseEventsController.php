@@ -11,17 +11,15 @@ use PHPMailer\PHPMailer\Exception;
 class AdverseEventsController extends ControllerAbstract
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct(new AdverseEventsModel());
     }
 
-    public function saveAction($req, $res){
-        $values = $req->getParsedBody();
+    public function saveAction($req, $res) {
+        $values = (object)$req->getParsedBody();
+        $model = $this->getModel();
 
-        $this->model->buildData($values);
+        return $res->withJson($model->buildData($values));
     }
-
-    
 
 }

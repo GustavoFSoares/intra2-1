@@ -11,7 +11,7 @@ use Exception;
 abstract class ControllerAbstract
 {
 	
-	protected $model;
+	private $model;
 
 	public function __construct($model) {
 		if(!$model instanceof ModelAbstract) {
