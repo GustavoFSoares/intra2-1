@@ -218,11 +218,13 @@ export default {
         display: block;
         position: fixed;
         top: 40%;
-        margin-left: 5%;
+        margin-left: 5%;        
     }
 
-    #send {
-        position: absolute
+    #alert-message {
+        display: block;
+        position: fixed;
+        top: 25%;
     }
 
 </style>

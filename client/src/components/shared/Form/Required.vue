@@ -15,7 +15,7 @@ export default {
     },
     props: {
         text: String,
-        attribute: String,
+        attribute: '',
         error: Boolean,
         show: { Boolean, default: false }
     }
