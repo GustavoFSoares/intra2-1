@@ -10,9 +10,8 @@ namespace HospitalApi\Entity;
 class Enterprise extends EntityAbstract
 {
     /**
-     * @var integer @Id
-     *      @Column(name="id", type="integer")
-     *      @GeneratedValue(strategy="AUTO")
+     * @var String @Id
+     *      @Column(name="id", type="string")
      */
     protected $id;
 
