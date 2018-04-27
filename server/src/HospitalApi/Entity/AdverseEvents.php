@@ -4,6 +4,7 @@ namespace HospitalApi\Entity;
 /**
  * @Entity
  * @Table(name="Eventos_Adversos")
+ * @Table(name="Eventos_Adversos",uniqueConstraints={@UniqueConstraint(name="search_idx", columns={"id"})})
  * <b>Eventos Adversos</b>
  * Classe POJO responsavel pela gerência dos Eventos Adversos(AdverseEvents)
  * contendo as Descrições (Conduta e Descrição), Identificador do Paciente e
@@ -19,6 +20,24 @@ class AdverseEvents extends EntityAbstract
     protected $id;
 
     /**
+     * @ManyToOne(targetEntity="Enterprise",cascade={"persist", "remove"})
+     * @JoinColumn(name="id_empresa")
+     */
+    protected $Enterprise;
+
+    /**
+     * @ManyToOne(targetEntity="Sector",cascade={"persist", "remove"})
+     * @JoinColumn(name="id_setor")
+     */
+    protected $Sector;
+
+    /**
+     * @ManyToOne(targetEntity="Event",cascade={"persist", "remove"})
+     * @JoinColumn(name="id_evento", nullable=false)
+     */
+    protected $Event;
+
+    /**
      * @var Text
      *      @Column(name="ds_ocorrido", type="text")
      */
@@ -32,33 +51,21 @@ class AdverseEvents extends EntityAbstract
 
     /**
      * @var Boolean
-     *      @Column(name="paciente_envolvido", type="boolean")
+     *      @Column(name="retornar", type="boolean")
      */
-    protected $patientEnvolved;
+    protected $mustReturn;
+
+    /**
+     * @var Boolean
+     *      @Column(name="paciente_envolvido", type="boolean", nullable=true)
+     */
+    protected $patientInvolved;
 
     /**
      * @var Integer
-     *      @Column(name="cd_atendimento", type="integer")
+     *      @Column(name="cd_atendimento", type="integer", nullable=true)
      */
     protected $patientId;
-
-    /**
-     * @OneToOne(targetEntity="Enterprise",cascade={"persist"})
-     * @JoinColumn(name="id_empresa", referencedColumnName="id")
-     */
-    protected $Empresa;
-
-    /**
-     * @OneToOne(targetEntity="Sector",cascade={"persist"})
-     * @JoinColumn(name="id_setor", referencedColumnName="id")
-     */
-    protected $Setor;
-
-    /**
-     * @OneToOne(targetEntity="Events",cascade={"persist"})
-     * @JoinColumn(name="id_evento", referencedColumnName="id")
-     */
-    protected $Event;
 
     /**
      * @var DateTime
@@ -66,20 +73,11 @@ class AdverseEvents extends EntityAbstract
      */
     protected $time;
 
-    public function __construct($event = "", $setor = "", $complement = [ ], $personId = 0, $patientName = [ ]) {
-        $this->event = $event;
-        $this->setor = $setor;
+    public function __construct($enterprise, $sector, $event) {
+        $this->Enterprise = $enterprise;
+        $this->Sector = $sector;
+        $this->Event = $event;
     
-        $this->description = $complement['description'];
-        $this->conduct = $complement['conduct'];
-
-        $this->personId = $personId;
-
-        if($patient['envolved']){
-            $this->patientEnvolved = true;
-            $this->patientId = $patient['id'];
-        }
-
         $this->time = date('Y-m-d H:i');
     }
 
@@ -92,31 +90,16 @@ class AdverseEvents extends EntityAbstract
         return $this;
     }
 
-    public function getUnit() {
-        return $this->unit;
-    }
-    public function setUnit($unit) {
-        $this->unit = $unit;
-
-        return $this;
+    public function getEnterprise() {
+        return $this->enterprise;
     }
 
-    public function getSetor() {
-        return $this->setor;
-    }
-    public function setSetor($setor) {
-        $this->setor = $setor;
-
-        return $this;
+    public function getSector() {
+        return $this->Sector;
     }
 
     public function getEvent() {
-        return $this->event;
-    }
-    public function setEvent($event) {
-        $this->event = $event;
-
-        return $this;
+        return $this->Event;
     }
 
     public function getDescription() {
@@ -137,20 +120,33 @@ class AdverseEvents extends EntityAbstract
         return $this;
     }
 
-    public function getPerson() {
-        return $this->person;
+    public function getComplement() {
+        return [
+            'description' => $this->description,
+            'conduct' => $this->conduct
+        ];
     }
-    public function setPerson($person) {
-        $this->person = $person;
+    public function setComplement($complement) {
+        $this->description = $complement['description'];
+        $this->conduct = $complement['conduct'];
 
         return $this;
     }
 
-    public function getPatientEnvolved() {
-        return $this->patientEnvolved;
+    public function isMustReturn() {
+        return $this->patientInvolved;
     }
-    public function setPatientEnvolved($patientEnvolved) {
-        $this->patientEnvolved = $patientEnvolved;
+    public function mustReturn($return) {
+        $this->mustReturn = $return;
+
+        return $this;
+    }
+
+    public function getPatientInvolved() {
+        return $this->patientInvolved;
+    }
+    public function setPatientInvolved($patientInvolved) {
+        $this->patientInvolved = $patientInvolved;
 
         return $this;
     }
@@ -160,6 +156,19 @@ class AdverseEvents extends EntityAbstract
     }
     public function setPatientId($patientId) {
         $this->patientId = $patientId;
+
+        return $this;
+    }
+
+    public function getPatient() {
+        return [
+            'involved' => $this->patientInvolved,
+            'number' => $this->patientId 
+        ];
+    }
+    public function setPatient($patient) {
+        $this->patientId = $patient['number'];
+        $this->patientInvolved = $patient['involved'];
 
         return $this;
     }

@@ -29,7 +29,14 @@ class BossSector extends EntityAbstract
      */
     protected $email;
 
-    public function __construct($name = "", $email) {
+    /**
+     * @var Sector
+     *      @OneToMany(targetEntity="Sector", mappedBy="id_responsavel_setor")
+     */
+    protected $Sector;
+
+    public function __construct($id = null, $name = "", $email = "") {
+        $this->id = $id;
         $this->name = $name;
         $this->email = $email;
     }

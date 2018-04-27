@@ -22,8 +22,15 @@ class Enterprise extends EntityAbstract
      */
     protected $name;
 
-    public function __construct($name = "")
+    /**
+     * @var Sector
+     *      @OneToMany(targetEntity="Sector", mappedBy="id_empresa")
+     */
+    protected $Sector;
+
+    public function __construct($id = null, $name = "")
     {
+        $this->id = $id;
         $this->name = $name;
     }
 

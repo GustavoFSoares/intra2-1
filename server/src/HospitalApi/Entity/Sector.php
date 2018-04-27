@@ -20,26 +20,27 @@ class Sector extends EntityAbstract
 
     /**
      * @var String
-     *      @Column(name="ds_evento", type="string", length=255)
+     *      @Column(name="nm_setor", type="string", length=255)
      */
     protected $name;
 
     /**
-     * @OneToOne(targetEntity="BossSector",cascade={"persist"})
-     * @JoinColumn(name="id_resposavel_setor", referencedColumnName="id")
+     * @ManyToOne(targetEntity="BossSector",cascade={"persist", "remove"})
+     * @JoinColumn(name="id_responsavel_setor", referencedColumnName="id", nullable=true)
      */
     protected $BossSector;
 
     /**
-     * @ManyToOne(targetEntity="Enterprise",cascade={"persist"})
-     * @JoinColumn(name="id_empresa", referencedColumnName="id")
+     * @ManyToOne(targetEntity="Enterprise",cascade={"persist", "remove"})
+     * @JoinColumn(name="id_empresa", referencedColumnName="id", nullable=true)
      */
     protected $Enterprise;
 
-    public function __construct($name = "", $bossName, $enterpriseName) {
+    public function __construct($enterprise, $bossSector, $name = "", $id = 0) {
+        $this->id = $id;
+        $this->BossSector = $bossSector;
+        $this->Enterprise = $enterprise;
         $this->name = $name;
-        $this->BossSector = $bossName;
-        $this->Enterprise = $enterpriseName;
     }
 
     public function getId() {
