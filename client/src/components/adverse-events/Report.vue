@@ -66,7 +66,7 @@
                         </row>
                         
                         <row id="sector" label="Selecione o Setor" v-show="report.enterprise == 'hu' || report.enterprise == 'hpsc' ||  report.enterprise == 'upa-rio-branco'">
-                            <select class="custom-select d-block w-100 text-center" v-model="report.setor">
+                            <select class="custom-select d-block w-100 text-center" v-model="report.sector">
                                 <option value=""> </option>
                                 <option v-for="sector in options.sectors" :key="sector.id" :value="sector.id">{{ sector.name }}</option>
                             </select>

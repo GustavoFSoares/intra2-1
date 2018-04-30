@@ -30,15 +30,13 @@ class AdverseEventsModel extends ModelAbstract
 
     public function buildData($data) {
         
-        // $bossSector = $bossSectorRepository->find(1);
-        // $bossSectorRepository = $this->em->getRepository('HospitalApi\Entity\BossSector');
         try {
             $enterpriseRepository = $this->em->getRepository('HospitalApi\Entity\Enterprise');
             $sectorRepository = $this->em->getRepository('HospitalApi\Entity\Sector');
             $eventRepository = $this->em->getRepository('HospitalApi\Entity\Event');
     
             $enterprise = $enterpriseRepository->find($data->enterprise);
-            $sector = $sectorRepository->find($data->setor);
+            $sector = $sectorRepository->find($data->sector);
             $event = $eventRepository->find($data->event);
             
             $adverseEvent = new AdverseEvents($enterprise, $sector, $event);
