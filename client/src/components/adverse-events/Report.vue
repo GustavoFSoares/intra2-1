@@ -30,7 +30,7 @@
                         </row>
                     </div>
             
-                    <div id="contact" v-if="report.mustReturn">
+                    <div id="contact" v-show="report.mustReturn">
                         <hr class="md-4">
                         <div class="mb-3">
                             <h4>{{ subtitles.sender }}</h4>
@@ -65,10 +65,10 @@
                             <require-text :error="errors.has('enterprises')" :text="errors.first('enterprises')" :attribute="report.enterprise"/>
                         </row>
                         
-                        <row id="sector" label="Selecione o Setor" v-if="report.enterprise == 'hu' || report.enterprise == 'hpsc'">
+                        <row id="sector" label="Selecione o Setor" v-show="report.enterprise == 'hu' || report.enterprise == 'hpsc' ||  report.enterprise == 'upa-rio-branco'">
                             <select class="custom-select d-block w-100 text-center" v-model="report.setor">
                                 <option value=""> </option>
-                                <option v-for="sector in options.sectors" :key="sector.value" :value="sector.value">{{ sector.text }}</option>
+                                <option v-for="sector in options.sectors" :key="sector.id" :value="sector.id">{{ sector.name }}</option>
                             </select>
                         </row>
                     </div>
@@ -108,7 +108,7 @@
                             </span>
                         </row>
 
-                        <div v-if="report.patient.involved">
+                        <div v-show="report.patient.involved">
                             <row id="patientName" label="Nome do Paciente">
                                 <input class="form-control" type="text" v-model="report.patient.name">
                             </row>
@@ -178,10 +178,9 @@ export default {
     },
     methods: {
         loadSectors(){
-            if(this.report.enterprise == 'hu'){
-                this.options.sectors = model.getSectorsHu()
-            } else if(this.report.enterprise == 'hpsc') {
-                this.options.sectors = model.getSectorsHpsc()
+            let id = this.report.enterprise
+            if(id == 'hu' || id == 'hpsc' || id == 'upa-rio-branco') {
+                model.getSectorsBy(id).then(res => this.options.sectors = res)
             }
         },
         submit() {
@@ -205,9 +204,9 @@ export default {
         
     },
     mounted() {
-        this.options.enterprises = model.getEnterprises()
         model.getEnterprises().then(res => this.options.enterprises = res)
         model.getEvents().then(res => this.options.events = res)
+        this.loadSectors()
     },
     
 }

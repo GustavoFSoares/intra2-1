@@ -1,21 +1,9 @@
 import services from "@/services/adverse-events";
 import { EmailDefault } from "../entity";
 
-const getSectorsHu = () => {
-    return [
-        { text:'Almoxarifado', value:'almoxarifado' },
-        { text:'CAPS - Amanhecer', value:'caps-amanhecer' }
-    ]
-    return sectors;
-}
 
-const getSectorsHpsc = () => {
-    return [
-        { text: 'Administração', value: 'administracao' },
-        { text: 'CTI Adulto', value: 'cti-adulto' }
-    ]
-}
 
+const getSectorsBy = (id) => services.getSectorsBy(id)
 const getEnterprises = () => services.getEnterprises()
 const getEvents = () => services.getEvents()
 
@@ -74,15 +62,18 @@ const buildEmail = (report) => {
                 <legend>Paciente Envolvido:</legend>`
                 if(!report.patient.involved){
                     email.body += `<b>Não houve problemas com paciente</b><br>`
+                } else {
+
+                    email.body += `
+                        Nome: ${report.patient.nome}<br>
+                        Número do Atendimento: ${report.patient.number}<br>`
                 }
-    
-    email.body += `
-                Nome: ${report.patient.nome}<br>
-                Número do Atendimento: ${report.patient.number}<br>
+        email.body += `
             </fieldset>
         </fieldset>
-
+                
         <br>`
+    
         if(report.mustReturn){
             email.body += `<b>Por favor, me responda sobre este email</b><br>`
         }
@@ -94,6 +85,5 @@ export default {
     sendData,
     getEvents,
     getEnterprises,
-    getSectorsHpsc,
-    getSectorsHu,
+    getSectorsBy,
 }
