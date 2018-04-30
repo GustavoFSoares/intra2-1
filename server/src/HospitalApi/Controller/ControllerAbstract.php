@@ -37,11 +37,9 @@ abstract class ControllerAbstract
 		$id = $args['id'];
 		if ($id === null) {
 			$data = array ();
-			$result = $this->model->findAll();
+			$results = $this->model->findAll();
 
-			foreach ($result as $obj) {
-				$data[] = $obj->toArray();
-			}
+			$data = $this->translateCollaction($results);
 		} else {
 			$obj = $this->model->findById($id);
 			if ($obj != null) {
@@ -53,7 +51,14 @@ abstract class ControllerAbstract
 		
 		return $res->withJson($data);
 	}
-	
+
+	public function translateCollaction($results){
+		foreach ($results as $result) {
+			$data[] = $result->toArray();
+		}
+		return $data;
+	}
+
     public function insert($json) { }
 	public function update($id, $json) { }
 	public function delete($id) { }

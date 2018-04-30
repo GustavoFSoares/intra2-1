@@ -9,10 +9,12 @@ class SectorController extends ControllerAbstract
         parent::__construct(new SectorModel());
     }
 
-    public function getSectorsByEnterpriseAction($req, $res){
+    public function getSectorsByEnterpriseAction($req, $res, $args){
         $model = $this->getModel();
-        
-        return $res->withJson($model->findSectorsByEnterprise('upa-rio-branco'));
-    }
+        $id = $args['id'];
 
+        $data = $this->translateCollaction($model->findSectorsByEnterprise($id));
+        return $res->withJson($data);
+    }
+    
 }
