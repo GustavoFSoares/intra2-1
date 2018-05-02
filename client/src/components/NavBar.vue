@@ -2,15 +2,41 @@
     <div id="navbar">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <router-link class="navbar-brand" to="/">Home</router-link>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <!-- <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li> -->
+                    <li class="nav-item" v-for="(screen, index) in screens" :key="index">
+                        <a class="nav-link" :href="screen.link">{{ screen.name }}</a>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                    </li> -->
+                </ul>
+
                 <div class="navbar-nav">
-                <!-- <router-link class="nav-item nav-link active" to="/add">Add<span class="sr-only">(current)</span></router-link>
-                <router-link class="nav-item nav-link disabled" to="/cv">Resume</router-link>
-                <router-link class="nav-item nav-link disabled" to="/test">Teste</router-link> -->
+                    <div class="nav-item">
+                        <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"@click= > -->
+                        <a class="nav-link" :href="login.link">
+                            {{ login.name }}
+                            <i class="fa fa-user" style="font-size:20px"></i>
+                        </a>
+                    </div>
                 </div>
+                
             </div>
         </nav>
 
@@ -21,7 +47,16 @@
 export default {
     data(){
         return {
-            "message": ""
+            "message": "",
+            "screens": [
+                {name: "Convênios", link:"http://gamp-web/?tela=convenio" },
+                {name: "Ramais", link:"http://gamp-web/?tela=ramais" },
+                {name: "Arquivos", link:"http://gamp-web/?tela=arquivos" },
+                {name: "POPS", link:"http://gamp-web/?tela=pops" },
+                {name: "Institucional", link:"http://gamp-web/?tela=institucional" },
+                {name: "Comissões", link:"http://gamp-web/?tela=comissoes" },
+            ],
+            "login": {name: "Login", link:"http://gamp-web/?tela=Login" },
         }
     },
     methods: { }
@@ -31,7 +66,8 @@ export default {
 <style scoped>
     #navbar {
         width: 100%;
-        height:100%;
+        height: 100%;
+        display: block;
     }
 </style>
 
