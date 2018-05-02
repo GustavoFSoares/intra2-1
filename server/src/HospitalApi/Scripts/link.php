@@ -17,7 +17,7 @@ $links = [
         "icon" => "/static/img/links/aghos.jpg" ,
         "externalLink" =>  true
     ], [
-        "url" => "/glpi/" ,
+        "url" => "gamp-web/glpi/" ,
         "title" => "Chamados TI" ,
         "icon" => "/static/img/links/glpi.png" ,
         "externalLink" =>  true
