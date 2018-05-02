@@ -30,11 +30,14 @@ class EmailController extends ControllerAbstract
      */
     public function buildMailAction($req, $res) {
         $values = $req->getParsedBody();
-        
-        $model = $this->getModel();
-        $this->writeMail($model, $values['subject'], $values['body']);
-        $model->buildLog($values);
 
+        $model = $this->getModel();
+        
+        $model->configureMail($values['sender']['host']);
+        $this->writeMail($model, $values['subject'], $values['body']);
+        
+        $model->buildLog($values);
+        
         $model->setSender($values['sender']);
         $model->setReceiver($values['receiver']);
 

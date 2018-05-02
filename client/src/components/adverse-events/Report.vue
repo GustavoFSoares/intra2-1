@@ -15,8 +15,8 @@
                 </div>
                 
                 <div id="alert-message">
-                    <row v-show="mail">
-                        <alert-message :text="mail.text" :type="mail.type"/>
+                    <row v-show="email">
+                        <alert-message :text="email.text" :type="email.type"/>
                     </row>
                 </div>
             </div>
@@ -48,9 +48,9 @@
                             </rows>
                         </div>
 
-                        <row id="mail" label="E-mail">
-                            <input data-vv-as="E-mail" v-validate data-vv-rules="email" type="mail" class="form-control" name="mail" v-model="report.sender.mail">
-                            <require-text :error="errors.has('mail')" :text="errors.first('mail')" :show="true" :attribute="report.sender.mail"/>
+                        <row id="email" label="E-mail">
+                            <input data-vv-as="E-mail" v-validate data-vv-rules="email" type="mail" class="form-control" name="email" v-model="report.sender.email">
+                            <require-text :error="errors.has('email')" :text="errors.first('email')" :show="true" :attribute="report.sender.email"/>
                         </row>
                     </div>
 
@@ -129,7 +129,7 @@
                 <input type="checkbox" v-model="report.sender.anonymous">
             </div>
             <row label="E-mail">
-                <input class="form-control" type="text" v-model="report.sender.mail">
+                <input class="form-control" type="text" v-model="report.sender.email">
             </row>
             <row label="Senha">
                 <input class="form-control" type="password" v-model="report.sender.password">
@@ -152,7 +152,7 @@ export default {
         return {
             title: "Relatar Evento",
             report: AdverseEventsReport,
-            mail: '',
+            email: '',
             error: '',
             sending: false,
             options: {
@@ -189,11 +189,11 @@ export default {
             
             model.sendData(this.report).then(res => {
                     if(res.status){
-                        this.mail=Mail.success
+                        this.email=Mail.success
                         setTimeout(() => { this.$router.push('/') }, 2000)
                     } else {
                         this.options.disabled=false
-                        this.mail=Mail.failed
+                        this.email=Mail.failed
                     }
                     this.sending = false
             })

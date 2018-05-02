@@ -4,7 +4,7 @@ export const AdverseEventsReport = {
             sector: '',
             event: '',
             complement: { description: '', conduct: '', },
-            sender: { name: '', phonenumber: '', mail: '', password: '', anonymous: false, host: 'office365' },
+            sender: { name: '', phonenumber: '', email: '', password: '', anonymous: false, host: 'office365' },
             patient: { involved: true, name: "", number: "", },
         }
 
@@ -20,9 +20,10 @@ export const Mail = {
         }
 
 export const EmailDefault = {
-            email: "default@gampcanoas.com.br",
-            password: "default123",
-            host: 'outlook',
+            email: "anonimo.gampcanoas@gmail.com",
+            password: "g4mpcanoas",
+            host: "gmail",
+            name: "Anônimo",
             anonymous: true
 }
 

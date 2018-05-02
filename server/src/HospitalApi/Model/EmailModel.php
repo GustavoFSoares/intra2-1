@@ -21,7 +21,6 @@ class EmailModel extends ModelAbstract
         parent::__construct();
         
         $this->_mail = new PHPMailer(true);                          // Passing `true` enables exceptions
-        $this->configureMail();
     }
 
     /**
@@ -31,14 +30,14 @@ class EmailModel extends ModelAbstract
      * formato e tipo de conexão que será realizada
      * @return void
      */
-    public function configureMail() {
+    public function configureMail($host) {
         //Server settings
         $this->_mail->isSMTP();                                      // Set mailer to use SMTP
         $this->_mail->SMTPDebug = false;                             // Enable verbose debug output
         $this->_mail->SMTPAuth = true;                               // Enable SMTP authentication
         $this->_mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
         $this->_mail->CharSet = 'UTF-8';                             // Specify main and backup SMTP servers
-        $this->_mail->Host = 'smtp.office365.com';                   // Specify main and backup SMTP servers
+        $this->_mail->Host = "smtp.$host.com";                                // Specify main and backup SMTP servers
         $this->_mail->Port = 587;                                    // TCP port to connect to
         $this->_mail->IsHTML(true);                                  // Enable HTML
         $this->_mail->SMTPOptions = [
@@ -59,9 +58,9 @@ class EmailModel extends ModelAbstract
      * @return void
      */
     public function setSender($user) {
-        $this->_mail->Username = $user['mail'];                      // SMTP username
+        $this->_mail->Username = $user['email'];                      // SMTP username
         $this->_mail->Password = $user['password'];                  // SMTP password
-        $this->_mail->setFrom($user['mail']);
+        $this->_mail->setFrom($user['email'], $user['name']);
     }
 
     /**
@@ -129,9 +128,10 @@ class EmailModel extends ModelAbstract
 
                 return [ 'status' => true ];
             } else {
-                return [ 'status' => false ];
+                return [ 'status' => 'err' ];
             }
         }catch(Exception $e){
+            echo $e->getMEssage();
             return [ 'status' => false ];
         }
     }
@@ -145,7 +145,7 @@ class EmailModel extends ModelAbstract
      */
     public function buildLog($mail){
         $this->entity
-            ->setSender($mail['sender']['mail'])
+            ->setSender($mail['sender']['email'])
             ->setReceiver($mail['receiver'])
             ->setBody($mail['body']);
     }
