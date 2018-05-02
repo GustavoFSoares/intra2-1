@@ -10,25 +10,34 @@ export default (report) => {
         <fieldset> <legend>Colaborador:</legend>`
 
     if (report.sender.anonymous) {
-        email.body += `<b>Este relato foi enviado anonimamente</b><br>`
+        email.body += `
+        <b>Este relato foi enviado Anonimamente</b><br>`
+    }else{
+        email.body += `
+            Nome: ${report.sender.name}<br>
+            Telefone: ${report.sender.phonenumber}<br>
+            E-mail: ${report.sender.email}<br>`
     }
 
 
-    email.body += `
-            Nome: ${report.sender.name}<br>
-            Telefone: ${report.sender.phonenumber}<br>
-            E-mail: ${report.sender.mail}<br>
+    email.body += `            
         </fieldset><br>
 
         <fieldset>
             <legend>Local do Evento:</legend>
-            Unidade: `+ report.enterprise + `<br>
-            Setor: Código `+ report.sector+ `<br>
+            Unidade: `+ report.enterprise + `<br>`
+            if(report.sector){
+                email.body += 
+                    `Setor: ${report.sector} <br>`
+            }
+
+
+    email.body += `
         </fieldset><br>
 
         <fieldset>
             <legend>Descrição Evento:</legend>
-            Evento: Código ${report.event}<br>
+            Evento: ${report.event}<br>
             Descrição: ${report.complement.description}<br>
             Coonduta Aplicada: ${report.complement.conduct}<br>
                
@@ -36,22 +45,22 @@ export default (report) => {
 
             <fieldset>
                 <legend>Paciente Envolvido:</legend>`
-    if (!report.patient.involved) {
-        email.body += `<b>Não houve problemas com paciente</b><br>`
-    } else {
-
-        email.body += `
-                        Nome: ${report.patient.nome}<br>
+                if (!report.patient.involved) {
+                    email.body += `
+                        <b>Não houve problemas com paciente</b><br>`
+                } else {
+                    email.body += `
+                        Nome: ${report.patient.name}<br>
                         Número do Atendimento: ${report.patient.number}<br>`
-    }
+                }
     email.body += `
             </fieldset>
         </fieldset>
                 
         <br>`
 
-    if (report.mustReturn) {
-        email.body += `<b>Por favor, me responda sobre este email</b><br>`
+    if (report.mustReturn && report.sender.anonymous == false) {
+        email.body += `<b>Por favor, me responda sobre este E-mail</b><br>`
     }
     
     return email
