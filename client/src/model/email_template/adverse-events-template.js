@@ -1,7 +1,7 @@
 export default (report) => {
     
     let email = {}
-    email.subject = `Evento Adverso - ${report.event}`
+    email.subject = `Evento Adverso - ${report.descriptions.event}`
     email.receiver = `gustavo.soares@gampcanoas.com.br`
     email.sender = report.sender
 
@@ -62,6 +62,6 @@ export default (report) => {
     if (report.mustReturn && report.sender.anonymous == false) {
         email.body += `<b>Por favor, me responda sobre este E-mail</b><br>`
     }
-    
+       
     return email
 }
