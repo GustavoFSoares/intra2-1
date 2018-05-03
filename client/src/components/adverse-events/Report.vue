@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import model from "@/model/adverse-events"
+import model, { descriptions } from "@/model/adverse-events"
 import { AdverseEventsReport, Mail } from "@/entity";
 import { FormRw, FormRws, Require } from "@/components/shared/Form/index.js"
 import Modal from "@/components/shared/Modal.vue";
@@ -187,6 +187,8 @@ export default {
             this.options.disabled = true
             this.sending = true
             
+            this.getOptionsDescriptions()
+            
             model.sendData(this.report).then(res => {
                     if(res.status){
                         this.email=Mail.success
@@ -201,7 +203,12 @@ export default {
         isValidateForm() {
             this.$validator.validateAll().then(success => success? this.submit():"")
         },
-        
+        getOptionsDescriptions(){
+            descriptions.getEventById(this.report.event).then(res => this.report.descriptions.event = res.description )
+            this.report.sector?
+                descriptions.getSectorById(this.report.sector).then(res => this.report.descriptions.sector = res.name ):''
+            descriptions.getEnterpriseById(this.report.enterprise).then(res => this.report.descriptions.enterprise = res.name )
+        },
     },
     mounted() {
         model.getEnterprises().then(res => this.options.enterprises = res)

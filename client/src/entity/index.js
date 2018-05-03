@@ -3,9 +3,10 @@ export const AdverseEventsReport = {
             enterprise: '',
             sector: '',
             event: '',
+            descriptions: { event: '', enterprise: '', sector: '' },
             complement: { description: '', conduct: '', },
             sender: { name: '', phonenumber: '', email: '', password: '', anonymous: false, host: 'office365' },
-            patient: { involved: true, name: "", number: "", },
+            patient: { involved: false, name: "", number: "", },
         }
 
 export const Mail = {

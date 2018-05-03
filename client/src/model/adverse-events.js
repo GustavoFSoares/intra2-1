@@ -24,9 +24,19 @@ const verifyEmail = (sender) => {
     }
 }
 
+const getEventById = (id) => getters.getEventById(id)
+const getEnterpriseById = (id) => getters.getEnterpriseById(id)
+const getSectorById = (id) => getters.getSectorById(id)
+
 export default {
     sendData,
     getEvents,
     getEnterprises,
     getSectorsBy,
+}
+
+export const descriptions = {
+    getEventById,
+    getSectorById,
+    getEnterpriseById,
 }

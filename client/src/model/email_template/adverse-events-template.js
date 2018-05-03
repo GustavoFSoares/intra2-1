@@ -5,7 +5,7 @@ export default (report) => {
     email.receiver = `gustavo.soares@gampcanoas.com.br`
     email.sender = report.sender
 
-
+    
     email.body = `
         <fieldset> <legend>Colaborador:</legend>`
 
@@ -25,10 +25,10 @@ export default (report) => {
 
         <fieldset>
             <legend>Local do Evento:</legend>
-            Unidade: `+ report.enterprise + `<br>`
+            Unidade: `+ report.descriptions.enterprise + `<br>`
             if(report.sector){
                 email.body += 
-                    `Setor: ${report.sector} <br>`
+                    `Setor: ${report.descriptions.sector} <br>`
             }
 
 
@@ -37,7 +37,7 @@ export default (report) => {
 
         <fieldset>
             <legend>Descrição Evento:</legend>
-            Evento: ${report.event}<br>
+            Evento: ${report.descriptions.event}<br>
             Descrição: ${report.complement.description}<br>
             Coonduta Aplicada: ${report.complement.conduct}<br>
                
