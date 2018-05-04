@@ -3,7 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
- * @Table(name="email")
+ * @Table(name="Email")
  * <b>Email</b>
  * Classe POJO responsável por manter os atributos de um email,
  * como também fazer as relações e mapeamento com banco de dados
@@ -19,25 +19,25 @@ class Email extends EntityAbstract
 
     /**
      * @var DateTime
-     *      @Column(type="string")
+     *      @Column(name="horario", type="string")
      */
     protected $time;
 
     /**
      * @var String
-     *      @Column(type="string")
+     *      @Column(name="remetente", type="string", length=255)
      */
     protected $sender;
 
     /**
      * @var String
-     *      @Column(type="string")
+     *      @Column(name="destinatario", type="string", length=255)
      */
     protected $receiver;
 
     /**
      * @var Text
-     *      @Column(type="text")
+     *      @Column(name="corpo", type="text")
      */
     protected $body;
 
@@ -50,6 +50,12 @@ class Email extends EntityAbstract
 
     public function getId() {
         return $this->id;
+    }
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getSender() {

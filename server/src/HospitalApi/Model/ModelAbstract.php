@@ -103,11 +103,19 @@ abstract class ModelAbstract
 	public function findAll() {
 		$collection = $this->em->getRepository($this->entityPath)->findAll();
 
-		$data = [ ];
-		foreach ($collection as $obj) {
-			$data[] = $obj;
-		}
+		return $collection;
+	}
 
-		return $data;
+
+	public function getEntityPath(){
+		return $this->entityPath;
+	}
+
+	public function getLogger() {
+		$logger = new \Doctrine\DBAL\Logging\DebugStack();
+		$logger->enabled;
+		$this->em->getConfiguration()->setSQLLogger($logger);
+
+		return $logger;
 	}
 }

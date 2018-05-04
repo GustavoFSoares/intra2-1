@@ -30,14 +30,18 @@ class EmailController extends ControllerAbstract
      */
     public function buildMailAction($req, $res) {
         $values = $req->getParsedBody();
+
+        $model = $this->getModel();
         
-        $this->writeMail($values['subject'], $values['body']);
-        $this->model->buildLog($values);
+        $model->configureMail($values['sender']['host']);
+        $this->writeMail($model, $values['subject'], $values['body']);
+        
+        $model->buildLog($values);
+        
+        $model->setSender($values['sender']);
+        $model->setReceiver($values['receiver']);
 
-        $this->model->setSender($values['sender']);
-        $this->model->setReceiver($values['receiver']);
-
-        return $res->withJson($this->model->send());
+        return $res->withJson($model->send());
     }
 
     /**
@@ -50,8 +54,8 @@ class EmailController extends ControllerAbstract
      * @param string $body
      * @return void
      */
-    public function writeMail($subject = "Assunto", $body = "Texto") {
-        $this->model->writeMail($subject, $body);
+    public function writeMail(EmailModel $model, $subject = "Assunto", $body = "Texto") {
+        $model->writeMail($subject, $body);
     }
 
 }

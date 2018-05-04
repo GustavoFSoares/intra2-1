@@ -3,7 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
- * @Table(name="link")
+ * @Table(name="Link")
  * <b>Link</b>
  * Classe POJO responsável por manter os atributos de um Link,
  * como também fazer as relações e mapeamento com banco de dados
@@ -17,31 +17,26 @@ class Link extends EntityAbstract
      *     @GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    // public $id;
 
     /**
      * @var string @Column(type="string", length=255)
      */
     protected $url;
-    // public $url;
 
     /**
-     * @var string @Column(type="string", length=255)
+     * @var string @Column(name="titulo", type="string", length=255)
      */
     protected $title;
-    // public $title;
 
     /**
      * @var string @Column(type="string", length=255)
      */
     protected $icon;
-    // public $icon;
 
     /**
-     * @var boolean @Column(type="boolean")
+     * @var boolean @Column(name="link_externo", type="boolean")
      */
     protected $externalLink;
-    // public $externalLink;
 
     public function __contruct($url = '', $title = '', $icon = '', $externalLink = false) {
         $this->id = 0;

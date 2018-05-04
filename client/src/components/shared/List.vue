@@ -7,12 +7,12 @@
 
         <ul class="form-group lista-links">
             <li class="lista-links-item" v-for="(link, index) in searchList" :key="index">
-                <a :href=link.url v-if="link.external">
+                <a :href="link.url" v-if="link.externalLink">
                     <panel :titulo="link.title">
                         <img class="img-thumbnail" :src="link.icon" :alt="link.title"/>
                     </panel>
                 </a>
-                <router-link :to=link.url v-else>
+                <router-link :to="link.url" v-else>
                     <panel :titulo="link.title">
                         <img class="img-thumbnail" :src="link.icon" :alt="link.title"/>
                     </panel>
@@ -38,20 +38,11 @@ export default {
     components: {
         'panel': Panel,
     },
-    created() {
-        this.getLinks()
-    },
     updated() { },
-    methods: {
-        getLinks(){
-            getLinks().then(res => {
-                this.links = res
-                // console.log(res);
-            });
-            
-        }
+    beforeCreate() {        
+        getLinks().then(res => this.links = res );
     },
-     computed: {
+    computed: {
         searchList() {
             if(this.filter) {
                 let exp = new RegExp(this.filter.trim(), 'i')

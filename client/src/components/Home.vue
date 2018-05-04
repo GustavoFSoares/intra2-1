@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <h1>{{ title }}</h1>
-
+        
         <list/>
     </div>
 </template>
@@ -13,15 +13,12 @@ export default {
     data() {
         return {
             title: "Links Úteis",
-            message: this.$route.params.message
         }
     },
     components: {
         'list': List,
     },
-    mounted() {
-        
-    }
+    mounted() { },
 
 }
 </script>
