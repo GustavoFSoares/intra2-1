@@ -7,10 +7,12 @@
             <div class="col-md-4 order-md-2 mb-4">
                 <div id="send">
                     <row>
-                        <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" :disabled="options.disabled" data-toggle="modal" data-target="#content-modal">
+                        <button class="button btn btn-outline-secondary btn-lg" id="submit-button" type="button" :disabled="options.disabled" data-toggle="modal" data-target="#content-modal">
                             <i v-show="sending" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
                             Enviar Relato
                         </button>
+                        
+                        <router-link class="button btn btn-outline-primary btn-lg" id="back-button" to="/eventos-adversos">Voltar</router-link>
                     </row>
                 </div>
                 
@@ -209,11 +211,24 @@ export default {
 
 <style scoped>
 
-    #submit-button {
+    #send {
+        /* margin-top: 30%; */
+        margin-left: 35px;
+    }
+
+    .button {
         display: block;
         position: fixed;
-        top: 40%;
-        margin-left: 5%;        
+    }
+
+    .button #submit-button {
+        margin-top: 40%;
+        margin-left: 5%;
+    }
+
+    #back-button {
+        margin-top: 60px;
+        margin-left: 3%;
     }
 
     #alert-message {

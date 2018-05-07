@@ -4,7 +4,15 @@
         <div class="row">
 
             <div class="col-md-4 order-md-2 mb-4">
-                <router-link class="btn btn-outline-primary btn-lg" id="submit" to="/eventos-adversos/relatar">Criar Relato</router-link>
+                <div id="send">
+                    <row>
+                        <!-- <button class="button btn btn-outline-primary btn-lg" id="back-button" type="button" :disabled="options.disabled">
+                            Voltar
+                        </button> -->
+                        <router-link class="button btn btn-outline-primary btn-lg" id="next-button" to="/eventos-adversos/relatar">Criar Evento</router-link>
+                    </row>
+                </div>
+                
             </div>
 
             <div class="col-md-8 order-md-1">
@@ -167,11 +175,19 @@ export default {
 </script>
 
 <style scoped>
-    #submit {
+    #send {
+        /* margin-top: 30%; */
+        margin-left: 35px;
+    }
+
+    .button {
         display: block;
         position: fixed;
-        top: 40%;
-        margin-left: 5%;
+    }
+
+    #next-button {
+        margin-top: 60px;
+        margin-left: 3%;
     }
 
     .text-purple {
