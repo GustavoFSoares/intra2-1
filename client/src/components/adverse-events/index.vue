@@ -19,7 +19,7 @@
                                     <div class="col-10">
                                         <p class="card-text">{{card.whatIsIt.text}}</p>
                                     </div>
-                                    <div class="col">
+                                    <div class="col col-sm-1 col-xs-1">
                                         <img id="interrogation-icon" src="@/../static/img/signals/interrogation.png" alt="?">
                                     </div>
                                 </div>
@@ -34,16 +34,15 @@
                     <row :text_left="false">
                         <div class="container">
                         
-                            <div class="row justify-content-center">
-                                <div class="col subtopic">
-                                    <img id="division-icon" class="col-md" src="@/../static/img/signals/division.png" alt="">
+                            <div class="justify-content-center">
+                                <div class="subtopic">
+                                    <div>
+                                        <img id="division-icon" class="col-md" src="@/../static/img/signals/division.png" alt="">
+                                        <span id="division-text">
+                                            São divididos em:
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="col subtopic">
-                                    <span>
-                                        <h3>São divididos em:</h3>
-                                    </span>
-                                </div>
-                                
                             </div>
 
                         </div>
@@ -134,7 +133,7 @@ export default {
                 },
                 adverseEvents: {
                     title: "Eventos Adversos:",
-                    text: "Incidente que resultam em dano ao paciente.",
+                    text: "Incidentes que resultam em dano ao paciente.",
                     complement: "Ex: Flebite, Quedas."
                 },
                 almostFailed: {
@@ -149,7 +148,7 @@ export default {
                 },
                 technicalComplaints: {
                     title: "Eventos Sentinelas:",
-                    text: "Eventos Adversos com danos irreversíveisaos pacientes.",
+                    text: "Eventos Adversos com danos irreversíveis aos pacientes.",
                     complement: "Ex: Cirurgia em paciente errado, Cirurgia em local incorreto."
                 },
                 sentinelEvents: {
@@ -184,7 +183,7 @@ export default {
     }
 
     img {
-        width: 80px;
+        width: 70px;
         height: 70px;
     }
 
@@ -193,12 +192,17 @@ export default {
     }
 
     #division-icon {
-        margin-left: 30%;
+        flex-grow: 1;
+        display: flex;
+        margin-left: 20%;
     }
 
-    .subtopic span h3 {
-        margin-top: 7%;
-        margin-left: -100%
+    #division-text {
+        flex-grow: 1;
+        display: flex;
+        margin-top: -7%;
+        margin-left: 40%;
+        font-size: 25px
     }
 
 
