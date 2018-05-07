@@ -58,18 +58,12 @@
                         <hr class="md-4">
                         <h4 class="mb-3">{{ subtitles.enterprise }}</h4>
                         <row id="enterprise" label="Selecione a Unidade">
-                            <select data-vv-as="Unidade" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" @change="loadSectors" name="enterprises" v-model="report.enterprise">
-                                <option value=""> </option>
-                                <option v-for="enterprise in options.enterprises" :key="enterprise.id" :value="enterprise.id">{{ enterprise.name }}</option>
-                            </select>
+                            <v-select v-model="report.enterprise" data-vv-as="Unidade" v-validate data-vv-rules="required" name="enterprises" label="name" :options="options.enterprises"  @input="loadSectors" />
                             <require-text :error="errors.has('enterprises')" :text="errors.first('enterprises')" :attribute="report.enterprise"/>
                         </row>
                         
-                        <row id="sector" label="Selecione o Setor" v-show="report.enterprise == 'hu' || report.enterprise == 'hpsc' ||  report.enterprise == 'upa-rio-branco'">
-                            <select class="custom-select d-block w-100 text-center" v-model="report.sector">
-                                <option value=""> </option>
-                                <option v-for="sector in options.sectors" :key="sector.id" :value="sector.id">{{ sector.name }}</option>
-                            </select>
+                        <row id="sector" label="Selecione o Setor" v-if="report.enterprise != null" v-show="report.enterprise.id == 'hu' || report.enterprise.id == 'hpsc' ||  report.enterprise.id == 'upa-rio-branco'">
+                            <v-select v-model="report.sector" label="name" :options="options.sectors"/>
                         </row>
                     </div>
 
@@ -77,10 +71,7 @@
                         <hr class="mb-4">
                         <h4 class="mb-3">{{ subtitles.event }}</h4>
                         <row id="events" label="Selecione o Motivo do Evento">
-                            <select data-vv-as="Evento" v-validate data-vv-rules="required" class="custom-select d-block w-100 text-center" name="events" v-model="report.event">
-                                <option value=""> </option>
-                                <option v-for="event in options.events" :key="event.id" :value="event.id">{{ event.description }}</option>
-                            </select>
+                            <v-select v-model="report.event" data-vv-as="Evento" v-validate data-vv-rules="required" name="events" label="description" :options="options.events"/>
                             <require-text :error="errors.has('events')" :text="errors.first('events')" :attribute="report.event"/>
                         </row>
 
@@ -141,11 +132,12 @@
 </template>
 
 <script>
-import model, { descriptions } from "@/model/adverse-events"
+import model from "@/model/adverse-events"
 import { AdverseEventsReport, Mail } from "@/entity";
 import { FormRw, FormRws, Require } from "@/components/shared/Form/index.js"
 import Modal from "@/components/shared/Modal.vue";
 import AlertMessage from "@/components/shared/AlertMessage.vue"
+import VSelect from "vue-select";
 
 export default {
     data() {
@@ -175,10 +167,14 @@ export default {
         'require-text': Require,
         'alert-message': AlertMessage,
         'modal': Modal,
+        'v-select': VSelect
     },
     methods: {
         loadSectors(){
-            let id = this.report.enterprise
+            let id = ''
+            this.report.enterprise ?
+                id = this.report.enterprise.id: id = ''
+                
             if(id == 'hu' || id == 'hpsc' || id == 'upa-rio-branco') {
                 model.getSectorsBy(id).then(res => this.options.sectors = res)
             }
@@ -186,8 +182,6 @@ export default {
         submit() {
             this.options.disabled = true
             this.sending = true
-            
-            this.getOptionsDescriptions()
             
             model.sendData(this.report).then(res => {
                     if(res.status){
@@ -202,12 +196,6 @@ export default {
         },
         isValidateForm() {
             this.$validator.validateAll().then(success => success? this.submit():"")
-        },
-        getOptionsDescriptions(){
-            descriptions.getEventById(this.report.event).then(res => this.report.descriptions.event = res.description )
-            this.report.sector?
-                descriptions.getSectorById(this.report.sector).then(res => this.report.descriptions.sector = res.name ):''
-            descriptions.getEnterpriseById(this.report.enterprise).then(res => this.report.descriptions.enterprise = res.name )
         },
     },
     mounted() {
