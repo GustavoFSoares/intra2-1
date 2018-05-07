@@ -36,7 +36,7 @@ abstract class ControllerAbstract
 	public function get($req, $res, $args) {
 		isset($args['id'])?
 			$id = $args['id']:$id = null;
-		$id = $args['id'];
+		
 		if ($id === null) {
 			$data = array ();
 			$results = $this->model->findAll();
