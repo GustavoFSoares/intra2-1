@@ -102,18 +102,18 @@
 
                         <div class="card-deck">
 
-                            <div class="card border-info" style="max-width: 21rem">
+                            <div class="card border-info" style="max-width: 24rem">
                                 <div class="card-body">
-                                    <h5 class="card-title text-info">{{card.technicalComplaints.title}}</h5>
-                                    <p class="card-text">{{card.technicalComplaints.text}}</p>
-                                    <small class="">{{card.technicalComplaints.complement}}</small>
-                                </div>
-                            </div>
-                            <div class="card border-warning" style="max-width: 24rem">
-                                <div class="card-body">
-                                    <h5 class="card-title text-warning">{{card.sentinelEvents.title}}</h5>
+                                    <h5 class="card-title text-info">{{card.sentinelEvents.title}}</h5>
                                     <p class="card-text">{{card.sentinelEvents.text}}</p>
                                     <small class="">{{card.sentinelEvents.complement}}</small>
+                                </div>
+                            </div>
+                            <div class="card border-warning" style="max-width: 21rem">
+                                <div class="card-body">
+                                    <h5 class="card-title text-warning">{{card.technicalComplaints.title}}</h5>
+                                    <p class="card-text">{{card.technicalComplaints.text}}</p>
+                                    <small class="">{{card.technicalComplaints.complement}}</small>
                                 </div>
                             </div>
 
@@ -154,15 +154,15 @@ export default {
                     text: "Falha no fluxo ou na realização de processos assistenciais ou administrativos dentro da instituição.",
                     complement: "Ex: Atraso na realização de RX, Atraso na Entrega de Roupas."
                 },
-                technicalComplaints: {
+                sentinelEvents: {
                     title: "Eventos Sentinelas:",
                     text: "Eventos Adversos com danos irreversíveis aos pacientes.",
-                    complement: "Ex: Cirurgia em paciente errado, Cirurgia em local incorreto."
+                    complement: "Ex: Cirurgia em paciente errado, Cirurgia em local incorreto, Óbito."
                 },
-                sentinelEvents: {
+                technicalComplaints: {
                     title: "Queixas Técnicas:",
                     text: "Falha em materiais, medicamentos ou em equipamentos.",
-                    complement: "Ex: Prescrição de medicamentos inadequada antes de ser administrada foi identificada a falha pela equipe."
+                    // complement: "Ex: Prescrição de medicamentos inadequada antes de ser administrada foi identificada a falha pela equipe."
                 },
             }
         }
