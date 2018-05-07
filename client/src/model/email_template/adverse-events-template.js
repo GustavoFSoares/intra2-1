@@ -1,7 +1,7 @@
 export default (report) => {
     
     let email = {}
-    email.subject = `Evento Adverso - ${report.descriptions.event}`
+    email.subject = `Evento Adverso - ${report.event.description}`
     email.receiver = `gustavo.soares@gampcanoas.com.br`
     email.sender = report.sender
 
@@ -25,10 +25,10 @@ export default (report) => {
 
         <fieldset>
             <legend>Local do Evento:</legend>
-            Unidade: `+ report.descriptions.enterprise + `<br>`
+            Unidade: ${report.enterprise.name}<br>`
             if(report.sector){
                 email.body += 
-                    `Setor: ${report.descriptions.sector} <br>`
+                    `Setor: ${report.sector.name} <br>`
             }
 
 
@@ -37,7 +37,7 @@ export default (report) => {
 
         <fieldset>
             <legend>Descrição Evento:</legend>
-            Evento: ${report.descriptions.event}<br>
+            Evento: ${report.event.description}<br>
             Descrição: ${report.complement.description}<br>
             Coonduta Aplicada: ${report.complement.conduct}<br>
                
@@ -62,6 +62,6 @@ export default (report) => {
     if (report.mustReturn && report.sender.anonymous == false) {
         email.body += `<b>Por favor, me responda sobre este E-mail</b><br>`
     }
-       
+           
     return email
 }
