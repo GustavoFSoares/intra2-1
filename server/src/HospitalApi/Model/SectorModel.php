@@ -21,7 +21,12 @@ class SectorModel extends ModelAbstract
     public function findSectorsByEnterprise($id = null) {
         $repository = $this->em->getRepository("HospitalApi\Entity\Sector");
         
-        $collection = $repository->findBy(['Enterprise' => $id]);
+        $collection = $repository
+            ->findBy(
+                ['Enterprise' => $id],
+                ['name' => 'ASC']
+            );
+            
         return $collection;
     }
 
