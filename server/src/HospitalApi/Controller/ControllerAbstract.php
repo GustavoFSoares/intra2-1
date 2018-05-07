@@ -34,6 +34,8 @@ abstract class ControllerAbstract
 	 * @return Response $data
 	 */
 	public function get($req, $res, $args) {
+		isset($args['id'])?
+			$id = $args['id']:$id = null;
 		$id = $args['id'];
 		if ($id === null) {
 			$data = array ();
