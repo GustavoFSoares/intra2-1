@@ -212,7 +212,6 @@ export default {
 <style scoped>
 
     #send {
-        /* margin-top: 30%; */
         margin-left: 35px;
     }
 
@@ -228,7 +227,7 @@ export default {
 
     #back-button {
         margin-top: 60px;
-        margin-left: 3%;
+        margin-left: 2%;
     }
 
     #alert-message {
