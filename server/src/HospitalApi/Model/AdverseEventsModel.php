@@ -34,10 +34,10 @@ class AdverseEventsModel extends ModelAbstract
             $enterpriseRepository = $this->em->getRepository('HospitalApi\Entity\Enterprise');
             $sectorRepository = $this->em->getRepository('HospitalApi\Entity\Sector');
             $eventRepository = $this->em->getRepository('HospitalApi\Entity\Event');
-    
-            $enterprise = $enterpriseRepository->find($data->enterprise);
-            $sector = $sectorRepository->find($data->sector);
-            $event = $eventRepository->find($data->event);
+            
+            $enterprise = $enterpriseRepository->find($data->enterprise['id']);
+            $sector = $sectorRepository->find($data->sector['id']);
+            $event = $eventRepository->find($data->event['id']);
             
             $adverseEvent = new AdverseEvents($enterprise, $sector, $event);
             $adverseEvent
@@ -45,7 +45,7 @@ class AdverseEventsModel extends ModelAbstract
                 ->setComplement($data->complement)
                 ->setPatient($data->patient);
             $this->insert($adverseEvent);
-            
+
             return ['status' => true ];
         } catch (Execption $e) {
             return [ 'status' => false, 'error' => $e->getMessage() ];
