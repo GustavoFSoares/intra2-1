@@ -1,11 +1,11 @@
 export const AdverseEventsReport = {
             mustReturn: false,
-            enterprise: '',
-            sector: '',
-            event: '',
-            complement: { description: '', conduct: '', },
-            sender: { name: '', phonenumber: '', email: '', password: '', anonymous: false, host: 'office365' },
-            patient: { involved: false, name: "", number: "", },
+            enterprise: null,
+            sector: null,
+            event: null,
+            complement: { description: null, conduct: null, },
+            sender: { name: null, phonenumber: null, email: null, password: null, anonymous: false, host: 'office365' },
+            patient: { involved: false, name: null, number: null, },
         }
 
 export const Mail = {
@@ -25,5 +25,5 @@ export const EmailDefault = {
             host: "gmail",
             name: "Anônimo",
             anonymous: true
-}
+        }
 
