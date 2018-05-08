@@ -4,19 +4,19 @@ export default (report) => {
     email.subject = `Evento Adverso - ${report.event.description}`
     email.receiver = `gustavo.soares@gampcanoas.com.br`
     email.sender = report.sender
-
+    
     
     email.body = `
         <fieldset> <legend>Colaborador:</legend>`
 
-    if (report.sender.anonymous) {
+    if (report.reporter.anonymous) {
         email.body += `
         <b>Este relato foi enviado Anonimamente</b><br>`
     }else{
         email.body += `
-            Nome: ${report.sender.name}<br>
-            Telefone: ${report.sender.phonenumber}<br>
-            E-mail: ${report.sender.email}<br>`
+            Nome: ${report.reporter.name}<br>
+            Telefone: ${report.reporter.phonenumber}<br>
+            E-mail: ${report.reporter.email}<br>`
     }
 
 
@@ -59,9 +59,9 @@ export default (report) => {
                 
         <br>`
 
-    if (report.mustReturn && report.sender.anonymous == false) {
+    if (report.mustReturn && report.reporter.anonymous == false) {
         email.body += `<b>Por favor, me responda sobre este E-mail</b><br>`
     }
-           
+    
     return email
 }

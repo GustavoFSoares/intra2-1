@@ -1,24 +1,24 @@
 <template>
     <div class="container">
         <h1>{{ title }}</h1>
+
+        <div id="alert-message">
+            <row v-show="email">
+                <alert-message :text="email.text" :type="email.type" test='123'/>
+            </row>
+        </div>
         
         <div class="row">
 
             <div class="col-md-4 order-md-2 mb-4">
                 <div id="send">
                     <row>
-                        <button class="button btn btn-outline-secondary btn-lg" id="submit-button" type="button" :disabled="options.disabled" data-toggle="modal" data-target="#content-modal">
+                        <button class="button btn btn-outline-secondary btn-lg" id="submit-button" type="button" :disabled="options.disabled" @click="isValidateForm">
                             <i v-show="sending" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
                             Enviar Relato
                         </button>
                         
                         <router-link class="button btn btn-outline-primary btn-lg" id="back-button" to="/eventos-adversos">Voltar</router-link>
-                    </row>
-                </div>
-                
-                <div id="alert-message">
-                    <row v-show="email">
-                        <alert-message :text="email.text" :type="email.type"/>
                     </row>
                 </div>
             </div>
@@ -27,32 +27,36 @@
                 <form>
                     <div id="return">
                         <row>
-                            <label class="" for="same-address">Receber Retorno: </label>
-                            <input type="checkbox" class="" name="mustReturn" v-model="report.mustReturn">
+                            <label class="" for="same-address">Enviar Anonimamente: </label>
+                            <input type="checkbox" class="" name="mustReturn" v-model="report.reporter.anonymous">
                         </row>
                     </div>
             
-                    <div id="contact" v-show="report.mustReturn">
+                    <div id="contact" v-show="!report.reporter.anonymous">
                         <hr class="md-4">
                         <div class="mb-3">
                             <h4>{{ subtitles.sender }}</h4>
                             <small class="text-muted">estes dados são opcionais e não serão expostos</small>
                         </div>
 
+                        <row id="must-return" label="Receber Retorno">
+                            <input type="checkbox" class="" name="mustReturn" v-model="report.mustReturn">
+                        </row>
+
                         <div class="row">
                             <rows id="name" label="Nome">
-                                <input type="text" class="form-control" name="name" v-model="report.sender.name">
+                                <input type="text" class="form-control" name="name" v-model="report.reporter.name">
                                 <small class="text-muted">Digite seu Nome Completo</small>
                             </rows>
 
                             <rows id="number" label="Telefone">
-                                <input v-mask="['(##) ####-####', '(##) #####-####']" type="tel" class="form-control" name="phone" placeholder="(51) 99999-9999" v-model="report.sender.phonenumber">
+                                <input v-mask="['(##) ####-####', '(##) #####-####']" type="tel" class="form-control" name="phone" placeholder="(51) 99999-9999" v-model="report.reporter.phonenumber">
                             </rows>
                         </div>
 
                         <row id="email" label="E-mail">
-                            <input data-vv-as="E-mail" v-validate data-vv-rules="email" type="mail" class="form-control" name="email" v-model="report.sender.email">
-                            <require-text :error="errors.has('email')" :text="errors.first('email')" :show="true" :attribute="report.sender.email"/>
+                            <input data-vv-as="E-mail" v-validate data-vv-rules="email" type="mail" class="form-control" name="email" v-model="report.reporter.email">
+                            <require-text :error="errors.has('email')" :text="errors.first('email')" :show="true" :attribute="report.reporter.email"/>
                         </row>
                     </div>
 
@@ -107,7 +111,7 @@
                             </row>
 
                             <row id="patientNumber" label="Número de Atendimento do Paciente">
-                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="numeric" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
+                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="numeric|max:8" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
                                 <require-text :error="errors.has('patient-number')" :text="errors.first('patient-number')" :show="true" :attribute="report.patient.number"/>
                             </row>
                         </div>
@@ -115,20 +119,7 @@
                 </form>
             </div>
 
-        </div> 
-        <modal title="E-mail" submitlabel="Enviar Email" @modal-close="isValidateForm">
-            <div class="float-right">
-                Enviar Anonimamente: 
-                <input type="checkbox" v-model="report.sender.anonymous">
-            </div>
-            <row label="E-mail">
-                <input class="form-control" type="text" v-model="report.sender.email">
-            </row>
-            <row label="Senha">
-                <input class="form-control" type="password" v-model="report.sender.password">
-            </row>
-            <row></row>
-        </modal>
+        </div>
     </div>
 
 </template>
@@ -212,6 +203,7 @@ export default {
 <style scoped>
 
     #send {
+        margin-top: 20%;
         margin-left: 35px;
     }
 
@@ -233,7 +225,11 @@ export default {
     #alert-message {
         display: block;
         position: fixed;
-        top: 25%;
+        z-index: 1;
+
+        top: 10;
+        left: 2%;
+        width: 95%;
     }
 
 </style>

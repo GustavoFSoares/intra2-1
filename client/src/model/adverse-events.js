@@ -7,19 +7,21 @@ const getEnterprises = () => services.getEnterprises()
 const getEvents = () => services.getEvents()
 
 const sendData = (report) => {
-    report.sender = verifyEmail(report.sender)
-
+    report.sender = verifyEmail(report.reporter)
     services.saveData(report)
-    
+
     report = Email(report)
     
     return services.sendMail(report)
 }
 
-const verifyEmail = (sender) => {
-    if(sender.anonymous) {
-        return EmailDefault
+const verifyEmail = (reporter) => {
+    let sender = EmailDefault
+    
+    if(reporter.anonymous) {
+        return sender
     } else {
+        sender.name = reporter.name
         return sender
     }
 }

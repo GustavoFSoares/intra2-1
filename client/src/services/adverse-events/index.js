@@ -4,8 +4,8 @@ const sendMail = (mail) => {
     return http.post(`/mail/send`, mail).then( res => res.data )
 }
 
-const saveData = (mail) => {
-    return http.post(`/adverse-events/save`, mail).then( res => res.data ) 
+const saveData = (data) => {
+    return http.post(`/adverse-events/save`, data).then( res => res.data ) 
 }
 
 // =================================================================================

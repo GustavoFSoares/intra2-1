@@ -15,8 +15,6 @@ use HospitalApi\Entity\BossSector;
 class AdverseEventsModel extends ModelAbstract
 {
 
-    public $s;
-
     public function __construct() {
         $enterprise = new Enterprise();
         $event = new Event();
@@ -36,7 +34,7 @@ class AdverseEventsModel extends ModelAbstract
             $eventRepository = $this->em->getRepository('HospitalApi\Entity\Event');
             
             $enterprise = $enterpriseRepository->find($data->enterprise['id']);
-            $sector = $sectorRepository->find($data->sector['id']);
+            $sector = $sectorRepository->find($data->sector? $data->sector['id']:'');
             $event = $eventRepository->find($data->event['id']);
             
             $adverseEvent = new AdverseEvents($enterprise, $sector, $event);

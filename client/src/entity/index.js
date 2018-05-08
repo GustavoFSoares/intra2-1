@@ -1,10 +1,10 @@
 export const AdverseEventsReport = {
-            mustReturn: false,
+            mustReturn: true,
             enterprise: null,
             sector: null,
             event: null,
             complement: { description: null, conduct: null, },
-            sender: { name: null, phonenumber: null, email: null, password: null, anonymous: false, host: 'office365' },
+            reporter: { name: null, phonenumber: null, email: null, anonymous: false, },
             patient: { involved: false, name: null, number: null, },
         }
 
@@ -16,6 +16,10 @@ export const Mail = {
             failed: {
                 type: "danger",
                 text: "Email não pode ser enviado. Por favor tente novamente"
+            },
+            warning: {
+                type: "warning",
+                text: "ATENÇÃO! - "
             }
         }
 

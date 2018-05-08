@@ -20,8 +20,23 @@
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
     </div>
+
+    <!-- Component Father -->
+    <!-- <modal title="E-mail" submitlabel="Enviar Email" @modal-close="isValidateForm">
+            <div class="float-right">
+                Enviar Anonimamente: 
+                <input type="checkbox" v-model="report.reporter.anonymous">
+            </div>
+            <row label="E-mail">
+                <input class="form-control" type="text" v-model="report.reporter.email">
+            </row>
+            <row label="Senha">
+                <input class="form-control" type="password" v-model="report.reporter.password">
+            </row>
+            <row></row>
+        </modal> -->
 </template>
 <script>
 import $ from "jquery";
