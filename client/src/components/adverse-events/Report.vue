@@ -18,7 +18,7 @@
                             Enviar Relato
                         </button>
                         
-                        <router-link class="button btn btn-outline-primary btn-lg" id="back-button" to="/eventos-adversos">Voltar</router-link>
+                        <router-link class="button btn btn-outline-primary btn-lg" id="back-button" to="/eventos-adversos" tag="button" :disabled="options.disabled">Voltar</router-link>
                     </row>
                 </div>
             </div>
@@ -126,11 +126,11 @@
 
 <script>
 import model from "@/model/adverse-events"
-import { AdverseEventsReport, Mail } from "@/entity";
+import { AdverseEventsReport, Mail } from "@/entity"
 import { FormRw, FormRws, Require } from "@/components/shared/Form/index.js"
-import Modal from "@/components/shared/Modal.vue";
+import Modal from "@/components/shared/Modal.vue"
 import AlertMessage from "@/components/shared/AlertMessage.vue"
-import VSelect from "vue-select";
+import VSelect from "vue-select"
 
 export default {
     data() {
