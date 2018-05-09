@@ -38,6 +38,7 @@ export default (report) => {
         <fieldset>
             <legend>Descrição Evento:</legend>
             Evento: ${report.event.description}<br>
+            Horário do Ocorrido: ${report.eventTime}<br>
             Descrição: ${report.complement.description}<br>
             Coonduta Aplicada: ${report.complement.conduct}<br>
                

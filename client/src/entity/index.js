@@ -3,6 +3,7 @@ export const AdverseEventsReport = {
             enterprise: null,
             sector: null,
             event: null,
+            eventTime: null,
             complement: { description: null, conduct: null, },
             reporter: { name: null, phonenumber: null, email: null, anonymous: false, },
             patient: { involved: false, name: null, number: null, },

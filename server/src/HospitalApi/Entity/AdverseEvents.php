@@ -73,12 +73,18 @@ class AdverseEvents extends EntityAbstract
      */
     protected $time;
 
+    /**
+     * @var DateTime
+     *      @Column(name="dt_ocorrido", type="string")
+     */
+    protected $eventTime;
+
     public function __construct($enterprise, $sector, $event) {
         $this->Enterprise = $enterprise;
         $this->Sector = $sector;
         $this->Event = $event;
     
-        $this->time = date('Y-m-d H:i');
+        $this->time = date('Y-m-d h:i');
     }
 
     public function getId() {
@@ -175,6 +181,23 @@ class AdverseEvents extends EntityAbstract
 
     public function getTime() {
         return $this->time;
+    }
+
+
+    public function getEventTime() {
+        return $this->eventTime;
+    }
+    public function setEventTime($eventTime) {
+        $this->eventTime = $this->formatDate($eventTime);
+
+        return $this;
+    }
+
+    public function formatDate($date){
+        $date = str_replace(' ', '', $date);
+        $date = str_replace('/', '-', $date);
+
+        return (date('Y-m-d H:i', strtotime($date)));
     }
 
 }

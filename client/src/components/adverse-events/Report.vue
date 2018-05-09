@@ -85,6 +85,12 @@
                             <textarea data-vv-as="Descrição do Ocorrido" v-validate data-vv-rules="required|min:10|" class="form-control" name="description" cols="30" rows="4" placeholder="Descrição do ocorrido: " v-model="report.complement.description"></textarea>
                             <require-text :error="errors.has('description')" :text="errors.first('description')" :show="true" :attribute="report.complement.description"/>
                         </row>
+                        
+                        <row label="Data e Hora do Ocorrido">
+                            <date-picker>
+                                <input v-mask="'##/##/#### - ##:##'" type="text" class="form-control" id="picker"/>
+                            </date-picker>
+                        </row>
 
                         <row>
                             <textarea data-vv-as="Conduta" v-validate data-vv-rules="required|min:10|" class="form-control" name="conduct" cols="30" rows="4" placeholder="Conduta adotada frente ao ocorrido: " v-model="report.complement.conduct"></textarea>
@@ -130,6 +136,7 @@ import { AdverseEventsReport, Mail } from "@/entity"
 import { FormRw, FormRws, Require } from "@/components/shared/Form/index.js"
 import Modal from "@/components/shared/Modal.vue"
 import AlertMessage from "@/components/shared/AlertMessage.vue"
+import DatePicker from "@/components/shared/Form/DatePicker.vue"
 import VSelect from "vue-select"
 
 export default {
@@ -160,14 +167,15 @@ export default {
         'require-text': Require,
         'alert-message': AlertMessage,
         'modal': Modal,
-        'v-select': VSelect
+        'v-select': VSelect,
+        'date-picker': DatePicker,
     },
     methods: {
         loadSectors(){
             let id = ''
             this.report.enterprise ?
                 id = this.report.enterprise.id: id = ''
-                
+            
             if(id == 'hu' || id == 'hpsc' || id == 'upa-rio-branco') {
                 model.getSectorsBy(id).then(res => this.options.sectors = res)
             }
@@ -176,6 +184,7 @@ export default {
             this.options.disabled = true
             this.sending = true
             
+            this.report.eventTime = document.getElementById('picker').value
             model.sendData(this.report).then(res => {
                     if(res.status){
                         this.email=Mail.success

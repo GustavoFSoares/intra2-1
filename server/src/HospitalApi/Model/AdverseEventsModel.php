@@ -41,7 +41,8 @@ class AdverseEventsModel extends ModelAbstract
             $adverseEvent
                 ->mustReturn($data->mustReturn)
                 ->setComplement($data->complement)
-                ->setPatient($data->patient);
+                ->setPatient($data->patient)
+                ->setEventTime($data->eventTime);
             $this->insert($adverseEvent);
 
             return ['status' => true ];
