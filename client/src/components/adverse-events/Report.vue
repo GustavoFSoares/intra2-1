@@ -32,7 +32,7 @@
                         </row>
                     </div>
             
-                    <div id="contact" v-show="!report.reporter.anonymous">
+                    <div id="contact" v-if="!report.reporter.anonymous">
                         <hr class="md-4">
                         <div class="mb-3">
                             <h4>{{ subtitles.sender }}</h4>
@@ -45,7 +45,8 @@
 
                         <div class="row">
                             <rows id="name" label="Nome">
-                                <input type="text" class="form-control" name="name" v-model="report.reporter.name">
+                                <input data-vv-as="Nome" v-validate data-vv-rules="required" type="text" class="form-control" name="name" v-model="report.reporter.name">
+                                <require-text :error="errors.has('name')" :text="errors.first('name')" :show="true" :attribute="report.reporter.email"/>
                                 <small class="text-muted">Digite seu Nome Completo</small>
                             </rows>
 
@@ -55,7 +56,7 @@
                         </div>
 
                         <row id="email" label="E-mail">
-                            <input data-vv-as="E-mail" v-validate data-vv-rules="email" type="mail" class="form-control" name="email" v-model="report.reporter.email">
+                            <input data-vv-as="E-mail" v-validate data-vv-rules="required|email" type="mail" class="form-control" name="email" v-model="report.reporter.email">
                             <require-text :error="errors.has('email')" :text="errors.first('email')" :show="true" :attribute="report.reporter.email"/>
                         </row>
                     </div>
@@ -111,13 +112,13 @@
                             </span>
                         </row>
 
-                        <div v-show="report.patient.involved">
+                        <div v-if="report.patient.involved">
                             <row id="patientName" label="Nome do Paciente">
                                 <input class="form-control" type="text" v-model="report.patient.name">
                             </row>
 
                             <row id="patientNumber" label="Número de Atendimento do Paciente">
-                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="numeric|max:8" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
+                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="required|numeric|max:8" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
                                 <require-text :error="errors.has('patient-number')" :text="errors.first('patient-number')" :show="true" :attribute="report.patient.number"/>
                             </row>
                         </div>
