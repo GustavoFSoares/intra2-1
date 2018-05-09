@@ -157,7 +157,7 @@ export default {
                 sentinelEvents: {
                     title: "Eventos Sentinelas:",
                     text: "Eventos Adversos com danos irreversíveis aos pacientes.",
-                    complement: "Ex: Cirurgia em paciente errado, Cirurgia em local incorreto, Óbito."
+                    complement: "Ex: Cirurgia em paciente errado, Cirurgia em local incorreto, Óbito Inesperado."
                 },
                 technicalComplaints: {
                     title: "Queixas Técnicas:",

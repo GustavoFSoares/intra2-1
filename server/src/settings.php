@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set("GMT-03:00");
+date_default_timezone_set("GMT");
 
 return [
     'settings' => [

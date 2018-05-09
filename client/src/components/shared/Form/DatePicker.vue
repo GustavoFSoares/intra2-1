@@ -17,6 +17,7 @@ export default {
         multiple: { default: false },
         onlycalendar: { default: false },
         opens: { default: "right" },
+        maxdate: { default: moment.now() }
     },
     data() {
         return {
@@ -36,8 +37,18 @@ export default {
         }
     }, 
     mounted() {
-        $('#picker').daterangepicker({ "autoUpdateInput": true, "alwaysShowCalendars": true, "singleDatePicker": !this._props.multiple, "timePicker": !this._props.onlycalendar, "timePicker24Hour": this.hour24, "timePickerIncrement": this.minuteInterval, "startDate": moment.now(), "opens": this._props.opens, "drops": this.drops, "locale": this.locale });
+        $('#picker').daterangepicker({ "autoUpdateInput": true, "alwaysShowCalendars": true, "singleDatePicker": !this._props.multiple, "timePicker": !this._props.onlycalendar, "timePicker24Hour": this.hour24, "timePickerIncrement": this.minuteInterval, "startDate": moment.now(), "opens": this._props.opens, "drops": this.drops, "locale": this.locale, "maxDate": this.configureLimitDate() });
     },
+    methods: {
+        configureLimitDate() {
+            if(this._props.maxdate){
+                let date = new Date(this._props.maxdate);
+                return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} - 23:59`
+            } else {
+                return null
+            }
+        }
+    }
 }
 </script>
 
