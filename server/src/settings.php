@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set("GMT-03:00");
+
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
