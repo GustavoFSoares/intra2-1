@@ -194,10 +194,12 @@ class AdverseEvents extends EntityAbstract
     }
 
     public function formatDate($date){
-        $date = str_replace(' ', '', $date);
-        $date = str_replace('/', '-', $date);
+        $search = [' ', '-', '/'];
+        $reclace = ['', ' ', '-'];
+        $date = str_replace($search, $reclace, $date);
 
-        return (date('Y-m-d H:i', strtotime($date)));
+        $date = date("Y-m-d H:i:s", strtotime($date));
+        return $date;
     }
 
 }
