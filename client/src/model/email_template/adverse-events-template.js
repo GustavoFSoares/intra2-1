@@ -2,7 +2,13 @@ export default (report) => {
     
     let email = {}
     email.subject = `Evento Adverso - ${report.event.description}`
-    email.receiver = `gustavo.soares@gampcanoas.com.br`
+    console.log(report)
+    if(report.enterprise.id == 'hpsc'){
+        email.receiver = `eventoadverso.hpsc@gampcanoas.com.br`
+    } else {
+        email.receiver = `eventoadverso.hu@gampcanoas.com.br`
+    }
+
     email.sender = report.sender
     
     
