@@ -76,7 +76,7 @@ export default {
         margin: 4px;
         padding: 5px 5px 5px 5px;
         border: 1px solid;
-        border-color: azure;
+        border-color: white;
     }
 
 </style>
