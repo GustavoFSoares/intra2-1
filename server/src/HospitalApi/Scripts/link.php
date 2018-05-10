@@ -37,6 +37,11 @@ $links = [
         "icon" => "/static/img/links/datasus.jpg" ,
         "externalLink" =>  true
     ], [
+        "url" => "https://dynamed.com",
+        "title" => "DynaMed Plus",
+        "icon" => "/static/img/links/dynamed.jpg",
+        "externalLink" => true
+    ], [
         "url" => "https://portal.office.com/" ,
         "title" => "E-mail GAMP" ,
         "icon" => "/static/img/links/outlook.png" ,
@@ -87,15 +92,20 @@ $links = [
         "icon" => "/static/img/links/sigtap.jpg" ,
         "externalLink" =>  true
     ], [
-        "url" => "https://secweb.procergs.com.br/vgs/soe/PRSoeLogon.jsp" ,
-        "title" => "VGS" ,
-        "icon" => "/static/img/links/vgs.jpg" ,
-        "externalLink" =>  true
+        "url" => "https://sso.online.tableau.com",
+        "title" => "Tableau Online",
+        "icon" => "/static/img/links/tableau.jpg",
+        "externalLink" => true
     ], [
         "url" => "https://examesonline.unimedpoa.com.br",
         "title" => "Unimed - Exames",
         "icon" => "/static/img/links/unimed.jpg",
         "externalLink" => true
+    ], [
+        "url" => "https://secweb.procergs.com.br/vgs/soe/PRSoeLogon.jsp" ,
+        "title" => "VGS" ,
+        "icon" => "/static/img/links/vgs.jpg" ,
+        "externalLink" =>  true
     ],
 ];
 
