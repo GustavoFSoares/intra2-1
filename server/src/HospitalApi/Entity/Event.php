@@ -7,7 +7,7 @@ namespace HospitalApi\Entity;
  * <b>Events</b>
  * Classe POJO descrição dos <b>Tipos<b> de Evento Adversos possíveis
  */
-class Event extends EntityAbstract
+class Event extends SoftdeleteAbstract
 {
     /**
      * @var integer @Id

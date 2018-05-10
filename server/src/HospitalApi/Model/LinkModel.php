@@ -8,7 +8,7 @@ use HospitalApi\Entity\Link;
  * <b>LinkModel</b>
  * Classe responsável pela manipulação dos Links de acesso
  */
-class LinkModel extends ModelAbstract
+class LinkModel extends SoftdeleteModel
 {
 
     public $entity;

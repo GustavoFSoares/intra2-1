@@ -3,7 +3,7 @@ namespace HospitalApi\Model;
 
 use HospitalApi\Entity\Enterprise;
 
-class EnterpriseModel extends ModelAbstract
+class EnterpriseModel extends SoftdeleteModel
 {
 
     public $entity;

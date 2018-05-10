@@ -7,7 +7,7 @@ namespace HospitalApi\Entity;
  * <b>Enterprise</b>
  * Classe POJO que mantêm o Nome da Empresa(ou Hospital)
  */
-class Enterprise extends EntityAbstract
+class Enterprise extends SoftdeleteAbstract
 {
     /**
      * @var String @Id

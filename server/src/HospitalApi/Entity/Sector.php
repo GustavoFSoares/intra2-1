@@ -9,7 +9,7 @@ namespace HospitalApi\Entity;
  * onde constam o Nome do Setor, o Objeto dos Chefes de Setor(BossSector)
  * e Objeto com as Empresas(Enterprise)
  */
-class Sector extends EntityAbstract
+class Sector extends SoftdeleteAbstract
 {
     /**
      * @var integer @Id

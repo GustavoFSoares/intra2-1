@@ -8,7 +8,7 @@ namespace HospitalApi\Entity;
  * Classe POJO que contém os atributos de um Chefe de Setor,
  * consistindo no seu Nome e E-mail
  */
-class BossSector extends EntityAbstract
+class BossSector extends SoftdeleteAbstract
 {
     /**
      * @var integer @Id

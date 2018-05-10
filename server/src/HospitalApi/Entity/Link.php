@@ -8,7 +8,7 @@ namespace HospitalApi\Entity;
  * Classe POJO responsável por manter os atributos de um Link,
  * como também fazer as relações e mapeamento com banco de dados
  */
-class Link extends EntityAbstract
+class Link extends SoftdeleteAbstract
 {
     
     /**

@@ -3,7 +3,7 @@ namespace HospitalApi\Model;
 
 use HospitalApi\Entity\BossSector;
 
-class BossSectorModel extends ModelAbstract
+class BossSectorModel extends SoftdeleteModel
 {
 
     public $entity;

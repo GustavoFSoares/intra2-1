@@ -15,7 +15,7 @@ abstract class ModelAbstract
 {
 
 	public $em;
-	private $entityPath;
+	protected $entityPath;
 
 	public function __construct() {
 		$this->entityPath = get_class($this->entity);
@@ -102,7 +102,7 @@ abstract class ModelAbstract
 	 */
 	public function findAll() {
 		$collection = $this->em->getRepository($this->entityPath)->findAll();
-
+		
 		return $collection;
 	}
 

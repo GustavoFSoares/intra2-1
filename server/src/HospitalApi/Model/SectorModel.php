@@ -5,7 +5,7 @@ use HospitalApi\Entity\Sector;
 use HospitalApi\Entity\BossSector;
 use HospitalApi\Entity\Enterprise;
 
-class SectorModel extends ModelAbstract
+class SectorModel extends SoftdeleteModel
 {
 
     public $entity;
@@ -23,7 +23,10 @@ class SectorModel extends ModelAbstract
         
         $collection = $repository
             ->findBy(
-                ['Enterprise' => $id],
+                [
+                    'Enterprise' => $id,
+                    'c_removed' => '0'
+                ],
                 ['name' => 'ASC']
             );
             
