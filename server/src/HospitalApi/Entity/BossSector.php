@@ -36,6 +36,7 @@ class BossSector extends SoftdeleteAbstract
     protected $Sector;
 
     public function __construct($id = null, $name = "", $email = "") {
+        parent::__construct();
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;

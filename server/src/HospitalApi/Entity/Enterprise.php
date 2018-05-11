@@ -27,8 +27,8 @@ class Enterprise extends SoftdeleteAbstract
      */
     protected $Sector;
 
-    public function __construct($id = null, $name = "")
-    {
+    public function __construct($id = null, $name = "") {
+        parent::__construct();
         $this->id = $id;
         $this->name = $name;
     }
