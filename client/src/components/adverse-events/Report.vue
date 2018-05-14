@@ -118,7 +118,7 @@
                             </row>
 
                             <row id="patientNumber" label="Número de Atendimento do Paciente">
-                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="required|numeric|max:8" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
+                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="numeric|max:8" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
                                 <require-text :error="errors.has('patient-number')" :text="errors.first('patient-number')" :show="true" :attribute="report.patient.number"/>
                             </row>
                         </div>
