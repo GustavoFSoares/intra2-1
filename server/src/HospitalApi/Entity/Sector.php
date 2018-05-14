@@ -37,6 +37,7 @@ class Sector extends SoftdeleteAbstract
     protected $Enterprise;
 
     public function __construct($enterprise, $bossSector, $name = "", $id = 0) {
+        parent::__construct();
         $this->id = $id;
         $this->BossSector = $bossSector;
         $this->Enterprise = $enterprise;

@@ -23,6 +23,7 @@ class Event extends SoftdeleteAbstract
     protected $description;
 
     public function __construct($description = "") {
+        parent::__construct();
         $this->description = $description;
     }
 

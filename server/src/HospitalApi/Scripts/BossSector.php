@@ -5,7 +5,9 @@ use HospitalApi\Model\BossSectorModel;
 
 $model = new BossSectorModel();
 
-$bossSectors = [];
+$bossSectors = [
+    [ 'name' => "NoBoss", 'email' => "NoBoss@gampcanoas.com.br", ]
+];
 
 foreach ($bossSectors as $bossSector) {
     $bossSector = new BossSector(null, $bossSector['name'], $bossSector['email']);
