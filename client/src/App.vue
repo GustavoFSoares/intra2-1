@@ -2,9 +2,9 @@
     <div id="app">
         <nav-bar/>
         
-        <div>
+        <router-link to="/">
             <img id="logo" class="rounded mx-auto d-block" src="@/../static/img/logo-gamp.jpg">
-        </div>
+        </router-link>
 
         <router-view/>
         <footer-app/>
