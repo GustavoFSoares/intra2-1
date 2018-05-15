@@ -3,6 +3,9 @@ namespace HospitalApi\Model;
 
 use HospitalApi\Entity\Enterprise;
 
+/**
+ * <b>EnterpriseModel</b>
+ */
 class EnterpriseModel extends SoftdeleteModel
 {
 

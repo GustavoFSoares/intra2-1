@@ -3,6 +3,9 @@ namespace HospitalApi\Model;
 
 use HospitalApi\Entity\BossSector;
 
+/**
+ * <b>BossSectorModel</b>
+ */
 class BossSectorModel extends SoftdeleteModel
 {
 

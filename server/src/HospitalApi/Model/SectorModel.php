@@ -5,6 +5,9 @@ use HospitalApi\Entity\Sector;
 use HospitalApi\Entity\BossSector;
 use HospitalApi\Entity\Enterprise;
 
+/**
+ * <b>SectorModel</b>
+ */
 class SectorModel extends SoftdeleteModel
 {
 

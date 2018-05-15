@@ -3,6 +3,9 @@ namespace HospitalApi\Model;
 
 use HospitalApi\Entity\Event;
 
+/**
+ * <b>EventModel</b>
+ */
 class EventModel extends SoftdeleteModel {
 
     public $entity;
