@@ -16,7 +16,7 @@ const sendData = (report) => {
 }
 
 const verifyEmail = (reporter) => {
-    let sender = EmailDefault
+    let sender = new EmailDefault()
     
     if(reporter.anonymous) {
         return sender

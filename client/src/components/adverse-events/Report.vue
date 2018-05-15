@@ -144,7 +144,7 @@ export default {
     data() {
         return {
             title: "Relatar Evento",
-            report: AdverseEventsReport,
+            report: new AdverseEventsReport(),
             email: '',
             error: '',
             sending: false,
@@ -189,7 +189,11 @@ export default {
             model.sendData(this.report).then(res => {
                     if(res.status){
                         this.email=Mail.success
-                        setTimeout(() => { this.$router.push('/') }, 2000)
+                        setTimeout(() => {
+                            this.report = new AdverseEventsReport()
+                            
+                            this.$router.push('/') 
+                        }, 2000)
                     } else {
                         this.options.disabled=false
                         this.email=Mail.failed

@@ -1,12 +1,15 @@
-export const AdverseEventsReport = {
-            mustReturn: false,
-            enterprise: null,
-            sector: null,
-            event: null,
-            eventTime: null,
-            complement: { description: null, conduct: null, },
-            reporter: { name: null, phonenumber: null, email: null, anonymous: false, },
-            patient: { involved: false, name: null, number: null, },
+export class AdverseEventsReport {
+            constructor() {
+                this.mustReturn = false
+                this.enterprise = null
+                this.sector = null
+                this.event = null
+                this.eventTime = null
+                this.complement = { description: null, conduct: null, }
+                this.reporter = { name: null, phonenumber: null, email: null, anonymous: false, }
+                this.patient = { involved: false, name: null, number: null, }
+            }
+
         }
 
 export const Mail = {
@@ -24,11 +27,14 @@ export const Mail = {
             }
         }
 
-export const EmailDefault = {
-            email: "anonimo.gampcanoas@gmail.com",
-            password: "g4mpcanoas",
-            host: "gmail",
-            name: "Anônimo",
-            anonymous: true
+export class EmailDefault {
+            constructor() {
+                this.email = "anonimo.gampcanoas@gmail.com"
+                this.password = "g4mpcanoas"
+                this.host = "gmail"
+                this.name = "Anônimo"
+                this.anonymous = true
+            }
+
         }
 
