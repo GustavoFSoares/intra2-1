@@ -17,25 +17,10 @@ require 'Routes/enterprise.php';
 require 'Routes/event.php';
 require 'Routes/sector.php';
 
-// Routes
-$app->get('/[{name}]', function (Request $request, Response $response, array $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-
-    // Render index view
-    return $this->renderer->render($response, 'index.phtml', $args);
-});
-
 $app->get('/script/insert', function(Request $req, Response $res, array $args){
-    // if(isset($args['file'])){
-    //     $file = $args['file'].'.php';
-    //     require __DIR__."/HospitalApi/Scripts/$file";
-    // } else {
         require __DIR__ . "/HospitalApi/Scripts/BossSector.php";
         require __DIR__ . "/HospitalApi/Scripts/Enterprise.php";
         require __DIR__ . "/HospitalApi/Scripts/Event.php";
         require __DIR__ . "/HospitalApi/Scripts/link.php";
         require __DIR__ . "/HospitalApi/Scripts/Sector.php";
-    // }
-    
 });
