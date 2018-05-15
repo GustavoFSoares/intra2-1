@@ -3,12 +3,11 @@
 namespace HospitalApi\Controller;
 
 /**
- * <b> RoutesController </b>
- * Classe feita para gerenciar criação e gerencia das Rotas
+ * <b>RoutesController</b>
  */
 class RoutesController extends ControllerAbstract
 {
 
-    public function __construct(){ }
+    public function __construct() { }
 
 }

@@ -5,8 +5,7 @@ use HospitalApi\Model\EnterpriseModel;
 
 class EnterpriseController extends ControllerAbstract
 {
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct(new EnterpriseModel());
     }
 
