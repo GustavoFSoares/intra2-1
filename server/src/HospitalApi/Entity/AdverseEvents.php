@@ -188,12 +188,18 @@ class AdverseEvents extends EntityAbstract
         return $this->eventTime;
     }
     public function setEventTime($eventTime) {
-        $this->eventTime = $this->formatDate($eventTime);
+        $this->eventTime = $this->_formatDate($eventTime);
 
         return $this;
     }
 
-    public function formatDate($date){
+    /**
+     * @method _formatDate()
+     * Recebe data no formato d/m/Y H:m:s e
+     * retorna no Formato MySql Y-m-d H:i:s
+     * @return Date
+     */
+    private function _formatDate($date){
         $search = [' ', '-', '/'];
         $reclace = ['', ' ', '-'];
         $date = str_replace($search, $reclace, $date);

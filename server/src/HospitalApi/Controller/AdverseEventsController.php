@@ -6,7 +6,6 @@ use PHPMailer\PHPMailer\Exception;
 
 /**
  * <b>AdverseEventsController</b>
- * Classe responsável por criar e enviar Email
  */
 class AdverseEventsController extends ControllerAbstract
 {

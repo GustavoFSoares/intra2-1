@@ -9,8 +9,6 @@ use HospitalApi\Entity\BossSector;
 
 /**
  * <b>EmailModel</b>
- * Classe responsável pela estruturação do Email
- * como também realizar o envio do mesmo
  */
 class AdverseEventsModel extends ModelAbstract
 {
@@ -26,13 +24,24 @@ class AdverseEventsModel extends ModelAbstract
         parent::__construct();
     }
 
+    /**
+     * @method buildData()
+     * Realiza inserção no de novos Eventos relatados no Banco de Dados.
+     * O buildData recebe um $data com Objeto de AdverseEvents, busca as
+     * tabelas relacionadas correspondentes e cria um novo EventoAdverso para
+     * fazer inserção.
+     * @param AdverseEvents $data
+     * @return Array Status
+     */
     public function buildData($data) {
         
         try {
+            //Busca Referência das Tabelas Relacionadas
             $enterpriseRepository = $this->em->getRepository('HospitalApi\Entity\Enterprise');
             $sectorRepository = $this->em->getRepository('HospitalApi\Entity\Sector');
             $eventRepository = $this->em->getRepository('HospitalApi\Entity\Event');
             
+            //Retorna representação das Tabelas Relacionadas
             $enterprise = $enterpriseRepository->find($data->enterprise['id']);
             $sector = $sectorRepository->find($data->sector? $data->sector['id']:'');
             $event = $eventRepository->find($data->event['id']);
