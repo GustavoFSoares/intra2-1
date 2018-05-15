@@ -213,7 +213,6 @@ export default {
 <style scoped>
 
     #send {
-        /* margin-top: 10%; */
         margin-left: 35px;
     }
 
