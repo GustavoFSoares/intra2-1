@@ -213,7 +213,7 @@ export default {
 <style scoped>
 
     #send {
-        margin-top: 20%;
+        /* margin-top: 10%; */
         margin-left: 35px;
     }
 
@@ -224,7 +224,7 @@ export default {
 
     .button #submit-button {
         margin-top: 40%;
-        margin-left: 5%;
+        margin-left: 3%;
     }
 
     #back-button {
