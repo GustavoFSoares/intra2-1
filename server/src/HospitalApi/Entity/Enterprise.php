@@ -5,7 +5,7 @@ namespace HospitalApi\Entity;
  * @Entity
  * @Table(name="Empresa")
  * <b>Enterprise</b>
- * Classe POJO que mantêm o Nome da Empresa(ou Hospital)
+ * Classe POJO que mantêm o Nome da Empresa(Hospital)
  */
 class Enterprise extends SoftdeleteAbstract
 {

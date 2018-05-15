@@ -8,7 +8,7 @@ namespace HospitalApi\Entity;
  * <b>Eventos Adversos</b>
  * Classe POJO responsavel pela gerência dos Eventos Adversos(AdverseEvents)
  * contendo as Descrições (Conduta e Descrição), Identificador do Paciente e
- * os Objetos de tipo de Evento, Chefe de Setor e Empresa
+ * os Objetos dos tipos de Evento, Chefe de Setor e Empresa
  */
 class AdverseEvents extends EntityAbstract
 {

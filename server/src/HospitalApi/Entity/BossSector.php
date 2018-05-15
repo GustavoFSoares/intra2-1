@@ -6,7 +6,7 @@ namespace HospitalApi\Entity;
  * @Table(name="Responsavel_Setor")
  * <b>BossSector</b>
  * Classe POJO que contém os atributos de um Chefe de Setor,
- * consistindo no seu Nome e E-mail
+ * sendo atributos obrigatórios Nome e E-mail
  */
 class BossSector extends SoftdeleteAbstract
 {
