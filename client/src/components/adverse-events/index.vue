@@ -185,7 +185,7 @@ export default {
     }
 
     .button #next-button {
-        margin-top: 60px;
+        margin-top: 60%;
         margin-left: 3%;
     }
 
