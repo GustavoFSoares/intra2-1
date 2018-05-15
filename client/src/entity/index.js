@@ -1,5 +1,5 @@
 export const AdverseEventsReport = {
-            mustReturn: true,
+            mustReturn: false,
             enterprise: null,
             sector: null,
             event: null,
