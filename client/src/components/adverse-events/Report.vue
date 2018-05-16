@@ -45,18 +45,18 @@
 
                         <div class="row">
                             <rows id="name" label="Nome">
-                                <input data-vv-as="Nome" v-validate data-vv-rules="required" type="text" class="form-control" name="name" v-model="report.reporter.name">
+                                <input data-vv-as="Nome" autocomplete="off" v-validate data-vv-rules="required" type="text" class="form-control" name="name" v-model="report.reporter.name">
                                 <require-text :error="errors.has('name')" :text="errors.first('name')" :show="true" :attribute="report.reporter.email"/>
                                 <small class="text-muted">Digite seu Nome Completo</small>
                             </rows>
 
                             <rows id="number" label="Telefone">
-                                <input v-mask="['(##) ####-####', '(##) #####-####']" type="tel" class="form-control" name="phone" placeholder="(51) 99999-9999" v-model="report.reporter.phonenumber">
+                                <input v-mask="['(##) ####-####', '(##) #####-####']" autocomplete="off" type="tel" class="form-control" name="phone" placeholder="(51) 99999-9999" v-model="report.reporter.phonenumber">
                             </rows>
                         </div>
 
                         <row id="email" label="E-mail">
-                            <input data-vv-as="E-mail" v-validate data-vv-rules="required|email" type="mail" class="form-control" name="email" v-model="report.reporter.email">
+                            <input data-vv-as="E-mail" autocomplete="off" v-validate data-vv-rules="required|email" type="mail" class="form-control" name="email" v-model="report.reporter.email">
                             <require-text :error="errors.has('email')" :text="errors.first('email')" :show="true" :attribute="report.reporter.email"/>
                         </row>
                     </div>
@@ -83,7 +83,7 @@
                         </row>
 
                         <row>
-                            <textarea data-vv-as="Descrição do Ocorrido" v-validate data-vv-rules="required|min:10|" class="form-control" name="description" cols="30" rows="4" placeholder="Descrição do ocorrido: " v-model="report.complement.description"></textarea>
+                            <textarea data-vv-as="Descrição do Ocorrido" v-validate data-vv-rules="required|min:10|max:2000" class="form-control" name="description" cols="30" rows="4" placeholder="Descrição do ocorrido: " v-model="report.complement.description"></textarea>
                             <require-text :error="errors.has('description')" :text="errors.first('description')" :show="true" :attribute="report.complement.description"/>
                         </row>
                         
@@ -94,7 +94,7 @@
                         </row>
 
                         <row>
-                            <textarea data-vv-as="Conduta" v-validate data-vv-rules="required|min:10|" class="form-control" name="conduct" cols="30" rows="4" placeholder="Conduta adotada frente ao ocorrido: " v-model="report.complement.conduct"></textarea>
+                            <textarea data-vv-as="Conduta" v-validate data-vv-rules="required|min:10|max:2000" class="form-control" name="conduct" cols="30" rows="4" placeholder="Conduta adotada frente ao ocorrido: " v-model="report.complement.conduct"></textarea>
                             <require-text :error="errors.has('conduct')" :text="errors.first('conduct')" :show="true" :attribute="report.complement.conduct"/>
                         </row>
                     </div>
@@ -118,7 +118,7 @@
                             </row>
 
                             <row id="patientNumber" label="Número de Atendimento do Paciente">
-                                <input data-vv-as="Número de Atendimento do Paciente" v-validate data-vv-rules="numeric|max:8" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
+                                <input data-vv-as="Número de Atendimento do Paciente" autocomplete="off" v-validate data-vv-rules="numeric|max:8" class="form-control" type="tel" name="patient-number" v-model="report.patient.number">
                                 <require-text :error="errors.has('patient-number')" :text="errors.first('patient-number')" :show="true" :attribute="report.patient.number"/>
                             </row>
                         </div>
