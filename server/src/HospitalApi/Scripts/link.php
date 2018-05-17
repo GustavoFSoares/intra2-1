@@ -106,6 +106,16 @@ $links = [
         "title" => "VGS" ,
         "icon" => "/static/img/links/vgs.jpg" ,
         "externalLink" =>  true
+    ], [
+        "url" => "http://optixserver1/pacs/DS/studies.html" ,
+        "title" => "Optix - HU" ,
+        "icon" => "/static/img/links/optix.jpg" ,
+        "externalLink" =>  true
+    ], [
+        "url" => " http://optixserver2/pacs/DS/studies.html" ,
+        "title" => "Optix - HPSC" ,
+        "icon" => "/static/img/links/optix.jpg" ,
+        "externalLink" =>  true
     ],
 ];
 
