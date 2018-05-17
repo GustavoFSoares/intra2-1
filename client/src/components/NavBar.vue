@@ -12,7 +12,8 @@
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li> -->
                     <li class="nav-item" v-for="(screen, index) in screens" :key="index">
-                        <a class="nav-link" :href="screen.link">{{ screen.name }}</a>
+                        <a v-if="screen.externalLink" class="nav-link" :href="screen.link">{{ screen.name }}</a>
+                        <router-link v-else class="nav-link" :to="screen.link">{{ screen.name }}</router-link>
                     </li>
                     <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -49,12 +50,12 @@ export default {
         return {
             "message": "",
             "screens": [
-                {name: "Convênios", link:"http://gamp-web/?tela=convenio" },
-                {name: "Ramais", link:"http://gamp-web/?tela=ramais" },
-                {name: "Arquivos", link:"http://gamp-web/?tela=arquivos" },
-                {name: "POPS", link:"http://gamp-web/?tela=pops" },
-                {name: "Institucional", link:"http://gamp-web/?tela=institucional" },
-                {name: "Comissões", link:"http://gamp-web/?tela=comissoes" },
+                {name: "Convênios", link:"http://gamp-web/?tela=convenio", externalLink: true },
+                {name: "Ramais", link:"/ramais", externalLink: false },
+                {name: "Arquivos", link:"http://gamp-web/?tela=arquivos", externalLink: true },
+                {name: "POPS", link:"http://gamp-web/?tela=pops", externalLink: true },
+                {name: "Institucional", link:"http://gamp-web/?tela=institucional", externalLink: true },
+                {name: "Comissões", link:"http://gamp-web/?tela=comissoes", externalLink: true },
             ],
             "login": {name: "Login", link:"http://gamp-web/?tela=Login" },
         }

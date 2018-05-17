@@ -6,6 +6,7 @@ import Teste from '@/components/Teste.vue'
 import NotFound from '@/components/NotFound.vue'
 
 import adverseEventsRoutes from './adverse-events-routes'
+import ramalsRoutes from './ramals-routes'
 const routes = [
     {
         path: `/`,
@@ -22,6 +23,7 @@ const Routes = new Router({
     mode: 'history',
 })
 Routes.addRoutes(adverseEventsRoutes)
+Routes.addRoutes(ramalsRoutes)
 
 Vue.use(Router)
 export default Routes
