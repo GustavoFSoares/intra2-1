@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container-fluid">
         <h1>{{ title }}</h1>
 
         <div class="form-group form-row col">

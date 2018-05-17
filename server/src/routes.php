@@ -15,6 +15,7 @@ require 'Routes/email.php';
 require 'Routes/adverseEvents.php';
 require 'Routes/enterprise.php';
 require 'Routes/event.php';
+require 'Routes/ramal.php';
 require 'Routes/sector.php';
 
 $app->get('/script/insert', function(Request $req, Response $res, array $args){

@@ -101,14 +101,27 @@ abstract class ModelAbstract
 	 * @return Array 
 	 */
 	public function findAll() {
-		$collection = $this->em->getRepository($this->entityPath)->findAll();
+		$collection = $this->getRepository()->findAll();
 		
 		return $collection;
 	}
 
-
-	public function getEntityPath(){
+	/**
+	 * @method getEntityPath()
+	 * Retorna o Caminho do Arquivo da model extanciada
+	 * @return EntityPath
+	 */
+	public function getEntityPath() {
 		return $this->entityPath;
+	}
+
+	/**
+	 * @method getRepository()
+	 * Retorna uma Representação da Tabela(Model) extanciada
+	 * @return Reposotory
+	 */
+	public function getRepository() {
+		return $this->em->getRepository($this->entityPath);
 	}
 
 	public function getLogger() {
