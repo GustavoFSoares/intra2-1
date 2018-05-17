@@ -55,6 +55,7 @@ abstract class ControllerAbstract
 	}
 
 	public function translateCollaction($results){
+		$data = [ ];
 		foreach ($results as $result) {
 			$data[] = $result->toArray();
 		}
