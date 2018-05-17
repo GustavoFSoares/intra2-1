@@ -16,4 +16,10 @@ class LinkModel extends SoftdeleteModel
         $this->entity = new Link;
         parent::__construct();
     }
+
+    public function findAll() {
+        $collection = $this->em->getRepository($this->entityPath)->findBy([ ], ['title' => 'ASC']);
+
+        return $collection;
+    }
 }
