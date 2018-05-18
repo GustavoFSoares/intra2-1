@@ -1,5 +1,4 @@
 import services, { getters } from "@/services/adverse-events";
-import Email from "@/model/email_template/adverse-events-template";
 import { EmailDefault } from "../entity";
 
 const getSectorsBy = (id) => services.getSectorsBy(id)
@@ -8,11 +7,8 @@ const getEvents = () => services.getEvents()
 
 const sendData = (report) => {
     report.sender = verifyEmail(report.reporter)
-    services.saveData(report)
-
-    report = Email(report)
     
-    return services.sendMail(report)
+    return services.sendData(report)
 }
 
 const verifyEmail = (reporter) => {

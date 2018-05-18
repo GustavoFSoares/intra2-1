@@ -58,8 +58,6 @@ class AdverseEventsModel extends ModelAbstract
         } catch (Execption $e) {
             return [ 'status' => false, 'error' => $e->getMessage() ];
         }
-
-
         
     }
 

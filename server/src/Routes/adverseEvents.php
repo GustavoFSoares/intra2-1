@@ -13,9 +13,11 @@ $app->group('/adverse-events', function () {
 
     /** 
      * <i>Enviar Email</i>
-     * Recebe o POST com os atributos do Email 
-     * que encaminha para <i>EmailController</i> onde
-     * será construido o Email
+     * Recebe o POST com os atributos do Evento Relatado
+     * que encaminha para <i>AdverseEventsController</i> onde
+     * será construido o registrado o evento no banco de dados
+     * e envia um Email para o setor responsável contendo as
+     * informações do relato
      * @example Exemplo de Objeto de Email Esperado:
      * sender: {
      *     "mail": "email@gampcanoas.com.br",
@@ -29,6 +31,6 @@ $app->group('/adverse-events', function () {
      *     "":"Lista de Emails a serem enviados em Cópia"
      * ]
      */
-    $this->post('/save', "HospitalApi\Controller\AdverseEventsController:saveAction", function (Request $req, Response $res, array $args) { });
+    $this->post('/send', "HospitalApi\Controller\AdverseEventsController:sendAction", function (Request $req, Response $res, array $args) { });
 
 });

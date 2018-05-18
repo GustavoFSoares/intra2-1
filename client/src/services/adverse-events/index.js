@@ -1,11 +1,7 @@
 import http from '../client'
 
-const sendMail = (mail) => {
-    return http.post(`/mail/send`, mail).then( res => res.data )
-}
-
-const saveData = (data) => {
-    return http.post(`/adverse-events/save`, data).then( res => res.data ) 
+const sendData = (data) => {
+    return http.post(`/adverse-events/send`, data).then( res => res.data ) 
 }
 
 // =================================================================================
@@ -34,8 +30,7 @@ const getSectorById = (id) => {
 }
 // =================================================================================
 export default {
-    sendMail,
-    saveData,
+    sendData,
     getEvents,
     getEnterprises,
     getSectorsBy,

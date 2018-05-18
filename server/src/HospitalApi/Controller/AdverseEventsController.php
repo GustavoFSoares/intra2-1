@@ -2,6 +2,7 @@
 namespace HospitalApi\Controller;
 
 use HospitalApi\Model\AdverseEventsModel;
+use HospitalApi\Template\AdverseEventsEmailTemplate;
 use PHPMailer\PHPMailer\Exception;
 
 /**
@@ -14,11 +15,22 @@ class AdverseEventsController extends ControllerAbstract
         parent::__construct(new AdverseEventsModel());
     }
 
-    public function saveAction($req, $res) {
+    public function sendAction($req, $res) {
         $values = (object)$req->getParsedBody();
+        return $res->withJson($this->save($values));
+    }
+
+    public function save($values) {
         $model = $this->getModel();
 
-        return $res->withJson($model->buildData($values));
+        $report = new AdverseEventsEmailTemplate($values);
+        $status = $model->buildData($values);
+        if (!$status) {
+            return $status;
+        }
+        $status = EmailController::buildMailAction($report);
+        return $status;
+        
     }
 
 }

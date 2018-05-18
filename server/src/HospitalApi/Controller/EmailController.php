@@ -3,6 +3,7 @@ namespace HospitalApi\Controller;
 
 use HospitalApi\Model\EmailModel;
 use PHPMailer\PHPMailer\Exception;
+use HospitalApi\Template\EmailTemplateAbstract;
 
 /**
  * <b>EmailController</b>
@@ -16,45 +17,31 @@ class EmailController extends ControllerAbstract
 
     /**
      * @method buildMailAction() 
-     * O buildMailAction() é uma ação que  recebe
-     * as informações via POST e encaminha montar
-     * a estrutura do Email, adicionando remetente,
-     * destinatários e corpo do email.
-     * Ele retorna uma Status Boolean informando 
-     * se email foi ou não enviado
+     * O buildMail() é uma ação que recebe
+     * as informações do Email formatadas e envia para
+     * montar a estrutura do Email
      * 
      * @param [Request] $req
      * @param [Response] $res
      * @return boolean Status
      */
-    public function buildMailAction($req, $res) {
-        $values = $req->getParsedBody();
+    public static function buildMailAction($report) {
+        try {
+            if(!$report instanceof EmailTemplateAbstract ){
+                throw new Exception("\$report must be a EmailTemplate Instance", 400);
+            }
+            
+            $model = new EmailModel();
+            $model
+                ->setReport($report)
+                ->createEmail();
+            
+            return $model->send();
+            
+        } catch (Exeption $e){
+            return $e->getMessage();
+        }
 
-        $model = $this->getModel();
-        
-        $model->configureMail($values['sender']['host']);
-        $this->writeMail($model, $values['subject'], $values['body']);
-        
-        $model->buildLog($values);
-        
-        $model->setSender($values['sender']);
-        $model->setReceiver($values['receiver']);
-
-        return $res->withJson($model->send());
-    }
-
-    /**
-     * @method writeMail()
-     * o writeMail() é responsável por montar
-     * por montar o corpo do email, inserindo 
-     * o Assunto e a Mensagem
-     * 
-     * @param string $subject
-     * @param string $body
-     * @return void
-     */
-    public function writeMail(EmailModel $model, $subject = "Assunto", $body = "Texto") {
-        $model->writeMail($subject, $body);
     }
 
 }

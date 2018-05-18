@@ -14,6 +14,7 @@ class EmailModel extends ModelAbstract
 {
 
     public $entity;
+    private $_report;
     private $_mail;
 
     public function __construct() {
@@ -24,13 +25,28 @@ class EmailModel extends ModelAbstract
     }
 
     /**
+     * @method createEmail()
+     * Monta as informações do Email. 
+     * Inserindo no Objeto de Email o Assunto,
+     * Remetente, Destinatário e Menságem Enviada
+     * @return void
+     */
+    public function createEmail() {
+        $this->configureEmail($this->_report->getSender()['host']);
+        $this->setSender($this->_report->getSender());
+        $this->setReceiver($this->_report->getReceiver());
+        $this->writeMail();
+        $this->buildLog($this->_report);
+    }
+
+    /**
      * @method configureMail()
      * Método responsável por configurar a infraestrutura
      * do email, setando configurações de domínio, erros,
      * formato e tipo de conexão que será realizada
      * @return void
      */
-    public function configureMail($host) {
+    public function configureEmail($host) {
         //Server settings
         $this->_mail->isSMTP();                                      // Set mailer to use SMTP
         $this->_mail->SMTPDebug = false;                             // Enable verbose debug output
@@ -77,7 +93,7 @@ class EmailModel extends ModelAbstract
     
     /**
      * @method setCopy()
-     * Recebe um Array de chave padrão ([0]=>"email2", [1]=>"email2")
+     * Recebe um Array de chave padrão ([0]=>"email1", [1]=>"email2")
      * com a lista de emails para o qual o email deve ser enviado em cópia
      * @param Array $copys
      * @return void
@@ -108,9 +124,9 @@ class EmailModel extends ModelAbstract
      * @param Html $body
      * @return void
      */
-    public function writeMail($subject, $body) {
-        $this->_mail->Subject = $subject;
-        $this->_mail->Body = $body;
+    public function writeMail() {
+        $this->_mail->Subject = $this->_report->getSubject();
+        $this->_mail->Body = $this->_report->getBody();
     }
 
     /**
@@ -145,9 +161,9 @@ class EmailModel extends ModelAbstract
      */
     public function buildLog($mail){
         $this->entity
-            ->setSender($mail['sender']['email'])
-            ->setReceiver($mail['receiver'])
-            ->setBody($mail['body']);
+            ->setSender($mail->getSender()['email'])
+            ->setReceiver($mail->getReceiver())
+            ->setBody($mail->getBody());
     }
 
     /**
@@ -157,6 +173,12 @@ class EmailModel extends ModelAbstract
      */
     public function createLog(){
         $this->insert($this->entity);
+    }
+
+    public function setReport($report){
+        $this->_report = $report;
+
+        return $this;
     }
 
 }
