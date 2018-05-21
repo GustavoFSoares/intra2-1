@@ -7,6 +7,8 @@ import NotFound from '@/components/NotFound.vue'
 
 import adverseEventsRoutes from './adverse-events-routes'
 import ramalsRoutes from './ramals-routes'
+import alertsRoutes from './alerts-routes'
+
 const routes = [
     {
         path: `/`,
@@ -24,6 +26,7 @@ const Routes = new Router({
 })
 Routes.addRoutes(adverseEventsRoutes)
 Routes.addRoutes(ramalsRoutes)
+Routes.addRoutes(alertsRoutes)
 
 Vue.use(Router)
 export default Routes
