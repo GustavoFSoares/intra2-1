@@ -13,53 +13,59 @@
         </row>
 
         <row id="enterprise" label="Selecione um Tipo">
-            <v-select v-model="alert.type" data-vv-as="Tipo" v-validate data-vv-rules="required" name="alert-type" label="name" :options="options.alerts"  @input="loadstyle"/>
+            <v-select v-model="alert.type" data-vv-as="Tipo" v-validate data-vv-rules="required" name="alert-type" label="name" :options="options.alerts"/>
             <require-text :error="errors.has('alert-type')" :text="errors.first('alert-type')" :attribute="alert.type"/>
         </row>
 
         <row>
-            <top-alert :id="alert.id" :title="alert.title" :description="alert.description" :type="alert.type.value"/>
+            <top-alert :id='`${alert.type.value}-alert`' :title="alert.title" :description="alert.description" :type="alert.type.value"/>
         </row>
 
         <row>
             <button class="button btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm">
                 Gerar Alerta
             </button>
+            <router-link class="button btn btn-outline-primary btn-lg" to="/alertas" tag="button">
+                Voltar
+            </router-link>
         </row>
-
     </div>
 </template>
 
 <script>
+import { Alert, alertOptions } from "@/entity";
+import model from "@/model/alert";
 import { FormRw, FormRws, Require, VueSelect, TopAlert } from "@/components/shared/Form";
 export default {
     data(){
         return {
+            id: '',
             title: "Alerta - Adicionar",
-            alert: {
-                title: '',
-                description: '',
-                type: '',
-                id: ''
-            },
+            alert: new Alert(),
             options: {
                 alerts: 
                     [ { name: "Aviso", value: "warning" },
                     { name: "Erro", value: "danger" }, ]
             },
-            style: {
-                id: '',
-                border: '',
-                title: ''
-            }
         }
     },
     methods: {
-        loadstyle() {
-            this.alert.id = this.alert.type.value+"-alert"
-        },
         isValidForm() {
-            this.$validator.validateAll().then(success => success? alert("Validou"):"")
+            this.$validator.validateAll().then(success => success? this.submit():"")
+        },
+        submit() {
+            if(model.isEdit(this.id)){
+                model.edit(this.id, this.alert).then(res => window.location = "http://localhost/alertas" )
+            } else {
+                model.save(this.alert).then(res => window.location = "http://localhost/alertas" )
+            }
+        },
+        loadValues() {
+            this.id = this.$route.params.id
+            model.getAlert(this.id).then(res => {
+                res.type = alertOptions(res.type)
+                this.alert = res
+            })
         }
     },
     components: {
@@ -68,6 +74,11 @@ export default {
         'require-text': Require,
         'v-select': VueSelect, 
         'top-alert': TopAlert,
+    },
+    mounted() {
+        if(model.isEdit(this.$route.params.id)){
+            this.loadValues()
+        }
     }
 }
 </script>

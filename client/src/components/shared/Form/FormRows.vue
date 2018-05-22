@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md mb-3">
+    <div class="col-md">
         <label v-if="label" :for="id">{{ label }}: </label>
         <slot>
             
