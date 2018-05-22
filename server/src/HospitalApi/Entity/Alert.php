@@ -37,6 +37,7 @@ class Alert extends SoftdeleteAbstract
     protected $type;
 
     public function __construct($id = 0, $title = '', $description = '', $type = '') {
+        parent::__construct();
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
