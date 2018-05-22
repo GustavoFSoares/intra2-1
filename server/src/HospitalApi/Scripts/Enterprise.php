@@ -17,5 +17,5 @@ $enterprises = [
 
 foreach ($enterprises as $enterprise) {
     $enterprise = new Enterprise($enterprise['id'], $enterprise['name']);
-    $model->insert($enterprise);
+    $model->doInsert($enterprise);
 }

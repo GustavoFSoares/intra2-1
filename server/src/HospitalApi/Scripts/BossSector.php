@@ -11,5 +11,5 @@ $bossSectors = [
 
 foreach ($bossSectors as $bossSector) {
     $bossSector = new BossSector(null, $bossSector['name'], $bossSector['email']);
-    $model->insert($bossSector);
+    $model->doInsert($bossSector);
 }

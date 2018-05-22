@@ -179,5 +179,5 @@ foreach ($sectors as $sector) {
     $enterprise = $enterpriseRepository->find($sector["enterpriseId"]);
 
     $sector = new Sector($enterprise, $bossSector, $sector["name"]);
-    $model->insert($sector);
+    $model->doInsert($sector);
 }

@@ -172,7 +172,7 @@ class EmailModel extends ModelAbstract
      * @return void
      */
     public function createLog(){
-        $this->insert($this->entity);
+        $this->doInsert($this->entity);
     }
 
     public function setReport($report){

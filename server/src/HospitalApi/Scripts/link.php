@@ -126,5 +126,5 @@ foreach ($links as $link) {
         ->setTitle($link['title'])
         ->setIcon($link['icon'])
         ->setExternalLink($link['externalLink']);
-    $model->insert($l);
+    $model->doInsert($l);
 }
