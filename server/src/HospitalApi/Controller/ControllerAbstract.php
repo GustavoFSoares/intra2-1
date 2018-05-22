@@ -38,26 +38,25 @@ abstract class ControllerAbstract
 			$id = $args['id']:$id = null;
 		
 		if ($id === null) {
-			$data = array ();
 			$results = $this->model->findAll();
-
-			$data = $this->translateCollaction($results);
 		} else {
-			$obj = $this->model->findById($id);
-			if ($obj != null) {
-
-				$data = $obj->toArray();
-			} else
-				$data = [];
+			$results = $this->model->findById($id);
 		}
+		$data = $this->translateCollaction($results);
 		
 		return $res->withJson($data);
 	}
 
 	public function translateCollaction($results){
-		$data = [ ];
-		foreach ($results as $result) {
-			$data[] = $result->toArray();
+		$data = null;
+		if($results){
+			if(is_array($results)){
+				foreach ($results as $result) {
+					$data[] = $result->toArray();
+				}
+			} else {
+				$data = $results->toArray();	
+			}
 		}
 		return $data;
 	}
