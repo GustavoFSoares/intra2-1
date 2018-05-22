@@ -18,7 +18,10 @@ class LinkModel extends SoftdeleteModel
     }
 
     public function findAll() {
-        $collection = $this->em->getRepository($this->entityPath)->findBy([ ], ['title' => 'ASC']);
+        $collection = $this->getRepository()->findBy(
+            ['c_removed' => 0], 
+            ['title' => 'ASC']
+        );
 
         return $collection;
     }
