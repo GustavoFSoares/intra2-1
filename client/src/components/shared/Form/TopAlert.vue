@@ -1,9 +1,11 @@
 <template>
     <div id="alert">
-        <div class="alert" :id="style.id" >
-            <div :class="style.border">
+        <div class="alert" :id='`${this.$props.type}-alert`' >
+            <div :class='`card border-${this.$props.type}`'>
                 <div class="card-body">
-                    <h5 :class="style.title">{{ title }}</h5>
+                    <h5 :class='`card-title text-${this.$props.type}`'>
+                        {{ title.toUpperCase() }}
+                    </h5>
                     <p class="card-text">{{ description }}</p>
                 </div>
             </div>
@@ -16,31 +18,9 @@
 export default {
     props: {
         type: '',
-        title: '',
+        title: { default: ' ' },
         description: '',
     },
-    data() {
-        return {
-            style: {
-                id: '',
-                border: '',
-                title: ''
-            }
-        }
-    },
-    methods: {
-        loadStyle() {
-            this.style.id = `${this.$props.type}-alert`
-            this.style.border = `card border-${this.$props.type}`
-            this.style.title = `card-title text-${this.$props.type}`
-        }
-    },
-    created() {
-        this.loadStyle()
-    },
-    updated() {
-        this.loadStyle()
-    }
 }
 </script>
 
