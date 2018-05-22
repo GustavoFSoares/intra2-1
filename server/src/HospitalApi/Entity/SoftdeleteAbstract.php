@@ -1,6 +1,6 @@
 <?php
 namespace HospitalApi\Entity;
-
+use DateTime;
 
 /**
  * <b>SoftdeleteAbstract</b>
@@ -13,6 +13,12 @@ abstract class SoftdeleteAbstract extends EntityAbstract
 {
 
     /**
+     * @var Datetime
+     *      @Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
+     */
+    public $c_created;
+
+    /**
      * @var Boolean
      *      @Column(type="boolean", options={"default" : false})
      */
@@ -21,6 +27,7 @@ abstract class SoftdeleteAbstract extends EntityAbstract
     public function __construct() {
         parent::__construct();
         $this->c_removed = false;
+        $this->c_created = new DateTime();
     }
 }
     
