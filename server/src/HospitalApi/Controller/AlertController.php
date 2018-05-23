@@ -30,7 +30,7 @@ class AlertController extends ControllerAbstract
         $result = $model->findOneByType($type);
         $data = $this->translateCollaction($result);
         
-        if(!$model->isToday($data['c_created'])) {
+        if(!$model->isToday($data['c_modified'])) {
             $data = null;
         }
         return $res->withJson($data);

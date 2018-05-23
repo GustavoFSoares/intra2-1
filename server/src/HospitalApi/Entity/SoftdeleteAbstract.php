@@ -16,7 +16,7 @@ abstract class SoftdeleteAbstract extends EntityAbstract
      * @var Datetime
      *      @Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
-    public $c_created;
+    public $c_modified;
 
     /**
      * @var Boolean
@@ -27,7 +27,15 @@ abstract class SoftdeleteAbstract extends EntityAbstract
     public function __construct() {
         parent::__construct();
         $this->c_removed = false;
-        $this->c_created = new DateTime();
+        $this->c_modified = new DateTime();
+    }
+
+    public function setC_modified($c_modified){
+        $this->c_modified = $c_modified;
+    }
+
+    public function setC_removed($c_removed){
+        $this->c_removed = $c_removed;
     }
 }
     
