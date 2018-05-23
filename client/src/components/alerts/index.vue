@@ -13,7 +13,7 @@
                     <th scope="col">Título</th>
                     <th scope="col">Descrição</th>
                     <th scope="col">Tipo</th>
-                    <th scope="col">Tempo Final</th>
+                    <th scope="col">Prazo Final</th>
                     <th scope="col">Status</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -62,13 +62,16 @@ export default {
             model.getAlerts().then(res => this.alerts = res)
         },
         remove(id, index) {
-            this.alerts.splice(index, 1)
-            model.remove(id).then(res => window.location = "http://localhost/alertas")
+            confirm("Tem certeza que deseja excluir?") ?
+                model.remove(id):''
         }
     },
     mounted() {
         this.loadAlerts()
     },
+    updated() {
+        this.loadAlerts()
+    }
 }
 </script>
 

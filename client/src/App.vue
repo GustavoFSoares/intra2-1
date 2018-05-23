@@ -58,6 +58,10 @@ export default {
     mounted() {
         this.getWarningAlert()
         this.getDangerAlert()
+    },
+    updated() {
+        this.getWarningAlert()
+        this.getDangerAlert()
     }
 
 }

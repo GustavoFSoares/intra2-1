@@ -13,7 +13,7 @@ const getOptions = () => [
 
 const getSelectedOption = (type) => {  
     let exp = new RegExp(type, 'i')
-    let option = options().filter(option => exp.test(option.value))
+    let option = getOptions().filter(option => exp.test(option.value))
     return option[0];
 }
 

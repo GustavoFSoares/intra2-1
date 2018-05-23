@@ -54,9 +54,9 @@ export default {
         },
         submit() {
             if(model.isEdit(this.id)){
-                model.edit(this.id, this.alert).then(res => window.location = "http://localhost/alertas" )
+                model.edit(this.id, this.alert).then(res => this.$router.push('/alertas') )
             } else {
-                model.save(this.alert).then(res => window.location = "http://localhost/alertas" )
+                model.save(this.alert).then(res => this.$router.push('/alertas') )
             }
         },
         loadValues() {
@@ -66,7 +66,7 @@ export default {
                 this.alert = res
             })
         },
-        changeType() {            
+        changeType() {
             this.alert.type?
                 this.options.typeSelected = this.alert.type.value : this.options.typeSelected = " "
         }
