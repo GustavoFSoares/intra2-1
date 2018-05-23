@@ -13,12 +13,12 @@
         </row>
 
         <row id="enterprise" label="Selecione um Tipo">
-            <v-select v-model="alert.type" data-vv-as="Tipo" v-validate data-vv-rules="required" name="alert-type" label="name" :options="options.alerts"/>
+            <v-select v-model="alert.type" data-vv-as="Tipo" v-validate data-vv-rules="required" name="alert-type" label="name" :options="options.alerts" @input="changeType"/>
             <require-text :error="errors.has('alert-type')" :text="errors.first('alert-type')" :attribute="alert.type"/>
         </row>
 
         <row>
-            <top-alert :id='`${alert.type.value}-alert`' :title="alert.title" :description="alert.description" :type="alert.type.value"/>
+            <top-alert :id='`${options.typeSelected}-alert`' :title="alert.title" :description="alert.description" :type="options.typeSelected"/>
         </row>
 
         <row>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { Alert, alertOptions } from "@/entity";
+import Alert, { alertEntity } from "@/entity/alert";
 import model from "@/model/alert";
 import { FormRw, FormRws, Require, VueSelect, TopAlert } from "@/components/shared/Form";
 export default {
@@ -43,9 +43,8 @@ export default {
             title: "Alerta - Adicionar",
             alert: new Alert(),
             options: {
-                alerts: 
-                    [ { name: "Aviso", value: "warning" },
-                    { name: "Erro", value: "danger" }, ]
+                alerts: alertEntity.getOptions(),
+                typeSelected: ' ',
             },
         }
     },
@@ -63,9 +62,13 @@ export default {
         loadValues() {
             this.id = this.$route.params.id
             model.getAlert(this.id).then(res => {
-                res.type = alertOptions(res.type)
+                res.type = alertEntity.getSelectedOption(res.type)
                 this.alert = res
             })
+        },
+        changeType() {            
+            this.alert.type?
+                this.options.typeSelected = this.alert.type.value : this.options.typeSelected = " "
         }
     },
     components: {

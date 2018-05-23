@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { Alert } from "@/entity";
+import Alert from "@/entity/alert";
 import model from "@/model/alert";
 export default {
     data() {
