@@ -54,9 +54,9 @@ export default {
         },
         submit() {
             if(model.isEdit(this.id)){
-                model.edit(this.id, this.alert).then(res => this.$router.push('/alertas') )
+                model.edit(this.id, this.alert).then(() => window.location = `/alertas` )
             } else {
-                model.save(this.alert).then(res => this.$router.push('/alertas') )
+                model.save(this.alert).then(() => window.location = `/alertas` )
             }
         },
         loadValues() {

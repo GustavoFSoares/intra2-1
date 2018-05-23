@@ -59,10 +59,6 @@ export default {
         this.getWarningAlert()
         this.getDangerAlert()
     },
-    updated() {
-        this.getWarningAlert()
-        this.getDangerAlert()
-    }
 
 }
 </script>

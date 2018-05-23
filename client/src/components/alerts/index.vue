@@ -63,15 +63,12 @@ export default {
         },
         remove(id, index) {
             confirm("Tem certeza que deseja excluir?") ?
-                model.remove(id):''
+                model.remove(id).then(() => window.location = `/alertas`):''
         }
     },
     mounted() {
         this.loadAlerts()
     },
-    updated() {
-        this.loadAlerts()
-    }
 }
 </script>
 
