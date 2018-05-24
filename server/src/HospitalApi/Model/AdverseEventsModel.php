@@ -52,7 +52,7 @@ class AdverseEventsModel extends ModelAbstract
                 ->setComplement($data->complement)
                 ->setPatient($data->patient)
                 ->setEventTime($data->eventTime);
-            $this->insert($adverseEvent);
+            $this->doInsert($adverseEvent);
 
             return ['status' => true ];
         } catch (Execption $e) {

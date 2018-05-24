@@ -30,5 +30,5 @@ $events = [
 
 foreach ($events as $event) {
     $event = new Event($event['name']);
-    $model->insert($event);
+    $model->doInsert($event);
 }

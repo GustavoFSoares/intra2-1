@@ -1118,5 +1118,5 @@ foreach ($ramais as $ramal) {
         ->setDescription($ramal['description'])
         ->setSector($ramal['sector'])
         ->setEnterprise($ramal['enterprise']);
-    $model->insert($r);
+    $model->doInsert($r);
 }

@@ -4,6 +4,7 @@ namespace HospitalApi\Model;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
+use DateTime;
 
 /**
  * <b>ModelAbstract</b>
@@ -15,12 +16,14 @@ abstract class ModelAbstract
 {
 
 	public $em;
+	public $now;
 	protected $entityPath;
 
 	public function __construct() {
 		$this->entityPath = get_class($this->entity);
 		$this->entityPath ? 
 			$this->em = $this->createEntityManager() : "";
+		$this->now = new DateTime();
 	}
 
 	/**
@@ -56,7 +59,7 @@ abstract class ModelAbstract
 	 * @param Entity $obj
 	 * @return void
 	 */
-	public function insert($obj) {
+	public function doInsert($obj) {
 		$this->em->persist($obj);
 		$this->em->flush();
 	}
@@ -68,7 +71,7 @@ abstract class ModelAbstract
 	 * @param Entity $obj
 	 * @return void
 	 */
-	public function update($obj) {
+	public function doUpdate($obj) {
 		$this->em->merge($obj);
 		$this->em->flush();
 	}
@@ -79,7 +82,7 @@ abstract class ModelAbstract
 	 * @param Entity $obj
 	 * @return void
 	 */
-	public function delete($obj) {
+	public function doDelete($obj) {
 		$this->em->remove($obj);
 		$this->em->flush();
 	}
@@ -131,4 +134,31 @@ abstract class ModelAbstract
 
 		return $logger;
 	}
+
+	/**
+	 * @method getNow()
+	 * Retorna um Datetime com a Hora Atual
+	 * @return Datetime now
+	 */
+	public function getNow() {
+		return $this->now;
+	}
+
+	/**
+	 * @method isToday()
+	 * Verifica se a tada comparada ($matchDate) foi criada
+	 * nas ultimas 24 horas. E retorna TRUE se for $diffDays = 0,
+	 * Hoje e FALSE para $diffDays diferente de 0
+	 * @param Datetime $matchDate
+	 * @return boolean
+	 */
+	public function isToday($matchDate) {
+		if($matchDate){
+			$diff = $this->now->diff($matchDate);
+			$diffDays = (integer)$diff->format("%R%a");
+			
+			return $diffDays == "0";
+		}
+	}
+
 }

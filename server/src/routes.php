@@ -17,6 +17,7 @@ require 'Routes/enterprise.php';
 require 'Routes/event.php';
 require 'Routes/ramal.php';
 require 'Routes/sector.php';
+require 'Routes/alert.php';
 
 $app->get('/script/insert', function(Request $req, Response $res, array $args){
         require __DIR__ . "/HospitalApi/Scripts/BossSector.php";
