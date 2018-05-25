@@ -36,7 +36,19 @@ class Alert extends SoftdeleteAbstract
      */
     protected $type;
 
-    public function __construct($id = 0, $title = '', $description = '', $type = '') {
+    /**
+     * @var Datetime
+     *      @Column(name="dt_comeco", type="datetime")
+     */
+    protected $beginTime;
+
+    /**
+     * @var Datetime
+     *      @Column(name="dt_final", type="datetime")
+     */
+    protected $endTime;
+
+    public function __construct($id = 0, $title = '', $description = '', $type = '', $beginTime = '', $endTime = '') {
         parent::__construct();
         $this->id = $id;
         $this->title = $title;
@@ -90,6 +102,28 @@ class Alert extends SoftdeleteAbstract
     public function setType($type) {
         $this->type = $type;
 
+        return $this;
+    }
+
+    public function getBeginTime() {
+        return $this->beginTime;
+    }
+    public function setBeginTime($beginTime) {
+        $beginTime = $this->convertToDatetime($beginTime);
+        
+        $this->beginTime = $beginTime;
+        
+        return $this;
+    }
+
+    public function getEndTime() {
+        return $this->endTime;
+    }
+    public function setEndTime($endTime) {
+        $endTime = $this->convertToDatetime($endTime);
+
+        $this->endTime = $endTime;
+        
         return $this;
     }
 

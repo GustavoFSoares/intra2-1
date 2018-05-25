@@ -1,6 +1,6 @@
 <?php
 namespace HospitalApi\Entity;
-
+use Datetime;
 /**
  * @abstract EntityAbstract
  * <b>EntityAbstract</b>
@@ -60,6 +60,16 @@ abstract class EntityAbstract
             $obj[$var] = $this->$var;
         }
         return $obj;
+    }
+
+    public function convertToDatetime($date) {
+        if (!$date instanceof Datetime) {
+            $search = [' ', '-', '/'];
+            $reclace = ['', ' ', '-'];
+            $date = str_replace($search, $reclace, $date);
+            $date = new DateTime($date);
+        }
+        return $date;
     }
 
 }

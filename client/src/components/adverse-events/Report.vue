@@ -88,8 +88,8 @@
                         </row>
                         
                         <row label="Data e Hora do Ocorrido">
-                            <date-picker>
-                                <input v-mask="'##/##/#### - ##:##'" type="text" class="form-control" id="picker"/>
+                            <date-picker id="date" maxdate="now">
+                                <input v-mask="'##/##/#### - ##:##'" type="text" class="form-control" id="date"/>
                             </date-picker>
                         </row>
 

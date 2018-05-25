@@ -14,13 +14,17 @@ import 'daterangepicker/daterangepicker.css'
 
 export default {
     props: {
+        id: '',
         multiple: { default: false },
         onlycalendar: { default: false },
         opens: { default: "right" },
-        maxdate: { default: moment.now() }
+        maxdate: "",
+        mindate: "",
     },
     data() {
         return {
+            begindate: '',
+            finaldate: '',
             minuteInterval: 5,
             hour24: true, 
             drops: "up",
@@ -37,15 +41,40 @@ export default {
         }
     }, 
     mounted() {
-        $('#picker').daterangepicker({ "autoUpdateInput": true, "alwaysShowCalendars": true, "singleDatePicker": !this._props.multiple, "timePicker": !this._props.onlycalendar, "timePicker24Hour": this.hour24, "timePickerIncrement": this.minuteInterval, "startDate": moment.now(), "opens": this._props.opens, "drops": this.drops, "locale": this.locale, "maxDate": this.configureLimitDate() });
+        $(`#${this.$props.id}`).daterangepicker({ "autoUpdateInput": true, "alwaysShowCalendars": true, "singleDatePicker": !this._props.multiple, "timePicker": !this._props.onlycalendar, "timePicker24Hour": this.hour24, "timePickerIncrement": this.minuteInterval, "opens": this._props.opens, "drops": this.drops, "locale": this.locale, "minDate": this.configureBeginDate(), "maxDate": this.configureFinalDate() });
     },
     methods: {
-        configureLimitDate() {
-            if(this._props.maxdate){
-                let date = new Date(this._props.maxdate);
+        configureFinalDate() {
+            this.finaldate = this.getTime(this.$props.maxdate)
+            if(this.finaldate){
+                let date = new Date(this.finaldate);
                 return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} - 23:59`
             } else {
                 return null
+            }
+        },
+        configureBeginDate() {
+            this.begindate = this.getTime(this.$props.mindate)
+            if(this.begindate){
+                let date = new Date(this.begindate);
+                return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} - 00:00`
+            } else {
+                return null
+            }
+        },
+        getTime(timename) {
+            switch (timename) {
+                case "now":
+                    return moment.now()
+                    break;
+            
+                case "tomorrow":
+                    return moment(new Date()).add(1, 'days')
+                    break;
+            
+                default:
+                    return ""
+                    break;
             }
         }
     }
