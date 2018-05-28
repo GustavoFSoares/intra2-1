@@ -34,7 +34,6 @@ class AdverseEventsEmailTemplate extends EmailTemplateAbstract
         } else {
             $this->receiver = "eventoadverso.hu@gampcanoas.com.br";
         }
-        $this->receiver = "gustavo.soares@gampcanoas.com.br";
 
         return $this;
     }
