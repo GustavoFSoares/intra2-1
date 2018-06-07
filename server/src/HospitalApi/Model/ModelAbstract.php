@@ -2,6 +2,7 @@
 
 namespace HospitalApi\Model;
 
+use HospitalApi\BasicApplicationAbstract;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use DateTime;
@@ -12,7 +13,7 @@ use DateTime;
  * e inserir métodos de CRUD com banco de dados às
  * outras Models
  */
-abstract class ModelAbstract 
+abstract class ModelAbstract extends BasicApplicationAbstract
 {
 
 	public $em;
@@ -42,11 +43,11 @@ abstract class ModelAbstract
 		$config = Setup::createAnnotationMetadataConfiguration($path, $devMode);
 
 		$connectionOptions = [
-			'dbname' => 'hospital_api',
-			'user' => 'root',
-			'password' => 'root',
-			'host' => 'mysql',
-			'driver' => 'pdo_mysql'
+			'dbname' => DATABASE_NAME,
+			'user' => APPLICATION['DB_USER'],
+			'password' => APPLICATION['DB_PASSWORD'],
+			'host' => APPLICATION['DB_HOST'],
+			'driver' => APPLICATION['DB_DRIVER']
 		];
 
 		return EntityManager::create($connectionOptions, $config);

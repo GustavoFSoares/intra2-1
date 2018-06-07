@@ -45,6 +45,7 @@ services:
         working_dir: /app
         volumes:
             - ./client:/app
+            - ./config:/config
         command: bash -c "npm i && npm start"
     
     slim:
@@ -64,6 +65,7 @@ services:
         volumes:
             - ./server:/var/www
             - ./server/logs:/var/www/logs
+            - ./config:/var/config
     
 networks: 
     hospital-network:

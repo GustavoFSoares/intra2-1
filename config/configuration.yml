@@ -1,0 +1,77 @@
+DEVELOPER:
+    HOST: 'localhost'
+    DOMAIN: dev
+    DATABASE:
+        DATABASE_NAME: 'hospital_api'
+        BOOTSTRAP:
+            DB_HOST: 'mysql'
+            DB_USER: 'root'
+            DB_PASSWORD: 'root'
+            DB_DRIVER: 'pdo_mysql'
+
+        APPLICATION:
+            DB_HOST: 'mysql'
+            DB_USER: 'root'
+            DB_PASSWORD: 'root'
+            DB_DRIVER: 'pdo_mysql'
+
+    ACTIVE_DIRECORY: NULL
+    APPLICATION:
+        DEBUG:
+            active: true
+            email: 'gustavo.soares@gampcanoas.com.br'
+    
+HOMOLOG:
+    HOST: '10.100.200.100'
+    DOMAIN: homo
+    DATABASE:
+        DATABASE_NAME: 'intra2_homolog'
+        BOOTSTRAP:
+            DB_HOST: '10.100.1.33'
+            DB_USER: 'dev'
+            DB_PASSWORD: 'devloop356'
+            DB_DRIVER: 'pdo_mysql'
+
+        APPLICATION:
+            DB_HOST: '10.100.1.33'
+            DB_USER: 'homo'
+            DB_PASSWORD: 'homo123'
+            DB_DRIVER: 'pdo_mysql'
+
+    ACTIVE_DIRECORY:
+        AD_HOST: '10.100.1.10'
+        AD_USER: ''
+        AD_PASSWORD:
+    
+    APPLICATION:
+        DEBUG:
+            active: true
+            email: 'gustavo.soares@gampcanoas.com.br'
+
+PRODUCTION:
+    HOST: '10.100.1.32'
+    DOMAIN: prod
+    DATABASE:
+        DATABASE_NAME: 'intra2'
+        BOOTSTRAP:
+            DB_HOST: '10.100.1.33'
+            DB_USER: 'dev'
+            DB_PASSWORD: 'devloop356'
+            DB_DRIVER: 'pdo_mysql'
+
+        APPLICATION:
+            DB_HOST: '10.100.1.33'
+            DB_USER: 'prod'
+            DB_PASSWORD: 'production537'
+            DB_DRIVER: 'pdo_mysql'
+
+    ACTIVE_DIRECORY:
+        AD_HOST: '10.100.1.10'
+        AD_USER: ''
+        AD_PASSWORD:
+    
+    APPLICATION:
+        DEBUG:
+            active: true
+            email: 'gustavo.soares@gampcanoas.com.br'
+

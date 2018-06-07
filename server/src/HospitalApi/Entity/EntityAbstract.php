@@ -1,5 +1,7 @@
 <?php
 namespace HospitalApi\Entity;
+
+use HospitalApi\BasicApplicationAbstract;
 use Datetime;
 /**
  * @abstract EntityAbstract
@@ -8,7 +10,7 @@ use Datetime;
  * pela abstração e implementação de métodos 
  * como <i>toArray()</i> e <i>toString()</i>
  */
-abstract class EntityAbstract
+abstract class EntityAbstract extends BasicApplicationAbstract
 {
     
     public function __construct() { }

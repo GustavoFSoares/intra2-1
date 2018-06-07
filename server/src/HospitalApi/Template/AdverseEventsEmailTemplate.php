@@ -30,11 +30,12 @@ class AdverseEventsEmailTemplate extends EmailTemplateAbstract
 
     public function setReceiver($report) {
         if ($report->enterprise['id'] == 'hpsc') {
-            $this->receiver = "eventoadverso.hpsc@gampcanoas.com.br";
+            $receiver = "eventoadverso.hpsc@gampcanoas.com.br";
         } else {
-            $this->receiver = "eventoadverso.hu@gampcanoas.com.br";
+            $receiver = "eventoadverso.hu@gampcanoas.com.br";
         }
-
+        $this->receiver = parent::setReceiver($receiver);
+        
         return $this;
     }
 
