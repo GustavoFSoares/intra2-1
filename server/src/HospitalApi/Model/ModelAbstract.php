@@ -44,10 +44,10 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 
 		$connectionOptions = [
 			'dbname' => DATABASE_NAME,
-			'user' => APPLICATION['DB_USER'],
-			'password' => APPLICATION['DB_PASSWORD'],
-			'host' => APPLICATION['DB_HOST'],
-			'driver' => APPLICATION['DB_DRIVER']
+			'user' => DB_APPLICATION_USER,
+			'password' => DB_APPLICATION_PASSWORD,
+			'host' => DB_APPLICATION_HOST,
+			'driver' => DB_APPLICATION_DRIVER
 		];
 
 		return EntityManager::create($connectionOptions, $config);

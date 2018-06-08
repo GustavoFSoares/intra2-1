@@ -5,11 +5,11 @@ class BasicApplicationAbstract
 {
 
     public function isDebug(){
-        return DEBUG['active'];
+        return DEBUG_ACTIVE;
     }
 
     public function getDebugEmail(){
-        return DEBUG['email'];
+        return DEBUG_EMAIL;
     }
 
 }

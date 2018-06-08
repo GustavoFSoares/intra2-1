@@ -16,10 +16,10 @@ $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/src/Hospi
 
 $connectionOptions = [
     'dbname' => DATABASE_NAME,
-    'user' => BOOTSTRAP['DB_USER'],
-    'password' => BOOTSTRAP['DB_PASSWORD'],
-    'host' => BOOTSTRAP['DB_HOST'],
-    'driver' => BOOTSTRAP['DB_DRIVER']
+    'user' => DB_BOOTSTRAP_USER,
+    'password' => DB_BOOTSTRAP_PASSWORD,
+    'host' => DB_BOOTSTRAP_HOST,
+    'driver' => DB_BOOTSTRAP_DRIVER
 ];
 
 // obtaining the entity manager
