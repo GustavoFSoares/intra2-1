@@ -1,7 +1,8 @@
 <?php
 namespace HospitalApi\Controller;
-use HospitalApi\Entity\SoftdeleteAbstract;
 
+use HospitalApi\BasicApplicationAbstract;
+use HospitalApi\Entity\SoftdeleteAbstract;
 use HospitalApi\Model\ModelAbstract;
 use Exception;
 
@@ -9,7 +10,7 @@ use Exception;
  * @abstract <b> ControllerAbstract </b>
  * Classe responsável por incluir métodos básicos de CRUD
  */
-abstract class ControllerAbstract
+abstract class ControllerAbstract extends BasicApplicationAbstract
 {
 	
 	private $model;

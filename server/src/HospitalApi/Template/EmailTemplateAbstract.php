@@ -1,7 +1,9 @@
 <?php
 namespace HospitalApi\Template;
 
-abstract class EmailTemplateAbstract implements EmailTemplateInterface
+use HospitalApi\BasicApplicationAbstract;
+
+abstract class EmailTemplateAbstract extends BasicApplicationAbstract implements EmailTemplateInterface
 {
 
     protected $sender = [ ];
@@ -20,6 +22,14 @@ abstract class EmailTemplateAbstract implements EmailTemplateInterface
     public function getReceiver() {
         return $this->receiver;
     }
+    public function setReceiver($receiver) {
+        if($this->isDebug()) {
+            return $this->getDebugEmail();
+        } else {
+            return $receiver;
+        }    
+    }
+    
 
     public function getSubject() {
         return $this->subject;

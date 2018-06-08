@@ -1,6 +1,8 @@
 <?php
 namespace HospitalApi\Entity;
 
+use HospitalApi\BasicApplicationAbstract;
+use Datetime;
 /**
  * @abstract EntityAbstract
  * <b>EntityAbstract</b>
@@ -8,7 +10,7 @@ namespace HospitalApi\Entity;
  * pela abstração e implementação de métodos 
  * como <i>toArray()</i> e <i>toString()</i>
  */
-abstract class EntityAbstract
+abstract class EntityAbstract extends BasicApplicationAbstract
 {
     
     public function __construct() { }
@@ -60,6 +62,16 @@ abstract class EntityAbstract
             $obj[$var] = $this->$var;
         }
         return $obj;
+    }
+
+    public function convertToDatetime($date) {
+        if (!$date instanceof Datetime) {
+            $search = [' ', '-', '/'];
+            $reclace = ['', ' ', '-'];
+            $date = str_replace($search, $reclace, $date);
+            $date = new DateTime($date);
+        }
+        return $date;
     }
 
 }

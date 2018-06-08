@@ -31,11 +31,17 @@ abstract class SoftdeleteAbstract extends EntityAbstract
     }
 
     public function setC_modified($c_modified){
+        $c_modified = new Datetime();
+        
         $this->c_modified = $c_modified;
+
+        return $this;
     }
 
     public function setC_removed($c_removed){
         $this->c_removed = $c_removed;
+
+        return $this;
     }
 }
     

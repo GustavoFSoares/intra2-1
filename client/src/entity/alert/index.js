@@ -2,7 +2,9 @@ export default class Alert {
         constructor() {
             this.title = '',
             this.description = '',
-            this.type = ''
+            this.type = '',
+            this.beginTime = ''
+            this.endTime = ''
         }
 }
 

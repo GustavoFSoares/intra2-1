@@ -12,10 +12,27 @@
             <require-text :error="errors.has('alert-description')" :text="errors.first('alert-description')" :show="true" :attribute="alert.text"/>
         </row>
 
-        <row id="enterprise" label="Selecione um Tipo">
-            <v-select v-model="alert.type" data-vv-as="Tipo" v-validate data-vv-rules="required" name="alert-type" label="name" :options="options.alerts" @input="changeType"/>
-            <require-text :error="errors.has('alert-type')" :text="errors.first('alert-type')" :attribute="alert.type"/>
-        </row>
+        <div class="row">
+            <rows id="enterprise" label="Selecione um Tipo">
+                <v-select v-model="alert.type" data-vv-as="Tipo" v-validate data-vv-rules="required" name="alert-type" label="name" :options="options.alerts" @input="changeType"/>
+                <require-text :error="errors.has('alert-type')" :text="errors.first('alert-type')" :attribute="alert.type"/>
+            </rows>
+
+            <rows>
+                <div class="row">
+                    <rows label="Horário de Inicio">
+                        <date-picker mindate="now" opens="center" id="beginTime">
+                            <input v-mask="'##/##/#### - ##:##'" type="text" class="form-control" id="beginTime"/>
+                        </date-picker>
+                    </rows>
+                    <rows label="Horário de Fim">
+                        <date-picker mindate="tomorrow" opens="center" id="endTime">
+                            <input v-mask="'##/##/#### - ##:##'" type="text" class="form-control" id="endTime"/>
+                        </date-picker>
+                    </rows>
+                </div>
+            </rows>
+        </div>
 
         <row>
             <top-alert :id='`${options.typeSelected}-alert`' :title="alert.title" :description="alert.description" :type="options.typeSelected"/>
@@ -35,7 +52,7 @@
 <script>
 import Alert, { alertEntity } from "@/entity/alert";
 import model from "@/model/alert";
-import { FormRw, FormRws, Require, VueSelect, TopAlert } from "@/components/shared/Form";
+import { FormRw, FormRws, Require, VueSelect, TopAlert, DatePicker } from "@/components/shared/Form";
 export default {
     data(){
         return {
@@ -53,6 +70,9 @@ export default {
             this.$validator.validateAll().then(success => success? this.submit():"")
         },
         submit() {
+            this.alert.beginTime = document.getElementById('beginTime').value
+            this.alert.endTime = document.getElementById('endTime').value
+
             if(model.isEdit(this.id)){
                 model.edit(this.id, this.alert).then(() => window.location = `/alertas` )
             } else {
@@ -77,6 +97,7 @@ export default {
         'require-text': Require,
         'v-select': VueSelect, 
         'top-alert': TopAlert,
+        'date-picker': DatePicker,
     },
     mounted() {
         if(model.isEdit(this.$route.params.id)){
