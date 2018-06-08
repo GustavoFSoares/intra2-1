@@ -34,12 +34,13 @@ HOMOLOG:
 
     DB_APPLICATION_HOST: '10.100.1.33'
     DB_APPLICATION_USER: 'homo'
-    DB_APPLICATION_PASSWORD: 'homo123'
+    DB_APPLICATION_PASSWORD: 'homolog123'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
     AD_HOST: '10.100.1.10'
-    AD_USER: ''
-    AD_PASSWORD:
+    AD_USER: 'servweb'
+    AD_PASSWORD: 'hu@esc@gamp@web'
+    AD_DOMAIN: '@hmd.local'
     
     DEBUG_ACTIVE: true
     DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
@@ -58,12 +59,13 @@ PRODUCTION:
 
     DB_APPLICATION_HOST: '10.100.1.33'
     DB_APPLICATION_USER: 'prod'
-    DB_APPLICATION_PASSWORD: 'production537'
+    DB_APPLICATION_PASSWORD: 'prod362'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
     AD_HOST: '10.100.1.10'
-    AD_USER: ''
-    AD_PASSWORD:
+    AD_USER: 'servweb'
+    AD_PASSWORD: 'hu@esc@gamp@web'
+    AD_DOMAIN: '@hmd.local'
     
     DEBUG_ACTIVE: true
     DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
