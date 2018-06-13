@@ -8,34 +8,14 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <!-- <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li> -->
                     <li class="nav-item" v-for="(screen, index) in screens" :key="index">
                         <a v-if="screen.externalLink" class="nav-link" :href="screen.link">{{ screen.name }}</a>
                         <router-link v-else class="nav-link" :to="screen.link">{{ screen.name }}</router-link>
                     </li>
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                    </li> -->
                 </ul>
 
                 <div class="navbar-nav">
-                    <div class="nav-item">
-                        <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"@click= > -->
-                        <a class="nav-link" :href="login.link">
-                            {{ login.name }}
-                            <i class="fa fa-user" style="font-size:20px"></i>
-                        </a>
-                    </div>
+                    <menu-login/>
                 </div>
                 
             </div>
@@ -45,6 +25,8 @@
 </template>
 
 <script>
+import MenuLogin from '@/components/login/Menu.vue';
+
 export default {
     data(){
         return {
@@ -57,10 +39,12 @@ export default {
                 {name: "Institucional", link:"http://gamp-web/?tela=institucional", externalLink: true },
                 {name: "Comissões", link:"http://gamp-web/?tela=comissoes", externalLink: true },
             ],
-            "login": {name: "Login", link:"http://gamp-web/?tela=Login" },
         }
     },
-    methods: { }
+    methods: { },
+    components: {
+        'menu-login': MenuLogin
+    }
 }
 </script>
 
@@ -71,5 +55,3 @@ export default {
         display: block;
     }
 </style>
-
-
