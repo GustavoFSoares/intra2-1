@@ -4,6 +4,7 @@ import App from './App'
 import VueResource from 'vue-resource'
 import router from './routes'
 
+import VueSession from 'vue-session'
 import VueTheMask from 'vue-the-mask'
 import VeeValidate, { Validator } from 'vee-validate';
 import translate from 'vee-validate/dist/locale/pt_BR';
@@ -15,6 +16,7 @@ import 'font-awesome/css/font-awesome.css'
 Vue.config.productionTip = false
 
 Validator.localize('pt_BR', translate)
+Vue.use(VueSession)
 Vue.use(VueTheMask)
 Vue.use(VeeValidate);
 Vue.use(VueResource)
