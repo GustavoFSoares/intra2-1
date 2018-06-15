@@ -38,7 +38,7 @@ class User extends SoftdeleteAbstract
     protected $ocupation;
 
     /**
-     * @var string @Column(type="boolean", default: false)
+     * @var string @Column(type="boolean", options={"default":false})
      */
     protected $admin;
 

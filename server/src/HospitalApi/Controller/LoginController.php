@@ -15,28 +15,41 @@ class LoginController extends ControllerAbstract
     public function auth($req, $res, $args){
         $user = (object)$req->getParsedBody();
 
+        if(!$this->ADAllowed()){
+            $user = [
+                'id' => USERTEST_ID,
+                'name' => USERTEST_NAME,
+                'group' => USERTEST_GROUP,
+                'ocupation' => USERTEST_OCUPATION
+            ];
+            return $res->withJson($user);
+        }
+
         $Ad = new ActiveDirectoryController();
-        $user = (object)['id'=>"gustavo.soares", 'password'=>'gustavoti'];
-        
-        if($Ad->doAuth($user)) {
-            $user = $Ad->getUserContents($user->id);
+        if ($Ad->doAuth($user)) {
+            $this->doLogin($user->id);
         } else {
             die('nao deu');
         }
-        
-        // $ocupation = $user[0]['description'][0];
-        // $name = $user[0]['displayname'][0];
-        // $group = $user[0]['department'][0];
-        // $id = $user[0]['samaccountname'][0];
-        $user = null;
-        $user['ocupation'] = "Assistente de sistemas";
-        $user['name'] = 'Gustavo Ferreira Soares';
-        $user['group'] = 'TECNOLOGIA DA INFORMAÇÃO HU';
-        $user['id'] = 'gustavo.soares';
 
-        return $res->withJson($user);
     }
 
+    public function doLogin($id) {
+        
+        $model = $this->getModel();
+        $User = $model->findById($id);
+        
+        if(!$User) {
+            $User = $Ad->getUserContents($id);
+            $User = [
+                'id' => $user[0]['samaccountname'][0],
+                'name' => $user[0]['displayname'][0],
+                'group' => $user[0]['department'][0],
+                'ocupation' => $user[0]['description'][0],
+            ];
+        }
 
+
+    }
 
 }

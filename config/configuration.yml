@@ -5,9 +5,9 @@ DEVELOPER:
     
     DATABASE_NAME: 'hospital_api'
 
-    DB_BOOTSTRAP_HOST: 'localhost'
+    DB_BOOTSTRAP_HOST: 'mysql'
     DB_BOOTSTRAP_USER: 'root'
-    DB_BOOTSTRAP_PASSWORD: ''
+    DB_BOOTSTRAP_PASSWORD: 'root'
     DB_BOOTSTRAP_DRIVER: 'pdo_mysql'
 
     DB_APPLICATION_HOST: 'mysql'
@@ -15,6 +15,7 @@ DEVELOPER:
     DB_APPLICATION_PASSWORD: 'root'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
+    AD: false
     AD_HOST: 'ldap://10.100.1.10'
     AD_USER: 'servweb'
     AD_PASSWORD: 'hu@esc@gamp@web'
@@ -22,6 +23,12 @@ DEVELOPER:
 
     DEBUG_ACTIVE: true
     DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
+
+    USERTEST_ID: 'gustavo.soares'
+    USERTEST_PWD: 'gustavoti'
+    USERTEST_NAME: 'Gustavo Ferreira Soares'
+    USERTEST_GROUP: 'TECNOLOGIA DA INFORMAÇÃO HU'
+    USERTEST_OCUPATION: "Assistente de sistemas"
     
 #DESENVOLVIMENTO - WINDOWS ==============================================
 DEVWIN:
@@ -40,6 +47,7 @@ DEVWIN:
     DB_APPLICATION_PASSWORD: ''
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
+    AD: true
     AD_HOST: 'ldap://10.100.1.10'
     AD_USER: 'servweb'
     AD_PASSWORD: 'hu@esc@gamp@web'
@@ -65,6 +73,7 @@ HOMOLOG:
     DB_APPLICATION_PASSWORD: 'homolog123'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
+    AD: true
     AD_HOST: 'ldap://10.100.1.10'
     AD_USER: 'servweb'
     AD_PASSWORD: 'hu@esc@gamp@web'
@@ -90,6 +99,7 @@ PRODUCTION:
     DB_APPLICATION_PASSWORD: 'prod362'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
+    AD: true
     AD_HOST: 'ldap://10.100.1.10'
     AD_USER: 'servweb'
     AD_PASSWORD: 'hu@esc@gamp@web'

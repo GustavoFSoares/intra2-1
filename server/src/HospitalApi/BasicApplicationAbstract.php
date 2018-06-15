@@ -12,4 +12,8 @@ class BasicApplicationAbstract
         return DEBUG_EMAIL;
     }
 
+    public function ADAllowed(){
+        return AD;
+    }
+
 }

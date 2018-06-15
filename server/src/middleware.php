@@ -26,6 +26,10 @@ function loadConfigurations() {
             $yaml = $yaml['PRODUCTION'];
             break;
 
+        case 'win':
+            $yaml = $yaml['DEVWIN'];
+            break;
+
         default:
             die('NO USER');
             break;
