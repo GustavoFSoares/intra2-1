@@ -33,16 +33,22 @@ class User extends SoftdeleteAbstract
     protected $group;
 
     /**
-     * @var string @Column(type="boolean")
+     * @var string @Column(name="cargo", type="string")
+     */
+    protected $ocupation;
+
+    /**
+     * @var string @Column(type="boolean", default: false)
      */
     protected $admin;
 
-    public function __contruct($name = '', $level = '', $group = '', $admin = false) {
+    public function __contruct($name = '', $level = '', $group = '', $ocupation = '', $admin = false) {
         parent::__construct();
         $this->id = 0;
         $this->name = $name;
         $this->level = $level;
         $this->group = $group;
+        $this->ocupation = $ocupation;
         $this->admin = $admin;
     }
 
@@ -78,6 +84,15 @@ class User extends SoftdeleteAbstract
     }
     public function setGroup($group) {
         $this->group = $group;
+
+        return $this;
+    }
+
+    public function getOcupation() {
+        return $this->ocupation;
+    }
+    public function setOcupation($ocupation) {
+        $this->ocupation = $ocupation;
 
         return $this;
     }

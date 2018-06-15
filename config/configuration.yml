@@ -37,7 +37,7 @@ HOMOLOG:
     DB_APPLICATION_PASSWORD: 'homolog123'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
-    AD_HOST: '10.100.1.10'
+    AD_HOST: 'ldap://10.100.1.10'
     AD_USER: 'servweb'
     AD_PASSWORD: 'hu@esc@gamp@web'
     AD_DOMAIN: '@hmd.local'
@@ -62,7 +62,7 @@ PRODUCTION:
     DB_APPLICATION_PASSWORD: 'prod362'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
-    AD_HOST: '10.100.1.10'
+    AD_HOST: 'ldap://10.100.1.10'
     AD_USER: 'servweb'
     AD_PASSWORD: 'hu@esc@gamp@web'
     AD_DOMAIN: '@hmd.local'
