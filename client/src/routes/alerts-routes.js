@@ -1,18 +1,21 @@
 import index from '@/components/alerts';
 import Form from '@/components/alerts/Form.vue';
 
-const adverseEventsRoutes = [
+const Rule = { requiresAuth: true, groupAuth: 'ti' }
+export default [
     {
         path: '/alertas',
-        component: index
+        component: index,
+        meta: Rule
     },
     {
         path: '/alertas/add',
-        component: Form
+        component: Form,
+        meta: Rule
     },
     {
         path: '/alertas/edit/:id',
-        component: Form
+        component: Form,
+        meta: Rule
     },
 ]
-export default adverseEventsRoutes

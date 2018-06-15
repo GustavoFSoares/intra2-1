@@ -48,16 +48,21 @@ export default {
         'top-alert': TopAlert,
     },
     methods: {
-        getWarningAlert(){
+        getWarningAlert() {
             AlertGetters.getWarning().then(res => this.alert.warning = res)
         },
-        getDangerAlert(){
+        getDangerAlert() {
             AlertGetters.getDanger().then(res => this.alert.danger = res)
         },
+        autoload() {
+            window.$session = this.$session
+        }
     },
     mounted() {
         this.getWarningAlert()
         this.getDangerAlert()
+
+        this.autoload()
     },
 
 }
