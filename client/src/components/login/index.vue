@@ -7,16 +7,18 @@
                 <div class="col-md-6 mb-6 order-md-2">
                     <div id="login">
                         <row id="id" label="Usuario">
-                            <input data-vv-as="Nome" autocomplete="off" v-validate data-vv-rules="required" type="text" class="form-control" name="name">
+                            <input data-vv-as="Usuário" autocomplete="off" v-validate data-vv-rules="required" type="text" class="form-control" name="id" v-model="login.id">
+                            <require-text :error="errors.has('id')" :text="errors.first('id')" :show="true" :attribute="login.id"/>
                             <small class="text-muted">usuario.sobrenome</small>
                         </row>
                         
                         <row id="password" label="Senha">
-                            <input data-vv-as="Nome" autocomplete="off" v-validate data-vv-rules="required" type="password" class="form-control" name="name">
+                            <input data-vv-as="Senha" autocomplete="off" v-validate data-vv-rules="required" type="password" class="form-control" name="password" v-model="login.password">
+                            <require-text :error="errors.has('password')" :text="errors.first('password')" :show="true" :attribute="login.password"/>
                         </row>
 
                         <row>
-                            <button @click="login" id="submit" class="btn btn-outline-primary btn-lg">Login</button>
+                            <button @click="isValidForm" id="submit" class="btn btn-outline-primary btn-lg">Login</button>
                         </row>
                     </div>
                 </div>
@@ -38,16 +40,25 @@ import { FormRw, FormRws, Require } from '@/components/shared/Form';
 import model from '@/model/login-model';
 export default {
     data() {
-        return { }
+        return {
+            login: {
+                id: '',
+                password: ''
+            }
+        }
     },
     methods: {
-        login() {
-            model.login()
+        isValidForm() {
+            this.$validator.validateAll().then(success => success? this.submit():"")
         },
+        submit() {
+            model.doLogin()
+        }
     },
     components: {
         'row': FormRw,
         'rows': FormRws,
+        'require-text': Require,
     }
 }
 </script>

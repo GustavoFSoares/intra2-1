@@ -33,7 +33,7 @@ export default {
             this.$router.push('/login')
         },
         logout() {
-            model.logout()
+            model.doLogout()
         },
     },
     mounted() {
