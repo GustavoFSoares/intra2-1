@@ -52,7 +52,7 @@ export default {
             this.$validator.validateAll().then(success => success? this.submit():"")
         },
         submit() {
-            model.doLogin()
+            model.doLogin(this.login)
         }
     },
     components: {
