@@ -5,9 +5,9 @@ DEVELOPER:
     
     DATABASE_NAME: 'hospital_api'
 
-    DB_BOOTSTRAP_HOST: 'mysql'
+    DB_BOOTSTRAP_HOST: 'localhost'
     DB_BOOTSTRAP_USER: 'root'
-    DB_BOOTSTRAP_PASSWORD: 'root'
+    DB_BOOTSTRAP_PASSWORD: ''
     DB_BOOTSTRAP_DRIVER: 'pdo_mysql'
 
     DB_APPLICATION_HOST: 'mysql'
@@ -15,13 +15,41 @@ DEVELOPER:
     DB_APPLICATION_PASSWORD: 'root'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
-    ACTIVE_DIRECORY: NULL
+    AD_HOST: 'ldap://10.100.1.10'
+    AD_USER: 'servweb'
+    AD_PASSWORD: 'hu@esc@gamp@web'
+    AD_DOMAIN: '@hmd.local'
 
     DEBUG_ACTIVE: true
     DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
-HOMOLOG:
     
+#DESENVOLVIMENTO - WINDOWS ==============================================
+DEVWIN:
+    HOST: 'localhost'
+    DOMAIN: dev
+    
+    DATABASE_NAME: 'intra2_dev'
+
+    DB_BOOTSTRAP_HOST: 'localhost'
+    DB_BOOTSTRAP_USER: 'root'
+    DB_BOOTSTRAP_PASSWORD: ''
+    DB_BOOTSTRAP_DRIVER: 'pdo_mysql'
+
+    DB_APPLICATION_HOST: 'localhost'
+    DB_APPLICATION_USER: 'root'
+    DB_APPLICATION_PASSWORD: ''
+    DB_APPLICATION_DRIVER: 'pdo_mysql'
+
+    AD_HOST: 'ldap://10.100.1.10'
+    AD_USER: 'servweb'
+    AD_PASSWORD: 'hu@esc@gamp@web'
+    AD_DOMAIN: '@hmd.local'
+    
+    DEBUG_ACTIVE: true
+    DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
+
 #HOMOLOGAÇÃO ===============================================================
+HOMOLOG:
     HOST: '10.100.200.100'
     DOMAIN: homo
     
@@ -37,7 +65,7 @@ HOMOLOG:
     DB_APPLICATION_PASSWORD: 'homolog123'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
-    AD_HOST: '10.100.1.10'
+    AD_HOST: 'ldap://10.100.1.10'
     AD_USER: 'servweb'
     AD_PASSWORD: 'hu@esc@gamp@web'
     AD_DOMAIN: '@hmd.local'
@@ -62,7 +90,7 @@ PRODUCTION:
     DB_APPLICATION_PASSWORD: 'prod362'
     DB_APPLICATION_DRIVER: 'pdo_mysql'
 
-    AD_HOST: '10.100.1.10'
+    AD_HOST: 'ldap://10.100.1.10'
     AD_USER: 'servweb'
     AD_PASSWORD: 'hu@esc@gamp@web'
     AD_DOMAIN: '@hmd.local'
