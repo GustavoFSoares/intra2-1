@@ -10,14 +10,13 @@ $app->add(function ($req, $res, $next) {
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
 
-require 'Routes/link.php';
-require 'Routes/email.php';
-require 'Routes/adverseEvents.php';
-require 'Routes/enterprise.php';
-require 'Routes/event.php';
-require 'Routes/ramal.php';
-require 'Routes/sector.php';
-require 'Routes/alert.php';
+$path = __dir__ . '/Routes';
+$dir = dir($path);
+while ($file = $dir->read()) {
+    if($file != '.' && $file != '..'){
+        require "$path/$file";
+    }
+}
 
 $app->get('/script/insert', function(Request $req, Response $res, array $args){
         require __DIR__ . "/HospitalApi/Scripts/BossSector.php";
