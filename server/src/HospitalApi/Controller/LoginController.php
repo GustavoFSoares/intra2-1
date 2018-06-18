@@ -16,27 +16,33 @@ class LoginController extends ControllerAbstract
 
     public function auth($req, $res, $args){
         $user = (object)$req->getParsedBody();
-
+        
         if(!$this->ADAllowed()){
-            $user = [
-                'id' => USERTEST_ID,
-                'name' => USERTEST_NAME,
-                'level' => USERTEST_LEVEL,
-                'group' => USERTEST_GROUP,
-                'occupation' => USERTEST_OCCUPATION
-            ];
-            return $res->withJson($user);
+            if($user->id == USERTEST_ID || $user->password == USERTEST_PWD){
+                $User = new User();
+                $User 
+                    ->setId(USERTEST_ID)
+                    ->setName(USERTEST_NAME)
+                    ->setLevel(USERTEST_LEVEL)
+                    ->setGroup(USERTEST_GROUP)
+                    ->setOccupation(USERTEST_OCCUPATION);
+                $result = ['status' => true, 'user' => $User->toArray() ];
+            } else {
+                $model = new \HospitalApi\Model\StatusMessageModel();
+                $result = $model->getStatus('user_incorrect')->toArray();
+            }
+            return $res->withJson($result);
         }
 
         $Ad = new ActiveDirectoryController();
         if ($Ad->doAuth($user)) {
-            $result = $this->doLogin($user->id);
+            $result = $this->doLogin($user->id)->toArray();
         } else {
             $model = new \HospitalApi\Model\StatusMessageModel();
-            $result = $model->getStatus('user_incorrect');
+            $result = $model->getStatus('user_incorrect')->toArray();
         }
 
-        return $res->withJson($result->toArray());
+        return $res->withJson($result);
     }
 
     public function doLogin($id) {
