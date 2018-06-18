@@ -35,21 +35,21 @@ class User extends SoftdeleteAbstract
     /**
      * @var string @Column(name="cargo", type="string")
      */
-    protected $ocupation;
+    protected $occupation;
 
     /**
      * @var string @Column(type="boolean", options={"default":false})
      */
     protected $admin;
 
-    public function __contruct($name = '', $level = '', $group = '', $ocupation = '', $admin = false) {
+    public function __construct($id = '', $name = '', $level = '1', $group = '', $occupation = '', $admin = false) {
         parent::__construct();
-        $this->id = 0;
+        $this->id = $id;
         $this->name = $name;
         $this->level = $level;
         $this->group = $group;
-        $this->ocupation = $ocupation;
-        $this->admin = $admin;
+        $this->occupation = $occupation;
+        $this->admin = 0;
     }
 
     public function getId() {
@@ -61,19 +61,19 @@ class User extends SoftdeleteAbstract
         return $this;
     }
 
-    public function getname() {
+    public function getName() {
         return $this->name;
     }
-    public function setname($name) {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getlevel() {
+    public function getLevel() {
         return $this->level;
     }
-    public function setlevel($level) {
+    public function setLevel($level) {
         $this->level = $level;
 
         return $this;
@@ -88,11 +88,11 @@ class User extends SoftdeleteAbstract
         return $this;
     }
 
-    public function getOcupation() {
-        return $this->ocupation;
+    public function getOccupation() {
+        return $this->occupation;
     }
-    public function setOcupation($ocupation) {
-        $this->ocupation = $ocupation;
+    public function setOccupation($occupation) {
+        $this->occupation = $occupation;
 
         return $this;
     }
