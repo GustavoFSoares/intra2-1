@@ -33,7 +33,7 @@ class User extends SoftdeleteAbstract
     protected $group;
 
     /**
-     * @var string @Column(name="cargo", type="string")
+     * @var string @Column(name="cargo", type="string", options={"default":""})
      */
     protected $occupation;
 

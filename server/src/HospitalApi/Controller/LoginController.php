@@ -31,17 +31,16 @@ class LoginController extends ControllerAbstract
                 $model = new \HospitalApi\Model\StatusMessageModel();
                 $result = $model->getStatus('user_incorrect')->toArray();
             }
-            return $res->withJson($result);
         }
 
         $Ad = new ActiveDirectoryController();
         if ($Ad->doAuth($user)) {
-            $result = $this->doLogin($user->id)->toArray();
+            $result = $this->doLogin($user->id);
         } else {
             $model = new \HospitalApi\Model\StatusMessageModel();
             $result = $model->getStatus('user_incorrect')->toArray();
         }
-
+        
         return $res->withJson($result);
     }
 
@@ -58,9 +57,9 @@ class LoginController extends ControllerAbstract
                 'id' => $adValues[0]['samaccountname'][0],
                 'name' => $adValues[0]['displayname'][0],
                 'group' => $adValues[0]['department'][0],
-                'occupation' => $adValues[0]['description'][0],
+                'occupation' => $adValues[0]['description'][0]?$adValues[0]['description'][0]:'',
             ];
-
+            
             $User = new User();
             $User
                 ->setId($user['id'])
@@ -72,10 +71,10 @@ class LoginController extends ControllerAbstract
 
         if($User->isRemoved()){
             $model = new \HospitalApi\Model\StatusMessageModel();
-            return $model->getStatus('user_inactive');
+            return $model->getStatus('user_inactive')->toArray();
         }
         
-        return $User;
+        return [ 'status' => true, 'user' => $User->toArray() ];
     }
 
 }

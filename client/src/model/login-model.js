@@ -7,13 +7,14 @@ const doLogin = (user) => {
             window.$session.start()
             window.$session.set('user', res.user)
         }
+
+        if (window.lastRouteAccess) {
+            window.location = window.lastRouteAccess
+        } else {
+            window.location = '/usuario'
+        }
     })
 
-    if(window.lastRouteAccess) {
-        window.location = window.lastRouteAccess
-    } else {
-        window.location = '/usuario'
-    }
 }
 
 const doAuth = (user) => service.loginAuth(user)
