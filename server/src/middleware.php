@@ -31,7 +31,7 @@ function loadConfigurations() {
             break;
 
         default:
-            die('NO USER');
+            die('User on .env not found');
             break;
     }
 
