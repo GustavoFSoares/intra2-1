@@ -19,11 +19,7 @@ while ($file = $dir->read()) {
 }
 
 $app->get('/script/insert', function(Request $req, Response $res, array $args){
-        require __DIR__ . "/HospitalApi/Scripts/BossSector.php";
-        require __DIR__ . "/HospitalApi/Scripts/Enterprise.php";
-        require __DIR__ . "/HospitalApi/Scripts/Event.php";
-        require __DIR__ . "/HospitalApi/Scripts/link.php";
-        require __DIR__ . "/HospitalApi/Scripts/Sector.php";
+        require __DIR__ . "/HospitalApi/Scripts/index.php";
 });
 
 $app->get('/insert/{file}', function (Request $req, Response $res, array $args) {
