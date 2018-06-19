@@ -18,7 +18,6 @@ class LoginController extends ControllerAbstract
         $user = (object)$req->getParsedBody();
 
         $Ad = new ActiveDirectoryController();
-        $user = (object)['id'=>"gustavo.soares", 'password'=>'gustavoti'];
         
         if(!$this->ADAllowed()){
             if($user->id == USERTEST_ID || $user->password == USERTEST_PWD){
@@ -36,7 +35,7 @@ class LoginController extends ControllerAbstract
             }
             return $res->withJson($result);
         }
-
+        
         $Ad = new ActiveDirectoryController();
         if ($Ad->doAuth($user)) {
             $result = $this->doLogin($user->id);

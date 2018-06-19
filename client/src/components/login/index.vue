@@ -24,7 +24,10 @@
                         </row>
 
                         <row>
-                            <button @click="isValidForm" id="submit" class="btn btn-outline-primary btn-lg">Login</button>
+                            <button @click="isValidForm" id="submit" class="btn btn-outline-primary btn-lg" :disabled="sending">
+                                <i v-show="sending" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                                Login
+                            </button>
                         </row>
                     </div>
                 </div>
@@ -53,7 +56,8 @@ export default {
                 id: '',
                 password: ''
             },
-            email: ''
+            email: '',
+            sending: false
         }
     },
     methods: {
@@ -61,6 +65,7 @@ export default {
             this.$validator.validateAll().then(success => success? this.submit():"")
         },
         submit() {
+            this.sending = true
             model.doLogin(this.login).then(res => {
 
                 this.email = new Mail()
@@ -68,9 +73,11 @@ export default {
                     this.$session.start()
                     this.$session.set('user', res.user)
 
+                    this.sending = false
                     this.email = LoginStatus.success
                     
                     setTimeout(() => {
+                        
                         if (window.lastRouteAccess) {
                             window.location = window.lastRouteAccess
                         } else {
@@ -78,6 +85,8 @@ export default {
                         }
                     }, 1000);
                 } else {
+                    this.sending = false
+
                     this.email.type = LoginStatus.failed.type
                     this.email.text = res.message
                 }
