@@ -17,8 +17,6 @@ class LoginController extends ControllerAbstract
     public function auth($req, $res, $args){
         $user = (object)$req->getParsedBody();
 
-        $Ad = new ActiveDirectoryController();
-        
         if(!$this->ADAllowed()){
             if($user->id == USERTEST_ID || $user->password == USERTEST_PWD){
                 $User = new User();
