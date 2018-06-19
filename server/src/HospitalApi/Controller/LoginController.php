@@ -16,6 +16,9 @@ class LoginController extends ControllerAbstract
 
     public function auth($req, $res, $args){
         $user = (object)$req->getParsedBody();
+
+        $Ad = new ActiveDirectoryController();
+        $user = (object)['id'=>"gustavo.soares", 'password'=>'gustavoti'];
         
         if(!$this->ADAllowed()){
             if($user->id == USERTEST_ID || $user->password == USERTEST_PWD){
@@ -77,5 +80,7 @@ class LoginController extends ControllerAbstract
         
         return [ 'status' => true, 'user' => $User->toArray() ];
     }
+
+
 
 }
