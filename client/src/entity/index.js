@@ -12,21 +12,6 @@ export class AdverseEventsReport {
 
         }
 
-export const Mail = {
-            success: {
-                type: "success",
-                text: "Email enviado com Sucesso"
-            },
-            failed: {
-                type: "danger",
-                text: "Email não pode ser enviado. Por favor tente novamente"
-            },
-            warning: {
-                type: "warning",
-                text: "ATENÇÃO! - "
-            }
-        }
-
 export class EmailDefault {
             constructor() {
                 this.email = "anonimo.gampcanoas@gmail.com"

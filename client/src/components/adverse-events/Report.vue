@@ -133,7 +133,8 @@
 
 <script>
 import model from "@/model/adverse-events"
-import { AdverseEventsReport, Mail } from "@/entity"
+import { AdverseEventsReport } from "@/entity"
+import { Mail } from "@/entity/AlertMessage"
 import { FormRw, FormRws, Require } from "@/components/shared/Form/index.js"
 import Modal from "@/components/shared/Modal.vue"
 import AlertMessage from "@/components/shared/AlertMessage.vue"
@@ -185,7 +186,7 @@ export default {
             this.options.disabled = true
             this.sending = true
             
-            this.report.eventTime = document.getElementById('picker').value
+            this.report.eventTime = document.getElementById('date').value
             model.sendData(this.report).then(res => {
                     if(res.status){
                         this.email=Mail.success

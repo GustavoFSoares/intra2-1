@@ -1,11 +1,17 @@
 <template>
     <div class="container">
-        
-        <div class="content">
-            <div class="row">
 
+        <div class="content">
+
+            <div class="row">
                 <div class="col-md-6 mb-6 order-md-2">
-                    <div id="login">
+                    <div id="alert-message">
+                        <row v-show="email">
+                            <alert-message :text="email.text" :type="email.type"/>
+                        </row>
+                    </div>
+
+                    <div id="login" @keyup.enter="isValidForm">
                         <row id="id" label="Usuario">
                             <input data-vv-as="Usuário" autocomplete="off" v-validate data-vv-rules="required" type="text" class="form-control" name="id" v-model="login.id">
                             <require-text :error="errors.has('id')" :text="errors.first('id')" :show="true" :attribute="login.id"/>
@@ -28,15 +34,17 @@
                         <img src="@/../static/img/logo-canoas.jpg" alt="Logo Canoas">
                     </div>
                 </div>
-
             </div>
+
         </div>
-        
+
     </div>
 </template>
 
 <script>
 import { FormRw, FormRws, Require } from '@/components/shared/Form';
+import Mail, { LoginStatus } from "@/entity/AlertMessage";
+import AlertMessage from "@/components/shared/AlertMessage";
 import model from '@/model/login-model';
 export default {
     data() {
@@ -44,7 +52,8 @@ export default {
             login: {
                 id: '',
                 password: ''
-            }
+            },
+            email: ''
         }
     },
     methods: {
@@ -52,14 +61,37 @@ export default {
             this.$validator.validateAll().then(success => success? this.submit():"")
         },
         submit() {
-            model.doLogin(this.login)
+            model.doLogin(this.login).then(res => {
+
+                this.email = new Mail()
+                if(res.status) {
+                    this.$session.start()
+                    this.$session.set('user', res.user)
+
+                    this.email = LoginStatus.success
+                    
+                    setTimeout(() => {
+                        if (window.lastRouteAccess) {
+                            window.location = window.lastRouteAccess
+                        } else {
+                            window.location = '/usuario'
+                        }
+                    }, 1000);
+                } else {
+                    this.email.type = LoginStatus.failed.type
+                    this.email.text = res.message
+                }
+
+            })
         }
     },
     components: {
         'row': FormRw,
         'rows': FormRws,
         'require-text': Require,
-    }
+        'alert-message': AlertMessage,
+    }, 
+    mounted() { }
 }
 </script>
 

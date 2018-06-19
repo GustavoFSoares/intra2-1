@@ -2,18 +2,7 @@ import service from "@/services/login"
 
 const doLogin = (user) => {
     
-    doAuth(user).then(res => {
-        if(res.status) {
-            window.$session.start()
-            window.$session.set('user', res.user)
-        }
-
-        if (window.lastRouteAccess) {
-            window.location = window.lastRouteAccess
-        } else {
-            window.location = '/usuario'
-        }
-    })
+    return doAuth(user).then(res => res )
 
 }
 

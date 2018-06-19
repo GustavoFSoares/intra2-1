@@ -20,7 +20,7 @@ class LoginController extends ControllerAbstract
         if(!$this->ADAllowed()){
             if($user->id == USERTEST_ID || $user->password == USERTEST_PWD){
                 $User = new User();
-                $User 
+                $User
                     ->setId(USERTEST_ID)
                     ->setName(USERTEST_NAME)
                     ->setLevel(USERTEST_LEVEL)
@@ -31,6 +31,7 @@ class LoginController extends ControllerAbstract
                 $model = new \HospitalApi\Model\StatusMessageModel();
                 $result = $model->getStatus('user_incorrect')->toArray();
             }
+            return $res->withJson($result);
         }
 
         $Ad = new ActiveDirectoryController();
