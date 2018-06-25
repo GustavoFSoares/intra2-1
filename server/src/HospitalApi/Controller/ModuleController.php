@@ -9,15 +9,35 @@ class ModuleController extends ControllerAbstract
         parent::__construct(new ModuleModel());
     }
 
-    public function insertGroup($req, $res, $args) {
-        $values = (object)$req->getParsedBody();
+    public function updateGroups($req, $res, $args) {
+        $values = $req->getParsedBody();
+    
         $model = $this->getModel();
-        
-        $module = $model->getRepository()->find($values->module);
+        foreach ($values as $value) {
+            $module = $model->getRepository()->find($value['module']);
+            $group = $model->em->find('HospitalApi\Entity\Group', $value['group']);
+            if($value['active']){
+                $module->addGroup($group);
+                $model->doInsert($module);
+            } else {
+                $module->removeGroup($group);
+                $model->doUpdate($module);
+            }
+        }
 
-        $group = $model->em->find('HospitalApi\Entity\Groups', $values->group);
-        $module->addGroup($group);
-        $model->doInsert($module);
+        return $res->withJson(true);
+    }
+
+    public function deleteGroups($req, $res, $args) {
+        $values = $req->getParsedBody();
+    
+        $model = $this->getModel();
+        foreach ($values as $value) {
+            $module = $model->getRepository()->find($value['module']);
+            $group = $model->em->find('HospitalApi\Entity\Groups', $value['group']);
+            $module->removeGroup($group);
+            $model->doUpdate($module);
+        }
 
         return $res->withJson(true);
     }
@@ -27,11 +47,9 @@ class ModuleController extends ControllerAbstract
         
         $model = $this->getModel();
         $data = $model->findByGroup($group);
-        
-        foreach ($data as $row) {
-            $result[] = $row->toArray();
-        }
-        return $res->withJson($result);
+
+        $collection = $this->translateCollection($data);
+        return $res->withJson($collection);
     }
 
     public function translateCollection($collection) {
@@ -40,17 +58,17 @@ class ModuleController extends ControllerAbstract
                 $groups = [];
                 
                 foreach ($row->getGroups()->toArray() as $groupRow) {
-                    $groups[] = $groupRow->toArray();
+                    $groups[$groupRow->getId()] = $groupRow->toArray();
                 }
                 $row = $row->setGroups($groups);
             }
         } else {
             foreach ($collection->getGroups()->toArray() as $groupRow) {
-                $groups[] = $groupRow->toArray();
+                $groups[$groupRow->getId()] = $groupRow->toArray();
             }
             $collection = $collection->setGroups($groups);
         }
-        
+ 
         return parent::translateCollection($collection);
     }
 }

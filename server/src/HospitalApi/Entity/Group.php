@@ -5,7 +5,7 @@ namespace HospitalApi\Entity;
  * @Entity
  * @Table(name="Grupo")
  */
-class Groups extends SoftdeleteAbstract
+class Group extends SoftdeleteAbstract
 {
 
     /**
