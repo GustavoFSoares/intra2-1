@@ -13,7 +13,7 @@ class SectorController extends ControllerAbstract
         $model = $this->getModel();
         $id = $args['id'];
 
-        $data = $this->translateCollaction($model->findSectorsByEnterprise($id));
+        $data = $this->translateCollection($model->findSectorsByEnterprise($id));
         return $res->withJson($data);
     }
     

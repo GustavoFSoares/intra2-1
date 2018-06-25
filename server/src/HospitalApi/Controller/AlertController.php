@@ -28,7 +28,7 @@ class AlertController extends ControllerAbstract
         $model = $this->getModel();
 
         $result = $model->findOneByType($type);
-        $data = $this->translateCollaction($result);
+        $data = $this->translateCollection($result);
         
         if(!$model->isToday($data['c_modified'])) {
             $data = null;

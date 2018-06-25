@@ -23,8 +23,6 @@ class ModuleModel extends SoftdeleteModel
             ->setParameter('group', $group);
         $collection = $query->getQuery()->getResult();
 
-        $collection = $this->translateCollection($collection);
-        
         return $collection;
     }
 
