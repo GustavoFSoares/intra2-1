@@ -8,5 +8,6 @@ export default class User {
             this.group = user.group
             this.level = user.level
             this.admin = user.admin
+            this.ocupation = user.ocupation
         }        
 }

@@ -1,21 +1,21 @@
 import index from '@/components/alerts';
 import Form from '@/components/alerts/Form.vue';
 
-const Rule = { requiresAuth: true, groupAuth: 'ti' }
 export default [
     {
         path: '/alertas',
+        name: "alertas",
         component: index,
-        meta: Rule
+        meta: { requiresAuth: true, groupAuth: 'TECNOLOGIA DA INFORMACAO HU' }
     },
     {
         path: '/alertas/add',
         component: Form,
-        meta: Rule
+        meta: { requiresAuth: true, groupAuth: 'TECNOLOGIA DA INFORMACAO HU' }
     },
     {
         path: '/alertas/edit/:id',
         component: Form,
-        meta: Rule
+        meta: { requiresAuth: true, groupAuth: 'TECNOLOGIA DA INFORMACAO HU' }
     },
 ]
