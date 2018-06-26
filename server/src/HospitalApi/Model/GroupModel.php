@@ -14,4 +14,8 @@ class GroupModel extends SoftdeleteModel
         parent::__construct();
     }
 
+    public function findByGroupId($groupId){
+        return $this->getRepository()->findOneByGroupId($groupId);
+    }
+
 }
