@@ -16,3 +16,13 @@ while ($file = $dir->read()) {
         require "$path/$file";
     }
 }
+
+if($_SERVER['SERVER_NAME'] == 'localhost'){
+    $path = __dir__ . '/Cron/Routes';
+    $dir = dir($path);
+    while ($file = $dir->read()) {
+        if($file != '.' && $file != '..'){
+            require "$path/$file";
+        }
+    }
+}
