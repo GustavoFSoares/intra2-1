@@ -34,7 +34,7 @@ DEVELOPER:
 #DESENVOLVIMENTO - WINDOWS ==============================================
 DEVWIN:
     HOST: 'localhost'
-    DOMAIN: dev
+    DOMAIN: win
     
     DATABASE_NAME: 'intra2_dev'
 
