@@ -28,7 +28,8 @@ class User extends SoftdeleteAbstract
     protected $level;
 
     /**
-     * @var string @Column(name="grupo", type="string")
+     * @ManyToOne(targetEntity="Group",cascade={"persist", "remove"})
+     * @JoinColumn(name="cd_grupo", referencedColumnName="id", nullable=true)
      */
     protected $group;
 
@@ -83,8 +84,10 @@ class User extends SoftdeleteAbstract
         return $this->group;
     }
     public function setGroup($group) {
+        $modelGroup = new \HospitalApi\Model\GroupModel();
+        $group = $modelGroup->findByGroupId($group);
         $this->group = $group;
-
+        
         return $this;
     }
 
