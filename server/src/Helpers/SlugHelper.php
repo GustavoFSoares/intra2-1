@@ -1,5 +1,5 @@
 <?php
-namespace Cron\Helper;
+namespace Helper;
 
 use Cocur\Slugify\Slugify;
 

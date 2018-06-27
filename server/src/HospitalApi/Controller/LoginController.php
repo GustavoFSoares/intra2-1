@@ -49,15 +49,15 @@ class LoginController extends ControllerAbstract
         
         $model = $this->getModel();
         $User = $model->findById($id);
+        $Ad = new ActiveDirectoryController();
         
         if(!$User) {
-            $Ad = new ActiveDirectoryController();
             $adValues = $Ad->getUserContents($id);
             
             $user = [
                 'id' => $adValues[0]['samaccountname'][0],
                 'name' => $adValues[0]['displayname'][0],
-                'group' => $adValues[0]['department'][0],
+                'group' => $Ad->getGroupArray($adValues[0]['department'][0]),
                 'occupation' => $adValues[0]['description'][0]?$adValues[0]['description'][0]:'',
             ];
             
@@ -65,12 +65,13 @@ class LoginController extends ControllerAbstract
             $User
                 ->setId($user['id'])
                 ->setName($user['name'])
-                ->setGroup($user['group'])
+                ->setGroup($this->getRepositoryGroupById($user['group']['name']))
                 ->setOccupation($user['occupation']);
             $model->doInsert($User);
+            $User = $model->findById($id);
         }
-
-        if($User->isRemoved()){
+        
+        if($User->isRemoved() || !$Ad->isActive($id)){
             $model = new \HospitalApi\Model\StatusMessageModel();
             return $model->getStatus('user_inactive')->toArray();
         }
@@ -78,6 +79,11 @@ class LoginController extends ControllerAbstract
         return [ 'status' => true, 'user' => $User->toArray() ];
     }
 
+    public function getRepositoryGroupById($id) {
+        $groupRepository = $this->getModel()->em->getRepository('HospitalApi\Entity\Group');
+        $group = $groupRepository->findOneByGroupId(\Helper\SlugHelper::get($id));
 
+        return $groupRepository->find($group->getId());
+    }
 
 }

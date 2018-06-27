@@ -15,4 +15,13 @@ class UserModel extends SoftdeleteModel
         $this->entity = new User;
         parent::__construct();
     }
+
+    public function findById($id) {
+        $User = parent::findById($id);
+        if($User){
+            $group = $User->getGroup()->toArray();
+            $User->setGroup($group);
+        }
+        return $User;
+    }
 }

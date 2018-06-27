@@ -32,7 +32,8 @@
     "autoload": {
         "psr-4": {
             "HospitalApi\\": "src/HospitalApi",
-            "Cron\\": "src/Cron"
+            "Cron\\": "src/Cron",
+            "Helper\\": "src/Helpers"
         }
     },
     "config": {

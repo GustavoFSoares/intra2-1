@@ -25,7 +25,7 @@ class GroupController
         echo "<b><i>Verificando...</b></i>"."<BR>";
         
         foreach ($groups as $key => $group) {
-            $groupId = \Cron\Helper\SlugHelper::get($group['name']);
+            $groupId = \Helper\SlugHelper::get($group['name']);
             $mappedGroups[] = $groupId;
 
             $data = $this->model->findByGroupId($groupId);
@@ -37,7 +37,7 @@ class GroupController
                 $newGroup = new Group();
             
                 $newGroup
-                    ->setGroupId(\Cron\Helper\SlugHelper::get($group['name']))
+                    ->setGroupId(\Helper\SlugHelper::get($group['name']))
                     ->setName($group['name'])
                     ->setEnterprise(
                         $group['enterprise'] ? $group['enterprise'] : $group['name']
