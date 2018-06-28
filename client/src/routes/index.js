@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home.vue'
 import Teste from '@/components/Teste.vue'
 import NotFound from '@/components/NotFound.vue'
+import DontHavePermission from '@/components/DontHavePermission.vue'
 
 import adverseEventsRoutes from './adverse-events-routes'
 import ramalsRoutes from './ramals-routes'
@@ -23,6 +24,11 @@ const routes = [
         path: '*',
         component: NotFound
     },
+    {
+        path: '/sem-permissao', 
+        name: 'no-permission',
+        component: DontHavePermission,
+    }
 ]
 
 const Routes = new Router({
@@ -50,30 +56,33 @@ Routes.beforeEach((to, from, next) => {
             let access = new Access()
             
             access.id = Session.user.id
-            access.path = from.path
+            access.path = to.path
             
             if (to.meta.groupAuth) {
                 if (to.meta.groupAuth !== Session.user.group.groupId) {
-                    access.permissions.group = false
+                    access.permissions['group'] = false
                 }
             }
             if (to.meta.levelAuth) {
                 
                 if (!(to.meta.levelAuth <= Session.user.level)) {
-                    access.permissions.level = false
+                    access.permissions['level'] = false
                 }
             }
             if (to.meta.adminAuth) {
                 if (to.meta.adminAuth !== Session.user.admin) {
-                    access.permissions.admin = false
+                    access.permissions['admin'] = false
                 }
             }
-
+            
+            // access.isValid()
             if(access.isValid()) {
                 next()
             } else {
-                alert('Não Acesso '+JSON.stringify(access))
-                next('/')
+                console.log(access);
+                
+                window.access = access
+                next({ name: `no-permission` })
             }
             
         }
