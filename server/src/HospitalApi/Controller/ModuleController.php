@@ -11,11 +11,13 @@ class ModuleController extends ControllerAbstract
 
     public function updateGroups($req, $res, $args) {
         $values = $req->getParsedBody();
-    
+        
         $model = $this->getModel();
         foreach ($values as $value) {
+            
             $module = $model->getRepository()->find($value['module']);
             $group = $model->em->find('HospitalApi\Entity\Group', $value['group']);
+            
             if($value['active']){
                 $module->addGroup($group);
                 $model->doInsert($module);
@@ -58,13 +60,13 @@ class ModuleController extends ControllerAbstract
                 $groups = [];
                 
                 foreach ($row->getGroups()->toArray() as $groupRow) {
-                    $groups[$groupRow->getId()] = $groupRow->toArray();
+                    $groups[$groupRow->getGroupId()] = $groupRow->toArray();
                 }
                 $row = $row->setGroups($groups);
             }
         } else {
             foreach ($collection->getGroups()->toArray() as $groupRow) {
-                $groups[$groupRow->getId()] = $groupRow->toArray();
+                $groups[$groupRow->getGroupId()] = $groupRow->toArray();
             }
             $collection = $collection->setGroups($groups);
         }

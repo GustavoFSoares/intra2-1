@@ -7,7 +7,7 @@ const getGroups = () => serviceGroup.getGroups()
 const getModulesByGroup = (group) => service.getModulesByGroup(group)
 
 const doInsert = (data) => {
-    service.saveData(data)
+    service.saveData(data).then(res => '' )
     alert('Salvo')
 }
 

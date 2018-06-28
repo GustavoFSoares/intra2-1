@@ -3,7 +3,7 @@
         <h1 @click="clean()">{{ title }}</h1>
 
         <div class="">
-            <v-select v-model="group" data-vv-as="Grupo" v-validate data-vv-rules="required" label="id" :options="groups" name="groups" class="space" @input="loadModules(listId)"/>
+            <v-select v-model="group" data-vv-as="Grupo" v-validate data-vv-rules="required" label="name" :options="groups" name="groups" class="space" @input="loadModules(listId)"/>
             <table v-if="group" class="table table-striped table-sm space">
                 <thead>
                     <tr>
@@ -39,7 +39,7 @@ export default {
             title: "Lista de Módulos",
             modules: [],
             toChange: [],
-            group: { id: this.$session.get('user').group },
+            group: '',
             groups: [],
             listId: ''
         }
@@ -48,8 +48,8 @@ export default {
         loadModules(listId) {
             this.toChange = []
             let id = listId
-            this.group ?
-                id = this.group.id : id = this.group
+            this.group.groupId ?
+                id = this.group.groupId : id = this.group
 
             model.getModules().then(res => {
                 let modules = []

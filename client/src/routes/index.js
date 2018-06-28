@@ -51,9 +51,9 @@ Routes.beforeEach((to, from, next) => {
             
             access.id = Session.user.id
             access.path = from.path
-
+            
             if (to.meta.groupAuth) {
-                if (to.meta.groupAuth !== Session.user.group) {
+                if (to.meta.groupAuth !== Session.user.group.groupId) {
                     access.permissions.group = false
                 }
             }

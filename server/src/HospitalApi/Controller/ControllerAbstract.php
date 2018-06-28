@@ -116,7 +116,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return Array $data
 	 */
 	public function translateCollection($results) {
-		$data = [];
+		$data = null;
 		if ($results) {
 			if (is_array($results)) {
 				foreach ($results as $result) {

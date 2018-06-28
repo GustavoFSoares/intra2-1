@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="loaded">
         <div v-if="modules" class="pull-left">
          
             <div v-for="module of modules" :key="module.id" class="panel card">
@@ -13,13 +13,16 @@
         </div>
 
         <div v-else>
-            <h1>Sem módulos</h1>
+            <span>
+                <alert-message id="alert" text="Seu grupo não possui módulos cadastrados, por favor, contate a TI" type="warning" icon="fa fa-exclamation-triangle"/>
+            </span>
         </div>
     </div>
 </template>
 
 <script>
 import model from "@/model/modules-model";
+import AlertMessage from '@/components/shared/AlertMessage'
 export default {
     props: {
         group: String,
@@ -28,10 +31,17 @@ export default {
         return {
             visivel: true,
             modules: '',
+            loaded: ''
         }
     },
     mounted() {
-        model.getModulesByGroup(this.$props.group).then(res => { this.modules = res })
+        model.getModulesByGroup(this.$props.group).then(res => {
+            this.modules = res
+            this.loaded = true
+        })
+    },
+    components: {
+        'alert-message': AlertMessage
     }
 }
 </script>
@@ -68,6 +78,11 @@ export default {
     .panel-conteudo i {
         font-size: 30px;
         margin-top: 10px;
+    }
+
+    #alert {
+        margin-left: 15%;
+        max-width: 70%;
     }
 
 </style>
