@@ -36,8 +36,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return Response $data
 	 */
 	public function get($req, $res, $args) {
-		isset($args['id'])?
-			$id = $args['id']:$id = null;
+		$id = $req->getQueryParam('id');
 		
 		if ($id === null) {
 			$results = $this->_model->findAll();
