@@ -16,7 +16,7 @@ class LoginController extends ControllerAbstract
 
     public function auth($req, $res, $args){
         $user = (object)$req->getParsedBody();
-
+        
         if(!$this->ADAllowed()){
             if($user->id == USERTEST_ID || $user->password == USERTEST_PWD){
                 $User = new User();
@@ -24,7 +24,7 @@ class LoginController extends ControllerAbstract
                     ->setId(USERTEST_ID)
                     ->setName(USERTEST_NAME)
                     ->setLevel(USERTEST_LEVEL)
-                    ->setGroup(USERTEST_GROUP)
+                    ->setGroup($this->getRepositoryGroupById(USERTEST_GROUP)->toArray())
                     ->setOccupation(USERTEST_OCCUPATION);
                 $result = ['status' => true, 'user' => $User->toArray() ];
             } else {

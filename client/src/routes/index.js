@@ -75,12 +75,9 @@ Routes.beforeEach((to, from, next) => {
                 }
             }
             
-            // access.isValid()
             if(access.isValid()) {
                 next()
             } else {
-                console.log(access);
-                
                 window.access = access
                 next({ name: `no-permission` })
             }
