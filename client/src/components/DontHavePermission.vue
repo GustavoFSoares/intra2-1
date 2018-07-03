@@ -24,8 +24,6 @@
 </template>
 
 <script>
-console.log(window.access);
-
 export default {
     created() {
         if(!window.access){
