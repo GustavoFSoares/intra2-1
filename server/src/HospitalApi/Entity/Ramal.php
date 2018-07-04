@@ -42,7 +42,7 @@ class Ramal extends SoftdeleteAbstract
      */
     protected $enterprise;
     
-    public function __contruct($id = 0, $number = "", $description = "", $sector = "") {
+    public function __construct($id = 0, $number = "", $description = "", $sector = "") {
         parent::__construct();
         $this->id = $id;
         $this->number = $number;

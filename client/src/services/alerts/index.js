@@ -4,7 +4,7 @@ const getAlerts = () => {
     return http.get(`/alert/`).then(res => res.data)
 }
 const getAlert = (id) => {
-    return http.get(`/alert/${id}`).then(res => res.data)
+    return http.get(`/alert/`, { params: { id: id } }).then(res => res.data)
 }
 
 const saveData = (data) => {

@@ -18,15 +18,15 @@ const getSectorsBy = (id) => {
 }
 // =================================================================================
 const getEventById = (id) => {
-    return http.get(`/event/${id}`).then(res => res.data )
+    return http.get(`/event/`, { params: { id: id } }).then(res => res.data )
 }
 
 const getEnterpriseById = (id) => {
-    return http.get(`/enterprise/${id}`).then(res => res.data)
+    return http.get(`/enterprise/`, { params: { id: id } }).then(res => res.data)
 }
 
 const getSectorById = (id) => {
-    return http.get(`/sector/${id}`).then(res => res.data)
+    return http.get(`/sector/`, { params: { id: id } }).then(res => res.data)
 }
 // =================================================================================
 export default {

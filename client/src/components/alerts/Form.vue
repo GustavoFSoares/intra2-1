@@ -42,7 +42,7 @@
             <button class="button btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm">
                 Gerar Alerta
             </button>
-            <router-link class="button btn btn-outline-primary btn-lg" to="/alertas" tag="button">
+            <router-link class="button btn btn-outline-primary btn-lg" :to="{name: 'alertas'}" tag="button">
                 Voltar
             </router-link>
         </row>
@@ -74,9 +74,9 @@ export default {
             this.alert.endTime = document.getElementById('endTime').value
 
             if(model.isEdit(this.id)){
-                model.edit(this.id, this.alert).then(() => window.location = `/alertas` )
+                model.edit(this.id, this.alert).then(() => window.location = `/usuario/alertas` )
             } else {
-                model.save(this.alert).then(() => window.location = `/alertas` )
+                model.save(this.alert).then(() => window.location = `/usuario/alertas` )
             }
         },
         loadValues() {

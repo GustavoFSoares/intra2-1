@@ -54,7 +54,7 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	}
 
 	/**
-	 * @method insert()
+	 * @method doInsert()
 	 * Recebe um Objeto de Entity, contendo os valores que irão
 	 * ser inseridos
 	 * @param Entity $obj
@@ -66,7 +66,7 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	}
 
 	/**
-	 * @method update()
+	 * @method doUpdate()
 	 * Recebe um Objeto de Entity, contendo os valores alterados
 	 * e o Id do objeto original, quer irá ser atualizado
 	 * @param Entity $obj
@@ -78,7 +78,7 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	}
 
 	/**
-	 * @method delete()
+	 * @method doDelete()
 	 * Recebe um Objeto de Entity, com o objeto que irá ser excluido
 	 * @param Entity $obj
 	 * @return void

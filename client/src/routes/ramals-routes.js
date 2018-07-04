@@ -3,7 +3,8 @@ import index from '@/components/ramals';
 const ramalsRoutes = [
     {
         path: '/ramais',
-        component: index
+        component: index,
+        name: 'ramais'
     },
 ]
 export default ramalsRoutes
