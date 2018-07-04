@@ -17,9 +17,7 @@ export default {
     components: {
         'panel-modules': PanelModules
     },
-    mounted() {
-        document.getElementById('music').volume = 1
-    }
+    mounted() { }
 
 }
 </script>
