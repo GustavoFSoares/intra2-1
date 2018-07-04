@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import model from "@/model/modules-model";
+import { getter } from "@/model/modules-model";
 import AlertMessage from '@/components/shared/AlertMessage'
 export default {
     props: {
@@ -35,7 +35,7 @@ export default {
         }
     },
     mounted() {
-        model.getModulesByGroup(this.$props.group).then(res => {
+        getter.getModulesByGroup(this.$props.group).then(res => {
             this.modules = res
             this.loaded = true
         })
@@ -48,7 +48,6 @@ export default {
 
 <style scoped>
     .panel {
-        /* width: auto; */
         max-width: 140px;
         min-width: 100px;
         
