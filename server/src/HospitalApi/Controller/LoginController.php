@@ -46,7 +46,7 @@ class LoginController extends ControllerAbstract
     }
 
     public function doLogin($id) {
-        
+
         $model = $this->getModel();
         $User = $model->findById($id);
         $Ad = new ActiveDirectoryController();
@@ -57,15 +57,21 @@ class LoginController extends ControllerAbstract
             $user = [
                 'id' => $adValues[0]['samaccountname'][0],
                 'name' => $adValues[0]['displayname'][0],
-                'group' => $Ad->getGroupArray($adValues[0]['department'][0]),
+                'group' => $Ad->getGroupArray(isset($adValues[0]['department']) ? $adValues[0]['department'][0] : '' ),
                 'occupation' => $adValues[0]['description'][0]?$adValues[0]['description'][0]:'',
             ];
-            
+            $group = $this->getRepositoryGroupById($user['group']['name']);
+
+            if(!$group){
+                $model = new \HospitalApi\Model\StatusMessageModel();
+                return $model->getStatus('group_not_found')->toArray();
+            }
+
             $User = new User();
             $User
                 ->setId($user['id'])
                 ->setName($user['name'])
-                ->setGroup($this->getRepositoryGroupById($user['group']['name']))
+                ->setGroup($group)
                 ->setOccupation($user['occupation']);
             $model->doInsert($User);
             $User = $model->findById($id);
@@ -82,8 +88,8 @@ class LoginController extends ControllerAbstract
     public function getRepositoryGroupById($id) {
         $groupRepository = $this->getModel()->em->getRepository('HospitalApi\Entity\Group');
         $group = $groupRepository->findOneByGroupId(\Helper\SlugHelper::get($id));
-
-        return $groupRepository->find($group->getId());
+        
+        return $group;
     }
 
 }
