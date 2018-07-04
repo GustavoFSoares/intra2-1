@@ -1,19 +1,28 @@
-import serviceGroup from "@/services/group"
 import service from "@/services/modules"
+import serviceGroup from "@/services/group"
 
-const getModules = () => service.getModules()
-const getGroups = () => serviceGroup.getGroups()
+const getters = {
+    getModules: () => service.getModules(),
+    getModuleById: (id) => service.getModules(id),
 
-const getModulesByGroup = (group) => service.getModulesByGroup(group)
+    getGroups: () => serviceGroup.getGroups(),
 
-const doInsert = (data) => {
-    service.saveData(data).then(res => '' )
-    alert('Salvo')
+    getModulesByGroup: (group) => service.getModulesByGroup(group),
 }
 
-export default {
-    getModules,
-    getGroups,
-    doInsert,
-    getModulesByGroup,
+const model = {
+    doPermissionForGroup: (data) => {
+        alert('Salvo')
+        return service.doPermission(data).then(res => '')
+    },
+    
+    doAddModule: (data) => service.addModule(data),
+    doEditModule: (id, data) => service.editModule(id, data),
+    doChangeStatusModule: (id) => service.changeStatusModule(id),
+    doDeleteModule: (id) => service.deleteModule(id),
+    
+    isEdit: (id) => id ? true : false
 }
+
+export default model
+export const getter = getters

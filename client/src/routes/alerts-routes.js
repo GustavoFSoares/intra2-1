@@ -9,13 +9,15 @@ export default [
         meta: { requiresAuth: true, groupAuth: 'tecnologia-da-informacao-hu' }
     },
     {
-        path: '/alertas/add',
+        path: '/usuario/alertas/add',
+        name: "alertas/add",
         component: Form,
-        meta: { requiresAuth: true, groupAuth: 'tecnologia-da-informacao-hu', levelAuth: 2 }
+        meta: { requiresAuth: true, groupAuth: 'tecnologia-da-informacao-hu' }
     },
     {
-        path: '/alertas/edit/:id',
+        path: '/usuario/alertas/edit/:id',
+        name: "alertas/edit",
         component: Form,
-        meta: { requiresAuth: true, groupAuth: 'tecnologia-da-informacao-hu', levelAuth: 2 }
+        meta: { requiresAuth: true, groupAuth: 'tecnologia-da-informacao-hu' }
     },
 ]

@@ -22,7 +22,7 @@ class GroupController
         $mappedGroups = '';
         $existingGroups = '';
 
-        echo "<b><i>Verificando...</b></i>"."<BR>";
+        echo "Verificando...\n";
         
         foreach ($groups as $key => $group) {
             $groupId = \Helper\SlugHelper::get($group['name']);
@@ -31,7 +31,7 @@ class GroupController
             $data = $this->model->findByGroupId($groupId);
             
             if($data) {
-                echo "$key - Já Cadastrado - $groupId"."<BR>";
+                echo "$key - Ja Cadastrado - $groupId\n";
                 $existingGroups[] = $groupId;
             } else {
                 $newGroup = new Group();
@@ -44,23 +44,23 @@ class GroupController
                     );
                 $this->model->doInsert($newGroup);
                 
-                echo "$key - <b>Inserido - Grupo $groupId</b>"."<BR>";
+                echo "$key - Inserido - Grupo $groupId\n";
                 $existingGroups[] = $groupId;
             }
             
         }
 
         $diffs = array_diff($existingGroups, $mappedGroups);
-        echo "<BR><BR>";
+        echo "\n";
         foreach ($diffs as $toDelete) {
             $group = $this->model->findByGroupId($toDelete);
             if($group){
                 $this->model->doDelete($group);
-                echo "<b>Exluido - Grupo $toDelete</b>"."<BR>";
+                echo "Exluido - Grupo $toDelete\n";
             }
         }
         
-        echo "<b><i>--Atualização de Grupos finalizada--</i></b>";
+        echo "--Atualizacao de Grupos finalizada--\n";
     }
 
     public function getModel() {

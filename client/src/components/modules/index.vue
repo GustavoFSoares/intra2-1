@@ -1,97 +1,75 @@
 <template>
-    <div class="contaner">
-        <h1 @click="clean()">{{ title }}</h1>
+    <div class="container-fluid">
+        <h1>{{ title }}</h1>
 
-        <div class="">
-            <v-select v-model="group" data-vv-as="Grupo" v-validate data-vv-rules="required" label="name" :options="groups" name="groups" class="space" @input="loadModules(listId)"/>
-            <table v-if="group" class="table table-striped table-sm space">
-                <thead>
-                    <tr>
-                        <th><span class="">Módulo</span></th>
-                        <th><span class="button">Status</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(module, index) of modules" :key="index+listId">
-                        <td>
-                            <span class="">{{ module.name }}</span>
-                        </td>
-                        <td>
-                            <checkbox class="button" :checked="module.active" @changed="change(module)"/>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <button @click="submit()" class="btn btn-outline-primary">Salvar</button>
+        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'modulos/add'}" tag="button">
+            Criar Modulo
+        </router-link>
+        <router-link class="button btn btn-outline-primary btn-lg" :to="{name: 'modulos/permissoes'}" tag="button">
+            Gerenciar Permissões
+        </router-link>
+
+        <table v-if="modules" class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col"></th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Última Modificação</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(module, index) of modules" :key="index">
+                    <td scope="row">{{ module.id }}</td>
+                    <td> <i :class="module.icon"></i> </td>
+                    <td>{{ module.name }}</td>
+                    <td>{{ moment(module.c_modified.date).format('DD/MM/YYYY - hh:mm:ss') }}</td>
+                    <td @dblclick="changeStatus(module.id)">
+                        <i class="text-success fa fa-check-circle" v-if="!module.c_removed"/>
+                        <i class="text-danger fa fa-times-circle" v-else/>
+                    </td>
+                    <td>
+                        <router-link :to='`modulos/edit/${module.id}`'>
+                            <i class="fa fa-edit"/>
+                        </router-link>
+                        <router-link @click.native="remove(module.id)" to="">
+                            <i class="text-danger fa fa-trash"></i>
+                        </router-link>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
     </div>   
 </template>
 
 <script>
-import model from "@/model/modules-model";
-import { Checkbox } from "@/components/shared/Form";
-import { VueSelect } from "@/components/shared/Form";
+import model, { getter } from "@/model/modules-model";
+import moment from 'moment'
 
 export default {
     data() {
         return {
             title: "Lista de Módulos",
             modules: [],
-            toChange: [],
-            group: '',
-            groups: [],
-            listId: ''
+            moment: moment,
         }
     },
-    methods: {
-        loadModules(listId) {
-            this.toChange = []
-            let id = listId
-            this.group.groupId ?
-                id = this.group.groupId : id = this.group
-
-            model.getModules().then(res => {
-                let modules = []
-                res.forEach(module => {
-                    modules.push({ id: module.id, name: module.name, groups: module.groups, active: this.isActive(module.groups, id) })
-                })
-                this.modules = modules
-                this.listId = id
-            })
+    methods: { 
+        remove(id){
+            confirm("Tem certeza que deseja excluir?") ?
+                model.doDeleteModule(id).then(res => this.$router.go()):''
         },
-        isActive(groups, groupID){
-            return groups[groupID] ? true : false
-        },
-        change(module) {
-            let exist = false, id = 'a';
-            this.toChange.forEach(el => {
-                if(module.id == el.module){
-                    exist = true
-                    id = this.toChange.indexOf(el)
-                }
-            })
-
-            if(exist){
-                this.toChange.splice(id, 1)
-            } else {
-                this.toChange.push({ module: module.id, group: this.group.id, name: module.name, active: !module.active })
-            }
-        },
-        submit() {
-            model.doInsert(this.toChange)
-        },
-        clean() {
-            this.modules = [{}]
+        changeStatus(id){
+            model.doChangeStatusModule(id).then(res => this.$router.go())
         }
+        
     },
     mounted() {
-        model.getGroups().then(res => { this.groups = res })
+        getter.getModules().then(res => { this.modules = res })
     },
-    components: {
-        'checkbox': Checkbox,
-        'v-select': VueSelect,
-    }
 }
 </script>
 
@@ -100,13 +78,12 @@ export default {
         margin-top: 3%;
     }
 
-    .button {
-        margin-right: 13%;
+    .classe {
+        color: #575757d3;
     }
 
-    span {
-        font-size: 20px;
+    table {
+        margin-top: 10px;
     }
-
 </style>
 

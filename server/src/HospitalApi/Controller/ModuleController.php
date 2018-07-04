@@ -73,4 +73,26 @@ class ModuleController extends ControllerAbstract
  
         return parent::translateCollection($collection);
     }
+
+    public function delete($req, $res, $args) {
+        $id = $args['id'];
+        $model = $this->getModel();
+		$repository = $model->getRepository()->find($id);
+		$delete = $model->doDelete($repository);
+
+		return $res->withJson($delete);
+    }
+    
+    public function changeStatus($req, $res, $args) {
+        $id = $args['id'];
+        $model = $this->getModel();
+
+        $repository = $model->getRepository()->find($id);
+        $repository
+            ->setC_removed(!$repository->isRemoved());
+        
+        $update = $model->doUpdate($repository);
+        
+        return $res->withJson($update);
+    }
 }

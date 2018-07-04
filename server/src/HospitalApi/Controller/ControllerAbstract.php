@@ -36,8 +36,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return Response $data
 	 */
 	public function get($req, $res, $args) {
-		isset($args['id'])?
-			$id = $args['id']:$id = null;
+		$id = $req->getQueryParam('id');
 		
 		if ($id === null) {
 			$results = $this->_model->findAll();
@@ -61,7 +60,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		$values = $req->getParsedBody();
 		$this->_mountEntity($values);
 		
-		$save = $this->_model->doInsert($this_->model->entity);
+		$save = $this->_model->doInsert($this->_model->entity);
 
 		return $res->withJson($save);
 	}
@@ -78,7 +77,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		$values = $req->getParsedBody();
 		$this->_mountEntity($values);
 		
-		$update = $this->_model->doUpdate($this_->model->entity);
+		$update = $this->_model->doUpdate($this->_model->entity);
 		
 		return $res->withJson($update);
 	}
@@ -99,7 +98,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 			$this->_mountEntity($repository->toArray());
 			$this->_model->entity
 				->setC_Removed(true);
-			$delete = $this->_model->doUpdate($this_->model->entity);
+			$delete = $this->_model->doUpdate($this->_model->entity);
 		} else {
 			$delete = $this->_model->doDelete($repository);
 		}

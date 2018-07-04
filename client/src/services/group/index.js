@@ -5,7 +5,7 @@ const getGroups = () => {
 }
 
 const getGroup = (id) => {
-    return http.get(`/group/${id}`).then(res => res.data)
+    return http.get(`/group/`, { params: { id: id } }).then(res => res.data)
 }
 
 
