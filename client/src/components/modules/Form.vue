@@ -86,7 +86,7 @@ export default {
     },
     methods: {
         isValidForm() {
-            this.$validator.validateAll().then(success => success? this.submit():"")
+            this.$validator.validateAll().then(success => success && this.routeExists() ? this.submit():"")
         },
         submit() {
             if(model.isEdit(this.id)){
@@ -111,6 +111,7 @@ export default {
                 this.route.exist = false
             }
             this.route.show = true
+            return this.route.exist
         }
     },
     components: {

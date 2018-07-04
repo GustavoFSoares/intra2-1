@@ -59,7 +59,8 @@ export default {
     },
     methods: { 
         remove(id){
-            model.doDeleteModule(id).then(res => this.$router.go())
+            confirm("Tem certeza que deseja excluir?") ?
+                model.doDeleteModule(id).then(res => this.$router.go()):''
         },
         changeStatus(id){
             model.doChangeStatusModule(id).then(res => this.$router.go())
