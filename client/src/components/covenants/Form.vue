@@ -26,7 +26,7 @@
 
                 <rows>
                     <div class="form-control" id="exposed-route" v-if="link.show">
-                        <a :href="link.name" v-if="link.exist">
+                        <a :href="link.name" target="_blank" v-if="link.exist">
                             <span>{{ link.name }}</span>
                         </a>
                         <span class="text-danger" v-else>{{ link.notfound }}</span>
