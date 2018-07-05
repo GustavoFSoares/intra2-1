@@ -60,10 +60,18 @@ Routes.beforeEach((to, from, next) => {
             access.id = Session.user.id
             access.path = to.path
             
+            
             if (to.meta.groupAuth) {
-                if (to.meta.groupAuth !== Session.user.group.groupId) {
-                    access.permissions['group'] = false
-                }
+                let ok = false
+                to.meta.groupAuth.forEach(group => {
+                    if (ok != true) {
+                        if (group == Session.user.group.groupId) {
+                            ok = true
+                        } else {
+                            access.permissions['group'] = false
+                        }
+                    }
+                })
             }
             if (to.meta.levelAuth) {
                 

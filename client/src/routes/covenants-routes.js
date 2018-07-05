@@ -13,18 +13,18 @@ export default [
         path: '/usuario/convenios',
         name: "convenios",
         component: index,
-        meta: { requiresAuth: true, groupAuth: 'tecnologia-da-informacao-hu' }
+        meta: { requiresAuth: true, groupAuth: ['tecnologia-da-informacao-hu'] }
     },
     {
         path: '/usuario/convenios/add',
         name: "convenios/add",
         component: Form,
-        meta: { requiresAuth: true, groupAuth: 'tecnologia-da-informacao-hu' }
+        meta: { requiresAuth: true, groupAuth: ['tecnologia-da-informacao-hu'] }
     },
     {
         path: '/usuario/convenios/edit/:id',
         name: "convenios/edit",
         component: Form,
-        meta: { requiresAuth: true, groupAuth: 'tecnologia-da-informacao-hu' }
+        meta: { requiresAuth: true, groupAuth: ['tecnologia-da-informacao-hu'] }
     },
 ]
