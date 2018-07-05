@@ -67,6 +67,7 @@ Routes.beforeEach((to, from, next) => {
                     if (ok != true) {
                         if (group == Session.user.group.groupId) {
                             ok = true
+                            access.permissions = access.permissions.splice('group', 0)
                         } else {
                             access.permissions['group'] = false
                         }
