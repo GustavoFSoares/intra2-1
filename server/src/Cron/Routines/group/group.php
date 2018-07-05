@@ -3,4 +3,5 @@
     require __DIR__ . '/../../middleware.php';
     session_start();
 
-    require 'group.php';
+    $GroupController = new \Cron\Controller\GroupController();
+    $GroupController->update();
