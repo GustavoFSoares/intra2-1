@@ -9,8 +9,7 @@ $app->add(function ($req, $res, $next) {
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
-
-$path = __dir__ . '/Routes';
+$path = __dir__ . '/HospitalApi/Routes';
 $dir = dir($path);
 while ($file = $dir->read()) {
     if($file != '.' && $file != '..'){
@@ -18,13 +17,12 @@ while ($file = $dir->read()) {
     }
 }
 
-$app->get('/script/insert', function(Request $req, Response $res, array $args){
-        require __DIR__ . "/HospitalApi/Scripts/index.php";
-});
-
-$app->get('/insert/{file}', function (Request $req, Response $res, array $args) {
-        if (isset($args['file'])) {
-                $file = $args['file'];
-                require __DIR__ . "/HospitalApi/Scripts/$file.php";
+if($_SERVER['SERVER_NAME'] == 'localhost'){
+    $path = __dir__ . '/Cron/Routes';
+    $dir = dir($path);
+    while ($file = $dir->read()) {
+        if($file != '.' && $file != '..'){
+            require "$path/$file";
         }
-});
+    }
+}

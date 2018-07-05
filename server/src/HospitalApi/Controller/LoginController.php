@@ -16,9 +16,6 @@ class LoginController extends ControllerAbstract
 
     public function auth($req, $res, $args){
         $user = (object)$req->getParsedBody();
-
-        $Ad = new ActiveDirectoryController();
-        $user = (object)['id'=>"gustavo.soares", 'password'=>'gustavoti'];
         
         if(!$this->ADAllowed()){
             if($user->id == USERTEST_ID || $user->password == USERTEST_PWD){
@@ -27,7 +24,7 @@ class LoginController extends ControllerAbstract
                     ->setId(USERTEST_ID)
                     ->setName(USERTEST_NAME)
                     ->setLevel(USERTEST_LEVEL)
-                    ->setGroup(USERTEST_GROUP)
+                    ->setGroup($this->getRepositoryGroupById(USERTEST_GROUP)->toArray())
                     ->setOccupation(USERTEST_OCCUPATION);
                 $result = ['status' => true, 'user' => $User->toArray() ];
             } else {
@@ -36,7 +33,7 @@ class LoginController extends ControllerAbstract
             }
             return $res->withJson($result);
         }
-
+        
         $Ad = new ActiveDirectoryController();
         if ($Ad->doAuth($user)) {
             $result = $this->doLogin($user->id);
@@ -49,31 +46,38 @@ class LoginController extends ControllerAbstract
     }
 
     public function doLogin($id) {
-        
+
         $model = $this->getModel();
         $User = $model->findById($id);
+        $Ad = new ActiveDirectoryController();
         
         if(!$User) {
-            $Ad = new ActiveDirectoryController();
             $adValues = $Ad->getUserContents($id);
             
             $user = [
                 'id' => $adValues[0]['samaccountname'][0],
                 'name' => $adValues[0]['displayname'][0],
-                'group' => $adValues[0]['department'][0],
+                'group' => $Ad->getGroupArray(isset($adValues[0]['department']) ? $adValues[0]['department'][0] : '' ),
                 'occupation' => $adValues[0]['description'][0]?$adValues[0]['description'][0]:'',
             ];
-            
+            $group = $this->getRepositoryGroupById($user['group']['name']);
+
+            if(!$group){
+                $model = new \HospitalApi\Model\StatusMessageModel();
+                return $model->getStatus('group_not_found')->toArray();
+            }
+
             $User = new User();
             $User
                 ->setId($user['id'])
                 ->setName($user['name'])
-                ->setGroup($user['group'])
+                ->setGroup($group)
                 ->setOccupation($user['occupation']);
             $model->doInsert($User);
+            $User = $model->findById($id);
         }
-
-        if($User->isRemoved()){
+        
+        if($User->isRemoved() || !$Ad->isActive($id)){
             $model = new \HospitalApi\Model\StatusMessageModel();
             return $model->getStatus('user_inactive')->toArray();
         }
@@ -81,6 +85,11 @@ class LoginController extends ControllerAbstract
         return [ 'status' => true, 'user' => $User->toArray() ];
     }
 
-
+    public function getRepositoryGroupById($id) {
+        $groupRepository = $this->getModel()->em->getRepository('HospitalApi\Entity\Group');
+        $group = $groupRepository->findOneByGroupId(\Helper\SlugHelper::get($id));
+        
+        return $group;
+    }
 
 }

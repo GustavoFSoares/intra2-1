@@ -13,17 +13,17 @@ use Exception;
 abstract class ControllerAbstract extends BasicApplicationAbstract
 {
 	
-	private $model;
+	private $_model;
 
 	public function __construct($model) {
 		if(!$model instanceof ModelAbstract) {
             throw new Exception("error");
 		}
-		$this->model = $model;
+		$this->_model = $model;
 	}
 	
 	public function getModel() {
-		return $this->model;
+		return $this->_model;
 	}
 	
 	/**
@@ -36,15 +36,14 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return Response $data
 	 */
 	public function get($req, $res, $args) {
-		isset($args['id'])?
-			$id = $args['id']:$id = null;
+		$id = $req->getQueryParam('id');
 		
 		if ($id === null) {
-			$results = $this->model->findAll();
+			$results = $this->_model->findAll();
 		} else {
-			$results = $this->model->findById($id);
+			$results = $this->_model->findById($id);
 		}
-		$data = $this->translateCollaction($results);
+		$data = $this->translateCollection($results);
 		
 		return $res->withJson($data);
 	}
@@ -61,7 +60,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		$values = $req->getParsedBody();
 		$this->_mountEntity($values);
 		
-		$save = $this->model->doInsert($this->model->entity);
+		$save = $this->_model->doInsert($this->_model->entity);
 
 		return $res->withJson($save);
 	}
@@ -78,7 +77,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		$values = $req->getParsedBody();
 		$this->_mountEntity($values);
 		
-		$update = $this->model->doUpdate($this->model->entity);
+		$update = $this->_model->doUpdate($this->_model->entity);
 		
 		return $res->withJson($update);
 	}
@@ -93,15 +92,15 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 */
 	public function delete($req, $res, $args) {
 		$id = $args['id'];
-		$repository = $this->model->getRepository()->find($id);
+		$repository = $this->_model->getRepository()->find($id);
 		
 		if(isset($repository->c_removed)){
 			$this->_mountEntity($repository->toArray());
-			$this->model->entity
+			$this->_model->entity
 				->setC_Removed(true);
-			$delete = $this->model->doUpdate($this->model->entity);
+			$delete = $this->_model->doUpdate($this->_model->entity);
 		} else {
-			$delete = $this->model->doDelete($repository);
+			$delete = $this->_model->doDelete($repository);
 		}
 
 		return $res->withJson($delete);
@@ -115,7 +114,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @param Collection $results
 	 * @return Array $data
 	 */
-	public function translateCollaction($results) {
+	public function translateCollection($results) {
 		$data = null;
 		if ($results) {
 			if (is_array($results)) {
@@ -139,7 +138,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	private function _mountEntity($values){
 		foreach ($values as $key => $value) {
 			$method = "set$key";
-			$this->model->entity
+			$this->_model->entity
 				->$method($value);
 		}
 	}

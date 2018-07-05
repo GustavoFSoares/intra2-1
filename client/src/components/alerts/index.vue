@@ -2,7 +2,7 @@
     <div>
         <h1>{{ title }}</h1>
 
-        <router-link class="button btn btn-outline-secondary btn-lg" to="/alertas/add" tag="button">
+        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'alertas/add'}" tag="button">
             Criar Alerta
         </router-link>
 
@@ -28,12 +28,12 @@
                     <td>DD/mm/YYYY HH:mm</td>
                     <td>-- Ativo --</td>
                     <td>
-                        <router-link :to='`/alertas/edit/${alert.id}`'>
+                        <router-link :to='`/usuario/alertas/edit/${alert.id}`'>
                             <i class="fa fa-edit"></i>
                         </router-link>
                     </td>
                     <td>
-                        <router-link @click.native="remove(alert.id, index)" to="/alertas">
+                        <router-link @click.native="remove(alert.id, index)" to="">
                             <i class="text-danger fa fa-trash"></i>
                         </router-link>
                     </td>
@@ -63,7 +63,7 @@ export default {
         },
         remove(id, index) {
             confirm("Tem certeza que deseja excluir?") ?
-                model.remove(id).then(() => window.location = `/alertas`):''
+                model.remove(id).then( () => this.$router.go() ):''
         }
     },
     mounted() {

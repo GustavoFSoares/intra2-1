@@ -7,8 +7,9 @@ $model = new StatusMessageModel();
 
 if(!$model->findAll()){
     $StatusMessages = [
-        ['id' => 'user_incorrect', 'status' => false, 'message'=> 'Usuário ou Senha incorretos. Por favor tente novamente ou contate a TI'],        
-        ['id' => 'user_inactive', 'status' => false, 'message' => 'Seu Usuário foi inativado, por favor, contate a TI']
+        ['id' => 'user_incorrect', 'status' => false, 'message'=> 'Usuário ou Senha incorretos.'],        
+        ['id' => 'user_inactive', 'status' => false, 'message' => 'Seu Usuário foi inativado, por favor contate a TI'],
+        ['id' => 'group_not_found', 'status' => false, 'message' => 'Você não possui grupo cadastrado. Contate a TI']
     ];
     
     foreach ($StatusMessages as $statusMessage) {

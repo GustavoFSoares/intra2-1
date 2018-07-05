@@ -28,7 +28,8 @@ class User extends SoftdeleteAbstract
     protected $level;
 
     /**
-     * @var string @Column(name="grupo", type="string")
+     * @ManyToOne(targetEntity="Group",cascade={"persist", "remove"})
+     * @JoinColumn(name="grupo_id", referencedColumnName="id", nullable=true)
      */
     protected $group;
 
@@ -84,7 +85,7 @@ class User extends SoftdeleteAbstract
     }
     public function setGroup($group) {
         $this->group = $group;
-
+        
         return $this;
     }
 
