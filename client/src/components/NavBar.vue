@@ -32,7 +32,7 @@ export default {
         return {
             "message": "",
             "screens": [
-                {name: "Convênios", link:"http://gamp-web/?tela=convenio", externalLink: true },
+                {name: "Convênios", link:"/convenios", externalLink: false },
                 {name: "Ramais", link:"/ramais", externalLink: false },
                 {name: "Arquivos", link:"http://gamp-web/?tela=arquivos", externalLink: true },
                 {name: "POPS", link:"http://gamp-web/?tela=pops", externalLink: true },

@@ -83,19 +83,6 @@ class Alert extends SoftdeleteAbstract
         return $this;
     }
 
-    public function getComplement() {
-        return [
-            'description' => $this->description,
-            'conduct' => $this->conduct
-        ];
-    }
-    public function setComplement($complement) {
-        $this->description = $complement['description'];
-        $this->conduct = $complement['conduct'];
-
-        return $this;
-    }
-
     public function getType() {
         return $this->type;
     }

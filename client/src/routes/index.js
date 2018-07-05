@@ -7,11 +7,12 @@ import NotFound from '@/components/NotFound.vue'
 import DontHavePermission from '@/components/DontHavePermission.vue'
 
 import adverseEventsRoutes from './adverse-events-routes'
-import ramalsRoutes from './ramals-routes'
 import alertsRoutes from './alerts-routes'
+import covenantRoutes from './covenants-routes'
 import loginRoutes from './login-routes'
-import userPanelRoutes from './user-panel-routes'
 import modulesRoutes from './modules-routes'
+import ramalsRoutes from './ramals-routes'
+import userPanelRoutes from './user-panel-routes'
 
 import Access from "@/entity/Access";
 
@@ -36,11 +37,12 @@ const Routes = new Router({
     mode: 'history',
 })
 Routes.addRoutes(adverseEventsRoutes)
-Routes.addRoutes(ramalsRoutes)
 Routes.addRoutes(alertsRoutes)
+Routes.addRoutes(covenantRoutes)
 Routes.addRoutes(loginRoutes)
-Routes.addRoutes(userPanelRoutes)
 Routes.addRoutes(modulesRoutes)
+Routes.addRoutes(ramalsRoutes)
+Routes.addRoutes(userPanelRoutes)
 
 Routes.beforeEach((to, from, next) => {
     const Session = (window.sessionStorage.getItem('vue-session-key') != '{}') ?
