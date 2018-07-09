@@ -41,9 +41,9 @@
     },
     "scripts": {
         "start": "php -S 0.0.0.0:3001 -t /var/www/public",
-        "db-create": "vendor/bin/doctrine orm:schema-tool:create",
-        "db-update": "vendor/bin/doctrine orm:schema-tool:update -f",
-        "db-drop": "vendor/bin/doctrine orm:schema-tool:drop -f",
+        "db-create": "vendor\\bin\\doctrine orm:schema-tool:create",
+        "db-update": "vendor\\bin\\doctrine orm:schema-tool:update -f",
+        "db-drop": "vendor\\bin\\doctrine orm:schema-tool:drop -f",
         "test": "phpunit"
     }
 
