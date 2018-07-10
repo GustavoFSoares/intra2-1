@@ -26,6 +26,11 @@ class User extends SoftdeleteAbstract
      * @var string @Column(name="nivel", type="string")
      */
     protected $level;
+    
+    /**
+     * @var string @Column(name="ramal", type="string")
+     */
+    protected $ramal;
 
     /**
      * @ManyToOne(targetEntity="Group",cascade={"persist", "remove"})
@@ -39,15 +44,16 @@ class User extends SoftdeleteAbstract
     protected $occupation;
 
     /**
-     * @var string @Column(type="boolean", options={"default":false})
+     * @var string @Column(type="boolean", nullable=true, options={"default":false})
      */
     protected $admin;
 
-    public function __construct($id = '', $name = '', $level = '1', $group = '', $occupation = '', $admin = false) {
+    public function __construct($id = '', $name = '', $level = '1', $ramal = '', $group = '', $occupation = '', $admin = false) {
         parent::__construct();
         $this->id = $id;
         $this->name = $name;
         $this->level = $level;
+        $this->ramal = $ramal;
         $this->group = $group;
         $this->occupation = $occupation;
         $this->admin = 0;
@@ -80,6 +86,15 @@ class User extends SoftdeleteAbstract
         return $this;
     }
 
+    public function getRamal() {
+        return $this->ramal;
+    }
+    public function setRamal($ramal) {
+        $this->ramal = $ramal;
+
+        return $this;
+    }
+
     public function getGroup() {
         return $this->group;
     }
@@ -102,7 +117,7 @@ class User extends SoftdeleteAbstract
         return $this->admin;
     }
     public function setAdmin($admin) {
-        $this->admin = $admin;
+        $this->admin = $admin ? true : false;
 
         return $this;
     }

@@ -12,7 +12,7 @@ import covenantRoutes from './covenants-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
 import ramalsRoutes from './ramals-routes'
-import userPanelRoutes from './user-panel-routes'
+import userRoutes from './user-routes'
 
 import Access from "@/entity/Access";
 
@@ -42,7 +42,7 @@ Routes.addRoutes(covenantRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ramalsRoutes)
-Routes.addRoutes(userPanelRoutes)
+Routes.addRoutes(userRoutes)
 
 Routes.beforeEach((to, from, next) => {
     const Session = (window.sessionStorage.getItem('vue-session-key') != '{}') ?
