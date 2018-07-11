@@ -115,7 +115,8 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return Array $data
 	 */
 	public function translateCollection($results) {
-		$data = null;
+		$data = is_array($results) ? 
+			[] : null;
 		if ($results) {
 			if (is_array($results)) {
 				foreach ($results as $result) {
@@ -135,12 +136,13 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @param Array $values
 	 * @return void
 	 */
-	private function _mountEntity($values){
+	public function _mountEntity($values){
 		foreach ($values as $key => $value) {
 			$method = "set$key";
 			$this->_model->entity
 				->$method($value);
 		}
+		return $this->_model->entity;
 	}
 	
 }

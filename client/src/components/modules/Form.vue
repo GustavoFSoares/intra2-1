@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" @keyup.enter="isValidForm">
         <h1>{{ title }}</h1>
 
         <row id="name" label="Nome">
@@ -42,7 +42,7 @@
                 </div>
                 
                 <div id="font-awesome">
-                    <a href="https://fontawesome.com/v4.7.0/icons/">
+                    <a href="https://fontawesome.com/" target="_blank">
                         <small>Font-Awesome</small>
                     </a>
                 </div>

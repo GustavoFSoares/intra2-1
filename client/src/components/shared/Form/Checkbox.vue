@@ -1,6 +1,6 @@
 <template>
     <label class="switch">
-        <input @click="change()" type="checkbox" v-model="value">
+        <input :id="id" @click="change()" type="checkbox" v-model="value">
         <span class="slider round"></span>
     </label>
 </template>
@@ -13,7 +13,8 @@ export default {
         }
     },
     props: {
-        checked: Boolean
+        checked: Boolean,
+        id: ''
     },
     methods: {
         change(){

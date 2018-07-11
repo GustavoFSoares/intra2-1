@@ -13,6 +13,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import 'font-awesome/css/font-awesome.css'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(fas)
+
+Vue.component('icon', FontAwesomeIcon)
+
 Vue.config.productionTip = false
 
 Validator.localize('pt_BR', translate)
