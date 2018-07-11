@@ -8,7 +8,6 @@ export default {
         return http.get(`/user/group/${group}`).then(res => res.data)
     },
     editUser: (id, data) => {
-        console.log(data);
         return http.put(`/user/${id}`, data).then(res => res.data)
     }
 }

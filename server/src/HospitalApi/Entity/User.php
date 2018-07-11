@@ -122,5 +122,4 @@ class User extends SoftdeleteAbstract
         return $this;
     }
 
-
 }

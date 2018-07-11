@@ -27,7 +27,7 @@
                     <td>{{ user.occupation }}</td>
                     <td>{{ user.level }}</td>
                     <td>{{ user.ramal }}</td>
-                    <td @dblclick="changeStatus(user.id)">
+                    <td>
                         <icon class="text-success" icon="check-circle" v-if="!user.c_removed"/>
                         <icon class="text-danger" icon="times-circle" v-else/>
                     </td>
