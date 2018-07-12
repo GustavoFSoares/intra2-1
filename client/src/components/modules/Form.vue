@@ -14,7 +14,7 @@
                     <input @keyup.enter="routeExists()" data-vv-as="Rota" v-validate data-vv-rules="required" type="text" class="form-control" name="module-route" v-model="Module.routeName" :placeholder="path+'/usuario/'">
                     <div class="input-group-append">
                         <button @click="routeExists()" type="button" class="btn btn-secondary">
-                            <i class="fa fa-refresh"></i>
+                            <icon icon="sync"/>
                         </button>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     </rows>
                     <rows>
                         <div class="row">
-                            <i id="icon-module" :class="Module.icon"/>
+                            <icon v-if="Module.icon" id="icon-module" :icon="Module.icon"/>
                         </div>
                     </rows>
                 </div>

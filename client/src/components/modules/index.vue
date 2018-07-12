@@ -23,7 +23,7 @@
             <tbody>
                 <tr v-for="(module, index) of modules" :key="index">
                     <td scope="row">{{ module.id }}</td>
-                    <td> <i :class="module.icon"></i> </td>
+                    <td> <icon :icon="module.icon"/> </td>
                     <td>{{ module.name }}</td>
                     <td>{{ moment(module.c_modified.date).format('DD/MM/YYYY - hh:mm:ss') }}</td>
                     <td @dblclick="changeStatus(module.id)">
