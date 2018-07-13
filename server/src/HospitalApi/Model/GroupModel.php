@@ -18,4 +18,15 @@ class GroupModel extends SoftdeleteModel
         return $this->getRepository()->findOneByGroupId($groupId);
     }
 
+    public function findEnterprises() {
+        $query = $this->em->createQueryBuilder();
+        $query
+            ->select('g.enterprise')
+            ->from($this->entityPath, 'g')
+            ->distinct('g.enterprise');
+        $collection = $query->getQuery()->getResult();
+        
+        return $collection;
+    }
+
 }

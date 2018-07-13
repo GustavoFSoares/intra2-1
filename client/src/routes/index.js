@@ -12,6 +12,7 @@ import covenantRoutes from './covenants-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
 import ramalsRoutes from './ramals-routes'
+import trainingRoutes from './training-routes'
 import userRoutes from './user-routes'
 
 import Access from "@/entity/Access";
@@ -42,6 +43,7 @@ Routes.addRoutes(covenantRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ramalsRoutes)
+Routes.addRoutes(trainingRoutes)
 Routes.addRoutes(userRoutes)
 
 Routes.beforeEach((to, from, next) => {

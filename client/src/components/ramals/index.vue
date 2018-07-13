@@ -3,7 +3,7 @@
         <h1>{{ title }}</h1>
 
         <div class="form-group form-row col">
-            <input type="search" class="filter form-control" @input="filter = $event.target.value" placeholder="Nome:"/>
+            <input type="search" class="filter form-control" :disabled="!ramals" @input="filter = $event.target.value" placeholder="Nome:"/>
         </div>
 
         <table class="table table-hover">
