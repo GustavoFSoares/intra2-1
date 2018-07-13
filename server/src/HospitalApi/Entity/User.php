@@ -18,6 +18,11 @@ class User extends SoftdeleteAbstract
     protected $id;
 
     /**
+     * @var String @Column(name="matricula", type="string")
+     */
+    protected $code;
+
+    /**
      * @var string @Column(name="nome", type="string", length=255)
      */
     protected $name;
@@ -48,9 +53,10 @@ class User extends SoftdeleteAbstract
      */
     protected $admin;
 
-    public function __construct($id = '', $name = '', $level = '1', $ramal = '', $group = '', $occupation = '', $admin = false) {
+    public function __construct($id = '', $code = '0', $name = '', $level = '1', $ramal = '', $group = '', $occupation = '', $admin = false) {
         parent::__construct();
         $this->id = $id;
+        $this->code = $code;
         $this->name = $name;
         $this->level = $level;
         $this->ramal = $ramal;
@@ -64,6 +70,15 @@ class User extends SoftdeleteAbstract
     }
     public function setId($id) {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function getCode() {
+        return $this->code;
+    }
+    public function setCode($code) {
+        $this->code = $code;
 
         return $this;
     }

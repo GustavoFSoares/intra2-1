@@ -59,6 +59,7 @@ class LoginController extends ControllerAbstract
                 'name' => $adValues[0]['displayname'][0],
                 'group' => $Ad->getGroupArray(isset($adValues[0]['department']) ? $adValues[0]['department'][0] : '' ),
                 'occupation' => $adValues[0]['description'][0]?$adValues[0]['description'][0]:'',
+                'code' => $adValues[0]['physicaldeliveryofficename'][0]?$adValues[0]['physicaldeliveryofficename'][0]:'0',
             ];
             $group = $this->getRepositoryGroupById($user['group']['name']);
 
@@ -70,6 +71,7 @@ class LoginController extends ControllerAbstract
             $User = new User();
             $User
                 ->setId($user['id'])
+                ->setCode($user['code'])
                 ->setName($user['name'])
                 ->setGroup($group)
                 ->setOccupation($user['occupation']);

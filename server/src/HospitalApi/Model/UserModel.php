@@ -18,10 +18,23 @@ class UserModel extends SoftdeleteModel
 
     public function findById($id) {
         $User = parent::findById($id);
-        if($User){
+        if($User) {
             $group = $User->getGroup()->toArray();
             $User->setGroup($group);
         }
         return $User;
+    }
+
+    public function findAll() {
+        $Users = parent::findAll();
+        $users = [];
+        if($Users) {
+            foreach ($Users as $User) {
+                $group = $User->getGroup()->toArray();
+                $User->setGroup($group);
+                $users[] = $User;
+            }
+        }
+        return $users;
     }
 }
