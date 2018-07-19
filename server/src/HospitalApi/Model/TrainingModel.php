@@ -16,13 +16,12 @@ class TrainingModel extends ModelAbstract
         parent::__construct();
     }
 
-    public function mounte($values) {
+    public function mount($values) {
+        $values = (object)$values;
         $userRepository = $this->em->getRepository("HospitalApi\Entity\User");
 
-        $name = $this->em->getRepository("HospitalApi\Entity\TrainingType")->findOneById($values->name['id'])->getName();
-        if($name == 'Outros') {
-            $name = $values->anotherName;
-        }
+        $id = $values->id;
+        $name = $values->name;
         $place = $values->place['enterprise'];
         $type = $values->type['name'];
         $institutionalType = ($values->type['id'] == 'institutional') ? $values->institutionalType['name'] : null;
@@ -36,20 +35,13 @@ class TrainingModel extends ModelAbstract
         }
         
         foreach ($this->entity->getClassVars() as $key => $var) {
-            if($key != 'users' && $key != 'id') {
+            if($key != 'users') {
                 $method = "set$key";
                 $this->entity->$method($$key);
             }
         }
 
         return $this->entity;
-    }
-
-    public function findAll() {
-        $log = $this->getLogger();
-        $collection = $this->getRepository()->findAll();
-        
-        return $collection;
     }
 
 }

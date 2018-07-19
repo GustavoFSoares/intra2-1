@@ -13,17 +13,29 @@ class TrainingController extends ControllerAbstract
     }
 
     public function insert($req, $res, $args){
-        $values = (object)$req->getParsedBody();
+        $values = $req->getParsedBody();
         
         $model = $this->getModel();
         
-        $entity = $model->mounte($values);
+        $entity = $model->mount($values);
         $model->doInsert($entity);
         
         return $res->withJson(true);
     }
 
-    public function translateCollection($entity, $arr = []) {
+    public function _mountEntity($values){
+        $model = $this->getModel();
+        
+        $entity = $model->mount($values);
+        return $entity;
+    }
+
+    public function translateCollection($entity) {
+        if(empty($arr)){
+			$arr = is_array($entity) ? 
+				[] : null;
+        }
+        
         if($entity) {
             if(is_array($entity)){
                 foreach ($entity as $key => $value) {

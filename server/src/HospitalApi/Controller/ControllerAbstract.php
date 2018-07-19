@@ -75,9 +75,9 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 */
 	public function update($req, $res, $args) {
 		$values = $req->getParsedBody();
-		$this->_mountEntity($values);
+		$entity = $this->_mountEntity($values);
 		
-		$update = $this->_model->doUpdate($this->_model->entity);
+		$update = $this->_model->doUpdate($entity);
 		
 		return $res->withJson($update);
 	}

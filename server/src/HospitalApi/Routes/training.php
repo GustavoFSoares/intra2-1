@@ -10,5 +10,5 @@ $app->group('/training', function () {
     
     $this->post('/', "HospitalApi\Controller\TrainingController:insert", function (Request $req, Response $res, array $args) { });
     
-    $this->put('/', "HospitalApi\Controller\TrainingController:update", function (Request $req, Response $res, array $args) { });
+    $this->put('/{id}', "HospitalApi\Controller\TrainingController:update", function (Request $req, Response $res, array $args) { });
 });

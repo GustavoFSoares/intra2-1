@@ -55,9 +55,9 @@ class ModuleController extends ControllerAbstract
     }
 
     public function translateCollection($collection) {
+        $groups = [];
         if (is_array($collection)) {
             foreach ($collection as &$row) {
-                $groups = [];
                 
                 foreach ($row->getGroups()->toArray() as $groupRow) {
                     $groups[$groupRow->getGroupId()] = $groupRow->toArray();
