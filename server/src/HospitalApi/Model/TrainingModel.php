@@ -22,7 +22,7 @@ class TrainingModel extends ModelAbstract
 
         $id = $values->id;
         $name = $values->name;
-        $place = $values->place['enterprise'];
+        $place = $values->place['enterprise'] ? $values->place['enterprise'] : $values->place;
         $type = $values->type['name'];
         $institutionalType = ($values->type['id'] == 'institutional') ? $values->institutionalType['name'] : null;
         $instructor = $userRepository->findOneById($values->instructor['id']);
@@ -42,6 +42,13 @@ class TrainingModel extends ModelAbstract
         }
 
         return $this->entity;
+    }
+
+    public function doDelete($obj) {
+        $obj->setInstructor(null);
+        $obj->setUsers(null);
+        
+        return parent::doDelete($obj);
     }
 
 }
