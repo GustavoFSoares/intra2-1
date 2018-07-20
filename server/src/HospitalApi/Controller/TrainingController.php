@@ -42,16 +42,16 @@ class TrainingController extends ControllerAbstract
                     $arr[$key] = $this->translateCollection($value);
                 }
             } else {
-                foreach ($entity->toArray() as $key => $value) {
-                    
+                $arrayEntity = $entity->toArray();
+                foreach ($arrayEntity as $key => $value) {
                     if($value instanceof \HospitalApi\Entity\EntityAbstract){
                         $arr[$key] = $this->translateCollection($value);
         
                     } else {
                         $method = "get$key";
         
-                        if(method_exists($entity, $method)) {
-                            $result = $entity->$method();
+                        if(array_key_exists($key, $entity->toArray())) {
+                            $result = $value;
         
                             if(method_exists($result, "toArray")) {
         

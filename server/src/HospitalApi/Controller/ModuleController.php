@@ -20,7 +20,7 @@ class ModuleController extends ControllerAbstract
             
             if($value['active']){
                 $module->addGroup($group);
-                $model->doInsert($module);
+                $model->doInsert($module);      
             } else {
                 $module->removeGroup($group);
                 $model->doUpdate($module);

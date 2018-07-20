@@ -6,33 +6,34 @@
             Cadastrar Treinamento
         </router-link>
 
-        <table v-if="modules" class="table table-striped">
+        <table v-if="trainings" class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col"></th>
                     <th scope="col">Nome</th>
-                    <th scope="col">Última Modificação</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Multiplicador</th>
+                    <th scope="col">Local</th>
+                    <th scope="col">Horário de Início</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Carga Horária</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(module, index) of modules" :key="index">
-                    <td scope="row">{{ module.id }}</td>
-                    <td> <icon :icon="module.icon"/> </td>
-                    <td>{{ module.name }}</td>
-                    <td>{{ moment(module.c_modified.date).format('DD/MM/YYYY - hh:mm:ss') }}</td>
-                    <td @dblclick="changeStatus(module.id)">
-                        <i class="text-success fa fa-check-circle" v-if="!module.c_removed"/>
-                        <i class="text-danger fa fa-times-circle" v-else/>
-                    </td>
+                <tr v-for="(training, index) of trainings" :key="index">
+                    <td scope="row">{{ training.id }}</td>
+                    <td>{{ training.name }}</td>
+                    <td>{{ training.instructor.name }}</td>
+                    <td>{{ training.place }}</td>
+                    <td>{{ training.timeTraining }}</td>
+                    <td>{{ training.type }}</td>
+                    <td>{{ training.workload }} horas</td>
                     <td>
-                        <router-link :to='`modulos/edit/${module.id}`'>
-                            <i class="fa fa-edit"/>
+                        <router-link :to='`hora-homem-treinamento/edit/${training.id}`'>
+                            <icon icon="edit"/>
                         </router-link>
-                        <router-link @click.native="remove(module.id)" to="">
-                            <i class="text-danger fa fa-trash"></i>
+                        <router-link @click.native="remove(training.id, index)" to="">
+                            <icon class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
                 </tr>
@@ -43,29 +44,27 @@
 </template>
 
 <script>
-import model, { getter } from "@/model/modules-model";
+import model, { getter } from "@/model/training-model";
 import moment from 'moment'
 
 export default {
     data() {
         return {
             title: "Lista de Módulos",
-            modules: [],
+            trainings: [],
             moment: moment,
         }
     },
     methods: { 
-        remove(id){
-            confirm("Tem certeza que deseja excluir?") ?
-                model.doDeleteModule(id).then(res => this.$router.go()):''
+        remove(id, index){
+            if (confirm("Tem certeza que deseja excluir?")) {
+                model.doDelete(id)
+                this.trainings.splice(index, 1)
+            }
         },
-        changeStatus(id){
-            model.doChangeStatusModule(id).then(res => this.$router.go())
-        }
-        
     },
     mounted() {
-        getter.getModules().then(res => { this.modules = res })
+        getter.getTrainings().then(res => { this.trainings = res })
     },
 }
 </script>
