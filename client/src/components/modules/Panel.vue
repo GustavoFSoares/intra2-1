@@ -2,11 +2,10 @@
     <div v-if="loaded">
         <div v-if="modules" class="pull-left">
          
-            <div v-for="module of modules" :key="module.id" class="panel card">
+            <div v-for="module of modules" :key="'123'+module.id" class="panel card">
                 <router-link :to="{name: module.routeName}" class="nav-link panel-conteudo">
-                    <i :class="module.icon">
-                        <h2 class="card-title panel-title">{{ module.name }}</h2>
-                    </i>    
+                    <icon id="icon" :icon="module.icon"/>
+                    <h2 id="label" class="card-title panel-title">{{ module.name }}</h2>
                 </router-link>
             </div>
 
@@ -71,9 +70,13 @@ export default {
 
     .panel-conteudo {
         color: #575757d3;
-
     }
 
+    .panel-conteudo #icon {
+        font-size: 30px;
+        margin-top: 10px;
+    }
+    
     .panel-conteudo i {
         font-size: 30px;
         margin-top: 10px;
@@ -82,6 +85,10 @@ export default {
     #alert {
         margin-left: 15%;
         max-width: 70%;
+    }
+
+    #label {
+        font-family: 'Times New Roman';
     }
 
 </style>

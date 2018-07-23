@@ -4,6 +4,7 @@ export default class User {
                 user = { group: { name: '', enterprise: '' } }
             }
             this.id = user.id
+            this.code = user.code
             this.name = user.name
             this.group = user.group
             this.level = user.level

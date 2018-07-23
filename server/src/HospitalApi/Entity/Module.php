@@ -31,7 +31,7 @@ class Module extends SoftdeleteAbstract
     protected $icon;
 
     /**
-     * Many Users have Many Groupss.
+     * Many Modules have Many Groupss.
      * @ManyToMany(targetEntity="Group")
      * @JoinTable(name="Modulo_Grupo",
      *      joinColumns={@JoinColumn(name="modulo_id", referencedColumnName="id")},

@@ -20,7 +20,7 @@ class ModuleController extends ControllerAbstract
             
             if($value['active']){
                 $module->addGroup($group);
-                $model->doInsert($module);
+                $model->doInsert($module);      
             } else {
                 $module->removeGroup($group);
                 $model->doUpdate($module);
@@ -55,9 +55,9 @@ class ModuleController extends ControllerAbstract
     }
 
     public function translateCollection($collection) {
+        $groups = [];
         if (is_array($collection)) {
             foreach ($collection as &$row) {
-                $groups = [];
                 
                 foreach ($row->getGroups()->toArray() as $groupRow) {
                     $groups[$groupRow->getGroupId()] = $groupRow->toArray();

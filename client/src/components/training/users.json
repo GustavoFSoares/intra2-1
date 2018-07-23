@@ -1,0 +1,21 @@
+[
+    {
+        "name": "Gustavo",
+        "group": "ti",
+        "code": "17105071",
+        "occupation": "Desenvolvedor",
+        "turn": "Dia Todo"
+    },{
+        "name": "Thiago",
+        "group": "ti",
+        "code": "1710XXXX",
+        "occupation": "O cara que paga tarefa",
+        "turn": "Dia Todo"
+    },{
+        "name": "Roni",
+        "group": "ti",
+        "code": "1710XXXX",
+        "occupation": "Chefe",
+        "turn": "Até quando dorme"
+    }
+]

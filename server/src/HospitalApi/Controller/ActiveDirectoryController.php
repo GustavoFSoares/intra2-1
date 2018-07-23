@@ -38,10 +38,10 @@ class ActiveDirectoryController
     public function getUserContents($login){
         $this->_doRequest();
         $filter = "(sAMAccountName=$login)";
-        $justhese = ['displayname', 'samaccountname', 'department', 'description'];
+        $justhese = ['displayname', 'samaccountname', 'department', 'description', 'physicaldeliveryofficename'];
         $result = ldap_search($this->_con, "dc=hmd,dc=local", $filter, $justhese);
         
-        $info = ldap_get_entries($this->_con, $result);        
+        $info = ldap_get_entries($this->_con, $result);
         return $info;
     }
     

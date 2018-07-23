@@ -9,4 +9,9 @@ class GroupController extends ControllerAbstract
         parent::__construct(new GroupModel());
     }
 
+    public function getEnterprises($req, $res, $args) {
+        $data = $this->getModel()->findEnterprises();
+        return $res->withJson($data);
+    }   
+
 }

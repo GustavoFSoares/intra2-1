@@ -23,6 +23,7 @@ export default {
     },
     data() {
         return {
+            autoApply: true,
             begindate: '',
             finaldate: '',
             minuteInterval: 5,
@@ -41,7 +42,11 @@ export default {
         }
     }, 
     mounted() {
-        $(`#${this.$props.id}`).daterangepicker({ "autoUpdateInput": true, "alwaysShowCalendars": true, "singleDatePicker": !this._props.multiple, "timePicker": !this._props.onlycalendar, "timePicker24Hour": this.hour24, "timePickerIncrement": this.minuteInterval, "opens": this._props.opens, "drops": this.drops, "locale": this.locale, "minDate": this.configureBeginDate(), "maxDate": this.configureFinalDate() });
+        this.loadValues()
+    },
+    updated() {
+        this.loadValues()
+        
     },
     methods: {
         configureFinalDate() {
@@ -76,6 +81,9 @@ export default {
                     return ""
                     break;
             }
+        },
+        loadValues() {
+            $(`#${this.$props.id}`).daterangepicker({ "startDate": moment.now(), "endDate": moment.now(), "autoApply": true, "autoUpdateInput": true, "alwaysShowCalendars": true, "singleDatePicker": !this.$props.multiple, "timePicker": !this.$props.onlycalendar, "timePicker24Hour": this.hour24, "timePickerIncrement": this.minuteInterval, "opens": this.$props.opens, "drops": this.drops, "locale": this.locale, "minDate": this.configureBeginDate(), "maxDate": this.configureFinalDate() });
         }
     }
 }
