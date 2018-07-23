@@ -50,7 +50,7 @@ import moment from 'moment'
 export default {
     data() {
         return {
-            title: "Lista de Módulos",
+            title: "Lista de Treinamentos",
             trainings: [],
             moment: moment,
         }

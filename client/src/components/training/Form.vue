@@ -77,7 +77,7 @@
                 </date-picker>
             </rows>
 
-            <rows :label="subtitles.workload">
+            <rows :label="subtitles.workload" class="col-md-2">
                 <input :data-vv-as="subtitles.workload" v-validate data-vv-rules="required|numeric" type="number" class="form-control" name="Training-workload" v-model="training.workload">
                 <require-text :error="errors.has('Training-workload')" :text="errors.first('Training-workload')" :show="true" :attribute="training.workload"/>
             </rows>

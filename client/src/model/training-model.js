@@ -24,7 +24,7 @@ const model = {
     indexOf: (users, user) => {
         let ok
         users.forEach((u, index) => {
-            if (u.code == user.code) {
+            if (u.id == user.id) {
                 ok = index
             }
         })

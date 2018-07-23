@@ -18,7 +18,7 @@ class User extends SoftdeleteAbstract
     protected $id;
 
     /**
-     * @var String @Column(name="matricula", type="string")
+     * @var String @Column(name="matricula", type="string", options={"default":"00000000"})
      */
     protected $code;
 
