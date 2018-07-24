@@ -91,12 +91,12 @@ class Module extends SoftdeleteAbstract
 
         return $this;
     }
-
-    public function getFree() {
-        return $this->free;
+    
+    public function getDefault() {
+        return $this->default;
     }
-    public function setFree($free) {
-        $this->free = $free;
+    public function setDefault($default) {
+        $this->default = $default;
 
         return $this;
     }
