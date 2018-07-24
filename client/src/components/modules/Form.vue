@@ -51,6 +51,10 @@
             </rows>
         </div>
 
+        <row label="Padrão">
+            <input type="checkbox" v-model="Module.default">
+        </row>
+
         <div id="buttons">
             <row>
                 <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm">

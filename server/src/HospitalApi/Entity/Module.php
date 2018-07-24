@@ -26,6 +26,11 @@ class Module extends SoftdeleteAbstract
     protected $routeName;
 
     /**
+     * @var string @Column(name="padrao", type="boolean", options={"default": false })
+     */
+    protected $default;
+
+    /**
      * @var string @Column(name="icone", type="string", length=255)
      */
     protected $icon;
@@ -83,6 +88,15 @@ class Module extends SoftdeleteAbstract
     }
     public function setIcon($icon) {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getFree() {
+        return $this->free;
+    }
+    public function setFree($free) {
+        $this->free = $free;
 
         return $this;
     }
