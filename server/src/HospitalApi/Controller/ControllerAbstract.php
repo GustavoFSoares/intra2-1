@@ -95,10 +95,9 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		$repository = $this->_model->getRepository()->find($id);
 		
 		if(isset($repository->c_removed)){
-			$this->_mountEntity($repository->toArray());
-			$this->_model->entity
+			$repository
 				->setC_Removed(true);
-			$delete = $this->_model->doUpdate($this->_model->entity);
+			$delete = $this->_model->doUpdate($repository);
 		} else {
 			$delete = $this->_model->doDelete($repository);
 		}

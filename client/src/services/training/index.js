@@ -7,6 +7,7 @@ export default {
     getTrainings: (id) => {
         return http.get(`/training/`, { params: { id: id } }).then(res => res.data )
     },
+    
     doInsert: (data) => {
         return http.post(`/training/`, data).then( res => res.data )
     },
