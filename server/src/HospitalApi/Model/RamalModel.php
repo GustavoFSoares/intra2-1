@@ -25,4 +25,10 @@ class RamalModel extends SoftdeleteModel
 
         return $values;
     }
+
+    public function findAll() {
+        $collection = $this->getRepository()->findBy([], ['group' => 'ASC', 'core' => 'ASC']);
+
+        return $collection;
+    }
 }
