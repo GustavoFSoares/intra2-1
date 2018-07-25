@@ -13,7 +13,7 @@ class RamalController extends ControllerAbstract
     }
 
     public function findAll($req, $res, $args) {
-        $collection = $this->getModel()->getRepository()->findAll();
+        $collection = $this->getModel()->getRepository()->findBy([], ['group' => 'ASC', 'core' => 'ASC']);
         
         $data = $this->translateCollection($collection);
         return $res->withJson($data);
