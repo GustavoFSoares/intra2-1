@@ -19,10 +19,10 @@ class LoggerHelper {
 
     public static function initLogFile($fileName) {
         self::initializer();
-        
-        $fileName= self::$begin->format('Ymd H.i.s')."-".strtoupper($fileName).".log";
-        self::$fileDir = "../logs/Cron/$fileName";
 
+        $fileName= self::$begin->format('Ymd H.i.s')."-".strtoupper($fileName).".log";
+        self::$fileDir = "..\..\..\..\logs\Cron\\$fileName";
+        
         file_put_contents(self::$fileDir, "", FILE_APPEND);
     }
 
