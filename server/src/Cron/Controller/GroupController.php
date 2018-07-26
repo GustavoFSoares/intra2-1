@@ -21,8 +21,8 @@ class GroupController
         
         $mappedGroups = '';
         $existingGroups = '';
-
-        echo "Verificando...\n";
+        \Helper\LoggerHelper::initLogFile('group');
+        \Helper\LoggerHelper::writeFile("Verificando...\n");
         
         foreach ($groups as $key => $group) {
             $groupId = \Helper\SlugHelper::get($group['name']);
@@ -31,7 +31,7 @@ class GroupController
             $data = $this->model->findByGroupId($groupId);
             
             if($data) {
-                echo "$key - Ja Cadastrado - $groupId\n";
+                \Helper\LoggerHelper::writeFile("$key - Ja Cadastrado - $groupId\n");
                 $existingGroups[] = $groupId;
             } else {
                 $newGroup = new Group();
@@ -44,23 +44,23 @@ class GroupController
                     );
                 $this->model->doInsert($newGroup);
                 
-                echo "$key - Inserido - Grupo $groupId\n";
+                \Helper\LoggerHelper::writeFile("$key - Inserido - Grupo $groupId\n");
                 $existingGroups[] = $groupId;
             }
             
         }
 
         $diffs = array_diff($existingGroups, $mappedGroups);
-        echo "\n";
+        \Helper\LoggerHelper::writeFile("\n");
         foreach ($diffs as $toDelete) {
             $group = $this->model->findByGroupId($toDelete);
             if($group){
                 $this->model->doDelete($group);
-                echo "Exluido - Grupo $toDelete\n";
+                \Helper\LoggerHelper::writeFile("Exluido - Grupo $toDelete\n");
             }
         }
         
-        echo "--Atualizacao de Grupos finalizada--\n";
+        \Helper\LoggerHelper::writeFile("--Atualizacao de Grupos finalizada--\n");
     }
 
     public function getModel() {

@@ -77,6 +77,16 @@ class ActiveDirectoryController
         
         return $groups;
     }
+
+     public function getUsers($letter){
+        $this->_doRequest();
+        $filter = "(sAMAccountName=$letter*)";
+        $justhese = ['displayname', 'samaccountname', 'department', 'description', 'physicaldeliveryofficename'];
+        $result = ldap_search($this->_con, "dc=hmd,dc=local", $filter, $justhese);
+        
+        $info = ldap_get_entries($this->_con, $result);
+        return $info;
+    }
     
     private function _doRequest() {
         $bind = ldap_bind($this->_con, $this->_getUser(AD_USER), AD_PASSWORD);
@@ -92,7 +102,11 @@ class ActiveDirectoryController
         $result = ldap_search($this->_con, "dc=hmd,dc=local", $filter, $justhese);
         
         $info = ldap_get_entries($this->_con, $result);
-        $code = $info[0]['useraccountcontrol'][0];
+        if(isset($info[0]['useraccountcontrol'][0])){
+            $code = $info[0]['useraccountcontrol'][0];
+        } else {
+            return false;
+        }
         
         $result =  false;
         switch ($code) {
