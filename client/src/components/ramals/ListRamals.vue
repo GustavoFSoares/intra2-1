@@ -11,7 +11,7 @@
                 <tr>
                 <th scope="col">Ramal</th>
                 <th scope="col">Setor</th>
-                <th scope="col">Núcler</th>
+                <th scope="col">Núcleo</th>
                 <th scope="col">Unidade</th>
                 <th scope="col">Andar</th>
                 </tr>
