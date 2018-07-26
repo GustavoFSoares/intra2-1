@@ -4,5 +4,6 @@ export default class Module {
         this.name = module.name
         this.routeName = module.routeName
         this.icon = module.icon
+        this.default = module.default
     }
 }

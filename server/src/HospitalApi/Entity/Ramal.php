@@ -23,31 +23,27 @@ class Ramal extends SoftdeleteAbstract
     protected $number;
 
     /**
-     * @var string @Column(name="ds_ramal", type="string", length=255)
+     * @var string @Column(name="ds_nucleo", type="string", length=255)
      */
-    protected $description;
-
-    // /**
-    //  * @ManyToOne(targetEntity="Sector",cascade={"persist", "remove"})
-    //  * @JoinColumn(name="id_setor")
-    //  */
-    // protected $Sector;
-    /**
-     * @var string @Column(name="nm_setor", type="string", length=255)
-     */
-    protected $sector;
+    protected $core;
 
     /**
-     * @var string @Column(name="nm_empresa", type="string", length=255)
+     * @var string @Column(name="andar", type="string", length=255)
      */
-    protected $enterprise;
+    protected $floor;
+
+    /**
+     * @ManyToOne(targetEntity="Group",cascade={"persist", "remove"})
+     * @JoinColumn(name="grupo_id", onDelete="CASCADE")
+     */
+    protected $group;
     
-    public function __construct($id = 0, $number = "", $description = "", $sector = "") {
+    public function __construct($id = 0, $number = "", $core = "", $group = "") {
         parent::__construct();
         $this->id = $id;
         $this->number = $number;
-        $this->description = $description;
-        $this->sector = $sector;
+        $this->core = $core;
+        $this->group = $group;
     }
 
     public function getId() {
@@ -68,29 +64,29 @@ class Ramal extends SoftdeleteAbstract
         return $this;
     }
 
-    public function getDescription() {
-        return $this->description;
+    public function getCore() {
+        return $this->core;
     }
-    public function setDescription($description) {
-        $this->description = $description;
+    public function setCore($core) {
+        $this->core = $core;
+
+        return $this;
+    }
+    
+    public function getFloor() {
+        return $this->floor;
+    }
+    public function setFloor($floor) {
+        $this->floor = $floor;
 
         return $this;
     }
 
-    public function getSector() {
-        return $this->sector;
+    public function getGroup() {
+        return $this->group;
     }
-    public function setSector($sector) {
-        $this->sector = $sector;
-
-        return $this;
-    }
-
-    public function getEnterprise() {
-        return $this->enterprise;
-    }
-    public function setEnterprise($enterprise) {
-        $this->enterprise = $enterprise;
+    public function setGroup($group) {
+        $this->group = $group;
 
         return $this;
     }

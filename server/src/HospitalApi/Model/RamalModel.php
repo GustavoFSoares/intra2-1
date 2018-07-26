@@ -17,12 +17,18 @@ class RamalModel extends SoftdeleteModel
         parent::__construct();
     }
 
-    /**
-     * @method findAll()
-     * Realiza pesquisa na Tabela "Ramais" e os retorna ordenados pelo Setor
-     * @return Collection Ramais
-     */
+    public function mount($values) {
+        $values = (object)$values;
+        $groupRepository = $this->em->getRepository("HospitalApi\Entity\Group");
+        
+        $values->group = $groupRepository->find($values->group['id']);
+
+        return $values;
+    }
+
     public function findAll() {
-        return $this->getRepository()->findBy([ ], ['sector' => 'ASC']);
+        $collection = $this->getRepository()->findBy([], ['group' => 'ASC', 'core' => 'ASC']);
+
+        return $collection;
     }
 }
