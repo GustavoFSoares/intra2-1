@@ -20,6 +20,7 @@ export default {
         opens: { default: "right" },
         maxdate: "",
         mindate: "",
+        format: { default: "DD/MM/YYYY - HH:mm"}
     },
     data() {
         return {
@@ -27,10 +28,10 @@ export default {
             begindate: '',
             finaldate: '',
             minuteInterval: 5,
-            hour24: true, 
+            hour24: true,
             drops: "up",
             locale: {
-                format: "DD/MM/YYYY - HH:mm",
+                format: this.$props.format,
                 separator: " - ",
                 applyLabel: "Ok",
                 cancelLabel: "Cancelar",
@@ -46,7 +47,6 @@ export default {
     },
     updated() {
         this.loadValues()
-        
     },
     methods: {
         configureFinalDate() {
@@ -54,8 +54,6 @@ export default {
             if(this.finaldate){
                 let date = new Date(this.finaldate);
                 return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} - 23:59`
-            } else {
-                return null
             }
         },
         configureBeginDate() {
@@ -63,8 +61,6 @@ export default {
             if(this.begindate){
                 let date = new Date(this.begindate);
                 return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} - 00:00`
-            } else {
-                return null
             }
         },
         getTime(timename) {
@@ -83,7 +79,22 @@ export default {
             }
         },
         loadValues() {
-            $(`#${this.$props.id}`).daterangepicker({ "startDate": moment.now(), "endDate": moment.now(), "autoApply": true, "autoUpdateInput": true, "alwaysShowCalendars": true, "singleDatePicker": !this.$props.multiple, "timePicker": !this.$props.onlycalendar, "timePicker24Hour": this.hour24, "timePickerIncrement": this.minuteInterval, "opens": this.$props.opens, "drops": this.drops, "locale": this.locale, "minDate": this.configureBeginDate(), "maxDate": this.configureFinalDate() });
+            $(`#${this.$props.id}`).daterangepicker({ 
+                // "startDate": moment.now(),
+                // "endDate": moment.now(),
+                "autoApply": true,
+                "autoUpdateInput": true,
+                "alwaysShowCalendars": true,
+                "singleDatePicker": !this.$props.multiple,
+                "timePicker": !this.$props.onlycalendar,
+                "timePicker24Hour": this.hour24,
+                "timePickerIncrement": this.minuteInterval,
+                "opens": this.$props.opens,
+                "drops": this.drops,
+                "locale": this.locale,
+                "minDate": this.configureBeginDate(),
+                "maxDate": this.configureFinalDate() 
+             });
         }
     }
 }

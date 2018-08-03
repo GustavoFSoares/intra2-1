@@ -24,13 +24,11 @@ class UserController extends ControllerAbstract
 
     public function update($req, $res, $args) {
         $values = $req->getParsedBody();
-        // $values['group'] = "";
 
         $model = $this->getModel();
         $model->entity = $this->_mountEntity($values);
         
-        $group = $model->em->getRepository('HospitalApi\Entity\Group')->findOneById(67);
-        // $group = $model->em->getRepository('HospitalApi\Entity\Group')->findOneById($values['group']['id']);
+        $group = $model->em->getRepository('HospitalApi\Entity\Group')->findOneById($values['group']['id']);
         $model->entity->setGroup($group);
         
 		$update = $model->doUpdate($model->entity);
