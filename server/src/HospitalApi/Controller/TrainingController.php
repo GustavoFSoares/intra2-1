@@ -48,8 +48,6 @@ class TrainingController extends ControllerAbstract
                         $arr[$key] = $this->translateCollection($value);
         
                     } else {
-                        $method = "get$key";
-        
                         if(array_key_exists($key, $entity->toArray())) {
                             $result = $value;
         
@@ -71,4 +69,5 @@ class TrainingController extends ControllerAbstract
         }
         return $arr;
     }
+    
 }

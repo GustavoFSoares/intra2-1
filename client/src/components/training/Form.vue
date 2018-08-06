@@ -14,39 +14,6 @@
             </row>
         </row>
 
-        <row>
-            <div class="row">
-                <rows :label="subtitles.user.name" class="col-md-7">
-                    <v-select v-model="userSelected" label="name" :options="(users)"/>
-                </rows>
-                <rows :label="subtitles.user.code">
-                    <v-select v-model="userSelected" label="code" :options="(users)"/>
-                </rows>
-            </div>
-
-            <div>
-                <user-card v-if="userSelected" :user="userSelected" icon="add" @added="addUser(userSelected)"/>
-            </div>
-        </row>
-
-        <row>
-            <div>
-                <button class="btn btn-secondary" data-toggle="collapse" data-target="#showUsers" aria-expanded="true" aria-controls="showUsers">
-                    Exibir Lista
-                </button>
-            </div>
-
-            <div class="container collapse" id="showUsers">
-                <div class="list-group">
-                    
-                    <div class="row">
-                        <user-card v-for="(user, index) in training.users" icon="remove" @removed="removeUser(user, index)" :user="user" :key="index" :edit="user.loaded"/>
-                    </div>
-
-                </div>
-            </div>
-        </row>
-        
         <div class="row">
             <rows :label="subtitles.type">
                 <v-select :data-vv-as="subtitles.type" v-validate data-vv-rules="required" label="name" :options="(values.type)" name="Training-type" v-model="training.type"/>
@@ -105,7 +72,6 @@
 <script>
 import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
 import DatePicker from "@/components/shared/Form/DatePicker.vue";
-import UserCard from './UserCard.vue';
 import model, { getter } from "@/model/training-model";
 import Training from "@/entity/training";
 
@@ -115,11 +81,9 @@ export default {
             id: '',
             title: "Cadastro de Treinamento",
             users: [],
-            userSelected: '',
             training: new Training(),
             subtitles: {
                 name: "Nome Treinamento",
-                user: { name: "Nome do Usuário", code: "Matrícula", },
                 anotherTrain: "Outro Treinamento",
                 type: "Tipo",
                 institutional: "Institucionais",
@@ -138,17 +102,6 @@ export default {
         }
     },
     methods: {
-        addUser(user) {
-            this.training.users.push(user)
-            let id = this.users.indexOf(user)
-            
-            this.userSelected = ''
-            this.users.splice(id, 1)
-        },
-        removeUser(user, index) {
-            this.training.users.splice(index, 1)
-            this.users.push(user)
-        },
         isValidForm() {
             this.$validator.validateAll().then(success => success ? this.submit():"")
         },
@@ -162,7 +115,7 @@ export default {
                 name = this.training.name.name ? this.training.name.name : this.training.name
             }
             this.training.name = name
-
+            
             if(this.isEdit(this.id)){
                 model.doUpdate(this.id, this.training).then(res => this.$router.go('-1'))
             } else {
@@ -178,18 +131,9 @@ export default {
             if(this.isEdit()) {
                 getter.getTrainingById(this.id).then(res => {
                     this.training = new Training(res)
-
-                    res.users.forEach((user, index) => {
-                        let id = model.indexOf(this.users, user)
-                        this.users.splice(id, 1)
-                        
-                        this.training.users[index].loaded = true
-                    });
-                
                 })
             }
 
-            
         },
         isEdit() {
             return model.isEdit(this.id)
@@ -200,7 +144,6 @@ export default {
         'rows': FormRws,
         'require-text': Require,
         'v-select': VueSelect,
-        'user-card': UserCard,
         'date-picker': DatePicker,
     },
     mounted() {

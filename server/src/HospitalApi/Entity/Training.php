@@ -39,7 +39,7 @@ class Training extends EntityAbstract
     
     /**
      * @ManyToOne(targetEntity="User",cascade={"persist", "remove"})
-     * @JoinColumn(name="id_usuarioInstrutor", nullable=false)
+     * @JoinColumn(name="instrutor_id", nullable=false)
      */
     protected $instructor;
     
@@ -53,20 +53,16 @@ class Training extends EntityAbstract
      */
     protected $workload;
 
-    /**
-     * @ManyToMany(targetEntity="User")
-     * @JoinTable(name="Treinamento_Usuario",
-     *      joinColumns={@JoinColumn(name="treinamento_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="usuario_id", referencedColumnName="id")}
-     *      )
-     */
-    protected $users;
-
-    public function __construct($id = '', $name = '') {
+    public function __construct() {
         parent::__construct();
-        $this->id = $id;
-        $this->name = $name;
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->id = '';
+        $this->name = '';
+        $this->place = '';
+        $this->type = '';
+        $this->institutionalType = '';
+        $this->instructor = new User();
+        $this->timeTraining = '';
+        $this->workload = '';
     }
 
     public function getId() {
@@ -137,25 +133,6 @@ class Training extends EntityAbstract
     }
     public function setWorkload($workload) {
         $this->workload = $workload;
-
-        return $this;
-    }
-
-    public function getUsers() {
-        return $this->users;
-    }
-    public function addUser($user) {
-        $this->users->add($user);
-
-        return $this;
-    }
-    public function removeUser($user) {
-        $this->users->removeElement($user);
-        
-        return $this;
-    }
-    public function setUsers($users) {
-        $this->users = $users;
 
         return $this;
     }

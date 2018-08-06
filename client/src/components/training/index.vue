@@ -29,6 +29,9 @@
                     <td>{{ training.type }}</td>
                     <td>{{ training.workload }} horas</td>
                     <td>
+                        <router-link :to='`hora-homem-treinamento/lista-participantes/${training.id}`'>
+                            <icon class="text-success" icon="user-plus"/>
+                        </router-link>
                         <router-link :to='`hora-homem-treinamento/edit/${training.id}`'>
                             <icon icon="edit"/>
                         </router-link>

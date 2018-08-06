@@ -18,6 +18,7 @@ class TrainingModel extends ModelAbstract
 
     public function mount($values) {
         $values = (object)$values;
+
         $userRepository = $this->em->getRepository("HospitalApi\Entity\User");
         $repository = $this->getRepository()->find($values->id ? $values->id : '');
 
@@ -30,31 +31,17 @@ class TrainingModel extends ModelAbstract
         $timeTraining = $values->timeTraining;
         $workload = $values->workload;
         
-        foreach ($this->entity->getClassVars() as $key => $var) {
+         foreach ($this->entity->getClassVars() as $key => $var) {
             if($key != 'users') {
                 $method = "set$key";
                 $this->entity->$method($$key);
             }
         }
-
-        foreach ($values->users as $user) {
-            $reUser = $userRepository->findOneById($user['id']);
-            if($id) {
-                if(!isset($user['loaded'])){
-                    $repository->addUser($reUser);
-                    $this->doInsert($repository);
-                }
-            } else {
-                $this->entity->addUser($reUser);
-            }
-        }
-
         return $this->entity;
     }
 
     public function doDelete($obj) {
         $obj->setInstructor(null);
-        $obj->setUsers(null);
         
         return parent::doDelete($obj);
     }
