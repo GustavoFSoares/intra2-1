@@ -22,6 +22,7 @@
                 <table class="table table-striped">
                     <thead>
                         <th></th>
+                        <th></th>
                         <th>Matrícula</th>
                         <th>Nome</th>
                         <th>Setor</th>
@@ -33,6 +34,7 @@
                             <td>
                                 <router-link @click.native="removeUser(user, index)" to="" v-if="user.isAdded"><icon class="float-right" icon="minus"/></router-link>
                             </td>
+                            <td> <icon icon="user-graduate" v-if="user.student"/> </td>
                             <td>{{ user.code.substring(0,8) }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.occupation }}</td>

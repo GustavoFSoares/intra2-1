@@ -56,6 +56,7 @@ class TrainingParticipantModel extends ModelAbstract
              'u.hire',
              'u.fire',
              'u.turn',
+             'u.student',
              'g.id AS GroupId',
              'g.name AS GroupName',
              'g.groupId AS GroupIdName',
