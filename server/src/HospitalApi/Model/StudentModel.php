@@ -19,6 +19,7 @@ class StudentModel extends SoftdeleteModel
 
     public function mount($values) {
         $values['student'] = true;
+        $values['level'] = '1';
 
         $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($values['group']['id']);
         $values['group'] = $group;

@@ -10,6 +10,7 @@ export default class User {
             this.level = user.level
             this.admin = user.admin
             this.ramal = user.ramal
+            this.student = user.student
             this.occupation = user.occupation
             this.c_removed = user.c_removed
             this.hire = user.hire
