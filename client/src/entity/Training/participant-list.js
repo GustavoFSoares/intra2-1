@@ -1,7 +1,5 @@
 export default class ParticipantList {
     constructor(participant = {}) {
-        console.log(this);
-        
         this.id = participant.id
         this.name = participant.name
         this.code = participant.code
