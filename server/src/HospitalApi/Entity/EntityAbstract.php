@@ -75,4 +75,22 @@ abstract class EntityAbstract extends BasicApplicationAbstract
         return $date;
     }
 
+    /**
+     * @method _formatDate()
+     * Recebe data no formato d/m/Y H:m:s e
+     * retorna no Formato MySql Y-m-d H:i:s
+     * @return Date
+     */
+    public function _formatDate($date){
+        if(!($date instanceof \DateTime)) {
+            $search = [' ', '-', '/'];
+            $reclace = ['', ' ', '-'];
+            $date = str_replace($search, $reclace, $date);
+            
+            $date = date("Y-m-d H:i:s", strtotime($date));
+            $date = DateTime::createFromFormat("Y-m-d H:i:s", $date);
+        }
+        return $date;
+    }
+
 }

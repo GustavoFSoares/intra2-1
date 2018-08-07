@@ -34,7 +34,13 @@ class UserController extends ControllerAbstract
 		$update = $model->doUpdate($model->entity);
 
         return $res->withJson($update);
+    }
+
+    public function _mountEntity($values){
+        $model = $this->getModel();
         
+        $entity = $model->mount($values);
+        return parent::_mountEntity($entity);
     }
 
 }

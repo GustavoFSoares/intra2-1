@@ -12,5 +12,8 @@ export default class User {
             this.ramal = user.ramal
             this.occupation = user.occupation
             this.c_removed = user.c_removed
+            this.hire = user.hire
+            this.fire = user.fire
+            this.turn = user.turn
         }
 }

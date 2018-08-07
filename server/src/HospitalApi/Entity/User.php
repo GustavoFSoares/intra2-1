@@ -23,17 +23,17 @@ class User extends SoftdeleteAbstract
     protected $code;
 
     /**
-     * @var string @Column(name="nome", type="string", length=255)
+     * @var String @Column(name="nome", type="string", length=255)
      */
     protected $name;
 
     /**
-     * @var string @Column(name="nivel", type="string")
+     * @var String @Column(name="nivel", type="string")
      */
     protected $level;
     
     /**
-     * @var string @Column(name="ramal", type="string")
+     * @var String @Column(name="ramal", type="string")
      */
     protected $ramal;
 
@@ -44,25 +44,58 @@ class User extends SoftdeleteAbstract
     protected $group;
 
     /**
-     * @var string @Column(name="cargo", type="string", options={"default":""})
+     * @var String @Column(name="cargo", type="string", options={"default":""})
      */
     protected $occupation;
 
     /**
-     * @var string @Column(type="boolean", nullable=true, options={"default":false})
+     * @var Boolean @Column(type="boolean", nullable=true, options={"default":false})
      */
     protected $admin;
 
-    public function __construct($id = '', $code = '0', $name = '', $level = '1', $ramal = '', $group = '', $occupation = '', $admin = false) {
+    /**
+     * @var Boolean @Column(name="estudante", type="boolean", nullable=true, options={"default":false})
+     */
+    protected $student;
+
+    /**
+     * @var Datetime
+     *      @Column(name="data_contratacao", type="datetime", nullable=true, options={"default":"CURRENT_TIMESTAMP"})
+     */
+    public $hire;
+
+    /**
+     * @var Datetime
+     *      @Column(name="data_demissao", type="datetime", nullable=true, options={"default":"CURRENT_TIMESTAMP"})
+     */
+    public $fire;
+   
+    /**
+     * @var String
+     *      @Column(name="turno", type="string", nullable=true, options={"default":""})
+     */
+    public $turn;
+
+    /**
+     * @OneToMany(targetEntity="TrainingParticipant", mappedBy="User")
+     */
+    private $trainingParticipant;
+
+
+    public function __construct() {
         parent::__construct();
-        $this->id = $id;
-        $this->code = $code;
-        $this->name = $name;
-        $this->level = $level;
-        $this->ramal = $ramal;
-        $this->group = $group;
-        $this->occupation = $occupation;
-        $this->admin = 0;
+        $this->id = '';
+        $this->code = '';
+        $this->name = '';
+        $this->level = '';
+        $this->ramal = '';
+        $this->group = new Group();
+        $this->occupation = '';
+        $this->admin = false;
+        $this->hire = new \DateTime();
+        $this->fire = new \DateTime();
+        $this->turn = '';
+
     }
 
     public function getId() {
@@ -133,6 +166,42 @@ class User extends SoftdeleteAbstract
     }
     public function setAdmin($admin) {
         $this->admin = $admin ? true : false;
+
+        return $this;
+    }
+
+    public function getStudent() {
+        return $this->student;
+    }
+    public function setStudent($student) {
+        $this->student = $student ? true : false;
+
+        return $this;
+    }
+
+    public function getHire() {
+        return $this->hire;
+    }
+    public function setHire($hire) {
+        $this->hire = $this->_formatDate($hire);
+
+        return $this;
+    }
+
+    public function getFire() {
+        return $this->fire;
+    }
+    public function setFire($fire) {
+        $this->fire = $this->_formatDate($fire);;
+
+        return $this;
+    }
+
+    public function getTurn() {
+        return $this->turn;
+    }
+    public function setTurn($turn) {
+        $this->turn = $turn;
 
         return $this;
     }

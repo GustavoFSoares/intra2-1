@@ -26,7 +26,7 @@ class UserModel extends SoftdeleteModel
     }
 
     public function findAll() {
-        $Users = parent::findAll();
+        $Users = parent::findAll(['c_removed' => 0]);
         $users = [];
         if($Users) {
             foreach ($Users as $User) {
@@ -36,5 +36,12 @@ class UserModel extends SoftdeleteModel
             }
         }
         return $users;
+    }
+
+    public function mount($values) {
+        $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($values['group']['id']);
+        $values['group'] = $group;
+
+        return $values;
     }
 }

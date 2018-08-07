@@ -54,6 +54,7 @@ export default {
     methods: {
         mounteUsers() {
             let groupId = this.$session.get('user').group.id
+            this.title = this.$session.get('user').group.name
             getter.getUsersByGroupId(groupId).then(res => this.users = res)
         }
     },

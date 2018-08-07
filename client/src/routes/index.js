@@ -12,6 +12,7 @@ import covenantRoutes from './covenants-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
 import ramalsRoutes from './ramals-routes'
+import studentsRoutes from './student-routes'
 import trainingRoutes from './training-routes'
 import userRoutes from './user-routes'
 
@@ -43,6 +44,7 @@ Routes.addRoutes(covenantRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ramalsRoutes)
+Routes.addRoutes(studentsRoutes)
 Routes.addRoutes(trainingRoutes)
 Routes.addRoutes(userRoutes)
 
