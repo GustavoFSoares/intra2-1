@@ -33,7 +33,7 @@ if(!$model->findAll()){
         $event = new Event($event['name']);
         $model->doInsert($event);
     }
-    echo "Events Inserted<br>";
+    echo "Events Inserted\n";
 } else {
-    echo "Events was ignored<br>";
+    echo "Events was ignored\n";
 }

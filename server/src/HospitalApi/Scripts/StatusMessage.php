@@ -20,7 +20,7 @@ if(!$model->findAll()){
             ->setMessage($statusMessage['message']);
         $model->doInsert($StatusMessage);
     }
-    echo "StatusMessage Inserted<br>";
+    echo "StatusMessage Inserted\n";
 } else {
-    echo "StatusMessage was ignored<br>";
+    echo "StatusMessage was ignored\n";
 }
