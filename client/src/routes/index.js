@@ -28,6 +28,10 @@ const routes = [
         component: NotFound
     },
     {
+        path: '/teste',
+        component: Teste
+    },
+    {
         path: '/sem-permissao', 
         name: 'no-permission',
         component: DontHavePermission,
