@@ -1,23 +1,26 @@
 <template>
     <div>
         <router-link @click.native="click" to=""> 
-            <icon id="icon" icon="arrow-circle-right" />
+            <icon id="icon" icon="arrow-circle-right" class="in"/>
         </router-link>
 
-        <div id="module-contents" class="list-group">
-            <a v-for="(mod, index) in values" :key="index" href="#" class="list-group-item list-group-item-action">
-                <icon :icon="mod.icon"/> {{ mod.name }}
-            </a>
+        <div id="module-contents" class="list-group in">
+            <router-link v-for="(module, index) in modules" :key="index" :to="{name: module.routeName}" class="list-group-item list-group-item-action">
+                <icon :icon="module.icon"/> {{ module.name }}
+            </router-link>
         </div>    
     </div>
 </template>
 
 <script>
 import $ from "jquery";
+import { getter } from "@/model/modules-model";
 
 export default {
-    props: {
-        values: '',
+    data() {
+        return {
+            modules: ''
+        }
     },
     methods: {
         click() {
@@ -25,6 +28,9 @@ export default {
             $("#icon").toggleClass('in')
         }
     },
+    mounted() {
+        getter.getModulesByGroup(this.$session.get('user').group.groupId).then(res => { this.modules = res })
+    }
 }
 </script>
 
@@ -50,9 +56,11 @@ export default {
         
         width: 0px;
         margin-left: 10px;
+
+        max-width: 240px;
     }
 
     #module-contents.in {
-        width: 200px;
+        width: 240px;
     }
 </style>

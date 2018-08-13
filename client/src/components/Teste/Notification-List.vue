@@ -1,35 +1,44 @@
 <template>
-    <div id="module-contents">
-
-        <div class="card" v-for="(not, index) in values" :key="index">
-            <div class="card-header">
-                <span class="btn" data-toggle="collapse" :data-target="'#id-'+index" aria-expanded="true" :aria-controls="'id-'+index">
-                    {{not.name}}
-                </span>
+    <div>
+        <div class="card">
+            <div id="trainings">
+                <notification-trainings :title="subtitles.training"/>
             </div>
 
-            <div :id="'id-'+index" class="collapse">
-                <div class="card-body">
-                    {{not.name}} {{not.name}} {{not.name}}
-                </div>
+            <div id="news">
+                <!-- <notification-news :title="subtitles.news"/> -->
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
+import NotificationTrainings from "./Notifications/Trainings.vue";
+import NotificationNews from "./Notifications/News.vue";
 
 export default {
-    props: {
-        values: '',
+    data() {
+        return {
+            subtitles: {
+                training: "Treinamentos",
+                news: "News",
+            },
+        }
     },
+    components: {
+        'notification-trainings': NotificationTrainings,
+        'notification-news': NotificationNews,
+    }
 }
 </script>
 
-<style scoped>
-    /* #module-contents {
-        min-width: 300px;
-        max-width: 300px;
-    } */
+<style>
+   .card-header {
+        border: solid 1px grey;
+        box-shadow: 5px 5px 10px grey;
+   }
+
+   div :not(#trainings) .card-header {
+       margin-top: 5px;
+   }
 </style>
