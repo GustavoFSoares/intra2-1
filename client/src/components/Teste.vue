@@ -1,23 +1,23 @@
 <template>
     <div class="container-fluid">
-        <BR/>
+        
         <div id = "carrosel">
             <carosel :values="values.carrosel"/>
         </div>
         
-        <!-- <br/><br/><br/><br/><br/><br/><br/> -->
-
         <div class="row grid-container">
             <div id="module">
-                <modules-list :values="values.modulos"/>
+                <modules-list/>
             </div>
 
             <div id="content">
-                batatabatatabatatabatatabatatabatatabatatabatataba batatabatatabatatabatatabatatabatatabatatabatataba batatabatatabatatabatatabatatabatatabatatabatataba batatabatatabatatabatatabatatabatatabatatabatataba batatabatatabatatabatatabatatabatatabatatabatataba
+                <row>
+                    <schedule/>
+                </row>
             </div>
 
             <div id="notification">
-                <notifications-list :values="values.avisos"/>
+                <notifications-list/>
             </div>
         </div>
             
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import $ from "jquery";
-
 import Carousel from "@/components/shared/Carousel.vue";
 import ModuleList from "./Teste/Module-List.vue";
 import NotificationList from "./Teste/Notification-List.vue";
+import Schedule from "./Teste/Schedule.vue";
+import { FormRw, FormRws } from "@/components/shared/Form";
 
 export default {
     data() {
@@ -40,39 +40,24 @@ export default {
                     { name: "Mago Implacavel", link: "https://s1-ssl.dmcdn.net/O-0d0/x240-B2U.jpg"},
                     { name: "Ah Negao", link: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuoXRYf_014uUfDhSrghKnW5qCncX7gAgSOx3foLhFqnTBbqOxdg"},
                 ],
-                modulos: [
-                    { name: "Ramal", icon: "phone"},
-                    { name: "Usuário", icon: "users"},
-                    { name: "Convênio", icon: "handshake"},
-                    { name: "Convênio", icon: "handshake"},
-                ],
-                avisos: [
-                    { name: "Treinamentos" },
-                    { name: "News" },
-                ]
             }
         }
     }, 
-    methods: {
-        click() {
-            $("#module-contents").toggleClass('in')
-            $("#icon").toggleClass('in')
-        }
-    },
-    computed: {
-        style() {
-            return (this.values.modulos.length * 50)/2
-        }   
-    },
     components: {
         'carosel': Carousel,
         'modules-list': ModuleList,
         'notifications-list': NotificationList,
+        'schedule': Schedule,
+        'row': FormRw,
     }
 }
 </script>
 
 <style scoped>
+    .container-fluid {
+        margin-top: 15px;
+    }
+
     #module {
         position:absolute;
         grid-area: module;
@@ -82,17 +67,22 @@ export default {
         grid-area: content;
     }
 
+    #notification {
+        grid-area: notification;
+        
+        max-width: 300px;
+        min-width: 300px;
+    }
+    
     @media (min-width: 1400px) {
         #content {
-            /* color: purple; */
-            max-width: 1000px;
-            min-width: 1000px;
+            max-width: 990px;
+            min-width: 990px;
         }
     }
     
     @media (min-width: 1200px) and (max-width: 1400px) {
         #content {
-            /* color: green; */
             max-width: 620px;
             min-width: 620px;
         }
@@ -100,7 +90,6 @@ export default {
     
     @media (min-width: 1090px) and (max-width: 1200px) {
         #content {
-            /* color: blue; */
             max-width: 530px;
             min-width: 530px;
         }
@@ -108,17 +97,14 @@ export default {
     
     @media (min-width: 800px) and (max-width: 1090px) {
         #content {
-            /* color: red; */
-            max-width: 420px;
-            min-width: 420px;
+            max-width: 500px;
+            min-width: 500px;
         }
-    }
 
-    #notification {
-        grid-area: notification;
-
-        max-width: 300px;
-        min-width: 300px;
+        #notification {
+            max-width: 200px;
+            min-width: 200px;
+        }
     }
 
     .grid-container {
@@ -135,7 +121,7 @@ export default {
     }
     
     div {
-        outline: 1px dotted gray;
+        /* outline: 1px dotted gray; */
     }
 
 </style>

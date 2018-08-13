@@ -42,7 +42,28 @@ class TrainingParticipantModel extends ModelAbstract
             
         }
         return [ 'status' => true ];
+    }
+    
+    public function addParticipantOnTraining($trainingId, $participant) {
+        $userRepository = $this->em->getRepository("HospitalApi\Entity\User")->find($participant->id);
+        $trainingRepository = $this->em->getRepository("HospitalApi\Entity\Training")->find($trainingId);
+        $repository = $this->getRepository();
 
+        $participantList = $this->getTrainingParticipant($trainingId, $participant->id);
+            
+        $modelStatus = new \HospitalApi\Model\StatusMessageModel();
+        if($participantList) {
+            $result = $modelStatus->getStatus('in_training')->toArray();
+        } else {
+            $entity = new TrainingParticipant();
+            $entity
+                ->setTraining($trainingRepository)
+                ->setParticipant($userRepository)
+                ->setPresence(false);
+            $this->doInsert($entity);
+            $result = $modelStatus->getStatus('training_add')->toArray();
+        }
+        return $result;
     }
 
     public function findAllParticipantsForTraining($trainingId) {
@@ -70,11 +91,26 @@ class TrainingParticipantModel extends ModelAbstract
             ->where('trp.training = :trainingId')
             ->orderBy('u.name', 'ASC')
             ->setParameter('trainingId', $trainingId);
-        try {
-            return $query->getQuery()->getResult(); 
-        } catch(\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
+        
+        return $query->getQuery()->getResult(); 
+    }
+
+    public function findAllTrainingForParticipants($participantId) {
+        $query = $this->em->createQueryBuilder();
+        $log = $this->getLogger();
+        $query->select([
+            't.id',
+            't.name',
+            't.timeTraining',
+            't.workload',
+            't.place'
+            ])
+            ->from('HospitalApi\Entity\Training', 't')
+            ->innerJoin('HospitalApi\Entity\TrainingParticipant', 'trp', 
+                'WITH', 't.id = trp.training AND trp.participant = :participantId')
+            ->setParameter('participantId', $participantId) ;
+        
+            return $query->getQuery()->getResult();        
     }
 
     public function getTrainingParticipant($trainingId, $participantId) {
@@ -85,12 +121,19 @@ class TrainingParticipantModel extends ModelAbstract
             ->AndWhere('trp.training = :training')
             ->setParameter('training', $trainingId)
             ->setParameter('participant', $participantId);
-        try {
-            return $query->getQuery()->getResult()[0]; 
-        }
-        catch(\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
+        
+        $data = $query->getQuery()->getResult(); 
+        return $data ? $data[0] : null;
+    }
+
+    public function doDelete($participantId, $trainingId) {
+        $trainingParticipant = $this->getTrainingParticipant($trainingId, $participantId);
+        $trainingParticipant->setParticipant(null);
+        $trainingParticipant->setTraining(null);
+        
+        parent::doDelete($trainingParticipant);
+        
+        return true;
     }
 
 }
