@@ -26,10 +26,16 @@ class StatusMessage extends EntityAbstract
      */
     protected $message;
     
-    public function __construct($id = '', $status = '', $message = '') {
+    /**
+     * @var string @Column(name="tipo", type="string", length=255)
+     */
+    protected $type;
+    
+    public function __construct($id = '', $status = '', $message = '', $type = '') {
         $this->id = $id;
         $this->status = $status;
         $this->message = $message;
+        $this->message = $type;
     }
 
     public function getId() {
@@ -55,6 +61,15 @@ class StatusMessage extends EntityAbstract
     }
     public function setMessage($message) {
         $this->message = $message;
+
+        return $this;
+    }
+    
+    public function getType() {
+        return $this->type;
+    }
+    public function setType($type) {
+        $this->type = $type;
 
         return $this;
     }
