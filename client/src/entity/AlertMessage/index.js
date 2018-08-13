@@ -1,7 +1,7 @@
 export default class {
-    constructor(){
-        this.type = ''
-        this.text = ''
+    constructor(alert = {}){
+        this.type = alert.type
+        this.text = alert.message
     }
 }
 
