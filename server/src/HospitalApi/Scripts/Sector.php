@@ -183,7 +183,7 @@ if(false) {
         $sector = new Sector($enterprise, $bossSector, $sector["name"]);
         $model->doInsert($sector);
     }
-    echo "Sectors Inserted<br>";
+    echo "Sectors Inserted\n";
 } else {
-    echo "Sectors was ignored<br>";
+    echo "Sectors was ignored\n";
 }

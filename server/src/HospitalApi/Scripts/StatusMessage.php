@@ -23,7 +23,7 @@ if(!$model->findAll()){
             ->setType($statusMessage['type']);
         $model->doInsert($StatusMessage);
     }
-    echo "StatusMessage Inserted<br>";
+    echo "StatusMessage Inserted\n";
 } else {
-    echo "StatusMessage was ignored<br>";
+    echo "StatusMessage was ignored\n";
 }

@@ -25,7 +25,7 @@ if(!$model->findAll()){
             ->setName($training['name']);
         $model->doInsert($Training);
     }
-    echo "TrainingType Inserted<br>";
+    echo "TrainingType Inserted\n";
 } else {
-    echo "TrainingType was ignored<br>";
+    echo "TrainingType was ignored\n";
 }

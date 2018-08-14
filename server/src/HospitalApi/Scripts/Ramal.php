@@ -1120,7 +1120,7 @@ if(false){
             ->setEnterprise($ramal['enterprise']);
         $model->doInsert($r);
     }
-    echo "Ramal Inserted<br>";
+    echo "Ramal Inserted\n";
 } else {
-    echo "Ramal was ignored<br>";
+    echo "Ramal was ignored\n";
 }
