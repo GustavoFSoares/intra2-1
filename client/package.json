@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.1.0",
     "@fortawesome/vue-fontawesome": "^0.1.0",
     "axios": "^0.17.1",
+    "bootbox": "^4.4.0",
     "bootstrap": "^4.1.0",
     "daterangepicker": "^3.0.1",
     "font-awesome": "^4.7.0",
