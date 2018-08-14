@@ -53,6 +53,11 @@ class Training extends EntityAbstract
      */
     protected $workload;
 
+    /**
+     * @var Boolean @Column(name="realizado", type="boolean")
+     */
+    protected $done;
+
     public function __construct() {
         parent::__construct();
         $this->id = '';
@@ -63,6 +68,7 @@ class Training extends EntityAbstract
         $this->instructor = new User();
         $this->timeTraining = '';
         $this->workload = '';
+        $this->done = false;
     }
 
     public function getId() {
@@ -133,6 +139,15 @@ class Training extends EntityAbstract
     }
     public function setWorkload($workload) {
         $this->workload = $workload;
+
+        return $this;
+    }
+
+    public function getDone() {
+        return $this->done;
+    }
+    public function setDone($done) {
+        $this->done = $done;
 
         return $this;
     }

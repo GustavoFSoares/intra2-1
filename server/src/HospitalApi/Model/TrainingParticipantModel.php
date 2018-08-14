@@ -30,14 +30,21 @@ class TrainingParticipantModel extends ModelAbstract
 
                 $this->doUpdate($participantList);
             } else {
-                $user = $userRepository->find($participant->id);
-                
-                $entity = new TrainingParticipant();
-                $entity
-                    ->setTraining($trainingRepository)
-                    ->setParticipant($user)
-                    ->setPresence($participant->presence);
-                $this->doInsert($entity);
+                // Treinamento já foi realizado
+                if(!$trainingRepository->getDone()){
+                    //Se NAO, seguir
+                    $user = $userRepository->find($participant->id);
+                    
+                    $entity = new TrainingParticipant();
+                    $entity
+                        ->setTraining($trainingRepository)
+                        ->setParticipant($user)
+                        ->setPresence($participant->presence);
+                    $this->doInsert($entity);
+                } else {
+                    //Se SIM, não inserir novos participantes
+                    return ;
+                }
             }
             
         }

@@ -15,6 +15,9 @@ export default {
     doUpdate: (id, data) => {
         return http.put(`/training/${id}`, data).then( res => res.data )
     },
+    isDone: (id) => {
+        return http.put(`/training/done/${id}`).then( res => res.data )
+    },
     
     doDelete: (id) => {
         return http.delete(`/training/${id}`).then( res => res.data )

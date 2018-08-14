@@ -16,6 +16,7 @@ const model = {
         }
         return false
     },
+    isDone: (trainingId) => service.isDone(trainingId),
     doUpdate: (id, data) => service.doUpdate(id, data),
     doDelete: (id) => service.doDelete(id),
     indexOf: (users, user) => {

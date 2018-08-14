@@ -1,14 +1,15 @@
 <template>
     <div class="container" @keyup.enter="isValidForm">
         <h1>{{ title }}</h1>
+        <h2 v-if="training.done" class="finished"><i>(Treinamento Finalizado)</i></h2>
 
         <row>
             <div class="row">
-                <rows :label="subtitles.user.name" class="col-md-7">
-                    <v-select v-model="userSelected" label="name" :options="(users)"/>
+                <rows :label="subtitles.user.name" class="col-md-7" >
+                    <v-select v-model="userSelected" label="name" :options="(users)" :disabled="training.done"/>
                 </rows>
                 <rows :label="subtitles.user.code">
-                    <v-select v-model="userSelected" label="code" :options="(users)"/>
+                    <v-select v-model="userSelected" label="code" :options="(users)" :disabled="training.done"/>
                 </rows>
             </div>
 
@@ -70,8 +71,7 @@
 </template>
 
 <script>
-import { FormRw, FormRws, Checkbox,  VueSelect } from "@/components/shared/Form";
-import DatePicker from "@/components/shared/Form/DatePicker.vue";
+import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
 import UserCard from './UserCard.vue';
 import { getter } from "@/model/training-model";
 const ModelUserGetter = require("@/model/user-model").getter
@@ -84,6 +84,7 @@ export default {
             id: '',
             title: "",
             users: [],
+            training: '',
             userSelected: '',
             participantList: '',
             subtitles: {
@@ -115,7 +116,10 @@ export default {
         loadValues() {
             this.id = this.$route.params.id
             
-            getter.getTrainingById(this.id).then(res => this.title = `${res.name} (${res.timeTraining})`)
+            getter.getTrainingById(this.id).then(res => { 
+                    this.title = `${res.name} (${res.timeTraining})`
+                    this.training = res
+                })
             ModelTrainingParticipant.getter.getParticipantsTraining(this.id).then(res => this.participantList = res)
             ModelUserGetter.getUsers().then(res => this.users = res)
         },
@@ -125,7 +129,6 @@ export default {
         'rows': FormRws,
         'v-select': VueSelect,
         'user-card': UserCard,
-        'checkbox': Checkbox,
     },
     mounted() {
         this.loadValues()
@@ -144,5 +147,9 @@ export default {
 
     .row {
         margin-top: 15px;
+    }
+
+    .finished {
+        color: red;
     }
 </style>

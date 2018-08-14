@@ -19,25 +19,21 @@ class TrainingModel extends ModelAbstract
     public function mount($values) {
         $values = (object)$values;
 
-        $userRepository = $this->em->getRepository("HospitalApi\Entity\User");
-        $repository = $this->getRepository()->find($values->id ? $values->id : '');
+        $values->place = is_array($values->place) ? $values->place['enterprise'] : $values->place;
+        $values->type = is_array($values->type) ? $values->type['name'] : $values->type;
+        $values->institutionalType = ($values->type['id'] == 'institutional') ? $values->institutionalType['name'] : null;
+        $values->instructor = $this->em->getRepository("HospitalApi\Entity\User")->findOneById($values->instructor['id']);
 
-        $id = $values->id;
-        $name = $values->name;
-        $place = is_array($values->place) ? $values->place['enterprise'] : $values->place;
-        $type = is_array($values->type) ? $values->type['name'] : $values->type;
-        $institutionalType = ($values->type['id'] == 'institutional') ? $values->institutionalType['name'] : null;
-        $instructor = $userRepository->findOneById($values->instructor['id']);
-        $timeTraining = $values->timeTraining;
-        $workload = $values->workload;
-        
-         foreach ($this->entity->getClassVars() as $key => $var) {
-            if($key != 'users') {
-                $method = "set$key";
-                $this->entity->$method($$key);
-            }
-        }
-        return $this->entity;
+        return $values;
+    }
+
+    public function isDone($id) {
+        $repository = $this->getRepository()->find($id);
+        $repository->setDone(true);
+
+        $this->doUpdate($repository);
+
+        return true;
     }
 
     public function doDelete($obj) {
