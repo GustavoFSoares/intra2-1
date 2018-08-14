@@ -73,6 +73,8 @@
 import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
 import DatePicker from "@/components/shared/Form/DatePicker.vue";
 import model, { getter } from "@/model/training-model";
+const ModelGroupGetter = require("@/model/group-model").getter
+const ModelUserGetter = require("@/model/user-model").getter
 import Training from "@/entity/training";
 
 export default {
@@ -123,8 +125,8 @@ export default {
             }
         },
         loadValues() {
-            getter.getEnterprises().then(res => this.values.places = res)
-            getter.getUsers().then(res => this.users = res)
+            ModelGroupGetter.getEnterprises().then(res => this.values.places = res)
+            ModelUserGetter.getUsers().then(res => this.users = res)
             getter.getTrainingsType().then(res => this.values.trainingsType = res)
 
             this.id = this.$route.params.id

@@ -59,6 +59,8 @@
 import AlertMessage from "@/components/shared/AlertMessage";
 import Message from "@/entity/AlertMessage";
 import model, { getter } from "@/model/training-model";
+const ModelTrainingParticipant = require("@/model/training-participant-model").default;
+
 export default {
     props: {
         title: ''
@@ -75,7 +77,7 @@ export default {
     },
     methods: {
         enterOnTraining(trainingId) {
-            model.addParticipant(trainingId, this.$session.get('user')).then(res => {
+            ModelTrainingParticipant.addParticipant(trainingId, this.$session.get('user')).then(res => {
                 this.training.return = new Message(res)
                 
                 if(res.id == 'training_add') {

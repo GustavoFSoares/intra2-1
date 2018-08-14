@@ -73,7 +73,9 @@
 import { FormRw, FormRws, Checkbox,  VueSelect } from "@/components/shared/Form";
 import DatePicker from "@/components/shared/Form/DatePicker.vue";
 import UserCard from './UserCard.vue';
-import model, { getter } from "@/model/training-model";
+import { getter } from "@/model/training-model";
+const ModelUserGetter = require("@/model/user-model").getter
+const ModelTrainingParticipant = require("@/model/training-participant-model")
 import ParticipantList from "@/entity/training/participant-list";
 
 export default {
@@ -101,10 +103,10 @@ export default {
         },
         removeUser(user, index) {
             this.participantList.splice(index, 1)
-            getter.getUserById(user.id).then(res => this.users.push(res))
+            ModelUserGetter.getUserById(user.id).then(res => this.users.push(res))
         },
         submit() {
-            model.addParticipants(this.id, this.participantList).then(res => {
+            ModelTrainingParticipant.default.addParticipants(this.id, this.participantList).then(res => {
                 this.$router.go('-1')
             }).catch(err => {
                 console.log("Erro!", err)
@@ -114,8 +116,8 @@ export default {
             this.id = this.$route.params.id
             
             getter.getTrainingById(this.id).then(res => this.title = `${res.name} (${res.timeTraining})`)
-            getter.getParticipantsTraining(this.id).then(res => this.participantList = res)
-            getter.getUsers().then(res => this.users = res)
+            ModelTrainingParticipant.getter.getParticipantsTraining(this.id).then(res => this.participantList = res)
+            ModelUserGetter.getUsers().then(res => this.users = res)
         },
     },
     components: {
