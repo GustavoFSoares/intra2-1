@@ -12,16 +12,23 @@ class TrainingController extends ControllerAbstract
         parent::__construct(new TrainingModel());
     }
 
+    public function getUnrealized($req, $res, $args) {
+        $collection = $this->getModel()->getUnrealized();
+        $data = $this->translateCollection($collection);
+
+        return $res->withJson($data);
+    }
+    
+    public function isDone($req, $res, $args) {
+        $id = $args['id'];
+        
+        $return = $this->getModel()->isDone($id);
+        return $res->withJson($return);
+    }
+
     public function _mountEntity($values){
         $entity = $this->getModel()->mount($values);
         return parent::_mountEntity($entity);
-    }
-
-    public function isDone($req, $res, $args) {
-        $id = $args['id'];
-
-        $return = $this->getModel()->isDone($id);
-        return $res->withJson($return);
     }
 
     public function translateCollection($entity) {

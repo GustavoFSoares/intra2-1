@@ -108,13 +108,18 @@ class TrainingParticipantModel extends ModelAbstract
         $query->select([
             't.id',
             't.name',
-            't.timeTraining',
+            't.beginTime',
+            't.endTime',
             't.workload',
             't.place'
             ])
             ->from('HospitalApi\Entity\Training', 't')
             ->innerJoin('HospitalApi\Entity\TrainingParticipant', 'trp', 
                 'WITH', 't.id = trp.training AND trp.participant = :participantId')
+            ->where('t.beginTime > :now')
+            ->andWhere('t.done = 0')
+            ->orderBy('t.beginTime')
+            ->setParameter('now', new \DateTime())
             ->setParameter('participantId', $participantId) ;
         
             return $query->getQuery()->getResult();        

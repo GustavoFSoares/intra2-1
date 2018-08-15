@@ -7,6 +7,7 @@ $app->group('/training', function () {
 
     $this->get('/type/[{id}]', "HospitalApi\Controller\TrainingTypeController:get", function (Request $req, Response $res, array $args) { });
     $this->get('/[{id}]', "HospitalApi\Controller\TrainingController:get", function (Request $req, Response $res, array $args) { });
+    $this->get('/unrealized/', "HospitalApi\Controller\TrainingController:getUnrealized", function (Request $req, Response $res, array $args) { });
     
     $this->post('/', "HospitalApi\Controller\TrainingController:insert", function (Request $req, Response $res, array $args) { });
     

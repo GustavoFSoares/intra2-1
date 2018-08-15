@@ -71,12 +71,14 @@
 </template>
 
 <script>
+import moment from "moment";
 import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
 import UserCard from './UserCard.vue';
 import { getter } from "@/model/training-model";
 const ModelUserGetter = require("@/model/user-model").getter
 const ModelTrainingParticipant = require("@/model/training-participant-model")
 import ParticipantList from "@/entity/training/participant-list";
+import Training from "@/entity/training";
 
 export default {
     data(){
@@ -117,8 +119,8 @@ export default {
             this.id = this.$route.params.id
             
             getter.getTrainingById(this.id).then(res => { 
-                    this.title = `${res.name} (${res.timeTraining})`
-                    this.training = res
+                    this.title = `${res.name} (${moment(res.beginTime.date).format('DD/MM/YYYY - HH:mm')})`
+                    this.training = new Training(res)
                 })
             ModelTrainingParticipant.getter.getParticipantsTraining(this.id).then(res => this.participantList = res)
             ModelUserGetter.getUsers().then(res => this.users = res)

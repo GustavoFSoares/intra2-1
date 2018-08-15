@@ -4,6 +4,7 @@ import serviceUser from "@/services/user"
 const getters = {
     getUserById: (id) => serviceUser.getUsers(id),
     getTrainings: () => service.getTrainings(),
+    getTrainingsUnrealized: () => service.getTrainingsUnrealized(),
     getTrainingById: (id) => service.getTrainings(id),
     getTrainingsType: () => service.getTrainingsType(),
 }

@@ -82,7 +82,7 @@ abstract class EntityAbstract extends BasicApplicationAbstract
      * @return Date
      */
     public function _formatDate($date){
-        if(!($date instanceof \DateTime)) {
+        if(!($date instanceof \DateTime) && $date != null) {
             $search = [' ', '-', '/'];
             $reclace = ['', ' ', '-'];
             $date = str_replace($search, $reclace, $date);

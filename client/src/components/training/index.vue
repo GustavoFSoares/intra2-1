@@ -13,7 +13,7 @@
                     <th scope="col">Nome</th>
                     <th scope="col">Multiplicador</th>
                     <th scope="col">Local</th>
-                    <th scope="col">Horário de Início</th>
+                    <th scope="col">Horário Treinamento</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Carga Horária</th>
                     <th scope="col">Realizado</th>
@@ -25,8 +25,12 @@
                     <td scope="row">{{ training.id }}</td>
                     <td>{{ training.name }}</td>
                     <td>{{ training.instructor.name }}</td>
-                    <td>{{ training.place }}</td>
-                    <td>{{ training.timeTraining }}</td>
+                    <td>{{ training.place.substr(0, 9) }}</td>
+                    <td>
+                        <span> {{ moment(training.beginTime.date).format('DD/MM/YYYY - HH:mm') }}
+                            <span v-if="training.endTime"> até {{ moment(training.endTime.date).format('DD/MM/YYYY - HH:mm') }}</span>
+                        </span>
+                    </td>
                     <td>{{ training.type }}</td>
                     <td>{{ training.workload }} horas</td>
                     <td> <input type="checkbox" @change="isDone(training)" :disabled="training.done ? true : false" v-model="training.done"/></td>

@@ -10,6 +10,7 @@
             
             <div id="module-contents" class="list-group">
                 <a v-for="(train, index) in trainings" :key="index" href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#trainingModal" @click="training.selected = train">
+                    <icon icon="clock" v-if="moment().diff(train.beginTime.date, 'days') == 0"/>
                     {{ train.id + ' - ' + train.name }}
                 </a>
                 <br v-if="!trainings">
@@ -33,7 +34,7 @@
                                     </span>
                                 </div>
                                 <div class="row">
-                                    <span class="col text-left"> <b>Horário:</b> {{ training.selected.timeTraining }}</span>
+                                    <span class="col text-left"> <b>Início:</b> {{ moment(training.selected.beginTime.date).format('DD/MM/YYYY - HH:mm') }}</span>
                                     <span class="col"> <b>Carga Horária:</b> {{ training.selected.workload }}</span>
                                     <span class="col text-right"><b>Local:</b> {{ training.selected.place }}</span>
                                 </div>
@@ -56,6 +57,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import AlertMessage from "@/components/shared/AlertMessage";
 import Message from "@/entity/AlertMessage";
 import model, { getter } from "@/model/training-model";
@@ -72,7 +74,8 @@ export default {
                 training: "Treinamentos",
                 news: "News",
             },
-            trainings: ''
+            trainings: '',
+            moment: moment,
         }
     },
     methods: {
@@ -90,7 +93,7 @@ export default {
         },
     },
     mounted() {
-        getter.getTrainings().then(res => { this.trainings = res })
+        getter.getTrainingsUnrealized().then(res => { this.trainings = res })
     },
     components: {
         'alert-message': AlertMessage,
