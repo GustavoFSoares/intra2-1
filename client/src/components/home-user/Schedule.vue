@@ -16,7 +16,7 @@
                 <tr v-for="(training, index) in trainings" :key="training.id" v-bind:class="{'table-danger': moment().diff(training.beginTime.date, 'days') == 0}">
                     <td>{{ training.id }}</td>
                     <td>{{ training.name }}</td>
-                    <td>{{ training.place }}</td>
+                    <td>{{ training.place.substr(0, 16) }}</td>
                     <td>{{ moment(training.beginTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
                     <td>{{ training.workload }}</td>
                     <td> 
