@@ -21,7 +21,8 @@ class ModuleModel extends SoftdeleteModel
             ->from('HospitalApi\Entity\Module', 'm')
             ->innerJoin('m.groups', 'g', 'WITH', 'g.groupId = :group OR m.default = 1')
             ->setParameter('group', $group)
-            ->where('m.c_removed != 1');
+            ->where('m.c_removed != 1')
+            ->orderBy('m.name', 'asc');
         $collection = $query->getQuery()->getResult();
 
         return $collection;

@@ -1,4 +1,6 @@
 <?php 
+require_once __DIR__.'./../../../vendor/autoload.php';
+require_once __DIR__.'./../../middleware.php';
 
 $path = __dir__;
 $dir = dir($path);
