@@ -63,6 +63,7 @@ class ModuleController extends ControllerAbstract
                     $groups[$groupRow->getGroupId()] = $groupRow->toArray();
                 }
                 $row = $row->setGroups($groups);
+                $groups = [];
             }
         } else {
             foreach ($collection->getGroups()->toArray() as $groupRow) {
@@ -70,7 +71,7 @@ class ModuleController extends ControllerAbstract
             }
             $collection = $collection->setGroups($groups);
         }
- 
+        
         return parent::translateCollection($collection);
     }
 
