@@ -20,7 +20,7 @@ if(!$model->findAll()){
         $enterprise = new Enterprise($enterprise['id'], $enterprise['name']);
         $model->doInsert($enterprise);
     }
-    echo "Enterprise Inserted<br>";
+    echo "Enterprise Inserted\n";
 } else {
-    echo "Enterprise was ignored<br>";
+    echo "Enterprise was ignored\n";
 }

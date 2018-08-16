@@ -13,9 +13,10 @@
                     <th scope="col">Nome</th>
                     <th scope="col">Multiplicador</th>
                     <th scope="col">Local</th>
-                    <th scope="col">Horário de Início</th>
+                    <th scope="col">Horário Treinamento</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Carga Horária</th>
+                    <th scope="col">Realizado</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -24,11 +25,19 @@
                     <td scope="row">{{ training.id }}</td>
                     <td>{{ training.name }}</td>
                     <td>{{ training.instructor.name }}</td>
-                    <td>{{ training.place }}</td>
-                    <td>{{ training.timeTraining }}</td>
+                    <td>{{ training.place.substr(0, 9) }}</td>
+                    <td>
+                        <span> {{ moment(training.beginTime.date).format('DD/MM/YYYY - HH:mm') }}
+                            <span v-if="training.endTime"> até {{ moment(training.endTime.date).format('DD/MM/YYYY - HH:mm') }}</span>
+                        </span>
+                    </td>
                     <td>{{ training.type }}</td>
                     <td>{{ training.workload }} horas</td>
+                    <td> <input type="checkbox" @change="isDone(training)" :disabled="training.done ? true : false" v-model="training.done"/></td>
                     <td>
+                        <router-link :to='`hora-homem-treinamento/lista-participantes/${training.id}`'>
+                            <icon class="text-success" icon="user-plus"/>
+                        </router-link>
                         <router-link :to='`hora-homem-treinamento/edit/${training.id}`'>
                             <icon icon="edit"/>
                         </router-link>
@@ -46,6 +55,7 @@
 <script>
 import model, { getter } from "@/model/training-model";
 import moment from 'moment'
+import Alert from "@/components/shared/Alert";
 
 export default {
     data() {
@@ -53,15 +63,30 @@ export default {
             title: "Lista de Treinamentos",
             trainings: [],
             moment: moment,
+            alert: {
+                done: { title: "Treinamento Realizado?", message: "Você está marcando este treinamento como realizado. <BR>Tem certeza que deseja realizar essa ação?" },
+                remove: { title: "Tem certeza que deseja excluir?", message: "Você está excluindo um treinamento. <BR>Tem certeza que deseja continuar?" }
+            }
         }
     },
     methods: { 
         remove(id, index){
-            if (confirm("Tem certeza que deseja excluir?")) {
-                model.doDelete(id)
-                this.trainings.splice(index, 1)
-            }
+            Alert.Confirm(this.alert.remove.message).then(res => {
+                if(res){
+                    model.doDelete(id)
+                    this.trainings.splice(index, 1)
+                }
+            })
         },
+        isDone(training) {
+            Alert.YesNo(this.alert.done.title, this.alert.done.message).then(res => {
+                if(res){
+                    model.isDone(training.id)
+                } else {
+                    training.done = false
+                }}
+            )
+        }
     },
     mounted() {
         getter.getTrainings().then(res => { this.trainings = res })
@@ -80,6 +105,10 @@ export default {
 
     table {
         margin-top: 10px;
+    }
+
+    .modal-header {
+        display: block;
     }
 </style>
 

@@ -76,12 +76,7 @@ export default {
         }
     },
     mounted() {
-        getter.getAllRamals().then( res => { this.ramals = res;
-        console.log();
-        
-        })
-        // console.log(moment(this.ramal.c_modified));
-        // moment(ramal.c_modified.date).format('DD/MM/YYYY - hh:mm:ss')
+        getter.getAllRamals().then( res => { this.ramals = res })
         
     },
     computed: {

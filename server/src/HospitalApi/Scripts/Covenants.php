@@ -24,7 +24,7 @@ if (!$model->findAll()) {
             
         $model->doInsert($Covenant);
     }
-    echo "Covenants Inserted<br>";
+    echo "Covenants Inserted\n";
 } else {
-    echo "Covenants was ignored<br>";
+    echo "Covenants was ignored\n";
 }

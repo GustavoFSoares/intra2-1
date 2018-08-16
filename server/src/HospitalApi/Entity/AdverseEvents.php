@@ -199,7 +199,7 @@ class AdverseEvents extends EntityAbstract
      * retorna no Formato MySql Y-m-d H:i:s
      * @return Date
      */
-    private function _formatDate($date){
+    public function _formatDate($date){
         $search = [' ', '-', '/'];
         $reclace = ['', ' ', '-'];
         $date = str_replace($search, $reclace, $date);

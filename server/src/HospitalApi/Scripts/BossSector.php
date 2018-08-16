@@ -13,7 +13,7 @@ if(false){
         $bossSector = new BossSector(null, $bossSector['name'], $bossSector['email']);
         $model->doInsert($bossSector);
     }
-    echo "BossSector Inserted<br>";
+    echo "BossSector Inserted\n";
 } else {
-    echo "BossSector was ignored<br>";
+    echo "BossSector was ignored\n";
 }

@@ -19,7 +19,8 @@
             <tbody>
                 <tr v-for="(user, index) of users" :key="user.id" v-bind:class="{'table-danger': user.c_removed == '1'}">
                     <td>
-                        <icon icon="chess-king" v-if="user.admin"></icon>
+                        <icon icon="chess-king" v-if="user.admin"/>
+                        <icon icon="user-graduate" v-if="user.student"/>
                     </td>
                     <td scope="row">{{ index }}</td>
                     <td>{{ user.id }}</td>
@@ -54,6 +55,7 @@ export default {
     methods: {
         mounteUsers() {
             let groupId = this.$session.get('user').group.id
+            this.title = this.$session.get('user').group.name
             getter.getUsersByGroupId(groupId).then(res => this.users = res)
         }
     },

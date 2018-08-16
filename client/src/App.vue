@@ -82,4 +82,8 @@ export default {
         width: 20%;
         margin-top: 10px;
     }
+
+    div {
+        /* outline: 1px dotted gray; */
+    }
 </style>

@@ -11,7 +11,7 @@
                 <tr>
                 <th scope="col">Ramal</th>
                 <th scope="col">Setor</th>
-                <th scope="col">Núcleo</th>
+                <th scope="col">Núcler</th>
                 <th scope="col">Unidade</th>
                 <th scope="col">Andar</th>
                 </tr>
@@ -20,8 +20,8 @@
                 <tr v-for="(ramal) in searchList" :key="ramal.id">
                     <th>{{ ramal.number }}</th>
                     <td>{{ ramal.group.name }}</td>
-                    <!-- <td>{{ ramal.core.toUpperCase() }}</td> -->
-                    <td>{{ ramal.core }}</td>
+                    <td>{{ ramal.core.toUpperCase() }}</td>
+                    <!-- <td>{{ ramal.core }}</td> -->
                     <td>{{ ramal.group.enterprise }}</td>
                     <td>{{ ramal.floor }}</td>
                 </tr>

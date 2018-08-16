@@ -1,14 +1,12 @@
 import service from "@/services/training"
-import serviceGroup from "@/services/group"
-import serviceTraining from "@/services/training"
 import serviceUser from "@/services/user"
 
 const getters = {
-    getEnterprises: () => serviceGroup.getEnterprises(),
-    getUsers: () => serviceUser.getUsers(),
+    getUserById: (id) => serviceUser.getUsers(id),
     getTrainings: () => service.getTrainings(),
+    getTrainingsUnrealized: () => service.getTrainingsUnrealized(),
     getTrainingById: (id) => service.getTrainings(id),
-    getTrainingsType: () => serviceTraining.getTrainingsType(),
+    getTrainingsType: () => service.getTrainingsType(),
 }
 
 const model = {
@@ -19,6 +17,7 @@ const model = {
         }
         return false
     },
+    isDone: (trainingId) => service.isDone(trainingId),
     doUpdate: (id, data) => service.doUpdate(id, data),
     doDelete: (id) => service.doDelete(id),
     indexOf: (users, user) => {

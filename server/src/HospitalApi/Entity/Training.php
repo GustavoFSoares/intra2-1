@@ -39,14 +39,19 @@ class Training extends EntityAbstract
     
     /**
      * @ManyToOne(targetEntity="User",cascade={"persist", "remove"})
-     * @JoinColumn(name="id_usuarioInstrutor", nullable=false)
+     * @JoinColumn(name="instrutor_id", nullable=false)
      */
     protected $instructor;
     
     /**
-     * @var String @Column(name="hora_treinamento", type="string", length=255)
+     * @var DateTime @Column(name="inicio_hora_treinamento", type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
-    protected $timeTraining;
+    protected $beginTime;
+    
+    /**
+     * @var DateTime @Column(name="final_hora_treinamento", type="datetime", nullable=true, options={"default":"CURRENT_TIMESTAMP"}, nullable=true)
+     */
+    protected $endTime;
 
     /**
      * @var Integer @Column(name="carga_horaria", type="integer")
@@ -54,19 +59,22 @@ class Training extends EntityAbstract
     protected $workload;
 
     /**
-     * @ManyToMany(targetEntity="User")
-     * @JoinTable(name="Treinamento_Usuario",
-     *      joinColumns={@JoinColumn(name="treinamento_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="usuario_id", referencedColumnName="id")}
-     *      )
+     * @var Boolean @Column(name="realizado", type="boolean")
      */
-    protected $users;
+    protected $done;
 
-    public function __construct($id = '', $name = '') {
+    public function __construct() {
         parent::__construct();
-        $this->id = $id;
-        $this->name = $name;
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->id = '';
+        $this->name = '';
+        $this->place = '';
+        $this->type = '';
+        $this->institutionalType = '';
+        $this->instructor = new User();
+        $this->beginTime = new \DateTime();
+        $this->endTime = null;
+        $this->workload = '';
+        $this->done = false;
     }
 
     public function getId() {
@@ -123,11 +131,20 @@ class Training extends EntityAbstract
         return $this;
     }
 
-    public function getTimeTraining() {
-        return $this->timeTraining;
+    public function getBeginTime() {
+        return $this->beginTime;
     }
-    public function setTimeTraining($timeTraining) {
-        $this->timeTraining = $timeTraining;
+    public function setBeginTime($beginTime) {
+        $this->beginTime = $this->_formatDate($beginTime);
+
+        return $this;
+    }
+    
+    public function getEndTime() {
+        return $this->endTime;
+    }
+    public function setEndTime($endtime) {
+        $this->endTime = $this->_formatDate($endtime);
 
         return $this;
     }
@@ -141,21 +158,11 @@ class Training extends EntityAbstract
         return $this;
     }
 
-    public function getUsers() {
-        return $this->users;
+    public function getDone() {
+        return $this->done;
     }
-    public function addUser($user) {
-        $this->users->add($user);
-
-        return $this;
-    }
-    public function removeUser($user) {
-        $this->users->removeElement($user);
-        
-        return $this;
-    }
-    public function setUsers($users) {
-        $this->users = $users;
+    public function setDone($done) {
+        $this->done = $done;
 
         return $this;
     }

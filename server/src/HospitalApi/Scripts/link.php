@@ -130,7 +130,7 @@ if(!$model->findAll()){
             ->setExternalLink($link['externalLink']);
         $model->doInsert($l);
     }
-    echo "Links Inserted<br>";
+    echo "Links Inserted\n";
 } else {
-    echo "Links was ignored<br>";
+    echo "Links was ignored\n";
 }
