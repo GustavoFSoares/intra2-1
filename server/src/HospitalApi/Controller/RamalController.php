@@ -27,6 +27,14 @@ class RamalController extends ControllerAbstract
         return parent::_mountEntity($values);
     }
 
+    public function filter($req, $res, $args) {
+        $filter = $args['filter'];
+        $collection = $this->getModel()->filterRamals($filter);
+
+        $data = $this->translateCollection($collection);
+        return $res->withJson($data);
+    }
+
     public function delete($req, $res, $args) {
         $id = $args['id'];
         $model = $this->getModel();

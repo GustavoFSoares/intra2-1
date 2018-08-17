@@ -20,6 +20,7 @@ $app->group('/ramal', function () {
      */
     $this->get('/[{id}]', "HospitalApi\Controller\RamalController:get", function (Request $req, Response $res, array $args) { });
     $this->get('/all/', "HospitalApi\Controller\RamalController:findAll", function (Request $req, Response $res, array $args) { });
+    $this->get('/filter/{filter}', "HospitalApi\Controller\RamalController:filter", function (Request $req, Response $res, array $args) { });
     
     $this->post('/', "HospitalApi\Controller\RamalController:insert", function (Request $req, Response $res, array $args) { });
     $this->put('/{id}', "HospitalApi\Controller\RamalController:update", function (Request $req, Response $res, array $args) { });

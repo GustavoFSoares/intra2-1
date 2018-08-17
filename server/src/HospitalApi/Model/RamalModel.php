@@ -31,4 +31,19 @@ class RamalModel extends SoftdeleteModel
 
         return $collection;
     }
+
+    public function filterRamals($filter) {
+        $query = $this->em->createQueryBuilder();
+        $query->select('r')
+            ->from('HospitalApi\Entity\Ramal', 'r')
+            ->innerJoin('HospitalApi\Entity\Group', 'g',
+                'WITH', 'g.id = r.group')
+            ->where('r.number like :filter')
+            ->orWhere('r.core like :filter')
+            ->orWhere('r.floor like :filter')
+            ->orWhere('g.name like :filter')
+            ->orderBy('r.group', 'asc')
+            ->setParameter('filter', "%$filter%");
+        return $query->getQuery()->getResult();
+    }
 }
