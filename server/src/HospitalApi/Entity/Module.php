@@ -36,6 +36,17 @@ class Module extends SoftdeleteAbstract
     protected $icon;
 
     /**
+     * @OneToMany(targetEntity="Module", mappedBy="parent", cascade={"persist"})
+     */
+    protected $children;
+
+     /**
+     * @ManyToOne(targetEntity="Module", inversedBy="children", cascade={"persist"})
+     * @JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    protected $parent;
+
+    /**
      * Many Modules have Many Groupss.
      * @ManyToMany(targetEntity="Group")
      * @JoinTable(name="Modulo_Grupo",
@@ -54,6 +65,7 @@ class Module extends SoftdeleteAbstract
         $this->routeName = $routeName;
         $this->icon = $icon;
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId() {
@@ -116,6 +128,34 @@ class Module extends SoftdeleteAbstract
     }
     public function setGroups($groups) {
         $this->groups = $groups;
+
+        return $this;
+    }
+    
+    public function getChildren() {
+        return $this->children;
+    }
+    public function addChildren($children) {
+        $this->children->add($children);
+
+        return $this;
+    }
+    public function removeChildren($children) {
+        $this->children->removeElement($children);
+        
+        return $this;
+    }
+    public function setChildren($children) {
+        $this->children = $children;
+
+        return $this;
+    }
+
+    public function getParent() {
+        return $this->parent;
+    }
+    public function setParent($parent) {
+        $this->parent = $parent;
 
         return $this;
     }

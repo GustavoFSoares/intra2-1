@@ -5,5 +5,7 @@ export default class Module {
         this.routeName = module.routeName
         this.icon = module.icon
         this.default = module.default ? true : false
+        this.children = module.children
+        this.parent = module.parent
     }
 }

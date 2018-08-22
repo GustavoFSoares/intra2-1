@@ -1,38 +1,37 @@
 import http from '../client'
 
-const getModules = (id) => {
-    return http.get(`/module/`, { params: {id: id} }).then(res => res.data )
-}
-const getModulesByGroup = (group) => {
-    return http.get(`/module/group/${group}`).then(res => res.data)
-}
-
-const doPermission = (data) => {
-    return http.post(`/module/group/`, data).then(res => res.data)
-}
-const addModule = (data) => {
-    return http.post(`/module/`, data).then(res => res.data)
-}
-
-const editModule = (id, data) => {
-    return http.put(`/module/${id}`, data).then(res => res.data)
-}
-
-const changeStatusModule = (id) => {
-    return http.put(`/module/change-status/${id}`).then(res => res.data)
-}
-
-const deleteModule = (id) => {
-    return http.delete(`/module/${id}`).then(res => res.data)
-}
-
 export default {
-    getModulesByGroup,
-    getModules,
-    doPermission,
-    addModule,
-    editModule,
-    deleteModule,
-    changeStatusModule,
+    getModules: (id) => {
+        return http.get(`/module/`, { params: {id: id} }).then(res => res.data )
+    },
+    getModulesByGroup: (group) => {
+        return http.get(`/module/group/${group}`).then(res => res.data)
+    },
+    
+    doPermission: (data) => {
+        return http.post(`/module/group/`, data).then(res => res.data)
+    },
+    addModule: (data) => {
+        return http.post(`/module/`, data).then(res => res.data)
+    },
+    addChieldModule: (data) => {
+        return http.post(`/module/chield/`, data).then(res => res.data)
+    },
+    
+    editModule: (id, data) => {
+        return http.put(`/module/${id}`, data).then(res => res.data)
+    },
+    editChieldModule: (id, data) => {
+        return http.put(`/module/chield/${id}`, data).then(res => res.data)
+    },
+    changeStatusModule: (id) => {
+        return http.put(`/module/change-status/${id}`).then(res => res.data)
+    },
+    
+    deleteModule: (id) => {
+        return http.delete(`/module/${id}`).then(res => res.data)
+    },
+    removeChield: (id) => {
+        return http.delete(`/module/chield/${id}`).then(res => res.data)
+    },
 }
-
