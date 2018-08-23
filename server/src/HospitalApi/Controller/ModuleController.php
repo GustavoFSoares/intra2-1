@@ -9,6 +9,36 @@ class ModuleController extends ControllerAbstract
         parent::__construct(new ModuleModel());
     }
 
+    public function getModulesByGroup($req, $res, $args) {
+        $group = $args['group'];
+        
+        $model = $this->getModel();
+        $data = $model->findByGroup($group);
+
+        $collection = $this->translateCollection($data);
+        return $res->withJson($collection);
+    }
+
+    public function insertChield($req, $res, $args) {
+        $values = $req->getParsedBody();
+        $model = $this->getModel();
+
+        $entity = $model->mount($values);
+        $model->doInsert($entity);
+
+        return $res->withJson(true);
+    }
+
+    public function updateChield($req, $res, $args) {
+        $values = $req->getParsedBody();
+        $model = $this->getModel();
+
+        $entity = $model->mount($values);
+        $model->doUpdate($entity);
+
+        return $res->withJson(true);
+    }
+
     public function updateGroups($req, $res, $args) {
         $values = $req->getParsedBody();
         
@@ -30,6 +60,26 @@ class ModuleController extends ControllerAbstract
         return $res->withJson(true);
     }
 
+    public function delete($req, $res, $args) {
+        $id = $args['id'];
+        $model = $this->getModel();
+		$repository = $model->getRepository()->find($id);
+		$delete = $model->doDelete($repository);
+
+		return $res->withJson($delete);
+    }
+
+    public function removeChield($req, $res, $args) {
+        $chieldId = $args['id'];
+        
+        $model = $this->getModel();
+        $chield = $model->removeChield($chieldId);
+
+		$model->doUpdate($chield);
+
+		return $res->withJson(true);
+    }
+
     public function deleteGroups($req, $res, $args) {
         $values = $req->getParsedBody();
     
@@ -44,46 +94,42 @@ class ModuleController extends ControllerAbstract
         return $res->withJson(true);
     }
 
-    public function getModulesByGroup($req, $res, $args) {
-        $group = $args['group'];
-        
-        $model = $this->getModel();
-        $data = $model->findByGroup($group);
-
-        $collection = $this->translateCollection($data);
-        return $res->withJson($collection);
-    }
-
     public function translateCollection($collection) {
         $groups = [];
+        $children = [];
         if (is_array($collection)) {
             foreach ($collection as &$row) {
                 
                 foreach ($row->getGroups()->toArray() as $groupRow) {
                     $groups[$groupRow->getGroupId()] = $groupRow->toArray();
                 }
-                $row = $row->setGroups($groups);
+
+                foreach ($row->getChildren()->toArray() as $chieldRow) {
+                    $children[] = $chieldRow->toArray();
+                }
+                $row->setGroups($groups);
+                $row->setChildren($children);
+                $row->getParent() ? $row->setParent($row->getParent()->toArray()) : "";
+                
                 $groups = [];
+                $children = [];
             }
         } else {
             foreach ($collection->getGroups()->toArray() as $groupRow) {
                 $groups[$groupRow->getGroupId()] = $groupRow->toArray();
             }
-            $collection = $collection->setGroups($groups);
+            
+            foreach ($collection->getChildren()->toArray() as $chieldRow) {
+                $children[] = $chieldRow->toArray();
+            }
+            $collection->setGroups($groups);
+            $collection->setChildren($children);
+            $collection->getParent() ? $collection->setParent($collection->getParent()->toArray()) : "";
         }
         
         return parent::translateCollection($collection);
     }
 
-    public function delete($req, $res, $args) {
-        $id = $args['id'];
-        $model = $this->getModel();
-		$repository = $model->getRepository()->find($id);
-		$delete = $model->doDelete($repository);
-
-		return $res->withJson($delete);
-    }
-    
     public function changeStatus($req, $res, $args) {
         $id = $args['id'];
         $model = $this->getModel();
@@ -95,5 +141,12 @@ class ModuleController extends ControllerAbstract
         $update = $model->doUpdate($repository);
         
         return $res->withJson($update);
+    }
+
+    public function _mountEntity($result) {
+        $entity = parent::_mountEntity($result);
+        $entity->setParent(null);
+
+        return $entity;
     }
 }

@@ -1,94 +1,85 @@
 <template>
-    <div v-if="loaded">
-        <div v-if="modules" class="pull-left">
-         
-            <div v-for="module of modules" :key="'123'+module.id" class="panel card">
-                <router-link :to="{name: module.routeName}" class="nav-link panel-conteudo">
-                    <icon id="icon" :icon="module.icon"/>
-                    <h2 id="label" class="card-title panel-title">{{ module.name }}</h2>
-                </router-link>
-            </div>
+    <div>
+        <router-link @click.native="click" to=""> 
+            <icon id="icon" icon="arrow-circle-right" class="in"/>
+        </router-link>
 
-        </div>
-
-        <div v-else>
-            <span>
-                <alert-message id="alert" text="Seu grupo não possui módulos cadastrados, por favor, contate a TI" type="warning" icon="fa fa-exclamation-triangle"/>
-            </span>
-        </div>
+        <div id="module-contents" class="list-group in">
+            <router-link :to="routeName(module)" v-for="(module, index) in modules" :key="index" class="list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id-'+module.id" aria-expanded="true" :aria-controls="'id-'+module.id">
+                <icon :icon="module.icon"/> {{ module.name }}
+                <div :id="'id-'+module.id" class="collapse">
+                    <router-link v-for="(chield, index) in module.children" :key="index" :to="{name: chield.routeName}" class="list-group-item list-group-item-action chield-item">
+                        <span class="chield-modules">
+                            <icon :icon="chield.icon"/>
+                            {{ chield.name }}
+                        </span>
+                    </router-link>
+                </div>
+            </router-link>
+        </div>    
     </div>
 </template>
 
 <script>
+import $ from "jquery";
 import { getter } from "@/model/modules-model";
-import AlertMessage from '@/components/shared/AlertMessage'
+
 export default {
-    props: {
-        group: String,
-    },
     data() {
         return {
-            visivel: true,
-            modules: '',
-            loaded: ''
+            modules: ''
         }
     },
-    mounted() {
-        getter.getModulesByGroup(this.$props.group).then(res => {
-            this.modules = res
-            this.loaded = true
-        })
+    methods: {
+        click() {
+            $("#module-contents").toggleClass('in')
+            $("#icon").toggleClass('in')
+        },
+        routeName: (mod) => mod.children ? "" : { name: mod.routeName }
     },
-    components: {
-        'alert-message': AlertMessage
+    mounted() {
+        getter.getModulesByGroup(this.$session.get('user').group.groupId).then(res => { this.modules = res })
     }
 }
 </script>
 
 <style scoped>
-    .panel {
-        max-width: 140px;
-        min-width: 100px;
+    #icon {
+        color: black;
+        margin-left: 4px;
+        transition: all 0.5s ease;
+    }
+
+    #icon.in {
+        transform: rotate(90deg);
+    }
+
+    #module-contents {
+        transition: width 0.5s ease;
         
-        height: 110px;
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        vertical-align: middle;
+        line-height: 30px;
         
-        border: solid 1px grey;
-        box-shadow: 2px 2px 2px grey;
-        margin: 5px;
-        padding: 0 auto;
+        width: 0px;
+        margin-left: 10px;
+
+        max-width: 240px;
+    }
+
+    #module-contents.in {
+        width: 240px;
+    }
+
+    .chield-modules {
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: middle;
         
-        display: inline-flex;
-        vertical-align: top;
-        text-align: center;
-        background-color: #adabab57;
-    }
+        max-width: 170px;
 
-    .panel-title {
-        margin-top: 10px;
-        font-size: 18px;
-    }
-
-    .panel-conteudo {
-        color: #575757d3;
-    }
-
-    .panel-conteudo #icon {
-        font-size: 30px;
-        margin-top: 10px;
-    }
-    
-    .panel-conteudo i {
-        font-size: 30px;
-        margin-top: 10px;
-    }
-
-    #alert {
-        margin-left: 15%;
-        max-width: 70%;
-    }
-
-    #label {
-        font-family: 'Times New Roman';
     }
 
 </style>

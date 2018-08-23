@@ -11,6 +11,7 @@ $model = new ModuleModel();
         [ 'name' => 'Gerenciador de Módulos', 'routeName' => 'modulos',              'default' => false, 'icon' => 'desktop' ],
         [ 'name' => 'Convênios',              'routeName' => 'convenios',            'default' => false, 'icon' => 'handshake' ],
         [ 'name' => 'Usuários',               'routeName' => 'usuarios/gerenciador', 'default' => true,  'icon' => 'users' ],
+        [ 'name' => 'Treinamento',            'routeName' => 'hht',                  'default' => false, 'icon' => 'trophy' ],
         [ 'name' => 'Hora Homem Treinamento', 'routeName' => 'hht',                  'default' => false, 'icon' => 'medal' ],
         [ 'name' => 'Ramais',                 'routeName' => 'ramais',               'default' => false, 'icon' => 'phone' ],
         [ 'name' => 'Universitários',         'routeName' => 'universitarios',       'default' => false, 'icon' => 'user-graduate' ],
