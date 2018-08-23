@@ -7,8 +7,8 @@ export default {
     getTrainings: (id) => {
         return http.get(`/training/`, { params: { id: id } }).then(res => res.data )
     },
-    getParticipantsTraining: (trainingId) => {
-        return http.get(`/training-participant/${trainingId}`).then(res => res.data)
+    getTrainingsUnrealized: () => {
+        return http.get(`/training/unrealized/`).then(res => res.data )
     },
     
     doInsert: (data) => {
@@ -18,8 +18,8 @@ export default {
     doUpdate: (id, data) => {
         return http.put(`/training/${id}`, data).then( res => res.data )
     },
-    addParticipants: (trainingId, data) => {
-        return http.put(`/training-participant/${trainingId}`, data).then( res => res.data )
+    isDone: (id) => {
+        return http.put(`/training/done/${id}`).then( res => res.data )
     },
     
     doDelete: (id) => {

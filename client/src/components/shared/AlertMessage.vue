@@ -1,16 +1,17 @@
 <template>
     <div>
-        <div :class="internClass" role="alert">
+        <div id="alert" :class="internClass" role="alert">
             <span v-if="icon"><i :class="icon" aria-hidden="true"></i></span>
             <span style="font-size: 17px">{{ text }}</span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+            <button type="button" class="close" @click="close()">
+                <span>&times;</span>
             </button>
         </div>
     </div>
 </template>
 
 <script>
+import $ from 'jquery';
 export default {
     data() {
         return {
@@ -24,11 +25,16 @@ export default {
     },
     methods: {
         concatClass() {
+            $('#alert').show()
             this.internClass = "alert alert-"+this.type+" fade show"
+        },
+        close() {
+            $('#alert').hide()
+            this.$emit('close')
         }
     },
     mounted(){
-          this.concatClass()
+        this.concatClass()
     },
     updated(){
         this.concatClass()

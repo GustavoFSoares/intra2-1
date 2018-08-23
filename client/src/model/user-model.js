@@ -1,5 +1,4 @@
 import service from "@/services/user"
-import User from '@/entity/User'
 
 const getters = {
     getUsers: () => service.getUsers(),

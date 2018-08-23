@@ -44,14 +44,24 @@ class Training extends EntityAbstract
     protected $instructor;
     
     /**
-     * @var String @Column(name="hora_treinamento", type="string", length=255)
+     * @var DateTime @Column(name="inicio_hora_treinamento", type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
-    protected $timeTraining;
+    protected $beginTime;
+    
+    /**
+     * @var DateTime @Column(name="final_hora_treinamento", type="datetime", nullable=true, options={"default":"CURRENT_TIMESTAMP"}, nullable=true)
+     */
+    protected $endTime;
 
     /**
      * @var Integer @Column(name="carga_horaria", type="integer")
      */
     protected $workload;
+
+    /**
+     * @var Boolean @Column(name="realizado", type="boolean")
+     */
+    protected $done;
 
     public function __construct() {
         parent::__construct();
@@ -61,8 +71,10 @@ class Training extends EntityAbstract
         $this->type = '';
         $this->institutionalType = '';
         $this->instructor = new User();
-        $this->timeTraining = '';
+        $this->beginTime = new \DateTime();
+        $this->endTime = null;
         $this->workload = '';
+        $this->done = false;
     }
 
     public function getId() {
@@ -119,11 +131,20 @@ class Training extends EntityAbstract
         return $this;
     }
 
-    public function getTimeTraining() {
-        return $this->timeTraining;
+    public function getBeginTime() {
+        return $this->beginTime;
     }
-    public function setTimeTraining($timeTraining) {
-        $this->timeTraining = $timeTraining;
+    public function setBeginTime($beginTime) {
+        $this->beginTime = $this->_formatDate($beginTime);
+
+        return $this;
+    }
+    
+    public function getEndTime() {
+        return $this->endTime;
+    }
+    public function setEndTime($endtime) {
+        $this->endTime = $this->_formatDate($endtime);
 
         return $this;
     }
@@ -133,6 +154,15 @@ class Training extends EntityAbstract
     }
     public function setWorkload($workload) {
         $this->workload = $workload;
+
+        return $this;
+    }
+
+    public function getDone() {
+        return $this->done;
+    }
+    public function setDone($done) {
+        $this->done = $done;
 
         return $this;
     }

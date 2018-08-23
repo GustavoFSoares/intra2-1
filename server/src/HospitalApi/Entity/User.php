@@ -192,7 +192,7 @@ class User extends SoftdeleteAbstract
         return $this->fire;
     }
     public function setFire($fire) {
-        $this->fire = $this->_formatDate($fire);;
+        $this->fire = $this->_formatDate($fire);
 
         return $this;
     }

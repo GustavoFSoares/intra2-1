@@ -46,7 +46,7 @@ export default {
         this.loadValues()
     },
     updated() {
-        this.loadValues()
+        // this.loadValues()
     },
     methods: {
         configureFinalDate() {
@@ -80,7 +80,7 @@ export default {
         },
         loadValues() {
             $(`#${this.$props.id}`).daterangepicker({ 
-                // "startDate": moment.now(),
+                "startDate": moment.now(),
                 // "endDate": moment.now(),
                 "autoApply": true,
                 "autoUpdateInput": true,

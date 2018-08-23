@@ -67,13 +67,12 @@
 <script>
 import { FormRw, FormRws, Require, VueSelect, DatePicker } from "@/components/shared/Form";
 import model, { getter } from "@/model/student-model";
-// import Student from "@/entity/student";
 
 export default {
     data(){
         return {
             id: '',
-            title: "Cadastro de Ramais",
+            title: "Cadastro de Universitários",
             student: {},
             subtitles: {
                 id: "Matrícula",
