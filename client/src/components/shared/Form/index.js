@@ -1,16 +1,9 @@
-import FormRow from "./FormRow.vue"
-import FormRows from "./FormRows.vue"
-import Required from "./Required.vue"
-import Top_Alert from "./TopAlert.vue"
-import Vue_Select from "vue-select"
-import Date_Picker from "./DatePicker.vue"
-import CheckBox from "./Checkbox.vue"
-
-export const FormRw = FormRow
-export const FormRws = FormRows
-export const Require = Required
-export const TopAlert = Top_Alert
-export const VueSelect = Vue_Select
-export const DatePicker = Date_Picker
-export const Checkbox = CheckBox
+export const FormRw = require("./FormRow.vue").default
+export const FormRws = require("./FormRows.vue").default
+export const Require = require("./Required.vue").default
+export const TopAlert = require("./TopAlert.vue").default
+export const VueSelect = require("vue-select").default
+export const DatePicker = require("./DatePicker.vue").default
+export const Checkbox = require("./Checkbox.vue").default
+export const ClockPicker = require('./ClockPicker.vue').default
 

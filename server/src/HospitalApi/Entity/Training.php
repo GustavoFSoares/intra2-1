@@ -54,7 +54,7 @@ class Training extends EntityAbstract
     protected $endTime;
 
     /**
-     * @var Integer @Column(name="carga_horaria", type="integer")
+     * @var String @Column(name="carga_horaria", type="string")
      */
     protected $workload;
 

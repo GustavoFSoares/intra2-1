@@ -23,10 +23,10 @@ Vue.component('icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
 Validator.localize('pt_BR', translate)
+Vue.use(VueResource)
 Vue.use(VueSession)
 Vue.use(VueTheMask)
 Vue.use(VeeValidate);
-Vue.use(VueResource)
 
 new Vue({
   el: '#app',
