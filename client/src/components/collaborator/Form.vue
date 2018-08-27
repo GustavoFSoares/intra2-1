@@ -83,7 +83,7 @@ export default {
     data(){
         return {
             id: '',
-            title: "Cadastro de Universitários",
+            title: "Cadastro de Colaboradores",
             collaborator: { complement: {} },
             subtitles: {
                 id: "Matrícula",

@@ -81,10 +81,10 @@ class TrainingParticipantModel extends ModelAbstract
              'u.name' ,
              'u.code',
              'u.occupation',
-             'u.hire',
-             'u.fire',
-             'u.turn',
-             'u.student',
+             'uc.hire',
+             'uc.fire',
+             'uc.turn',
+             'ut.name AS Tipo',
              'g.id AS GroupId',
              'g.name AS GroupName',
              'g.groupId AS GroupIdName',
@@ -93,6 +93,10 @@ class TrainingParticipantModel extends ModelAbstract
             ->from('HospitalApi\Entity\User', 'u')
             ->innerJoin('HospitalApi\Entity\Group', 'g',
                 'WITH', 'u.group = g.id')
+            ->leftJoin('HospitalApi\Entity\UserComplement', 'uc',
+                'WITH', 'u.id = uc.user')
+            ->leftJoin('HospitalApi\Entity\UserType', 'ut',
+                'WITH', 'uc.type = ut.id')
             ->innerJoin('HospitalApi\Entity\TrainingParticipant', 'trp', 
                 'WITH', 'u.id = trp.participant')
             ->where('trp.training = :trainingId')
