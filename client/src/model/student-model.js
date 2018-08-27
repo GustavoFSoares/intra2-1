@@ -5,6 +5,7 @@ import serviceGroup from "@/services/group"
 const getters = {
     getStudents: () => service.getStudents(),
     getStudentById: (id) => service.getStudents(id),
+    getStudentTypes: () => service.getTypes(),
     getStudentsByGroupId: (groupId) => service.getStudentsByGroupId(groupId),
     getGroups: () => serviceGroup.getGroups(),
 }

@@ -1,22 +1,31 @@
 <template>
     <div class="container-fluid">
-        <h1>{{ title }}</h1>
 
         <div class="mb-4">
             <router-link class=" button btn btn-outline-secondary btn-lg" :to="{name: 'universitarios/add'}" tag="button">
                 Cadastrar Universitários
             </router-link>
         </div>
+
+        <div class="mb-3">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <router-link to="" class="btn btn-primary" v-for="(type, index) in types" :key="index" @click.native="search.type = type">{{ type.name }}</router-link>
+                <router-link to="" class="btn btn-primary" @click.native="search.type = {id: '', name: ''}">Todos</router-link>
+            </div>
+        </div>
         
         <div class="form-group form-row col">
-            <input type="search" class="filter form-control" :disabled="!students" @input="filter = $event.target.value" placeholder="Nome:"/>
+            <input type="search" class="filter form-control" :disabled="!students" @input="search.filter = $event.target.value" placeholder="Nome:"/>
         </div>
+
+        <h2>{{ typeExibited }}</h2>
 
         <table v-if="students" class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nome</th>
+                    <th scope="col">Tipo</th>
                     <th scope="col">Cargo</th>
                     <th scope="col">Setor</th>
                     <th scope="col">Empresa</th>
@@ -31,12 +40,13 @@
                 <tr v-for="(student) of searchList" :key="student.id" v-bind:class="{'table-danger': student.c_removed == '1'}">
                     <td>{{ student.id }}</td>
                     <td>{{ student.name }}</td>
+                    <td>{{ student.complement.type.name }}</td>
                     <td>{{ student.occupation }}</td>
                     <td>{{ student.group.name }}</td>
                     <td>{{ student.group.enterprise }}</td>
-                    <td>{{ moment(student.hire.date).format('DD/MM/YYYY') }}</td>
-                    <td>{{ moment(student.fire.date).format('DD/MM/YYYY') }}</td>
-                    <td>{{ student.turn }}</td>
+                    <td>{{ moment(student.complement.hire.date).format('DD/MM/YYYY') }}</td>
+                    <td>{{ moment(student.complement.fire.date).format('DD/MM/YYYY') }}</td>
+                    <td>{{ student.complement.turn }}</td>
                     <td>
                         <icon class="text-success" icon="check-circle" v-if="!student.c_removed"/>
                         <icon class="text-danger" icon="times-circle" v-else/>
@@ -62,15 +72,20 @@ import moment from 'moment'
 export default {
     data() {
         return {
-            title: '',
+            typeExibited: '',
             students: [],
             moment: moment,
-            filter: ''
+            search: {
+                filter: '',
+                type: ''
+            },
+            types: '',
         }
     },
     methods: {
         mounteStudents() {
             getter.getStudents().then(res => {this.students = res })
+            getter.getStudentTypes().then(res => {this.types = res })
         },
         remove(id){
            if (confirm("Tem certeza que deseja excluir?")) {
@@ -84,12 +99,26 @@ export default {
     computed: {
         searchList() {
 
-            if(this.filter) {
-                let exp = new RegExp(this.filter.trim(), 'i')
+            if(this.search.type) {
+                this.typeExibited = this.search.type.name
+                let type = new RegExp(this.search.type.id.trim(), 'i')
+                
+                return this.students.filter(students => {
+                    if( type.test(students.complement.type.id )) {
+                        return type
+                    }
+                })
+
+            }
+            
+            if(this.search.filter) {
+                let exp = new RegExp(this.search.filter.trim(), 'i')
                 
                 return this.students.filter(students => {
                     
-                    if( exp.test(students.name)) {
+                    if( exp.test(students.id)) {
+                        return exp
+                    } else if( exp.test(students.name)) {
                         return exp
                     } else if( exp.test(students.group.name)) {
                         return exp
@@ -97,11 +126,11 @@ export default {
                         return exp
                     } else if( exp.test(students.group.enterprise)) {
                         return exp
-                    } else if( exp.test(students.turn)) {
+                    } else if( exp.test(students.complement.turn)) {
                         return exp
-                    } else if( exp.test(moment(students.hire.date).format('DD/MM/YYYY'))) {
+                    } else if( exp.test(moment(students.complement.hire.date).format('DD/MM/YYYY'))) {
                         return exp
-                    } else if( exp.test(moment(students.fire.date).format('DD/MM/YYYY'))) {
+                    } else if( exp.test(moment(students.complement.fire.date).format('DD/MM/YYYY'))) {
                         return exp
                     }
                 })

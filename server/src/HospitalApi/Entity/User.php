@@ -54,33 +54,14 @@ class User extends SoftdeleteAbstract
     protected $admin;
 
     /**
-     * @var Boolean @Column(name="estudante", type="boolean", nullable=true, options={"default":false})
-     */
-    protected $student;
-
-    /**
-     * @var Datetime
-     *      @Column(name="data_contratacao", type="datetime", nullable=true, options={"default":"CURRENT_TIMESTAMP"})
-     */
-    public $hire;
-
-    /**
-     * @var Datetime
-     *      @Column(name="data_demissao", type="datetime", nullable=true, options={"default":"CURRENT_TIMESTAMP"})
-     */
-    public $fire;
-   
-    /**
-     * @var String
-     *      @Column(name="turno", type="string", nullable=true, options={"default":""})
-     */
-    public $turn;
-
-    /**
      * @OneToMany(targetEntity="TrainingParticipant", mappedBy="User")
      */
     private $trainingParticipant;
 
+    /**
+     * @OneToOne(targetEntity="UserComplement", mappedBy="user", cascade={"persist", "remove"})
+     */
+    protected $complement;
 
     public function __construct() {
         parent::__construct();
@@ -92,10 +73,6 @@ class User extends SoftdeleteAbstract
         $this->group = new Group();
         $this->occupation = '';
         $this->admin = false;
-        $this->hire = new \DateTime();
-        $this->fire = new \DateTime();
-        $this->turn = '';
-
     }
 
     public function getId() {
@@ -179,29 +156,11 @@ class User extends SoftdeleteAbstract
         return $this;
     }
 
-    public function getHire() {
-        return $this->hire;
+    public function getComplement() {
+        return $this->complement;
     }
-    public function setHire($hire) {
-        $this->hire = $this->_formatDate($hire);
-
-        return $this;
-    }
-
-    public function getFire() {
-        return $this->fire;
-    }
-    public function setFire($fire) {
-        $this->fire = $this->_formatDate($fire);
-
-        return $this;
-    }
-
-    public function getTurn() {
-        return $this->turn;
-    }
-    public function setTurn($turn) {
-        $this->turn = $turn;
+    public function setComplement($complement) {
+        $this->complement = $complement;
 
         return $this;
     }

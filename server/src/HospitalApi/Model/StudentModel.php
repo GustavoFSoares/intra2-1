@@ -2,6 +2,7 @@
 namespace HospitalApi\Model;
 
 use HospitalApi\Entity\User;
+use HospitalApi\Entity\UserComplement;
 
 /**
 * <b>StudentModel</b>
@@ -17,37 +18,57 @@ class StudentModel extends SoftdeleteModel
         ModelAbstract::__construct();
     }
 
-    public function mount($values) {
-        $values['student'] = true;
-        $values['level'] = '1';
+    public function mount($user) {
+        $user->setLevel('1');
+        $type = $this->em->getRepository('HospitalApi\Entity\UserType')->find( $user->getComplement()['type']['id']);
 
-        $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($values['group']['id']);
-        $values['group'] = $group;
+        $complement = new UserComplement();
+        foreach ($user->getComplement() as $key => $value) {
+			$method = "set$key";
+			$complement->$method($value);
+        }
+        $complement
+            ->setType($type)
+            ->setUser($user);
 
-        return $values;
+        $user
+            ->setGroup($this->em->getRepository('HospitalApi\Entity\Group')->find( $user->getGroup()['id'] ))
+            ->setComplement($complement);
+
+        if($complement->getId()) {
+            $this->em->merge($complement);
+        } else {
+            $this->em->persist($complement);
+        }
+        
+        return $user;
     }
 
     public function findAll() {
-        $Students = $this->getRepository()->findBy(['student' => '1']);
-        $students = [];
-
-        if($Students) {
-            foreach ($Students as $Student) {
-                $group = $Student->getGroup()->toArray();
-                $Student->setGroup($group);
-                $students[] = $Student;
-            }
-        }
-        return $students;
+        return $this->find();
     }
 
     public function findById($id) {
-        $Student = parent::findById($id);
+        $Student = $this->find($id);
         if($Student) {
-            $group = $Student->getGroup()->toArray();
-            $Student->setGroup($group);
+            return $Student[0];
+        } else {
+            return null;
         }
-        return $Student;
+    }
+
+    public function find($id = null) {
+        $query = $this->em->createQueryBuilder();
+        $query->select('u')
+            ->from('HospitalApi\Entity\User', 'u')
+            ->innerJoin('HospitalApi\Entity\UserComplement', 'uc',
+                'WITH', 'u = uc.user');
+        if($id) {
+            $query
+                ->where("u.id = :id")
+                ->setParameter('id', $id);
+        }
+        return $query->getQuery()->getResult();
     }
 
 }

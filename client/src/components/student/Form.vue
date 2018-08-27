@@ -5,7 +5,7 @@
         <row>
             <div class="row">
                 <rows :label="subtitles.id" class="col-md-3">
-                    <input :data-vv-as="subtitles.id" v-validate data-vv-rules="required" type="text" class="form-control" name="Student-id" v-model="student.id">
+                    <input :data-vv-as="subtitles.id" v-validate data-vv-rules="required" type="text" class="form-control" name="Student-id" v-model="student.id" :disabled="isEdit()">
                     <require-text :error="errors.has('Student-id')" :text="errors.first('Student-id')" :show="true" :attribute="student.id"/>
                 </rows>
                 <rows :label="subtitles.name">
@@ -41,8 +41,19 @@
             </rows>
             
             <rows :label="subtitles.turn">
-                <input :data-vv-as="subtitles.turn" v-validate data-vv-rules="required" type="text" class="form-control" name="Student-turn" v-model="student.turn">
-                <require-text :error="errors.has('Student-turn')" :text="errors.first('Student-turn')" :show="true" :attribute="student.turn"/>
+                <input :data-vv-as="subtitles.turn" v-validate data-vv-rules="required" type="text" class="form-control" name="Student-turn" v-model="student.complement.turn">
+            </rows>
+        </div>
+
+        <div class="row mb-3">
+            <rows :label="subtitles.type">
+                <v-select :data-vv-as="subtitles.type" v-validate data-vv-rules="required" label="name" :options="(values.studentTypes)" name="Student-type" v-model="student.complement.type"/>
+                <require-text :error="errors.has('Student-type')" :text="errors.first('Student-type')" :show="true" :attribute="student.complement.type"/>
+            </rows>
+            
+            <rows :label="subtitles.entity">
+                <input :data-vv-as="subtitles.entity" v-validate data-vv-rules="required" type="text" class="form-control" name="Student-entity" v-model="student.complement.entity">
+                <require-text :error="errors.has('Student-entity')" :text="errors.first('Student-entity')" :show="true" :attribute="student.complement.entity"/>
             </rows>
         </div>
 
@@ -73,7 +84,7 @@ export default {
         return {
             id: '',
             title: "Cadastro de Universitários",
-            student: {},
+            student: { complement: {} },
             subtitles: {
                 id: "Matrícula",
                 name: "Nome",
@@ -82,9 +93,12 @@ export default {
                 hire: "Contratação",
                 fire: "Demição",
                 turn: "Turno",
+                entity: "Entidade",
+                type: "Tipo",
             },
             values: {
                 groups: [],
+                studentTypes: [],
             },
         }
     },
@@ -93,18 +107,20 @@ export default {
             this.$validator.validateAll().then(success => success ? this.submit():"")
         },
         submit() {
-            this.student.hire = document.getElementById("hire").value
-            this.student.fire = document.getElementById("fire").value
+            this.student.complement.hire = document.getElementById("hire").value
+            this.student.complement.fire = document.getElementById("fire").value
             this.student.code = this.student.id
 
             if(this.isEdit(this.id)){
                 model.doUpdate(this.id, this.student).then(res => this.$router.go('-1'))
             } else {
+                this.student.id = this.student.complement.type.name.substr(0,1)+this.student.id
                 model.doInsert(this.student).then(res => this.$router.go('-1'))
             }
         },
         loadValues() {
             getter.getGroups().then(res => this.values.groups = res )
+            getter.getStudentTypes().then(res => this.values.studentTypes = res )
 
             this.id = this.$route.params.id
             if(this.isEdit()) {

@@ -7,6 +7,9 @@ export default {
     getStudentsByGroupId: (group) => {
         return http.get(`/student/group/${group}`).then(res => res.data)
     },
+    getTypes: () => {
+        return http.get(`/student/type/`).then(res => res.data)
+    },
     insertStudent: (data) => {
         return http.post(`/student/`, data).then(res => res.data)
     },

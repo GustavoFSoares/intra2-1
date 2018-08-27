@@ -7,10 +7,10 @@ $model = new UserTypeModel();
 echo "Atualizando Mensagem de Status\n";
 
     $userTypes = [
-        [ 'id'=>'trainee',    'name'=>'Estagiário' ],
-        [ 'id'=>'resident',   'name'=>'Residente'  ],
-        [ 'id'=>'outsourced', 'name'=>'Terceiro'   ],
-        [ 'id'=>'another',    'name'=>'Outros'     ],
+        [ 'id'=>'trainee',     'name'=>'Estagiário'    ],
+        [ 'id'=>'resident',    'name'=>'Residente'     ],
+        [ 'id'=>'outsourced',  'name'=>'Terceirizados' ],
+        [ 'id'=>'another',     'name'=>'Outros'        ],
     ];
     
     foreach ($userTypes as $userType) {
