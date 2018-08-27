@@ -87,7 +87,7 @@ export default {
                 occupation: "Cargo",
                 group: "Grupo",
                 hire: "Contratação",
-                fire: "Demição",
+                fire: "Demissão",
                 turn: "Turno",
                 entity: "Entidade",
                 type: "Tipo",

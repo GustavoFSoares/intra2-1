@@ -1,8 +1,9 @@
 <template>
     <div class="container-fluid">
-
+        
+        <div class="mb-2"></div>
         <div class="mb-4">
-            <router-link class=" button btn btn-outline-secondary btn-lg" :to="{name: 'colaboradores/add'}" tag="button">
+            <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'colaboradores/add'}" tag="button">
                 Cadastrar Colaborador
             </router-link>
         </div>
