@@ -1,23 +1,23 @@
-import index from "@/components/student";
-import Form from "@/components/student/Form.vue";
+import index from "@/components/collaborator";
+import Form from "@/components/collaborator/Form.vue";
 
 export default [
     {
-        path: '/usuario/universitarios',
+        path: '/usuario/colaboradores',
         component: index,
-        name: 'universitarios',
+        name: 'colaboradores',
         meta: { requiresAuth: true }
     },
     {
-        path: '/usuario/universitarios/add',
+        path: '/usuario/colaboradores/add',
         component: Form,
-        name: 'universitarios/add',
+        name: 'colaboradores/add',
         meta: { requiresAuth: true, groupAuth: ['tecnologia-da-informacao-hu', 'recursos-humanos-hu'] }
     },
     {
-        path: '/usuario/universitarios/edit/:id',
+        path: '/usuario/colaboradores/edit/:id',
         component: Form,
-        name: 'universitarios/edit',
+        name: 'colaboradores/edit',
         meta: { requiresAuth: true, groupAuth: ['tecnologia-da-informacao-hu', 'recursos-humanos-hu'] }
     },
 ]

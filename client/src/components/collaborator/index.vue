@@ -2,8 +2,8 @@
     <div class="container-fluid">
 
         <div class="mb-4">
-            <router-link class=" button btn btn-outline-secondary btn-lg" :to="{name: 'universitarios/add'}" tag="button">
-                Cadastrar Universitários
+            <router-link class=" button btn btn-outline-secondary btn-lg" :to="{name: 'colaboradores/add'}" tag="button">
+                Cadastrar Colaborador
             </router-link>
         </div>
 
@@ -15,12 +15,12 @@
         </div>
         
         <div class="form-group form-row col">
-            <input type="search" class="filter form-control" :disabled="!students" @input="search.filter = $event.target.value" placeholder="Nome:"/>
+            <input type="search" class="filter form-control" :disabled="!collaborators" @input="search.filter = $event.target.value" placeholder="Nome:"/>
         </div>
 
         <h2>{{ typeExibited }}</h2>
 
-        <table v-if="students" class="table table-striped">
+        <table v-if="collaborators" class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -37,25 +37,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(student) of searchList" :key="student.id" v-bind:class="{'table-danger': student.c_removed == '1'}">
-                    <td>{{ student.id }}</td>
-                    <td>{{ student.name }}</td>
-                    <td>{{ student.complement.type.name }}</td>
-                    <td>{{ student.occupation }}</td>
-                    <td>{{ student.group.name }}</td>
-                    <td>{{ student.group.enterprise }}</td>
-                    <td>{{ moment(student.complement.hire.date).format('DD/MM/YYYY') }}</td>
-                    <td>{{ moment(student.complement.fire.date).format('DD/MM/YYYY') }}</td>
-                    <td>{{ student.complement.turn }}</td>
+                <tr v-for="(collaborator) of searchList" :key="collaborator.id" v-bind:class="{'table-danger': collaborator.c_removed == '1'}">
+                    <td>{{ collaborator.id }}</td>
+                    <td>{{ collaborator.name }}</td>
+                    <td>{{ collaborator.complement.type.name }}</td>
+                    <td>{{ collaborator.occupation }}</td>
+                    <td>{{ collaborator.group.name }}</td>
+                    <td>{{ collaborator.group.enterprise }}</td>
+                    <td>{{ moment(collaborator.complement.hire.date).format('DD/MM/YYYY') }}</td>
+                    <td>{{ moment(collaborator.complement.fire.date).format('DD/MM/YYYY') }}</td>
+                    <td>{{ collaborator.complement.turn }}</td>
                     <td>
-                        <icon class="text-success" icon="check-circle" v-if="!student.c_removed"/>
+                        <icon class="text-success" icon="check-circle" v-if="!collaborator.c_removed"/>
                         <icon class="text-danger" icon="times-circle" v-else/>
                     </td>
                     <td>
-                        <router-link :to='`universitarios/edit/${student.id}`'>
+                        <router-link :to='`colaboradores/edit/${collaborator.id}`'>
                             <icon icon="edit"/>
                         </router-link>
-                        <router-link @click.native="remove(student.id)" to="">
+                        <router-link @click.native="remove(collaborator.id)" to="">
                             <icon class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
@@ -66,14 +66,14 @@
 </template>
 
 <script>
-import model, { getter } from '@/model/student-model'
+import model, { getter } from '@/model/collaborator-model'
 import moment from 'moment'
 
 export default {
     data() {
         return {
             typeExibited: '',
-            students: [],
+            collaborators: [],
             moment: moment,
             search: {
                 filter: '',
@@ -83,9 +83,9 @@ export default {
         }
     },
     methods: {
-        mounteStudents() {
-            getter.getStudents().then(res => {this.students = res })
-            getter.getStudentTypes().then(res => {this.types = res })
+        mounteCollaborators() {
+            getter.getCollaborators().then(res => {this.collaborators = res })
+            getter.getCollaboratorTypes().then(res => {this.types = res })
         },
         remove(id){
            if (confirm("Tem certeza que deseja excluir?")) {
@@ -94,7 +94,7 @@ export default {
         },
     },
     mounted() {
-        this.mounteStudents()
+        this.mounteCollaborators()
     },
     computed: {
         searchList() {
@@ -103,8 +103,8 @@ export default {
                 this.typeExibited = this.search.type.name
                 let type = new RegExp(this.search.type.id.trim(), 'i')
                 
-                return this.students.filter(students => {
-                    if( type.test(students.complement.type.id )) {
+                return this.collaborators.filter(collaborators => {
+                    if( type.test(collaborators.complement.type.id )) {
                         return type
                     }
                 })
@@ -114,28 +114,28 @@ export default {
             if(this.search.filter) {
                 let exp = new RegExp(this.search.filter.trim(), 'i')
                 
-                return this.students.filter(students => {
+                return this.collaborators.filter(collaborators => {
                     
-                    if( exp.test(students.id)) {
+                    if( exp.test(collaborators.id)) {
                         return exp
-                    } else if( exp.test(students.name)) {
+                    } else if( exp.test(collaborators.name)) {
                         return exp
-                    } else if( exp.test(students.group.name)) {
+                    } else if( exp.test(collaborators.group.name)) {
                         return exp
-                    } else if( exp.test(students.occupation)) {
+                    } else if( exp.test(collaborators.occupation)) {
                         return exp
-                    } else if( exp.test(students.group.enterprise)) {
+                    } else if( exp.test(collaborators.group.enterprise)) {
                         return exp
-                    } else if( exp.test(students.complement.turn)) {
+                    } else if( exp.test(collaborators.complement.turn)) {
                         return exp
-                    } else if( exp.test(moment(students.complement.hire.date).format('DD/MM/YYYY'))) {
+                    } else if( exp.test(moment(collaborators.complement.hire.date).format('DD/MM/YYYY'))) {
                         return exp
-                    } else if( exp.test(moment(students.complement.fire.date).format('DD/MM/YYYY'))) {
+                    } else if( exp.test(moment(collaborators.complement.fire.date).format('DD/MM/YYYY'))) {
                         return exp
                     }
                 })
             } else {
-                return this.students
+                return this.collaborators
             }
         }
     },
