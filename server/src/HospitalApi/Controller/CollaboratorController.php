@@ -1,12 +1,12 @@
 <?php
 namespace HospitalApi\Controller;
 
-use HospitalApi\Model\StudentModel;
+use HospitalApi\Model\CollaboratorModel;
 
-class StudentController extends ControllerAbstract
+class CollaboratorController extends ControllerAbstract
 {
     public function __construct() {
-        parent::__construct(new StudentModel());
+        parent::__construct(new CollaboratorModel());
     }
 
     public function getEmployeeTypes($req, $res, $args) {

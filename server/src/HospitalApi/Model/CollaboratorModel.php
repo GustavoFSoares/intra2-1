@@ -5,9 +5,9 @@ use HospitalApi\Entity\User;
 use HospitalApi\Entity\UserComplement;
 
 /**
-* <b>StudentModel</b>
+* <b>CollaboratorModel</b>
  */
-class StudentModel extends SoftdeleteModel
+class CollaboratorModel extends SoftdeleteModel
 {
 
     public $entity;
@@ -49,9 +49,9 @@ class StudentModel extends SoftdeleteModel
     }
 
     public function findById($id) {
-        $Student = $this->find($id);
-        if($Student) {
-            return $Student[0];
+        $Collaborator = $this->find($id);
+        if($Collaborator) {
+            return $Collaborator[0];
         } else {
             return null;
         }
