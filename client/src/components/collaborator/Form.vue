@@ -4,10 +4,6 @@
 
         <row>
             <div class="row">
-                <rows :label="subtitles.id" class="col-md-3">
-                    <input :data-vv-as="subtitles.id" v-validate data-vv-rules="required" type="text" class="form-control" name="Collaborator-id" v-model="collaborator.id" :disabled="isEdit()">
-                    <require-text :error="errors.has('Collaborator-id')" :text="errors.first('Collaborator-id')" :show="true" :attribute="collaborator.id"/>
-                </rows>
                 <rows :label="subtitles.name">
                     <input :data-vv-as="subtitles.name" v-validate data-vv-rules="required" type="text" class="form-control" name="Collaborator-name" v-model="collaborator.name">
                     <require-text :error="errors.has('Collaborator-name')" :text="errors.first('Collaborator-name')" :show="true" :attribute="collaborator.name"/>
@@ -41,7 +37,7 @@
             </rows>
             
             <rows :label="subtitles.turn">
-                <input :data-vv-as="subtitles.turn" v-validate data-vv-rules="required" type="text" class="form-control" name="Collaborator-turn" v-model="collaborator.complement.turn">
+                <input type="text" class="form-control" name="Collaborator-turn" v-model="collaborator.complement.turn">
             </rows>
         </div>
 
@@ -78,13 +74,13 @@
 <script>
 import { FormRw, FormRws, Require, VueSelect, DatePicker } from "@/components/shared/Form";
 import model, { getter } from "@/model/collaborator-model";
-
+import Collaborator from "@/entity/User/Collaborator.js";
 export default {
     data(){
         return {
             id: '',
             title: "Cadastro de Colaboradores",
-            collaborator: { complement: {} },
+            collaborator: new Collaborator(),
             subtitles: {
                 id: "Matrícula",
                 name: "Nome",
@@ -109,12 +105,10 @@ export default {
         submit() {
             this.collaborator.complement.hire = document.getElementById("hire").value
             this.collaborator.complement.fire = document.getElementById("fire").value
-            this.collaborator.code = this.collaborator.id
 
             if(this.isEdit(this.id)){
                 model.doUpdate(this.id, this.collaborator).then(res => this.$router.go('-1'))
             } else {
-                this.collaborator.id = this.collaborator.complement.type.name.substr(0,1)+this.collaborator.id
                 model.doInsert(this.collaborator).then(res => this.$router.go('-1'))
             }
         },
@@ -125,7 +119,7 @@ export default {
             this.id = this.$route.params.id
             if(this.isEdit()) {
                 getter.getCollaboratorById(this.id).then(res => {
-                    this.collaborator = res
+                    this.collaborator = new Collaborator(res)
                 })
             }
         },

@@ -52,7 +52,7 @@
                         <icon class="text-danger" icon="times-circle" v-else/>
                     </td>
                     <td>
-                        <router-link :to='`colaboradores/edit/${collaborator.id}`'>
+                        <router-link :to='`edit/${collaborator.id}`'>
                             <icon icon="edit"/>
                         </router-link>
                         <router-link @click.native="remove(collaborator.id)" to="">
