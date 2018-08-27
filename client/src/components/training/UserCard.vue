@@ -2,7 +2,7 @@
     <div class="col-md-6 line">
         <div class="card">
             <span class="card-header">
-                {{ user.name }} <span v-if="user.student">(Universitário)</span>
+                {{ user.name }} <span v-if="user.complement">(Colaborador Externo)</span>
                 <span id="icon" v-if="!edit">
                     <router-link @click.native="added()" to="" v-if="icon == 'add'"><icon class="float-right" icon="plus"/></router-link>
                     <router-link @click.native="removed()" to="" v-if="icon == 'remove'"><icon class="float-right" icon="minus"/></router-link>

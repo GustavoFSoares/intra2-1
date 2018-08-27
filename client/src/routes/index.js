@@ -8,12 +8,12 @@ import DontHavePermission from '@/components/DontHavePermission.vue'
 
 import adverseEventsRoutes from './adverse-events-routes'
 import alertsRoutes from './alerts-routes'
+import collaboratorsRoutes from './collaborators-routes'
 import covenantRoutes from './covenants-routes'
 import homeUserRoutes from './home-user-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
 import ramalsRoutes from './ramals-routes'
-import studentsRoutes from './student-routes'
 import trainingRoutes from './training-routes'
 import userRoutes from './user-routes'
 
@@ -45,12 +45,12 @@ const Routes = new Router({
 })
 Routes.addRoutes(adverseEventsRoutes)
 Routes.addRoutes(alertsRoutes)
+Routes.addRoutes(collaboratorsRoutes)
 Routes.addRoutes(covenantRoutes)
 Routes.addRoutes(homeUserRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ramalsRoutes)
-Routes.addRoutes(studentsRoutes)
 Routes.addRoutes(trainingRoutes)
 Routes.addRoutes(userRoutes)
 

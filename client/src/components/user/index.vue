@@ -20,7 +20,7 @@
                 <tr v-for="(user, index) of users" :key="user.id" v-bind:class="{'table-danger': user.c_removed == '1'}">
                     <td>
                         <icon icon="chess-king" v-if="user.admin"/>
-                        <icon icon="user-graduate" v-if="user.student"/>
+                        <icon icon="user-tie" v-if="user.complement"/>
                     </td>
                     <td scope="row">{{ index }}</td>
                     <td>{{ user.id }}</td>

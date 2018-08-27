@@ -36,8 +36,7 @@
 
         <div class="row">
             <rows :label="subtitles.workload" class="col-md-3">
-                <input :data-vv-as="subtitles.workload" v-validate data-vv-rules="required|numeric" type="number" class="form-control" name="Training-workload" v-model="training.workload">
-                <require-text :error="errors.has('Training-workload')" :text="errors.first('Training-workload')" :show="true" :attribute="training.workload"/>
+                <clock-picker :value="training.workload" @close="getTime"/>
             </rows>
 
             <rows :label="subtitles.place">
@@ -81,7 +80,7 @@
 </template>
 
 <script>
-import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
+import { FormRw, FormRws, Require, VueSelect, ClockPicker } from "@/components/shared/Form";
 import DatePicker from "@/components/shared/Form/DatePicker.vue";
 import model, { getter } from "@/model/training-model";
 const ModelGroupGetter = require("@/model/group-model").getter
@@ -110,7 +109,7 @@ export default {
             },
             values: {
                 type: [ {id: "institutional", name: "Institucional"}, {id: "extern", name: "Treinamento Externo"}, ],
-                institutionalTypes: [ {id: "quality", name: "Qualidade"}, {id: "humanity", name: "Humanização"}, {id: "economy", name: "Econômico Financeiro"}, ],
+                institutionalTypes: [ {id: "quality", name: "Qualidade e Segurança"}, {id: "humanity", name: "Humanização"}, {id: "economy", name: "Econômico Financeiro"}, ],
                 places: [],
                 trainingsType: []
             },
@@ -120,7 +119,7 @@ export default {
     methods: {
         isValidForm() {
             this.$validator.validateAll().then(success => success ? this.submit():"")
-        },
+        },        
         submit() {
             this.training.beginTime = document.getElementById('begin-time').value
             this.training.endTime = document.getElementById('end-time')
@@ -157,6 +156,9 @@ export default {
         isEdit() {
             return model.isEdit(this.id)
         },
+        getTime(value) {
+            this.training.workload = value
+        }
     },
     components: {
         'row': FormRw,
@@ -164,6 +166,7 @@ export default {
         'require-text': Require,
         'v-select': VueSelect,
         'date-picker': DatePicker,
+        'clock-picker': ClockPicker,
     },
     mounted() {
         this.loadValues()

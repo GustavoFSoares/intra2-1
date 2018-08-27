@@ -14,7 +14,7 @@ $model = new ModuleModel();
         [ 'name' => 'Treinamento',            'routeName' => 'hht',                  'default' => false, 'icon' => 'trophy' ],
         [ 'name' => 'Hora Homem Treinamento', 'routeName' => 'hht',                  'default' => false, 'icon' => 'medal' ],
         [ 'name' => 'Ramais',                 'routeName' => 'ramais',               'default' => false, 'icon' => 'phone' ],
-        [ 'name' => 'Universitários',         'routeName' => 'universitarios',       'default' => false, 'icon' => 'user-graduate' ],
+        [ 'name' => 'Colaboradores',          'routeName' => 'colaboradores',        'default' => false, 'icon' => 'user-tie' ],
     ];
     
     foreach ($modules as $module) {
