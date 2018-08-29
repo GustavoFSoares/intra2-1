@@ -18,16 +18,15 @@ class GroupController
     public function update() {
         $AD = new ActiveDirectoryController();
         $groups = $AD->getGroups();
-        
-        $mappedGroups = '';
+
+        $mappedGroups = $this->model->findGroupsId();
         $existingGroups = '';
         \Helper\LoggerHelper::initLogFile('group');
         \Helper\LoggerHelper::writeFile("Verificando...\n");
         
         foreach ($groups as $key => $group) {
             $groupId = \Helper\SlugHelper::get($group['name']);
-            $mappedGroups[] = $groupId;
-
+            
             $data = $this->model->findByGroupId($groupId);
             
             if($data) {
@@ -50,7 +49,8 @@ class GroupController
             
         }
 
-        $diffs = array_diff($existingGroups, $mappedGroups);
+        $diffs = \Helper\Differ::diff($existingGroups, $mappedGroups);
+
         \Helper\LoggerHelper::writeFile("\n");
         foreach ($diffs as $toDelete) {
             $group = $this->model->findByGroupId($toDelete);
