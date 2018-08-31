@@ -11,6 +11,7 @@ import alertsRoutes from './alerts-routes'
 import collaboratorsRoutes from './collaborators-routes'
 import covenantRoutes from './covenants-routes'
 import homeUserRoutes from './home-user-routes'
+import incidentReportingRoutes from './incident-reporting-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
 import ramalsRoutes from './ramals-routes'
@@ -48,6 +49,7 @@ Routes.addRoutes(alertsRoutes)
 Routes.addRoutes(collaboratorsRoutes)
 Routes.addRoutes(covenantRoutes)
 Routes.addRoutes(homeUserRoutes)
+Routes.addRoutes(incidentReportingRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ramalsRoutes)
