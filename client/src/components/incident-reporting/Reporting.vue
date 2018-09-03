@@ -41,18 +41,6 @@
                             <input type="checkbox" class="" name="mustReturn" v-model="report.mustReturn">
                         </row>
 
-                        <!-- <div class="row">
-                            <rows id="name" label="Nome">
-                                <input data-vv-as="Nome" autocomplete="off" v-validate data-vv-rules="required" type="text" class="form-control" name="name" v-model="report.reporter.name">
-                                <require-text :error="errors.has('name')" :text="errors.first('name')" :show="true" :attribute="report.reporter.email"/>
-                                <small class="text-muted">Digite seu Nome Completo</small>
-                            </rows>
-
-                            <rows id="number" label="Telefone">
-                                <input v-mask="['(##) ####-####', '(##) #####-####']" autocomplete="off" type="tel" class="form-control" name="phone" placeholder="(51) 99999-9999" v-model="report.reporter.phonenumber">
-                            </rows>
-                        </div> -->
-
                         <row id="email" label="E-mail">
                             <input data-vv-as="E-mail" autocomplete="off" v-validate data-vv-rules="required|email" type="mail" class="form-control" name="IncidentReporting-email" v-model="report.reporterEmail">
                             <require-text :error="errors.has('IncidentReporting-email')" :text="errors.first('IncidentReporting-email')" :show="true" :attribute="report.reporterEmail"/>
@@ -63,24 +51,24 @@
                         <hr class="md-4">
                         <h4 class="mb-3">{{ subtitles.enterprise }}</h4>
                         <row>
-                            <row label="Unidade da notificação">
+                            <row :label="subtitles.report.enterprise">
                                 <v-select v-model="enterprise.report" data-vv-as="Unidade da notificação" v-validate data-vv-rules="required" label="enterprise" :options="options.enterprises" name="IncidentReporting-enterprise-report" @input="loadReportSectors()"/>
                                 <require-text :error="errors.has('IncidentReporting-enterprise-report')" :text="errors.first('IncidentReporting-enterprise-report')" :attribute="enterprise.report"/>
                             </row>
 
-                            <row  label="Setor que está realizando a notificação" v-if="enterprise.report != null && (enterprise.report.enterprise == 'HU' || enterprise.report.enterprise == 'HPSC')" id="reportPlace">
+                            <row  :label="subtitles.report.group" v-if="enterprise.report != null && (enterprise.report.enterprise == 'HU' || enterprise.report.enterprise == 'HPSC')" id="reportPlace">
                                 <v-select v-model="report.place.reportPlace" data-vv-as="Setor do Relato" v-validate data-vv-rules="required" name="IncidentReporting-reportPlace" label="name" :options="options.sectors.report"/>
                                 <require-text :error="errors.has('IncidentReporting-reportPlace')" :text="errors.first('IncidentReporting-reportPlace')" :attribute="report.place.reportPlace"/>
                             </row>
                         </row>
                         
                         <row>
-                            <row label="Unidade do Incidente">
+                            <row :label="subtitles.failed.enterprise">
                                 <v-select v-model="enterprise.failed" data-vv-as="Unidade do Incidente" v-validate data-vv-rules="required" label="enterprise" :options="options.enterprises" name="IncidentReporting-enterprise-failed" @input="loadFailedSectors()"/>
                                 <require-text :error="errors.has('IncidentReporting-enterprise-failed')" :text="errors.first('IncidentReporting-enterprise-failed')" :attribute="enterprise.failed"/>
                             </row>
 
-                            <row  label="Setor onde a falha ocorreu" v-if="enterprise.failed != null && (enterprise.failed.enterprise == 'HU' || enterprise.failed.enterprise == 'HPSC')" id="reportPlace">
+                            <row  :label="subtitles.failed.group" v-if="enterprise.failed != null && (enterprise.failed.enterprise == 'HU' || enterprise.failed.enterprise == 'HPSC')" id="reportPlace">
                                 <v-select v-model="report.place.failedPlace" data-vv-as="Setor da Falha" v-validate data-vv-rules="required" name="IncidentReporting-failedPlace" label="name" :options="options.sectors.failed"/>
                                 <require-text :error="errors.has('IncidentReporting-failedPlace')" :text="errors.first('IncidentReporting-failedPlace')" :attribute="report.place.failedPlace"/>
                             </row>
@@ -180,6 +168,14 @@ export default {
                 event: 'Evento',
                 sender: 'Dados Pessoais',
                 patient: 'Paciente',
+                report: {
+                    enterprise: "Unidade que está sendo realizado a notificação",
+                    group: "Setor que está realizando a notificação"
+                },
+                failed: {
+                    enterprise: "Unidade onde ocorreu a falha",
+                    group: "Setor onde a falha ocorreu"
+                },
             }
         }
     },

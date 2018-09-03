@@ -3,6 +3,8 @@ import { EmailDefault } from "@/entity";
 const GroupModel = require("@/model/group-model").getter
 
 const getters = {
+    getIncidents: () => service.getIncidents(),
+    getIncidentById: (id) => service.getIncidents(id),
     getEvents: () => service.getEvents(),
 }
 export default {
