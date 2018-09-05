@@ -7,14 +7,20 @@ namespace HospitalApi\Model;
 abstract class SoftdeleteModel extends ModelAbstract
 {
     /**
-     * @method findAll()
-     * Sobreescrita do método findAll() da classe ModelAbstract
+     * @method findBy()
+     * Sobreescrita do método findBy() da classe ModelAbstract
      * para Tabelas que extendam a Entity SoftDeleteAbstract.
-     * O findAll() realiza uma busca considerando remoção lógica(c_removed)
+     * O findBy() realiza uma busca considerando remoção lógica(c_removed)
      * @return Collection
      */
-    public function findAll() {
-        $collection = $this->getRepository()->findBy(['c_removed' => 0]);
+    public function findBy($filters) {
+        if(isset($filters['c_removed'])) {
+            unset($filters['c_removed']);
+        } else {
+            $filters['c_removed'] = 0;
+        }
+        
+        $collection = $this->getRepository()->findBy($filters);
         
         return $collection;
     }

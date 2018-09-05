@@ -7,6 +7,7 @@ import NotFound from '@/components/NotFound.vue'
 import DontHavePermission from '@/components/DontHavePermission.vue'
 
 import adverseEventsRoutes from './adverse-events-routes'
+import anythingRoutes from './anything-routes'
 import alertsRoutes from './alerts-routes'
 import collaboratorsRoutes from './collaborators-routes'
 import covenantRoutes from './covenants-routes'
@@ -45,6 +46,7 @@ const Routes = new Router({
     mode: 'history',
 })
 Routes.addRoutes(adverseEventsRoutes)
+Routes.addRoutes(anythingRoutes)
 Routes.addRoutes(alertsRoutes)
 Routes.addRoutes(collaboratorsRoutes)
 Routes.addRoutes(covenantRoutes)

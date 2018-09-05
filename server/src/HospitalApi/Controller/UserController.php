@@ -22,14 +22,24 @@ class UserController extends ControllerAbstract
         return $res->withJson($collection);
     }
 
+    public function updateUsers($req, $res, $args) {
+        $values = $req->getParsedBody();
+        $model = $this->getModel();
+        
+        foreach ($values as $user) {
+            $User = $this->_mountEntity($user);
+            
+            $update = $model->doUpdate($User);
+        }
+
+        return $res->withJson($update);
+    }
+
     public function update($req, $res, $args) {
         $values = $req->getParsedBody();
 
         $model = $this->getModel();
         $model->entity = $this->_mountEntity($values);
-        
-        $group = $model->em->getRepository('HospitalApi\Entity\Group')->findOneById($values['group']['id']);
-        $model->entity->setGroup($group);
         
 		$update = $model->doUpdate($model->entity);
 

@@ -26,6 +26,11 @@ class User extends SoftdeleteAbstract
      * @var String @Column(name="nome", type="string", length=255)
      */
     protected $name;
+    
+    /**
+     * @var String @Column(name="email", type="string", length=255, nullable=true)
+     */
+    protected $email;
 
     /**
      * @var String @Column(name="nivel", type="string")
@@ -68,6 +73,7 @@ class User extends SoftdeleteAbstract
         $this->id = '';
         $this->code = '';
         $this->name = '';
+        $this->email = '';
         $this->level = '';
         $this->ramal = '';
         $this->group = new Group();
@@ -98,6 +104,15 @@ class User extends SoftdeleteAbstract
     }
     public function setName($name) {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+    public function setEmail($email) {
+        $this->email = $email;
 
         return $this;
     }

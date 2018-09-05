@@ -30,8 +30,8 @@ class UserModel extends SoftdeleteModel
         return $User;
     }
 
-    public function findAll() {
-        $Users = parent::findAll(['c_removed' => 0]);
+    public function findBy($filters) {
+        $Users = parent::findBy($filters);
         $users = [];
         if($Users) {
             foreach ($Users as $User) {

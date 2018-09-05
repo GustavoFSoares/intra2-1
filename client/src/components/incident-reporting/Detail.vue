@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <!-- {{report}} -->
+        
         <row :label="subtitles.event">
             <h2>#{{report.id}} - {{ report.event.description }}</h2>
         </row>
@@ -31,8 +31,8 @@
                 </div>
             </div>
         </row>
+        
         <hr>
-
         <div class='row'>
             <rows :label="subtitles.reportPlace">
                 <icon class="text-success" icon="pencil-alt"/>
@@ -57,6 +57,7 @@
 
         <div id="patient" class="mb-3">
             <div class="card">
+
                 <div class="card-header" id="patient">
                 
                     <h5 class="mb-0">
@@ -69,6 +70,7 @@
 
                 </div>
                 <div id="patient-content" class="collapse" aria-labelledby="patient">
+                    
                     <div class="card-body">
                         <div class='row'>
                             <rows label='Número Atendimento'>
@@ -79,21 +81,21 @@
                             </rows>
                         </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
 
         <div class='row'>
             <rows label="Horário do Relato">
-                <p>
-                    <icon icon="user-clock"/>
+                <p> <icon icon="user-clock"/>
                     {{ moment(report.recordTime.date).format('DD/MM/YYYY hh:mm') }}
                 </p>
             </rows>
             
             <rows label="Horário do Evento">
-                <p>
-                    <icon icon="clock"/>
+                <p> <icon icon="clock"/>
                     {{ moment(report.failedTime.date).format('DD/MM/YYYY hh:mm') }}
                 </p>
             </rows>
@@ -101,9 +103,6 @@
 
         <div id="buttons">
             <row>
-                <!-- <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm">
-                    Cadastrar Ramal
-                </button> -->
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'notificacao-de-incidentes'}" tag="button">
                     Voltar
                 </router-link>
