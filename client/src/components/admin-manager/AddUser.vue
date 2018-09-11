@@ -28,7 +28,7 @@ export default {
         },
         loadValues() {
             this.userSelected = ''
-            UserModel.getUsersByGroupId(this.group).then(res => this.users = res)
+            UserModel.getUsersActivedByGroupId(this.group).then(res => this.users = res)
         },
         sendUserSelected() {
             this.$emit('close', this.userSelected)
