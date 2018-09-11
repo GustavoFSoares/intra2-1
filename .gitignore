@@ -1,6 +1,8 @@
 client/node_modules
+socket/node_modules
 client/dist
 client/package-lock.json
+socket/package-lock.json
 server/composer.lock
 config/.env
 server/public/.htaccess

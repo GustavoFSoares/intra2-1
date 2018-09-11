@@ -89,17 +89,19 @@
 
         <div class='row'>
             <rows label="Horário do Relato">
-                <p> <icon icon="user-clock"/>
+                <p v-if="report.recordTime"> <icon icon="user-clock"/>
                     {{ moment(report.recordTime.date).format('DD/MM/YYYY hh:mm') }}
                 </p>
             </rows>
             
             <rows label="Horário do Evento">
-                <p> <icon icon="clock"/>
+                <p v-if="report.failedTime"> <icon icon="clock"/>
                     {{ moment(report.failedTime.date).format('DD/MM/YYYY hh:mm') }}
                 </p>
             </rows>
         </div>
+
+        <chat :id="id"/>
 
         <div id="buttons">
             <row>
@@ -144,7 +146,8 @@ export default {
     },
     components: {
         'row': FormRw,
-        'rows': FormRws
+        'rows': FormRws,
+        'chat': require('./Chat.vue').default
     },
 }
 </script>

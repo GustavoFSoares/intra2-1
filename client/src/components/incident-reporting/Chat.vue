@@ -6,7 +6,7 @@
             <input type="text" placeholder="Username..." v-model="username" />
             <input type="submit" value="Join" />
         </form>
-        <button @click="continueWithoutUsername">Join as a Guest</button>
+        <!-- <button @click="continueWithoutUsername">Join as a Guest</button> -->
         </div>
         <div v-if="state == 1">
         <ul id="chatbox">
@@ -34,32 +34,30 @@ export default {
             state: 0
         }
     },
+    props: {
+        id: '',
+    },
     methods: {
         sendMessage: function () {
-          socket.emit('message', this.message);
+          socket.emit('message', {id: this.id, msg: this.message});
           this.message = '';
         },
         setUsername: function () {
-          socket.emit('join', this.username);
+          socket.emit('join', {'id': this.id, 'username': this.username});
           this.username = '';
           this.state = 1;
         },
         continueWithoutUsername: function () {
-          socket.emit('join', null);
+          socket.emit('join', {'id': this.id});
           this.state = 1;
         }
       },
       created: function () {
-        socket = io('http://localhost:3000');
+        socket = io(`http://${window.location.hostname}:3000`);
       },
       mounted() {
-        socket.on('message', (message) => {
+        socket.on(`${this.id}/message`, (message) => {
           this.messages.push(message);
-        //   // this needs to be done AFTER vue updates the page!!
-        //   this.$nextTick(function () {
-        //     var messageBox = document.getElementById('chatbox');
-        //     messageBox.scrollTop = messageBox.scrollHeight;
-        //   });
         });
       }
 }
