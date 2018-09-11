@@ -9,6 +9,8 @@ $app->group('/incident-reporting', function () {
     $this->post('/', "HospitalApi\Controller\IncidentReportingController:insert", function (Request $req, Response $res, array $args) { });
     
     $this->put('/{id}', "HospitalApi\Controller\IncidentReportingController:update", function (Request $req, Response $res, array $args) { });
+    $this->put('/add-group/{id}', "HospitalApi\Controller\IncidentReportingController:insertGroupToTransitionList", function (Request $req, Response $res, array $args) { });
+    $this->put('/remove-group/{id}', "HospitalApi\Controller\IncidentReportingController:removeGroupToTransitionList", function (Request $req, Response $res, array $args) { });
     
     $this->delete('/{id}', "HospitalApi\Controller\IncidentReportingController:delete", function (Request $req, Response $res, array $args) { });
 });

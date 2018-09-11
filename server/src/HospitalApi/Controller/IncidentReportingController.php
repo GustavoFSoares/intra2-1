@@ -15,6 +15,24 @@ class IncidentReportingController extends ControllerAbstract
         parent::__construct(new IncidentReportingModel());
     }
 
+    public function insertGroupToTransitionList($req, $res, $args) {
+        $incidentId = $args['id'];
+        $group = (object)$req->getParsedBody();
+        
+        $response = $this->getModel()->updateTransmissionList($incidentId, $group, 'add');
+        
+        return $res->withJson($response);
+    }
+    
+    public function removeGroupToTransitionList($req, $res, $args) {
+        $incidentId = $args['id'];
+        $group = (object)$req->getParsedBody();
+        
+        $response = $this->getModel()->updateTransmissionList($incidentId, $group, 'remove');
+        
+        return $res->withJson($response);
+    }
+
     public function _mountEntity($values) {
         $data = $this->getModel()->mount($values);
         return parent::_mountEntity($data);

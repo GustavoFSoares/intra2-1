@@ -17,6 +17,7 @@ export default class IncidentReporting {
         }
         this.recordTime = incidentReporting.recordTime
         this.failedTime = incidentReporting.failedTime
+        this.transmissionList = incidentReporting.transmissionList ? incidentReporting.transmissionList : []
     }
 
 }

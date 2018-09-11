@@ -8,5 +8,11 @@ export default {
     
     doInsert: (data) =>
         http.post(`/incident-reporting/`, data).then(res => res.data),
+    
+    addGroupToTransmissionList: (id, data) =>
+        http.put(`/incident-reporting/add-group/${id}`, data).then(res => res.data),
+    
+    removeGroupToTransmissionList: (id, data) =>
+        http.put(`/incident-reporting/remove-group/${id}`, data).then(res => res.data),
 
 }

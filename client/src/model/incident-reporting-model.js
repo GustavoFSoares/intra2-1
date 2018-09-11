@@ -22,7 +22,9 @@ export default {
                 resolve(data)
             })
         })
-    }
+    },
+    addGroupToTransmissionList: (incidentId, data) => service.addGroupToTransmissionList(incidentId, data),
+    removeGroupToTransmissionList: (incidentId, data) => service.removeGroupToTransmissionList(incidentId, data),
 
 }
 export const getter = getters

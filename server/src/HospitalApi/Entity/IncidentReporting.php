@@ -87,6 +87,16 @@ class IncidentReporting extends EntityAbstract
      */
     protected $failedTime;
 
+    /**
+     * @ManyToMany(targetEntity="Group")
+     * @JoinTable(name="Notificacao_Incidente_Lista_Transmissao",
+    
+     *      joinColumns={@JoinColumn(name="incidente_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="grupo_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $transmissionList;
+
     public function __construct() {
         $this->recordTime = new \DateTime();
     }
@@ -227,6 +237,25 @@ class IncidentReporting extends EntityAbstract
     }
     public function setFailedTime($failedTime) {
         $this->failedTime = $this->_formatDate($failedTime);
+
+        return $this;
+    }
+
+    public function getTransmissionList() {
+        return $this->transmissionList;
+    }
+    public function addGroupToTransmissionList($groups) {
+        $this->transmissionList->add($groups);
+
+        return $this;
+    }
+    public function removeGroupToTransmissionList($groups) {
+        $this->transmissionList->removeElement($groups);
+        
+        return $this;
+    }
+    public function setTransmissionList($transmissionList) {
+        $this->transmissionList = $transmissionList;
 
         return $this;
     }

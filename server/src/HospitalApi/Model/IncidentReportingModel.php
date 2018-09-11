@@ -32,4 +32,20 @@ class IncidentReportingModel extends ModelAbstract
         return $values;
     }
 
+    public function updateTransmissionList($incidentId, $group, $type) {
+        $this->entity = $this->getRepository()->find($incidentId);
+
+        $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($group->id);
+        if($type == 'add') {
+            $this->entity->addGroupToTransmissionList($group);
+        } else if($type == 'remove') {
+            $this->entity->removeGroupToTransmissionList($group);
+        }
+
+        $this->doUpdate($this->entity);
+
+        return true;
+    }
+
+
 }
