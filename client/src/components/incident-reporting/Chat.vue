@@ -1,78 +1,127 @@
 <template>
-    <div>
-        <div v-if="state == 0">
-        <h3>Welcome! Please choose a username</h3>
-        <form @submit.prevent="setUsername">
-            <input type="text" placeholder="Username..." v-model="username" />
-            <input type="submit" value="Join" />
-        </form>
-        <!-- <button @click="continueWithoutUsername">Join as a Guest</button> -->
+    <div class='container'>
+
+        <div class="row">
+            <div id="chatbox">
+                <div class="chat" v-for="(chat, index) of chats" :key="index">
+                    <div class="card anotherchat" v-bind:class="{'youchat':chat.user==user}" @mouseover="chat.read = true">
+                        <div class="card-body">
+                            <blockquote class="content-chat">
+                                <h5 v-if="chat.user!=user" class="card-title">
+                                    {{ chat.user }}
+                                    <icon class="text-warning float-right" icon="exclamation-triangle" v-if="!chat.read"/>
+                                </h5>
+                                <p class="card-text">{{ chat.message }}</p>
+                            </blockquote>
+                            <footer class="time blockquote-footer text-right">
+                                {{ moment(chat.time.date).format('DD/MM/YYYY HH:mm') }}
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div v-if="state == 1">
-        <ul id="chatbox">
-            <li v-for="(message, index) in messages" :key="index">
-                <b>{{ message.user }}:</b> {{ message.message }}
-            </li>
-        </ul>
-        <form @submit.prevent="sendMessage">
-            <input type="text" placeholder="Message..." v-model="message" />
-            <input type="submit" value="Send" />
-        </form>
+        <div id="sendMessage-box" class="row">
+            <div class="col-md-10" id="sendMessage-content">
+                <textarea v-model="message" class="form-control" @click="readAllMessages()"/>
+            </div>
+            <div class="col-md" id="sendMessage-button">
+                <router-link to="" class="btn btn-outline-secondary btn-lg" tag="button" @click.native="setMessage()" :disabled="!this.message">
+                    Enviar
+                </router-link>
+            </div>
         </div>
+                
+
     </div>
 </template>
 
 <script>
 var socket
-const io = require('socket.io-client')
+import moment from "moment";
+import model from "@/model/incident-reporting-model";
+import Socket from "@/model/chat-model";
+import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
+
 export default {
     data() {
         return {
-            messages: [],
             message: '',
-            username: '',
-            state: 0
+            user: this.$session.get('user').name,
+            moment: moment,
+            chats: [ ]
         }
     },
     props: {
         id: '',
     },
     methods: {
-        sendMessage: function () {
-          socket.emit('message', {id: this.id, msg: this.message});
-          this.message = '';
+        setMessage: function () {
+            model.sendMessage(this.message)
+            this.message = '';
         },
-        setUsername: function () {
-          socket.emit('join', {'id': this.id, 'username': this.username});
-          this.username = '';
-          this.state = 1;
+        doScroll() {
+            setTimeout(() => {
+                document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
+            }, 0);
         },
-        continueWithoutUsername: function () {
-          socket.emit('join', {'id': this.id});
-          this.state = 1;
+        readAllMessages() {
+            this.chats.forEach(chat => {
+                chat.read = true
+            });
         }
-      },
-      created: function () {
-        socket = io(`http://${window.location.hostname}:3000`);
-      },
-      mounted() {
-        socket.on(`${this.id}/message`, (message) => {
-          this.messages.push(message);
+    },
+    comments: {
+        'row': FormRw,
+        'rows': FormRws,
+    },
+    created: function () {
+        socket = new Socket(this.id, this.user)
+        model.chatInit(socket)
+        this.doScroll()
+    },
+    mounted() {
+        socket.io.on(`${this.id}/message`, (message) => {
+            socket.isYou() ? message.read = true : ''
+            
+            this.chats.push(message);
+            this.doScroll()
         });
-      }
+    }
 }
 </script>
 
 <style scoped>
-    body {
-    font-family: sans-serif;
-    background: url('http://www.cornwallnewswatch.com/wp-content/uploads/2014/07/Fire-01.jpg');
-    color: white;
+    #chatbox {
+        width: 100%;
+        height: 300px;
+        overflow-y: scroll;
     }
 
-    #chatbox {
-    height: 200px;
-    max-width: 400px;
-    overflow-y: scroll;
+    .chat {
+        margin-top: 10px;
+        border-radius: 10px;
+        display: flex;
+    }
+
+    .anotherchat {
+        margin-right: 30%;    
+        margin-left: 0%;
+        background-color: rgba(206, 206, 206, 0.329);
+    }
+
+    .youchat {
+        margin-right: 5px;
+        margin-left: auto;
+        max-width: 80%;
+        background-color: rgba(197, 241, 185, 0.514);
+    }
+
+    #sendMessage-box {
+        margin-top: 20px;
+    }
+    
+    #sendMessage-button {
+        margin-top: 5px;
     }
 </style>

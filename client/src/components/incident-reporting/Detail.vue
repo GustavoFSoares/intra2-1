@@ -155,8 +155,12 @@
 
         </row>
 
-        <chat :id="`ir${id}`"/>
+        <hr>
+        <row>
+            <chat :id="`ir${id}`"/>
+        </row>
 
+        <hr>
         <div id="buttons">
             <row>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'notificacao-de-incidentes'}" tag="button">
@@ -209,7 +213,7 @@ export default {
     },
     methods: {
         loadValues() {
-            getter.getIncidentById(this.id).then(res => { this.report = new Report(res); console.log(res); } )
+            getter.getIncidentById(this.id).then(res => { this.report = new Report(res) } )
         },
         loadGroups() {
             if(this.addGroups) {

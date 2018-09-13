@@ -1,13 +1,13 @@
 import service from "@/services/incident-reporting";
-import { EmailDefault } from "@/entity";
 const GroupModel = require("@/model/group-model").getter
-
+const Socket = require("@/model/chat-model")
 const getters = {
     getIncidents: () => service.getIncidents(),
     getIncidentById: (id) => service.getIncidents(id),
     getEvents: () => service.getEvents(),
 }
-export default {
+var model = {
+    socket: '',
     doInsert: (report) => service.doInsert(report),
     loadSectors: (id) => {
         let data
@@ -23,8 +23,15 @@ export default {
             })
         })
     },
+    chatInit: (socket) => {
+        model.socket = socket
+    },
+    sendMessage: (message) => {
+        model.socket.sendMessage(message)
+    },
     addGroupToTransmissionList: (incidentId, data) => service.addGroupToTransmissionList(incidentId, data),
     removeGroupToTransmissionList: (incidentId, data) => service.removeGroupToTransmissionList(incidentId, data),
 
 }
+export default model
 export const getter = getters
