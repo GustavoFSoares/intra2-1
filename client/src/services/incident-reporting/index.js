@@ -5,11 +5,15 @@ export default {
         http.get(`/incident-reporting/`, { params: { id: id } }).then(res => res.data),
     getEvents: () => 
         http.get(`/event/`).then(res => res.data),
+    getChatsByIncident: (id) => 
+        http.get(`/incident-reporting/messages/${id}`).then(res => res.data),
     
     doInsert: (data) =>
         http.post(`/incident-reporting/`, data).then(res => res.data),
+    insertMessage: (data) =>
+        http.post(`/incident-reporting/messages/`, data).then(res => res.data),
     
-    addGroupToTransmissionList: (id, data) =>
+        addGroupToTransmissionList: (id, data) =>
         http.put(`/incident-reporting/add-group/${id}`, data).then(res => res.data),
     
     removeGroupToTransmissionList: (id, data) =>

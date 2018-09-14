@@ -2,10 +2,6 @@
 namespace HospitalApi\Model;
 
 use HospitalApi\Entity\IncidentReporting;
-use HospitalApi\Entity\Enterprise;
-use HospitalApi\Entity\Sector;
-use HospitalApi\Entity\Event;
-use HospitalApi\Entity\BossSector;
 
 /**
  * <b>EmailModel</b>
