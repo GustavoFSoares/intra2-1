@@ -1,10 +1,10 @@
 import service from "@/services/incident-reporting";
 const GroupModel = require("@/model/group-model").getter
-const Socket = require("@/model/chat-model")
 const getters = {
     getIncidents: () => service.getIncidents(),
     getIncidentById: (id) => service.getIncidents(id),
     getEvents: () => service.getEvents(),
+    getChatsByIncident: (incidentId) => service.getChatsByIncident(incidentId),
 }
 var model = {
     socket: '',
@@ -26,9 +26,11 @@ var model = {
     chatInit: (socket) => {
         model.socket = socket
     },
-    sendMessage: (message) => {
+    sendMessage: (id, message) => {
         model.socket.sendMessage(message)
+        model.insertMessage(id, message)
     },
+    insertMessage: (id, message) => service.insertMessage({ 'id': id, 'message': message, 'user': window.$session.get('user') }),
     addGroupToTransmissionList: (incidentId, data) => service.addGroupToTransmissionList(incidentId, data),
     removeGroupToTransmissionList: (incidentId, data) => service.removeGroupToTransmissionList(incidentId, data),
 

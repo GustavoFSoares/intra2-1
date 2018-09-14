@@ -2,6 +2,7 @@
 namespace HospitalApi\Controller;
 
 use HospitalApi\Model\IncidentReportingModel;
+use HospitalApi\Model\IncidentReportingMessagesModel;
 use HospitalApi\Template\IncidentReportingEmailTemplate;
 use PHPMailer\PHPMailer\Exception;
 
@@ -13,6 +14,24 @@ class IncidentReportingController extends ControllerAbstract
 
     public function __construct() {
         parent::__construct(new IncidentReportingModel());
+    }
+
+    public function insertChat($req, $res, $args) {
+        $values = (object)$req->getParsedBody();
+        
+        $messagesModel = new IncidentReportingMessagesModel();
+        $entity = $messagesModel->mount($values);
+        
+		$save = $messagesModel->doInsert($entity);
+
+        return $res->withJson($save);
+    }
+
+    public function getChatsByIncident($req, $res, $args) {
+        $messagesModel = new IncidentReportingMessagesModel();
+        $chats = $messagesModel->findMessagesByIncident($args['id']);
+        
+        return $res->withJson($chats);
     }
 
     public function insertGroupToTransitionList($req, $res, $args) {

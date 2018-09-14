@@ -13,8 +13,8 @@ const Socket = class {
     sendMessage(message) {
         this.io.emit('message', { 'id': this.id, 'msg': message, 'time': { date: new Date() } });
     }
-    isYou() {
-        return window.$session.get('user').name == this.userName ?
+    isYou(user) {
+        return window.$session.get('user').name == user ?
             true : false
     }
 }

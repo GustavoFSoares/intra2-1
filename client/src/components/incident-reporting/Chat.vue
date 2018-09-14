@@ -9,7 +9,7 @@
                             <blockquote class="content-chat">
                                 <h5 v-if="chat.user!=user" class="card-title">
                                     {{ chat.user }}
-                                    <icon class="text-warning float-right" icon="exclamation-triangle" v-if="!chat.read"/>
+                                    <icon class="icon text-warning float-right" icon="exclamation-triangle" v-if="!chat.read"/>
                                 </h5>
                                 <p class="card-text">{{ chat.message }}</p>
                             </blockquote>
@@ -23,7 +23,7 @@
         </div>
         <div id="sendMessage-box" class="row">
             <div class="col-md-10" id="sendMessage-content">
-                <textarea v-model="message" class="form-control" @click="readAllMessages()"/>
+                <textarea v-model="message" line="10" class="form-control" @click="readAllMessages()" :disabled="chats == null"/>
             </div>
             <div class="col-md" id="sendMessage-button">
                 <router-link to="" class="btn btn-outline-secondary btn-lg" tag="button" @click.native="setMessage()" :disabled="!this.message">
@@ -39,7 +39,7 @@
 <script>
 var socket
 import moment from "moment";
-import model from "@/model/incident-reporting-model";
+import model, { getter } from "@/model/incident-reporting-model";
 import Socket from "@/model/chat-model";
 import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
 
@@ -48,8 +48,9 @@ export default {
         return {
             message: '',
             user: this.$session.get('user').name,
+            socket: null,
             moment: moment,
-            chats: [ ]
+            chats: null
         }
     },
     props: {
@@ -57,7 +58,7 @@ export default {
     },
     methods: {
         setMessage: function () {
-            model.sendMessage(this.message)
+            model.sendMessage(this.$route.params.id, this.message)
             this.message = '';
         },
         doScroll() {
@@ -69,20 +70,23 @@ export default {
             this.chats.forEach(chat => {
                 chat.read = true
             });
-        }
+        }        
     },
     comments: {
         'row': FormRw,
         'rows': FormRws,
     },
     created: function () {
-        socket = new Socket(this.id, this.user)
-        model.chatInit(socket)
+        getter.getChatsByIncident(this.$route.params.id).then(res => { this.chats = res })
+        
+        this.socket = new Socket(this.id, this.user)
+        model.chatInit(this.socket)
+
         this.doScroll()
     },
     mounted() {
-        socket.io.on(`${this.id}/message`, (message) => {
-            socket.isYou() ? message.read = true : ''
+        this.socket.io.on(`${this.id}/message`, (message) => {
+           this.socket.isYou(message.user) ? message.read = true : ''
             
             this.chats.push(message);
             this.doScroll()
@@ -123,5 +127,9 @@ export default {
     
     #sendMessage-button {
         margin-top: 5px;
+    }
+
+    .icon {
+        margin-left: 15px;
     }
 </style>
