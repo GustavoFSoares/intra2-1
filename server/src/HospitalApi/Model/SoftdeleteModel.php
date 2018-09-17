@@ -13,7 +13,7 @@ abstract class SoftdeleteModel extends ModelAbstract
      * O findBy() realiza uma busca considerando remoção lógica(c_removed)
      * @return Collection
      */
-    public function findBy($filters) {
+    public function findBy($filters = []) {
         if(isset($filters['c_removed'])) {
             unset($filters['c_removed']);
         } else {

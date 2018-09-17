@@ -5,7 +5,7 @@ use HospitalApi\Model\EventModel;
 
 $model = new EventModel();
 
-if(!$model->findAll()){
+if(!$model->findBy()){
     $events = [
         ["name" => "Desenvolvimento de Lesão por Pressão(UP)"],
         ["name" => "Erro de Medicação (medicamento errado, paciente errado, medicação não administrada)"],

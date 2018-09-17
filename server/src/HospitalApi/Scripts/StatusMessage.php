@@ -12,6 +12,7 @@ echo "Atualizando Mensagem de Status\n";
         ['id' => 'group_not_found', 'status' => false, 'message' => 'Você não possui grupo cadastrado. Contate a TI', 'type' => 'warning'],
         ['id' => 'training_add', 'status' => true, 'message' => 'Adicionado ao treinamento', 'type' => 'success'],
         ['id' => 'in_training', 'status' => false, 'message' => 'Já cadastrado nesse treinamento', 'type' => 'warning'],
+        ['id' => 'notification_not_send', 'status' => false, 'message' => 'Notificação não enviada', 'type' => 'warning'],
     ];
     
     foreach ($statusMessages as $statusMessage) {

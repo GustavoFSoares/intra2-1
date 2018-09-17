@@ -104,7 +104,7 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	 * Retorna uma Array com os resultados da tabela no Banco de Dados
 	 * @return Array 
 	 */
-	public function findBy($filters) {
+	public function findBy($filters = []) {
 		$collection = $this->getRepository()->findBy($filters);
 		
 		return $collection;
