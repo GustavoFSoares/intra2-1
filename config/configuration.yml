@@ -30,6 +30,11 @@ DEVELOPER:
     USERTEST_LEVEL: '1'
     USERTEST_GROUP: 'TECNOLOGIA DA INFORMACAO HU'
     USERTEST_OCCUPATION: "Assistente de sistemas"
+
+    EMAIL_DEFAULT_EMAIL: 'anonimo.gampcanoas@gmail.com'
+    EMAIL_DEFAULT_PASSWORD: 'g4mpcanoas'
+    EMAIL_DEFAULT_HOST: 'gmail'
+    EMAIL_DEFAULT_NAME: 'Anônimo'
     
 #DESENVOLVIMENTO - WINDOWS ==============================================
 DEVWIN:
@@ -56,6 +61,11 @@ DEVWIN:
     
     DEBUG_ACTIVE: true
     DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
+    
+    EMAIL_DEFAULT_EMAIL: 'anonimo.gampcanoas@gmail.com'
+    EMAIL_DEFAULT_PASSWORD: 'g4mpcanoas'
+    EMAIL_DEFAULT_HOST: 'gmail'
+    EMAIL_DEFAULT_NAME: 'Anônimo'
 
 #HOMOLOGAÇÃO ===============================================================
 HOMOLOG:
@@ -83,6 +93,11 @@ HOMOLOG:
     DEBUG_ACTIVE: true
     DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
 
+    EMAIL_DEFAULT_EMAIL: 'anonimo.gampcanoas@gmail.com'
+    EMAIL_DEFAULT_PASSWORD: 'g4mpcanoas'
+    EMAIL_DEFAULT_HOST: 'gmail'
+    EMAIL_DEFAULT_NAME: 'Anônimo'
+    
 #PRODUÇÃO ==================================================================
 PRODUCTION:
     HOST: '10.100.1.32'
@@ -109,3 +124,8 @@ PRODUCTION:
     DEBUG_ACTIVE: false
     DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
 
+    EMAIL_DEFAULT_EMAIL: 'anonimo.gampcanoas@gmail.com'
+    EMAIL_DEFAULT_PASSWORD: 'g4mpcanoas'
+    EMAIL_DEFAULT_HOST: 'gmail'
+    EMAIL_DEFAULT_NAME: 'Anônimo'
+    
