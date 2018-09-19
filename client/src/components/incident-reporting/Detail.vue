@@ -196,7 +196,7 @@ export default {
                 return: "Enviar Retorno para",
                 recordTime: "Horário do Relato",
                 failedTime: "Horário do Evento",
-                transmissionList: "Lista de Transmissão",
+                transmissionList: "Acompanhamento do Incidente",
             },
             alert: {
                 title: "Deseja Remover esse grupo?",

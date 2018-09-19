@@ -17,8 +17,9 @@ class EmailModel extends ModelAbstract
     private $_report;
     private $_mail;
 
-    public function __construct() {
+    public function __construct($report) {
         $this->entity = new Email();
+        $this->_report = $report;
         parent::__construct();
         
         $this->_mail = new PHPMailer(true);                          // Passing `true` enables exceptions
@@ -35,8 +36,15 @@ class EmailModel extends ModelAbstract
         $this->configureEmail($this->_report->getSender()['host']);
         $this->setSender($this->_report->getSender());
         $this->setReceiver($this->_report->getReceiver());
+        
+        if($this->_report->getCopy()){
+            $this->setCopy($this->_report->getCopy());
+        }
+        
         $this->writeMail();
         $this->buildLog($this->_report);
+
+        return $this;
     }
 
     /**

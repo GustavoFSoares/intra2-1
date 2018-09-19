@@ -96,4 +96,7 @@ class IncidentReportingMessages extends EntityAbstract
         return $this;
     }
 
+    public function getTime(){
+        return $this->time;
+    }
 }
