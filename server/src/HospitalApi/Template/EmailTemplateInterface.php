@@ -8,6 +8,9 @@ interface EmailTemplateInterface {
 
     public function getReceiver();
     public function setReceiver($report);
+    
+    public function getCopy();
+    public function setCopy($report);
 
     public function getSubject();
     public function setSubject($report);

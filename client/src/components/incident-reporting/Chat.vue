@@ -23,7 +23,7 @@
         </div>
         <div id="sendMessage-box" class="row">
             <div class="col-md-10" id="sendMessage-content">
-                <textarea v-model="message" line="10" class="form-control" @click="readAllMessages()" :disabled="chats == null"/>
+                <textarea v-model="message" line="10" class="form-control" @click="readAllMessages()" :disabled="chats == null" placeholder="Escreva seu relato:"/>
             </div>
             <div class="col-md" id="sendMessage-button">
                 <router-link to="" class="btn btn-outline-secondary btn-lg" tag="button" @click.native="setMessage()" :disabled="!this.message">
@@ -77,12 +77,10 @@ export default {
         'rows': FormRws,
     },
     created: function () {
-        getter.getChatsByIncident(this.$route.params.id).then(res => { this.chats = res })
+        getter.getChatsByIncident(this.$route.params.id).then(res => { this.chats = res; this.doScroll() })
         
         this.socket = new Socket(this.id, this.user)
         model.chatInit(this.socket)
-
-        this.doScroll()
     },
     mounted() {
         this.socket.io.on(`${this.id}/message`, (message) => {
