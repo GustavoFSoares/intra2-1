@@ -16,6 +16,6 @@ interface EmailTemplateInterface {
     public function setSubject($report);
 
     public function getBody();
-    public function setBody($report);
+    public function setBody($report, $writer);
 
 }
