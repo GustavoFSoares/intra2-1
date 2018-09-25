@@ -8,7 +8,7 @@ class LoggerHelper implements LoggerHelperInterface {
     public static $end;
     public static $fileDir;
 
-    public function initializer(){
+    public static function initializer(){
         self::$begin = new \DateTime();
     }
 

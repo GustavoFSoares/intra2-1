@@ -50,6 +50,20 @@ class IncidentReportingController extends ControllerAbstract
         return $res->withJson($result);
     }
 
+    public function closeReportAction($req, $res, $args) {
+        $id = $args['id'];
+
+        $model = $this->getModel();
+        $messagesModel = new IncidentReportingMessagesModel();
+        
+        $entity = $model->getRepository()->find($id);
+        $messagesModel->deleteChats($entity->getId());
+
+        $entity->setClosed(true);
+
+        return $model->doUpdate($entity);
+    }
+
     public function getChatsByIncident($req, $res, $args) {
         $messagesModel = new IncidentReportingMessagesModel();
         $chats = $messagesModel->findMessagesByIncident($args['id']);

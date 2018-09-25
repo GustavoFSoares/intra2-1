@@ -3,6 +3,7 @@ namespace HospitalApi\Model;
 
 use HospitalApi\Entity\IncidentReporting;
 
+
 /**
  * <b>EmailModel</b>
  */
@@ -15,6 +16,7 @@ class IncidentReportingModel extends ModelAbstract
     }
 
     public function mount($values) {
+        unset($values['transmissionList']);
         $values = (object)$values;
         
         $groupRepository = $this->em->getRepository('HospitalApi\Entity\Group');
@@ -22,8 +24,13 @@ class IncidentReportingModel extends ModelAbstract
         
         $values->place['reportPlace'] = $groupRepository->find($values->place['reportPlace']['id']);
         $values->place['failedPlace'] = $groupRepository->find($values->place['failedPlace']['id']);
-
-        $values->transmissionList = [$values->place['failedPlace']];
+        if(isset($values->id)) {
+            $this->updateTransmissionList($values->id, $values->place['failedPlace'], 'add');
+        } else {
+            $values->transmissionList = new \Doctrine\Common\Collections\ArrayCollection();
+            $values->transmissionList->add($values->place['failedPlace']);
+        }
+        
         $values->event = $eventRepository->find($values->event['id']);
 
         return $values;
@@ -32,16 +39,30 @@ class IncidentReportingModel extends ModelAbstract
     public function updateTransmissionList($incidentId, $group, $type) {
         $this->entity = $this->getRepository()->find($incidentId);
 
-        $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($group->id);
+        if(!$group instanceOf \HospitalApi\Entity\Group) {
+            $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($group->id);
+        }
+
         if($type == 'add') {
-            $this->entity->addGroupToTransmissionList($group);
+            if(!$this->groupInList($group) ) {
+                $this->entity->addGroupToTransmissionList($group);
+            }
         } else if($type == 'remove') {
-            $this->entity->removeGroupToTransmissionList($group);
+            if($this->groupInList($group) ) {
+                $this->entity->removeGroupToTransmissionList($group);
+            }
         }
 
         $this->doUpdate($this->entity);
 
         return true;
+    }
+
+    public function groupInList($group) {
+        $res = $this->entity->getTransmissionList()->exists( function($key, $entry) use ($group) {
+            return ($entry->getId() == $group->getId());
+        });
+        return $res;
     }
 
     public function getTransmissionList($incidentId, $userId) {

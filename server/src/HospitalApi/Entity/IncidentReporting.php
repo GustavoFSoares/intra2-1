@@ -97,7 +97,20 @@ class IncidentReporting extends EntityAbstract
      */
     protected $transmissionList;
 
+    /**
+     * @var Boolean
+     *      @Column(name="fechado", type="boolean")
+     */
+    protected $closed;
+
+    /**
+     * @var Boolean
+     *      @Column(name="filtrado", type="boolean")
+     */
+    protected $filtered;
+
     public function __construct() {
+        $this->transmissionList = new \Doctrine\Common\Collections\ArrayCollection();
         $this->recordTime = new \DateTime();
     }
 
@@ -194,7 +207,7 @@ class IncidentReporting extends EntityAbstract
         ];
     }
     public function setPatient($patient) {
-        $this->patientId = isset($patient['id']) ? $patient['id'] : null;
+        $this->patientId = isset($patient['id']) && $patient['id'] ? $patient['id'] : null;
         $this->patientName = isset($patient['name']) ? $patient['name'] : null;
         $this->patientInvolved = $patient['involved'];
 
@@ -231,6 +244,15 @@ class IncidentReporting extends EntityAbstract
     public function getRecordTime() {
         return $this->recordTime;
     }
+    public function setRecordTime($recordTime) {
+        if(!$recordTime instanceof \DateTime){
+            $recordTime = new \DateTime($recordTime['date']);
+        }
+        
+        $this->recordTime = $recordTime;
+
+        return $this;
+    }
 
     public function getFailedTime() {
         return $this->failedTime;
@@ -256,6 +278,24 @@ class IncidentReporting extends EntityAbstract
     }
     public function setTransmissionList($transmissionList) {
         $this->transmissionList = $transmissionList;
+
+        return $this;
+    }
+
+    public function getClosed() {
+        return $this->closed;
+    }
+    public function setClosed($closed) {
+        $this->closed = $closed;
+
+        return $this;
+    }
+
+    public function getFiltered() {
+        return $this->filtered;
+    }
+    public function setFiltered($filtered) {
+        $this->filtered = $filtered;
 
         return $this;
     }

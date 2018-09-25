@@ -43,4 +43,13 @@ class IncidentReportingMessagesModel extends ModelAbstract
         return $query->getQuery()->getResult();
     }
 
+    public function deleteChats($idIncident) {
+        $query = $this->em->createQueryBuilder();
+        $query
+            ->delete($this->getEntityPath(), 'irm')
+            ->where('irm.incident = :incidentId')
+            ->setParameter('incidentId', $idIncident);
+        $query->getQuery()->execute();
+    }
+
 }

@@ -11,6 +11,7 @@ $app->group('/incident-reporting', function () {
     $this->post('/messages/', "HospitalApi\Controller\IncidentReportingController:insertChatAction", function (Request $req, Response $res, array $args) { });
     
     $this->put('/{id}', "HospitalApi\Controller\IncidentReportingController:update", function (Request $req, Response $res, array $args) { });
+    $this->put('/close/{id}', "HospitalApi\Controller\IncidentReportingController:closeReportAction", function (Request $req, Response $res, array $args) { });
     $this->put('/add-group/{id}', "HospitalApi\Controller\IncidentReportingController:insertGroupToTransitionList", function (Request $req, Response $res, array $args) { });
     $this->put('/remove-group/{id}', "HospitalApi\Controller\IncidentReportingController:removeGroupToTransitionList", function (Request $req, Response $res, array $args) { });
     

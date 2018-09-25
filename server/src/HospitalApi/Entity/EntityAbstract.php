@@ -83,12 +83,16 @@ abstract class EntityAbstract extends BasicApplicationAbstract
      */
     public function _formatDate($date){
         if(!($date instanceof \DateTime) && $date != null) {
-            $search = [' ', '-', '/'];
-            $reclace = ['', ' ', '-'];
-            $date = str_replace($search, $reclace, $date);
-            
-            $date = date("Y-m-d H:i:s", strtotime($date));
-            $date = DateTime::createFromFormat("Y-m-d H:i:s", $date);
+            if(is_array($date) && array_key_exists('date', $date)){
+                $date = new \DateTime($date['date']);
+            } else {
+                $search = [' ', '-', '/'];
+                $reclace = ['', ' ', '-'];
+                $date = str_replace($search, $reclace, $date);
+                
+                $date = date("Y-m-d H:i:s", strtotime($date));
+                $date = DateTime::createFromFormat("Y-m-d H:i:s", $date);
+            }
         }
         return $date;
     }
