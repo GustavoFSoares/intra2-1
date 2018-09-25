@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 /**
  * <b>IncidentReportingController</b>
  */
-class IncidentReportingController extends ControllerAbstract
+class IncidentReportingController extends ControllerAbstractLongEntity
 {
 
     public function __construct() {
@@ -89,49 +89,31 @@ class IncidentReportingController extends ControllerAbstract
         return $res->withJson($response);
     }
 
-    public function _mountEntity($values) {
-        $data = $this->getModel()->mount($values);
-        return parent::_mountEntity($data);
-    }
+    public function getHistoricAction($req, $res, $args) {
+        $id = $args['id'];
+        
+        $file = __DIR__ . "/../../../logs/incident-reporting-messages";
+        $file = "$file/$id-INCIDENT-REPORTING.log";
+        
+        $content = [];
+        $logs = [];
 
-    public function translateCollection($entity) {
-        if(empty($arr)){
-			$arr = is_array($entity) ? 
-				[] : null;
+        if(file_exists($file)) {
+            $content = explode("\n", file_get_contents($file));
         }
         
-        if($entity) {
-            if(is_array($entity)){
-                foreach ($entity as $key => $value) {
-                    $arr[$key] = $this->translateCollection($value);
-                }
-            } else {
-                $arrayEntity = $entity->toArray();
-                foreach ($arrayEntity as $key => $value) {
-                    if($value instanceof \HospitalApi\Entity\EntityAbstract){
-                        $arr[$key] = $this->translateCollection($value);
-        
-                    } else {
-                        if(array_key_exists($key, $entity->toArray())) {
-                            $result = $value;
-        
-                            if(method_exists($result, "toArray")) {
-        
-                                foreach ($result->toArray() as $k => $val) {
-                                    $arr[$key][$k] = $this->translateCollection($val);
-                                }
-                                
-                            } else {
-                                $arr[$key] = $value;
-                            }
-                        }
-                    }
-        
-                }
+        foreach ($content as $key => $line) {
+            if($line) {
+                $logs[$key]['time'] = substr($line, 0, 20);
+                $logUser = substr($line, 20);
+                $logUser = explode(':', $logUser);
                 
+                $logs[$key]['user'] = $logUser[0];
+                $logs[$key]['message'] = $logUser[1];
             }
         }
-        return $arr;
+        
+        return $res->withJson($logs);
     }
-    
+
 }

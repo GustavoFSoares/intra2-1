@@ -7,6 +7,8 @@ export default {
         http.get(`/event/`).then(res => res.data),
     getChatsByIncident: (id) => 
         http.get(`/incident-reporting/messages/${id}`).then(res => res.data),
+    getHistoricByIncident: (id) => 
+        http.get(`/incident-reporting/historic/${id}`).then(res => res.data),
     
     doInsert: (data) =>
         http.post(`/incident-reporting/`, data).then(res => res.data),

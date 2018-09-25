@@ -63,7 +63,10 @@ export default {
         },
         doScroll() {
             setTimeout(() => {
-                document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
+                let chatbox = document.getElementById("chatbox");
+                    if(chatbox) {
+                        chatbox.scrollTop = chatbox.scrollHeight;
+                    }
             }, 0);
         },
         readAllMessages() {

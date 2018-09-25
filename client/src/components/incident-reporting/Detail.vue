@@ -161,6 +161,23 @@
         <hr>
         <row>
             <chat :id="`ir${id}`" v-if="!report.closed"/>
+            <div v-else >
+                <div>
+                    <div class="card">
+                        <div class="card-body historic">
+                            <h6 class="card-subtitle mb-2 text-muted">{{ subtitles.historic }}:</h6>
+                            <div class="card-text">
+                                <span class="historic-body" v-for="(line, index) of historic" :key="index">
+                                    <span class="time">{{ line.time }}</span>
+                                    <span class="user">{{ line.user }}:</span>
+                                    <span class="message">{{ line.message }}</span>
+                                    <br>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </row>
 
         <hr>
@@ -195,10 +212,12 @@ export default {
             report: new Report(),
             group: this.$session.get('user').group,
             permission: 'undefined',
+            historic: 'undefined',
             subtitles: {
                 event: "Tipo do Evento",
                 report: "Relato do Incidente:",
                 conduct: "Conduta Aplicada:",
+                historic: "Histórico do Relato",
                 reportPlace: "Setor do Relato",
                 failedPlace: "Setor da Falha",
                 return: "Enviar Retorno para",
@@ -228,6 +247,7 @@ export default {
     methods: {
         loadValues() {
             getter.getIncidentById(this.id).then(res => { this.report = new Report(res) } )
+            getter.getHistoricByIncident(this.id).then(res => { this.historic = res; } )
         },
         loadGroups() {
             if(this.addGroups) {
@@ -300,4 +320,17 @@ export default {
         color: red;
         
     }
+
+    .historic {
+        background-color: rgba(224, 224, 224, 0.425);
+    }
+
+    .historic-body {
+        font-size: 15px;
+    }
+
+    .historic-body .time {
+        color: rgb(8, 184, 8);
+    }
+
 </style>

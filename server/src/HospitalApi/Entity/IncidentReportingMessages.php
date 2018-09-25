@@ -21,7 +21,7 @@ class IncidentReportingMessages extends EntityAbstract
     /**
      * @var User
      *      @ManytoOne(targetEntity="User")
-     *      @JoinColumn(name="id_usuario")
+     *      @JoinColumn(name="usuario_id")
      */
     protected $user;
 
@@ -46,7 +46,7 @@ class IncidentReportingMessages extends EntityAbstract
     /**
      * @var IncidentReporting
      *      @ManytoOne(targetEntity="IncidentReporting")
-     *      @JoinColumn(name="id_incidente")
+     *      @JoinColumn(name="incidente_id")
      */
     protected $incident;
 

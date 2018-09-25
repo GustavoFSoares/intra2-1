@@ -1,6 +1,6 @@
 import service from "@/services/incident-reporting";
 const PermissionList = [
-    // 'tecnologia-da-informacao-hu',
+    'tecnologia-da-informacao-hu',
     'seger-hu'
 ]
 
@@ -16,6 +16,7 @@ const getters = {
         
     },
     getIncidentById: (id) => service.getIncidents({'id': id}),
+    getHistoricByIncident: (id) => service.getHistoricByIncident(id),
     getEvents: () => service.getEvents(),
     getChatsByIncident: (incidentId) => service.getChatsByIncident(incidentId),
 }
