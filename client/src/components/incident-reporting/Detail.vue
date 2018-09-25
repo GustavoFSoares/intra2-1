@@ -1,8 +1,11 @@
 <template>
     <div class="container">
         
-        <row :label="subtitles.event">
-            <h2>#{{report.id}} - {{ report.event.description }}</h2>
+        <row>
+            <h2>
+                #{{report.id}} - {{ report.event.description }}
+                <span class="closed" v-if="report.closed">(Finalizado)</span>
+            </h2>
         </row>
 
         <hr>
@@ -107,31 +110,31 @@
             
             <div class="container">
                 
-                <label>
+                <label v-if="gotPermission">
                     <b>Adicionar Grupo Responsavel:</b> <input type="checkbox" v-model="addGroups" @change="loadGroups()">
                 </label>
                 <row label='Adicionar Grupo' v-if="addGroups">
-                    <v-select label="name" :options="(values.groups)" v-model="group" @input="addGroupToTransmissionList()"/>
+                    <v-select label="name" :options="(values.groups)" v-model="groupSelected" @input="addGroupToTransmissionList()"/>
                 </row>
                 
                  <div id="table" class="list-group">
-                    <div v-for="(group, index) in report.transmissionList" :key="index" class="card">
+                    <div v-for="(transmissionGroup, index) in report.transmissionList" :key="index" class="card">
 
-                        <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id'+group.id" aria-expanded="true" :aria-controls="'id'+group.id" @click.native="loadUserForGroup(group.id)">
-                            <span class="float-left">{{ group.name }}</span>
-                            <router-link class="float-right" to="" @click.native="removeGroupToTransmissionList(group, index)">
+                        <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id'+transmissionGroup.id" aria-expanded="true" :aria-controls="'id'+transmissionGroup.id" @click.native="loadUserForGroup(transmissionGroup.id)">
+                            <span class="float-left">{{ transmissionGroup.name }}</span>
+                            <router-link class="float-right" to="" @click.native="removeGroupToTransmissionList(transmissionGroup, index)" v-if="gotPermission">
                                 <icon class="text-danger" icon="minus-circle"/>
                             </router-link>
                         </router-link>
 
-                        <div :id="'id'+group.id" class="collapse" data-parent="#table">
+                        <div :id="'id'+transmissionGroup.id" class="collapse" data-parent="#table">
                             <div class="card-body">
-
-                                <div id="users" v-if="group.id == groupId">
+                                
+                                <div id="users" v-if="transmissionGroup.id == groupId">
                                     <div class="container">
                                         <div class="list-group  list-group-flush">
                                             
-                                            <div class="list-group-item" v-for="(user, index) in values.users" :key="`g${group.id}u${index}`">
+                                            <div class="list-group-item" v-for="(user, index) in values.users" :key="`g${transmissionGroup.id}u${index}`">
                                                 <span class="float-left">{{ user.name }}</span>
                                                 <span class="float-right" v-if="user.email">{{ user.email }}</span>
                                                 <span class="float-right" v-else><b>Sem email cadastrado</b></span>
@@ -157,7 +160,7 @@
 
         <hr>
         <row>
-            <chat :id="`ir${id}`"/>
+            <chat :id="`ir${id}`" v-if="!report.closed"/>
         </row>
 
         <hr>
@@ -165,6 +168,9 @@
             <row>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'notificacao-de-incidentes'}" tag="button">
                     Voltar
+                </router-link>
+                <router-link class="btn btn-outline-danger btn-lg" to="" tag="button" v-if="gotPermission && !report.closed" @click.native="closeReport()">
+                    Finalizar Incidente
                 </router-link>
             </row>
         </div>
@@ -187,6 +193,8 @@ export default {
             id: this.$route.params.id,
             moment: moment,
             report: new Report(),
+            group: this.$session.get('user').group,
+            permission: 'undefined',
             subtitles: {
                 event: "Tipo do Evento",
                 report: "Relato do Incidente:",
@@ -198,16 +206,22 @@ export default {
                 failedTime: "Horário do Evento",
                 transmissionList: "Acompanhamento do Incidente",
             },
-            alert: {
-                title: "Deseja Remover esse grupo?",
-                message: "Ao clicar 'sim' você remove o grupo da Lista de Transmissão. Deseja Continuar?",
-            },
             addGroups: false,
-            group: '',
+            groupSelected: '',
             groupId: '',
             values: {
                 groups: [],
                 users: [],
+            },
+            alert: {
+                closeReport: {
+                    title: "Fechar Chamado?",
+                    message: "Ao fechar o chamado você bloqueia todas o chat e para acessa-lo deverá entrar em contato com a TI",
+                },
+                removeGroup: {
+                    title: "Deseja Remover esse grupo?",
+                    message: "Ao clicar 'sim' você remove o grupo da Lista de Transmissão. Deseja Continuar?",
+                },
             }
         }
     },
@@ -221,14 +235,14 @@ export default {
             }
         },
         addGroupToTransmissionList() {
-            if(this.group) {
-                model.addGroupToTransmissionList(this.id, this.group)
-                this.report.transmissionList.push(this.group)
+            if(this.groupSelected) {
+                model.addGroupToTransmissionList(this.id, this.groupSelected)
+                this.report.transmissionList.push(this.groupSelected)
             }
         },
         removeGroupToTransmissionList(group, groupIndex) {
             
-            Alert.YesNo(this.alert.title, this.alert.message).then(res => {
+            Alert.YesNo(this.alert.removeGroup.title, this.alert.removeGroup.message).then(res => {
                 if(res) {
                     model.removeGroupToTransmissionList(this.id, group)
                     this.report.transmissionList.splice(groupIndex, 1)
@@ -241,6 +255,22 @@ export default {
 
             ModelUser.loadUsers(this.groupId).then(res => this.values.users = res)
         },
+        closeReport() {
+            Alert.YesNo(this.alert.closeReport.title, this.alert.closeReport.message).then(res => {
+                if(res) {
+                    model.closeReport(this.id).then(res => this.$router.go('-1') )
+                }
+            })
+        }
+    },
+    computed: {
+        gotPermission() {
+            if(this.permission == 'undefined') {
+                model.gotPermission(this.group).then(permission => this.permission = permission )
+            } else {
+                return this.permission
+            }
+        }
     },
     mounted() {
         this.loadValues()
@@ -264,5 +294,10 @@ export default {
         cursor: default;
         text-decoration: none;
         color: black;
+    }
+
+    .closed {
+        color: red;
+        
     }
 </style>

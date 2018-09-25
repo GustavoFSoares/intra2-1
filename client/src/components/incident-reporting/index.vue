@@ -16,7 +16,7 @@
 
         <h2>{{ typeExibited }}</h2>
 
-        <table v-if="reports" class="table table-striped">
+        <table v-if="reports" class="table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -29,19 +29,22 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(report) of searchList" :key="report.id" v-bind:class="{'table-danger': report.c_removed == '1'}">
+                <tr v-for="(report) of searchList" :key="report.id" v-bind:class="{'table-info': report.filtered == false, 'table-disabled': report.closed}">
                     <th>{{ report.id }}</th>
                     <td>{{ report.event.description.substr(0, 40) }}</td>
                     <td>{{ report.reportPlace.name }}</td>
                     <td>{{ report.failedPlace.name }}</td>
                     <td>{{ moment(report.failedTime.date).format('DD/MM/YYYY hh:mm') }}</td>
                     <td>
-                        <icon class="text-success" icon="check-circle" v-if="report.patientInvolved"/>
-                        <icon class="text-danger" icon="times-circle" v-else/>
+                        <icon class="text-success" icon="check" v-if="report.patientInvolved"/>
+                        <icon class="text-danger" icon="times" v-else/>
                     </td>
                     <td>
+                        <router-link :to='`notificacao-de-incidentes/edit/${report.id}`' v-if="gotPermission && report.closed != true">
+                            <icon icon="edit"/>
+                        </router-link>
                         <router-link :to='`notificacao-de-incidentes/detalhe/${report.id}`'>
-                            <icon icon="search"/>
+                            <icon  class="text-warning" icon="search"/>
                         </router-link>
                     </td>
                 </tr>
@@ -62,16 +65,18 @@ export default {
             typeExibited: '',
             reports: [],
             moment: moment,
+            group: this.$session.get('user').group,
             search: {
                 filter: '',
                 type: ''
             },
             types: '',
+            permission: 'undefined',
         }
     },
     methods: {
         loadValues() {
-            getter.getIncidents().then(res => {this.reports = res; console.log(res[0]); })
+            getter.getIncidents(this.group).then(res => {this.reports = res })
         },
     },
     mounted() {
@@ -105,12 +110,19 @@ export default {
                         return exp
                     } else if( exp.test(reports.reportPlace.name)) {
                         return exp
-                    } else if( exp.test(moment(reports.failedTime.date).format('DD/MM/YYYY'))) {
+                    } else if( exp.test(moment(reports.failedTime.date).format('DD/MM/YYYY hh:mm'))) {
                         return exp
                     }
                 })
             } else {
                 return this.reports
+            }
+        },
+        gotPermission() {
+            if(this.permission == 'undefined') {
+                model.gotPermission(this.group).then(permission => this.permission = permission)
+            } else {
+                return this.permission
             }
         }
     },
@@ -118,5 +130,9 @@ export default {
 </script>
 
 <style scoped>
-
+    .table-disabled {
+        cursor: default;
+        text-decoration: none;
+        color: #8a8a8a9c;
+    }
 </style>

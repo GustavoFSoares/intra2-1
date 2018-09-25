@@ -17,6 +17,8 @@ export default class IncidentReporting {
         }
         this.recordTime = incidentReporting.recordTime
         this.failedTime = incidentReporting.failedTime
+        this.filtered = incidentReporting.filtered ? true : false
+        this.closed = incidentReporting.closed ? true : false
         this.transmissionList = incidentReporting.transmissionList ? incidentReporting.transmissionList : []
     }
 
