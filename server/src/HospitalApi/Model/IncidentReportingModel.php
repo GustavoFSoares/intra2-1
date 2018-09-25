@@ -81,8 +81,23 @@ class IncidentReportingModel extends ModelAbstract
         return $select->getQuery()->getResult();
     }
 
-    public function findBy($filter) {
-        return $this->getRepository()->findBy($filter, ['id'=>'desc']);
+    public function findBy($filters) {
+        $query = $this->em->createQueryBuilder();
+        $query->select('ir')->from($this->getEntityPath(), 'ir');
+
+        foreach ($filters as $filter => $value) {
+            if($filter != 'failedPlace') {
+                $query->andWhere("ir.$filter = :$filter")
+                      ->setParameter($filter, $value);
+            }
+        }
+        if(isset($filters['failedPlace'])) {
+            $query->innerJoin('ir.transmissionList', 'irtl', 'WITH', "irtl.id = {$filters['failedPlace']} OR ir.failedPlace = {$filters['failedPlace']}")
+                  ->groupBy('ir.id');
+        }
+        $query->orderBy('ir.id', 'DESC');
+            
+        return $query->getQuery()->getResult();
     }
 
 
