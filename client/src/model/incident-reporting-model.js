@@ -1,6 +1,6 @@
 import service from "@/services/incident-reporting";
 const PermissionList = [
-    'tecnologia-da-informacao-hu',
+    // 'tecnologia-da-informacao-hu',
     'seger-hu'
 ]
 
@@ -13,7 +13,14 @@ const getters = {
             }
             return service.getIncidents({ 'failedPlace':group.id, 'filtered': 1 })
         })
-        
+    },
+    getIncidentsWithFilters: (group, filters) => {
+        return model.gotPermission(group).then(permission => {
+            if (permission) {
+                return service.getIncidents( filters )
+            }
+            return service.getIncidents({ 'failedPlace': group.id, 'filtered': 1, 'closed': filters.closed })
+        })
     },
     getIncidentById: (id) => service.getIncidents({'id': id}),
     getHistoricByIncident: (id) => service.getHistoricByIncident(id),

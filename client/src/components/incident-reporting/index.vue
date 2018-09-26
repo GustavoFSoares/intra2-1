@@ -4,9 +4,25 @@
         <h1>{{ title }}</h1>
 
         <div class="mb-3">
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <router-link to="" class="btn btn-primary" v-for="(type, index) in enterpriseTypes" :key="index" @click.native="search.type = type">{{ type.name }}</router-link>
-                <router-link to="" class="btn btn-primary" @click.native="search.type = {id: '', name: ''}">Todos</router-link>
+            <div class='row filters'>
+                <rows label='Fechados' v-bind:class="{'filter-not-selected': search.dbFilters.closed == undefined }">
+                    <checkbox @changed="loadCloseds(true)"/>
+                </rows>
+
+                <rows>
+                    <div class="mb-3 btn-group" role="group">
+                        <router-link to="" class="btn btn-primary" v-for="(type, index) in enterpriseTypes" :key="index" @click.native="search.type = type">{{ type.name }}</router-link>
+                        <router-link to="" class="btn btn-primary" @click.native="search.type = {id: '', name: ''}">Todos</router-link>
+                    </div>
+                    <button class="btn" @click="cleanFilters()">Limpar Filtros</button>
+                </rows>
+
+                <rows v-bind:class="{'filter-not-selected': search.dbFilters.filtered == undefined }">
+                    <div v-if="gotPermission">
+                        <label>Aguardando Análise</label>
+                        <checkbox @changed="loadFiltereds(true)"/>
+                    </div>
+                </rows>
             </div>
         </div>
         
@@ -56,6 +72,7 @@
 <script>
 import model, { getter } from '@/model/incident-reporting-model'
 import moment from 'moment'
+import { Checkbox, FormRws } from '@/components/shared/Form'
 
 export default {
     data() {
@@ -63,12 +80,13 @@ export default {
             title: 'Lista de Incidentes',
             enterpriseTypes: [{id: 'hu', name:"HU"}, {id: 'hpsc', name: "HPSC"}],
             typeExibited: '',
-            reports: [],
+            reports: [],   
             moment: moment,
             group: this.$session.get('user').group,
             search: {
                 filter: '',
-                type: ''
+                type: '',
+                dbFilters: { }
             },
             types: '',
             permission: 'undefined',
@@ -77,6 +95,22 @@ export default {
     methods: {
         loadValues() {
             getter.getIncidents(this.group).then(res => {this.reports = res })
+        },
+        loadCloseds() {
+            this.search.dbFilters.closed = !this.search.dbFilters.closed
+            getter.getIncidentsWithFilters(this.group, this.search.dbFilters).then(res => { this.reports = res; })
+        },
+        loadFiltereds() {
+            if(this.search.dbFilters.filtered==undefined) {
+                this.search.dbFilters.filtered = false                
+            } else {
+                this.search.dbFilters.filtered = !this.search.dbFilters.filtered
+            }
+            getter.getIncidentsWithFilters(this.group, this.search.dbFilters).then(res => { this.reports = res; })
+        },
+        cleanFilters() {
+            this.search.dbFilters = {  }
+            getter.getIncidentsWithFilters(this.group, this.search.dbFilters).then(res => { this.reports = res; })
         },
     },
     mounted() {
@@ -96,7 +130,7 @@ export default {
                 })
 
             }
-            
+
             if(this.search.filter) {
                 let exp = new RegExp(this.search.filter.trim(), 'i')
                 
@@ -126,6 +160,10 @@ export default {
             }
         }
     },
+    components: {
+        'checkbox': Checkbox,
+        'rows': FormRws,
+    }
 }
 </script>
 
@@ -135,4 +173,14 @@ export default {
         text-decoration: none;
         color: #8a8a8a9c;
     }
+
+    .filters {
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+
+    .filter-not-selected {
+        color: #8a8a8a9c;
+    }
+
 </style>

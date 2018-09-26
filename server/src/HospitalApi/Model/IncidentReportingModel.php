@@ -87,6 +87,9 @@ class IncidentReportingModel extends ModelAbstract
 
         foreach ($filters as $filter => $value) {
             if($filter != 'failedPlace') {
+                if($value == "true" || $value == "false") {
+                    $value = ($value == "true") ? 1 : 0;
+                }
                 $query->andWhere("ir.$filter = :$filter")
                       ->setParameter($filter, $value);
             }
