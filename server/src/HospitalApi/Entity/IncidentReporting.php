@@ -17,13 +17,13 @@ class IncidentReporting extends EntityAbstract
 
     /**
      * @ManyToOne(targetEntity="Group")
-     * @JoinColumn(name="local_falha_id", nullable=false)
+     * @JoinColumn(name="local_relato_id", nullable=false)
      */
     protected $reportPlace;
 
     /**
      * @ManyToOne(targetEntity="Group")
-     * @JoinColumn(name="local_relato_id", nullable=false)
+     * @JoinColumn(name="local_falha_id", nullable=false)
      */
     protected $failedPlace;
 
