@@ -6,9 +6,10 @@ export default class User {
             this.id = user.id
             this.code = user.code
             this.name = user.name
+            this.email = user.email
             this.group = user.group
             this.level = user.level
-            this.admin = user.admin
+            this.admin = user.admin = user.admin ? true : false
             this.ramal = user.ramal
             this.occupation = user.occupation
             this.c_removed = user.c_removed

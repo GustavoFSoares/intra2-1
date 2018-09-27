@@ -11,7 +11,7 @@ class SlugHelper {
         'Ç' => 'c', 'ç' => 'c'
     ];
 
-    public function initializer(){
+    public static function initializer(){
         self::$slug = new Slugify();
         self::$slug->activateRuleset('portuguese-brazil');
         self::$slug->addRules(self::$letter);

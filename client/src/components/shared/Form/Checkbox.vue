@@ -1,8 +1,10 @@
 <template>
-    <label class="switch">
-        <input :id="id" @click="change()" type="checkbox" v-model="value">
-        <span class="slider round"></span>
-    </label>
+    <div>
+        <label class="switch">
+            <input :id="id" @click="change()" type="checkbox" v-model="value">
+            <span class="slider round"></span>
+        </label>
+    </div>
 </template>
 
 <script>
@@ -84,4 +86,6 @@ export default {
     .slider.round:before {
     border-radius: 50%;
     }
+
+
 </style>

@@ -1,14 +1,14 @@
 <?php
 namespace Helper;
 
-class LoggerHelper {
+class LoggerHelper implements LoggerHelperInterface {
 
     public static $date;
     public static $begin;
     public static $end;
     public static $fileDir;
 
-    public function initializer(){
+    public static function initializer(){
         self::$begin = new \DateTime();
     }
 
@@ -17,19 +17,46 @@ class LoggerHelper {
         return self::$slug->slugify($var);
     }
 
-    public static function initLogFile($fileName) {
+    public static function initLogFile($type, $prefixe = null, $fileName, $formatDate = null) {
         self::initializer();
+        
+        $file = '';
+        if($prefixe) {
+            $file .= $prefixe."-";
+        }
 
-        $fileName= self::$begin->format('Ymd H.i.s')."-".strtoupper($fileName).".log";
-        self::$fileDir = "..\..\..\..\logs\Cron\\$fileName";
+        if($formatDate) {
+            $file .= self::$begin->format($formatDate)."-";
+        }
+        
+        if($fileName) {
+            $file .= $fileName;
+        }
+
+        $file = \Helper\SlugHelper::get($file);
+        $file = strtoupper($file).".log";
+
+        $folderDir = "../logs/$type";
+        if(!is_dir($folderDir)) { 
+           $mk = mkdir($folderDir, 0777, true);
+        }
+        self::$fileDir = "$folderDir/$file";
         
         file_put_contents(self::$fileDir, "", FILE_APPEND);
     }
 
     public static function writeFile($value) {
-        echo "$value";
-        file_put_contents(self::$fileDir, $value, FILE_APPEND);
+        $value = str_replace("\n", "  ", $value);
+
+        file_put_contents(self::$fileDir, "$value\n", FILE_APPEND);
+        return $value;
     }
 
 
+}
+
+interface LoggerHelperInterface {
+    
+    public static function initLogFile($type, $fileName, $sufixe);
+    
 }

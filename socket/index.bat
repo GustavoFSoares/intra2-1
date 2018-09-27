@@ -1,0 +1,1 @@
+start node C:\Users\gustavo.soares\Desktop\teste\index.js /MIN

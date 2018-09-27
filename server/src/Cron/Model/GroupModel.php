@@ -18,4 +18,18 @@ class GroupModel extends ModelAbstract
         return $this->getRepository()->findOneByGroupId($groupId);
     }
 
+    public function findGroupsId() {
+        $query = $this->em->createQueryBuilder();
+        $query->select('g.groupId')
+            ->from('HospitalApi\Entity\Group', 'g');
+        $values = $query->getQuery()->getResult();
+
+        $data = [];
+        foreach ($values as $key => $value) {
+            $data[] = $value['groupId'];
+        }
+
+        return $data;
+    }
+
 }

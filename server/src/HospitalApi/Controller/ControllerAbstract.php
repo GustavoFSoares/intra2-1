@@ -37,9 +37,9 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 */
 	public function get($req, $res, $args) {
 		$id = $req->getQueryParam('id');
-		
+
 		if ($id === null) {
-			$results = $this->_model->findAll();
+			$results = $this->_model->findBy($req->getQueryParams());
 		} else {
 			$results = $this->_model->findById($id);
 		}

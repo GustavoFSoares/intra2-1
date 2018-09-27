@@ -5,7 +5,7 @@ use HospitalApi\Entity\Link;
 
 $model = new LinkModel();
 
-if(!$model->findAll()){
+if(!$model->findBy()){
 
         $links = [
             [

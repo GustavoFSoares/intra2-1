@@ -100,12 +100,12 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	}
 
 	/**
-	 * @method findAll()
+	 * @method findBy()
 	 * Retorna uma Array com os resultados da tabela no Banco de Dados
 	 * @return Array 
 	 */
-	public function findAll() {
-		$collection = $this->getRepository()->findAll();
+	public function findBy($filters = []) {
+		$collection = $this->getRepository()->findBy($filters);
 		
 		return $collection;
 	}

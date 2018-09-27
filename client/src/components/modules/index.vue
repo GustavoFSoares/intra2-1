@@ -91,26 +91,6 @@
             </div>
         </div>
     
-        <!-- <tbody>
-            <tr v-for="(module, index) of modules" :key="index">
-                <td scope="row">{{ module.id }}</td>
-                <td> <icon :icon="module.icon"/> </td>
-                <td>{{ module.name }}</td>
-                <td>{{ moment(module.c_modified.date).format('DD/MM/YYYY - hh:mm:ss') }}</td>
-                <td @dblclick="changeStatus(module.id)">
-                    <i class="text-success fa fa-check-circle" v-if="!module.c_removed"/>
-                    <i class="text-danger fa fa-times-circle" v-else/>
-                </td>
-                <td>
-                    <router-link :to='`modulos/edit/${module.id}`'>
-                        <i class="fa fa-edit"/>
-                    </router-link>
-                    <router-link @click.native="remove(module.id)" to="">
-                        <i class="text-danger fa fa-trash"></i>
-                    </router-link>
-                </td>
-            </tr>
-        </tbody> -->
     </div>   
 </template>
 

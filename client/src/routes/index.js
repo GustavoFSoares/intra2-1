@@ -6,11 +6,13 @@ import Teste from '@/components/Teste.vue'
 import NotFound from '@/components/NotFound.vue'
 import DontHavePermission from '@/components/DontHavePermission.vue'
 
+import adminManagerRoutes from './admin-manager-routes'
 import adverseEventsRoutes from './adverse-events-routes'
 import alertsRoutes from './alerts-routes'
 import collaboratorsRoutes from './collaborators-routes'
 import covenantRoutes from './covenants-routes'
 import homeUserRoutes from './home-user-routes'
+import incidentReportingRoutes from './incident-reporting-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
 import ramalsRoutes from './ramals-routes'
@@ -43,11 +45,13 @@ const Routes = new Router({
     routes: routes,
     mode: 'history',
 })
+Routes.addRoutes(adminManagerRoutes)
 Routes.addRoutes(adverseEventsRoutes)
 Routes.addRoutes(alertsRoutes)
 Routes.addRoutes(collaboratorsRoutes)
 Routes.addRoutes(covenantRoutes)
 Routes.addRoutes(homeUserRoutes)
+Routes.addRoutes(incidentReportingRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ramalsRoutes)

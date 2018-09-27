@@ -25,18 +25,16 @@ class EmailController extends ControllerAbstract
      * @param [Response] $res
      * @return boolean Status
      */
-    public static function buildMailAction($report) {
+    public static function sendEmailAction($report) {
         try {
             if(!$report instanceof EmailTemplateAbstract ){
                 throw new Exception("\$report must be a EmailTemplate Instance", 400);
             }
             
-            $model = new EmailModel();
-            $model
-                ->setReport($report)
-                ->createEmail();
+            $model = new EmailModel($report);
+            $email = $model->createEmail();
             
-            return $model->send();
+            return $email->send();
             
         } catch (Exeption $e){
             return $e->getMessage();

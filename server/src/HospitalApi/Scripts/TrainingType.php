@@ -5,7 +5,7 @@ use HospitalApi\Model\TrainingTypeModel;
 
 $model = new TrainingTypeModel();
 
-if(!$model->findAll()){
+if(!$model->findBy()){
     $Trainings = [
         ['name' => "Padrões de Atendimento"],
         ['name' => "Noções Básicas de Combate a Incêndio"],

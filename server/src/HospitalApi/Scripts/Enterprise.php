@@ -5,7 +5,7 @@ use HospitalApi\Model\EnterpriseModel;
 
 $model = new EnterpriseModel();
 
-if(!$model->findAll()){
+if(!$model->findBy()){
     $enterprises = [
         [ 'id' => 'hu', 'name' => 'Hospital Universitário - HU' ],
         [ 'id' => 'hpsc', 'name' => 'Hospital Pronto Socorro - HPSC' ],
