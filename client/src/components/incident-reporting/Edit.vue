@@ -94,13 +94,13 @@
         <div class='row'>
             <rows :label="subtitles.recordTime">
                 <p v-if="report.recordTime"> <icon icon="user-clock"/>
-                    {{ moment(report.recordTime.date).format('DD/MM/YYYY hh:mm') }}
+                    {{ moment(report.recordTime.date).format('DD/MM/YYYY HH:mm') }}
                 </p>
             </rows>
             
             <rows :label="subtitles.failedTime">
                 <p v-if="report.failedTime"> <icon icon="clock"/>
-                    {{ moment(report.failedTime.date).format('DD/MM/YYYY hh:mm') }}
+                    {{ moment(report.failedTime.date).format('DD/MM/YYYY HH:mm') }}
                 </p>
             </rows>
         </div>
