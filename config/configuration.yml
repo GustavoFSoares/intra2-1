@@ -72,7 +72,7 @@ HOMOLOG:
     HOST: '10.100.200.100'
     DOMAIN: homo
     
-    DATABASE_NAME: 'intra2_homolog'
+    DATABASE_NAME: 'intra2_homo'
     
     DB_BOOTSTRAP_HOST: '10.100.1.33'
     DB_BOOTSTRAP_USER: 'dev'
@@ -128,4 +128,4 @@ PRODUCTION:
     EMAIL_DEFAULT_PASSWORD: 'g4mpcanoas'
     EMAIL_DEFAULT_HOST: 'gmail'
     EMAIL_DEFAULT_NAME: 'Anônimo'
-    
+
