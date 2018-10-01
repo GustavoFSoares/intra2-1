@@ -31,7 +31,24 @@ class UserModel extends SoftdeleteModel
     }
 
     public function findBy($filters) {
-        $Users = parent::findBy($filters);
+        $select = $this->em->createQueryBuilder()
+            ->select('u')
+            ->from('HospitalApi\Entity\User', 'u');
+
+        if( isset($filters['name']) ) {
+            $select
+                ->where('u.name LIKE :name')
+                ->setParameter('name', "%{$filters['name']}%");
+            unset($filters['name']);
+        }
+
+        foreach ($filters as $filter => $value) {
+            $query
+                ->andWhere("u.$filter = :$filter")
+                ->setParameter($filter, $value);
+        }
+        $Users = $select->getQuery()->getResult();
+        
         $users = [];
         if($Users) {
             foreach ($Users as $User) {

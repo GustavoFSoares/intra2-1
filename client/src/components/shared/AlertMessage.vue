@@ -2,7 +2,7 @@
     <div>
         <div id="alert" :class="internClass" role="alert">
             <span v-if="icon"><i :class="icon" aria-hidden="true"></i></span>
-            <span style="font-size: 17px">{{ text }}</span>
+            <span style="font-size: 17px" v-html="text"></span>
             <button type="button" class="close" @click="close()">
                 <span>&times;</span>
             </button>
@@ -25,11 +25,14 @@ export default {
     },
     methods: {
         concatClass() {
-            $('#alert').show()
+            $('#alert').fadeIn()
             this.internClass = "alert alert-"+this.type+" fade show"
+            setTimeout(() => {
+                $('#alert').fadeOut()
+            }, 3500);
         },
         close() {
-            $('#alert').hide()
+            $('#alert').fadeOut()
             this.$emit('close')
         }
     },
