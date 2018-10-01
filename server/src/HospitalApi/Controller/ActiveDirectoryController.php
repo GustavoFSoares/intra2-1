@@ -45,36 +45,34 @@ class ActiveDirectoryController
         return $info;
     }
     
-    public function getGroups(){
+    public function getGroups($letter){
+        
         $this->_doRequest();
-        $alph = ['a', 'b', 'c', 'd', 'e', 'f',
-        		 'g', 'h', 'i', 'j', 'k', 'l',
-        		 'm', 'n', 'o', 'p', 'q', 'r',
-        		 's', 't', 'u', 'v', 'w', 'x',
-        		 'y', 'z'];
+        $filter = "(department=$letter*)";
+        $justhese = ['department', 'displayname', 'samaccountname'];
+        $result = ldap_search($this->_con, "dc=hmd,dc=local", $filter, $justhese);
         
-        
-        foreach ($alph as $letter) {
-            $filter = "(department=$letter*)";
-            $justhese = ['department'];
-            $result = ldap_search($this->_con, "dc=hmd,dc=local", $filter, $justhese);
-            
-            $info = ldap_get_entries($this->_con, $result);
-            
-            $lastGroup = '';
-            foreach ($info as $key => $result) {
-                if($lastGroup != $result['department'][0]){
-                    if($key != 'count'){
+        $info = ldap_get_entries($this->_con, $result);
+
+        $lastGroup = '';
+        $groups = [ ];
+        foreach ($info as $key => $result) {
+            if($lastGroup != $result['department'][0]){
+                if($key != 'count'){
+                    
+                    $userId = $result['samaccountname'][0];
+                    if($this->isActive($userId)) {
+                        
                         $lastGroup = $result['department'][0];
 
-                        $groups[] = $this->getGroupArray($lastGroup);
+                        $groups[] = $this->getGroupArray($lastGroup); 
                     }
                 }
-            
+
             }
-                    
-        }
         
+        }
+                    
         return $groups;
     }
 

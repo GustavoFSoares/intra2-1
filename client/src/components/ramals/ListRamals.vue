@@ -41,7 +41,7 @@ export default {
         }
     },
     mounted() {
-            getter.getRamals().then( res => { this.ramals = res })
+        getter.getRamalsForExibition().then( res => { this.ramals = res })
     },
     computed: {
         searchList() {

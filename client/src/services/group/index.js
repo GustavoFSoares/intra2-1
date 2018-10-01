@@ -1,7 +1,7 @@
 import http from '../client'
 export default {
     getGroups: (id) => 
-        http.get(`/group/`, { params: { id: id } }).then(res => res.data),
+        http.get(`/group/`, { params: { id: id, c_removed: 0 } }).then(res => res.data),
     getEnterprises: () => 
         http.get(`/group/enterprises/`).then(res => res.data),
     getGroupsByEnterprise: (enterprise) => 
