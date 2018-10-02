@@ -13,8 +13,8 @@ $app->group('/incident-reporting', function () {
     
     $this->put('/{id}', "HospitalApi\Controller\IncidentReportingController:update", function (Request $req, Response $res, array $args) { });
     $this->put('/close/{id}', "HospitalApi\Controller\IncidentReportingController:closeReportAction", function (Request $req, Response $res, array $args) { });
-    $this->put('/add-group/{id}', "HospitalApi\Controller\IncidentReportingController:insertGroupToTransitionList", function (Request $req, Response $res, array $args) { });
-    $this->put('/remove-group/{id}', "HospitalApi\Controller\IncidentReportingController:removeGroupToTransitionList", function (Request $req, Response $res, array $args) { });
+    $this->put('/add-user/{id}', "HospitalApi\Controller\IncidentReportingController:insertUserToTransitionList", function (Request $req, Response $res, array $args) { });
+    $this->put('/remove-user/{id}', "HospitalApi\Controller\IncidentReportingController:removeUserToTransitionList", function (Request $req, Response $res, array $args) { });
     
     $this->delete('/{id}', "HospitalApi\Controller\IncidentReportingController:delete", function (Request $req, Response $res, array $args) { });
 });

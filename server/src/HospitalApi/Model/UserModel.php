@@ -31,7 +31,54 @@ class UserModel extends SoftdeleteModel
     }
 
     public function findBy($filters) {
-        $Users = parent::findBy($filters);
+        $select = $this->em->createQueryBuilder()
+            ->select('u')
+            ->from('HospitalApi\Entity\User', 'u');
+
+        if( isset($filters['name']) ) {
+            $select
+                ->where('u.name LIKE :name')
+                ->setParameter('name', "%{$filters['name']}%");
+            unset($filters['name']);
+        }
+
+        foreach ($filters as $filter => $value) {
+            $select
+                ->andWhere("u.$filter = :$filter")
+                ->setParameter($filter, $value);
+        }
+        $Users = $select->getQuery()->getResult();
+        
+        $users = [];
+        if($Users) {
+            foreach ($Users as $User) {
+                $group = $User->getGroup();
+                $complement = $User->getComplement();
+                
+                $User->setGroup($group->toArray());
+                if($complement){
+                    $User->setComplement($complement->toArray());
+                }
+                $users[] = $User;
+            }
+        }
+        return $users;
+    }
+
+    public function getUsersAdminWithEmail($group = null) {
+        $select = $this->em->createQueryBuilder();
+        $select
+            ->select('u')
+            ->from($this->getEntityPath(), 'u')
+            ->where('u.admin = 1')
+            ->andWhere('u.email != :null')
+            ->setParameter('null', "");
+        if($group) {
+            $select
+                ->andWhere('u.group = :group')
+                ->setParameter('group', $group);
+        }
+        $Users = $select->getQuery()->getResult();
         $users = [];
         if($Users) {
             foreach ($Users as $User) {

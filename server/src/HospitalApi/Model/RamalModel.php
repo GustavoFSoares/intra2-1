@@ -27,7 +27,7 @@ class RamalModel extends SoftdeleteModel
     }
 
     public function findAll() {
-        $collection = $this->getRepository()->findBy([], ['group' => 'ASC', 'core' => 'ASC']);
+        $collection = $this->getRepository()->findBy(['group.c_removed' => 0], ['group' => 'ASC', 'core' => 'ASC']);
 
         return $collection;
     }
@@ -43,6 +43,7 @@ class RamalModel extends SoftdeleteModel
             ->orWhere('r.floor like :filter')
             ->orWhere('g.name like :filter')
             ->orderBy('r.group', 'asc')
+            ->andWhere('g.c_removed = 0')
             ->setParameter('filter', "%$filter%");
         return $query->getQuery()->getResult();
     }

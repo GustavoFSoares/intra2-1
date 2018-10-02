@@ -20,15 +20,24 @@ class IncidentReportingModel extends ModelAbstract
         $values = (object)$values;
         
         $groupRepository = $this->em->getRepository('HospitalApi\Entity\Group');
+        $userModel = new \HospitalApi\Model\UserModel();
+        $userRepository = $this->em->getRepository('HospitalApi\Entity\User');
         $eventRepository = $this->em->getRepository('HospitalApi\Entity\Event');
         
         $values->place['reportPlace'] = $groupRepository->find($values->place['reportPlace']['id']);
         $values->place['failedPlace'] = $groupRepository->find($values->place['failedPlace']['id']);
+        $users = $userModel->getUsersAdminWithEmail($values->place['failedPlace']);
         if(isset($values->id)) {
-            $this->updateTransmissionList($values->id, $values->place['failedPlace'], 'add');
+            foreach ($users as $user) {
+                $this->updateTransmissionList($values->id, $user, 'add');
+            }
         } else {
+            $segerUsersAdmin = $userModel->getUsersAdminWithEmail($groupRepository->findByGroupId('seger-hu'));
+            $users = array_merge($users, $segerUsersAdmin);
             $values->transmissionList = new \Doctrine\Common\Collections\ArrayCollection();
-            $values->transmissionList->add($values->place['failedPlace']);
+            foreach ($users as $user) {
+                $values->transmissionList->add($userRepository->find($user->getId()));
+            }
         }
         
         $values->event = $eventRepository->find($values->event['id']);
@@ -36,20 +45,22 @@ class IncidentReportingModel extends ModelAbstract
         return $values;
     }
 
-    public function updateTransmissionList($incidentId, $group, $type) {
+    public function updateTransmissionList($incidentId, $user, $type) {
         $this->entity = $this->getRepository()->find($incidentId);
 
-        if(!$group instanceOf \HospitalApi\Entity\Group) {
-            $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($group->id);
+        if($user instanceOf \HospitalApi\Entity\User) {
+            $user = $this->em->getRepository('HospitalApi\Entity\User')->find($user->getId());
+        } else {
+            $user = $this->em->getRepository('HospitalApi\Entity\User')->find($user->id);
         }
 
         if($type == 'add') {
-            if(!$this->groupInList($group) ) {
-                $this->entity->addGroupToTransmissionList($group);
+            if(!$this->userInList($user) ) {
+                $this->entity->addUserToTransmissionList($user);
             }
         } else if($type == 'remove') {
-            if($this->groupInList($group) ) {
-                $this->entity->removeGroupToTransmissionList($group);
+            if($this->userInList($user) ) {
+                $this->entity->removeUserToTransmissionList($user);
             }
         }
 
@@ -58,9 +69,9 @@ class IncidentReportingModel extends ModelAbstract
         return true;
     }
 
-    public function groupInList($group) {
-        $res = $this->entity->getTransmissionList()->exists( function($key, $entry) use ($group) {
-            return ($entry->getId() == $group->getId());
+    public function userInList($user) {
+        $res = $this->entity->getTransmissionList()->exists( function($key, $entry) use ($user) {
+            return ($entry->getId() == $user->getId());
         });
         return $res;
     }
@@ -70,7 +81,7 @@ class IncidentReportingModel extends ModelAbstract
             ->select('u')
             ->from('HospitalApi\Entity\User', 'u')
             ->innerJoin('HospitalApi\Entity\IncidentReporting', 'ir', 'WITH', 'ir.id = :incident')
-            ->innerJoin('ir.transmissionList', 'irtl', 'WITH', 'irtl = u.group')
+            ->innerJoin('ir.transmissionList', 'irtl', 'WITH', 'irtl = u')
             ->where('u.admin = 1')
             ->andWhere('u.id != :user')
             ->andWhere('u.c_removed = 0')

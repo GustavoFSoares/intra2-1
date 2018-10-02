@@ -18,7 +18,7 @@
                             Enviar Relato
                         </button>
                         
-                        <router-link class="button btn btn-outline-primary btn-lg" id="back-button" to="/eventos-adversos" tag="button" :disabled="options.disabled">Voltar</router-link>
+                        <router-link class="button btn btn-outline-primary btn-lg" id="back-button" :to="{name: 'notificacao-de-incidentes/help'}" tag="button" :disabled="options.disabled">Voltar</router-link>
                     </row>
                 </div>
             </div>

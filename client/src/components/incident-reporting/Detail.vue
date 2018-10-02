@@ -93,13 +93,13 @@
         <div class='row'>
             <rows :label="subtitles.recordTime">
                 <p v-if="report.recordTime"> <icon icon="user-clock"/>
-                    {{ moment(report.recordTime.date).format('DD/MM/YYYY hh:mm') }}
+                    {{ moment(report.recordTime.date).format('DD/MM/YYYY HH:mm') }}
                 </p>
             </rows>
             
             <rows :label="subtitles.failedTime">
                 <p v-if="report.failedTime"> <icon icon="clock"/>
-                    {{ moment(report.failedTime.date).format('DD/MM/YYYY hh:mm') }}
+                    {{ moment(report.failedTime.date).format('DD/MM/YYYY HH:mm') }}
                 </p>
             </rows>
         </div>
@@ -111,43 +111,29 @@
             <div class="container">
                 
                 <label v-if="gotPermission">
-                    <b>Adicionar Grupo Responsavel:</b> <input type="checkbox" v-model="addGroups" @change="loadGroups()">
+                    <b>Adicionar Usuário Responsavel:</b> <input type="checkbox" v-model="addUser">
                 </label>
-                <row label='Adicionar Grupo' v-if="addGroups">
-                    <v-select label="name" :options="(values.groups)" v-model="groupSelected" @input="addGroupToTransmissionList()"/>
+                <row label='Adicionar Usuario' v-if="addUser">
+                    <v-select label="name" :options="(values.users)" v-model="userSelected" @input="addUserToTransmissionList()"/>
                 </row>
                 
-                 <div id="table" class="list-group">
-                    <div v-for="(transmissionGroup, index) in report.transmissionList" :key="index" class="card">
+                <div id="table" class="list-group">
+                    <div v-for="(userAdmin, index) in report.transmissionList" :key="index" class="card">
 
-                        <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id'+transmissionGroup.id" aria-expanded="true" :aria-controls="'id'+transmissionGroup.id" @click.native="loadUserForGroup(transmissionGroup.id)">
-                            <span class="float-left">{{ transmissionGroup.name }}</span>
-                            <router-link class="float-right" to="" @click.native="removeGroupToTransmissionList(transmissionGroup, index)" v-if="gotPermission">
+                        <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id'+index" aria-expanded="true" :aria-controls="'id'+index">
+                            <span class="float-left">{{ userAdmin.name }} ({{ userAdmin.group.name }})</span>
+                            <router-link class="float-right" to="" @click.native="removeUserToTransmissionList(userAdmin, index)" v-if="gotPermission">
                                 <icon class="text-danger" icon="minus-circle"/>
                             </router-link>
                         </router-link>
 
-                        <div :id="'id'+transmissionGroup.id" class="collapse" data-parent="#table">
-                            <div class="card-body">
+                        <div :id="'id'+index" class="collapse" data-parent="#table">
+                            <div class="card">
+                                <div class="card-body">
                                 
-                                <div id="users" v-if="transmissionGroup.id == groupId">
-                                    <div class="container">
-                                        <div class="list-group  list-group-flush">
-                                            
-                                            <div class="list-group-item" v-for="(user, index) in values.users" :key="`g${transmissionGroup.id}u${index}`">
-                                                <span class="float-left">{{ user.name }}</span>
-                                                <span class="float-right" v-if="user.email">{{ user.email }}</span>
-                                                <span class="float-right" v-else><b>Sem email cadastrado</b></span>
-                                            </div>
-                                            
-                                            <div class="list-group-item disabled" v-if="values.users.length == 0 && values.users">
-                                                <span class="">Nenhum usuário encontrado</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                        <span class="float-right" v-if="userAdmin.email">{{ userAdmin.email }}</span>
+                                        <span class="float-right" v-else><b>Sem email cadastrado</b></span>                                
                                 </div>
-                                
                             </div>
                         </div>
 
@@ -171,7 +157,7 @@
                                     <span class="time">{{ line.time }}</span>
                                     <span class="user">{{ line.user }}:</span>
                                     <span class="message">{{ line.message }}</span>
-                                    <br>
+                                    <br/>
                                 </span>
                             </div>
                         </div>
@@ -197,8 +183,8 @@
 
 <script>
 import model, { getter } from '@/model/incident-reporting-model'
-const ModelGroup = require('@/model/group-model').getter
 const ModelUser = require('@/model/user-model').default
+const GetterUser = require('@/model/user-model').getter
 import Report from "@/entity/incidentReporting";
 import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
 import Alert from '@/components/shared/Alert'
@@ -225,11 +211,10 @@ export default {
                 failedTime: "Horário do Evento",
                 transmissionList: "Acompanhamento do Incidente",
             },
-            addGroups: false,
-            groupSelected: '',
+            addUser: false,
+            userSelected: '',
             groupId: '',
             values: {
-                groups: [],
                 users: [],
             },
             alert: {
@@ -237,9 +222,9 @@ export default {
                     title: "Fechar Chamado?",
                     message: "Ao fechar o chamado você bloqueia todas o chat e para acessa-lo deverá entrar em contato com a TI",
                 },
-                removeGroup: {
-                    title: "Deseja Remover esse grupo?",
-                    message: "Ao clicar 'sim' você remove o grupo da Lista de Transmissão. Deseja Continuar?",
+                removeUser: {
+                    title: "Deseja Remover esse Usuário?",
+                    message: "Ao clicar 'sim' você remove o usuário da Lista de Transmissão. Deseja Continuar?",
                 },
             }
         }
@@ -248,32 +233,33 @@ export default {
         loadValues() {
             getter.getIncidentById(this.id).then(res => { this.report = new Report(res) } )
             getter.getHistoricByIncident(this.id).then(res => { this.historic = res; } )
+            GetterUser.getUsersAdminWithEmail().then(res => this.values.users = res)
         },
-        loadGroups() {
-            if(this.addGroups) {
-                ModelGroup.getGroups().then(res => this.values.groups = res)
+        addUserToTransmissionList() {
+            if(this.userSelected) {
+                var canAdd = true
+                model.addUserToTransmissionList(this.id, this.userSelected)
+                this.report.transmissionList.forEach(user => {
+                    if(user.id == this.userSelected.id) {
+                        canAdd = false
+                    }
+                });
+
+                if(canAdd) {
+                    this.report.transmissionList.push(this.userSelected)
+                    this.userSelected = null
+                }
+                
             }
         },
-        addGroupToTransmissionList() {
-            if(this.groupSelected) {
-                model.addGroupToTransmissionList(this.id, this.groupSelected)
-                this.report.transmissionList.push(this.groupSelected)
-            }
-        },
-        removeGroupToTransmissionList(group, groupIndex) {
+        removeUserToTransmissionList(user, userIndex) {
             
-            Alert.YesNo(this.alert.removeGroup.title, this.alert.removeGroup.message).then(res => {
+            Alert.YesNo(this.alert.removeUser.title, this.alert.removeUser.message).then(res => {
                 if(res) {
-                    model.removeGroupToTransmissionList(this.id, group)
-                    this.report.transmissionList.splice(groupIndex, 1)
+                    model.removeUserToTransmissionList(this.id, user)
+                    this.report.transmissionList.splice(userIndex, 1)
                 }
             })
-        },
-        loadUserForGroup(groupId) {
-            this.groupId = groupId
-            this.values.users = ''
-
-            ModelUser.loadUsers(this.groupId).then(res => this.values.users = res)
         },
         closeReport() {
             Alert.YesNo(this.alert.closeReport.title, this.alert.closeReport.message).then(res => {

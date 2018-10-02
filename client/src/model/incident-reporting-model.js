@@ -1,6 +1,6 @@
 import service from "@/services/incident-reporting";
 const PermissionList = [
-    // 'tecnologia-da-informacao-hu',
+    'tecnologia-da-informacao-hu',
     'seger-hu'
 ]
 
@@ -54,8 +54,8 @@ var model = {
         model.insertMessage(id, message)
     },
     insertMessage: (id, message) => service.insertMessage({ 'id': id, 'message': message, 'user': window.$session.get('user') }),
-    addGroupToTransmissionList: (incidentId, data) => service.addGroupToTransmissionList(incidentId, data),
-    removeGroupToTransmissionList: (incidentId, data) => service.removeGroupToTransmissionList(incidentId, data),
+    addUserToTransmissionList: (incidentId, data) => service.addUserToTransmissionList(incidentId, data),
+    removeUserToTransmissionList: (incidentId, data) => service.removeUserToTransmissionList(incidentId, data),
     gotPermission: (group) => {
         return new Promise(resolve => {
             PermissionList.forEach(list => {

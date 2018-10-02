@@ -1,73 +1,80 @@
 <template>
-    <div class="container-fluid">
-        <h1>{{ title }}</h1>
+    <div id="screen">
+        <div class="container mb-5" @keyup.enter="findUserByName()">
+            <h1>{{ title }}</h1>
 
-        <div class="form-group form-row col">
-            <input type="search" class="filter form-control" :disabled="!values.groups" @input="filter = $event.target.value" placeholder="Nome:"/>
-        </div>
-
-        <div id="table" class="list-group">
-            <div v-for="group of searchList" :key="group.id" class="card">
-
-                <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id'+group.id" aria-expanded="true" :aria-controls="'id'+group.id" @click.native="loadUserForGroup(group.id)">
-                    {{ group.name }}
-                </router-link>
-
-                <div :id="'id'+group.id" class="collapse" data-parent="#table">
-                    <div class="card-body">
-
-                        <div id="users" v-if="group.id == groupId">
-                            <div class="card" v-for="(user, index) in values.users" :key="`g${group.id}u${index}`" >
-                                <a class="btn text-left" :id="`g${group.id}u${index}`"  data-toggle="collapse" :data-target="`#g${group.id}u${index}-value`" aria-expanded="true" :aria-controls="`g${group.id}u${index}-value`" v-bind:class="{'table-secondary': !user.admin}">
-                                    {{ user.name }}
-                                </a>
-
-                                <div :id="`g${group.id}u${index}-value`" class="collapse" :aria-labelledby="`g${group.id}u${index}`" data-parent="#users">
-                                    <div class="card-body">
-
-                                        <div class='row'>
-                                            <rows label='Administrador'>
-                                                <checkbox @changed="user.admin = !user.admin" id="admin" class="button" :checked="user.admin"/>    
-                                            </rows>
-                                            <rows label="Email">
-                                                <input data-vv-as="Email" v-validate data-vv-rules="required|email" type="text" class="form-control" name="User-email" v-model="user.email">
-                                                <require-text :error="errors.has('User-email')" :text="errors.first('User-email')" :show="true" :attribute="user.email"/>
-                                            </rows>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card" v-if="values.users.length == 0 && values.users">
-                                <a class="btn text-left" dissabled>
-                                    Nenhum usuário encontrado
-                                </a>
-                            </div>
-
-                            <row>
-                                <button class="btn btn-outline-primary" @click="submit()">Atualizar</button>
-                                <button class="btn btn-default" @click="$refs.addUser.openModal(group.id)">Adicionar Novo</button>
-                            </row>
-                        </div>
-                        
-                    </div>
-                </div>
-
+            <div class='row'>
+                <rows label='' class='col-md-8'>
+                    <input type="search" class="form-control" v-model="find.userFinderName"  placeholder="Nome do Gestor:"/>    
+                </rows>
+                <rows label=''>
+                    <button @click="findUserByName()" class="btn btn-outline-primary" :disabled="!find.userFinderName || find.finding">
+                        Pesquisar
+                        <icon v-if="find.finding" icon="spinner" pulse/>
+                    </button>
+                </rows>
             </div>
         </div>
-        <add-user-modal ref="addUser" :group="groupId" @close="addToUsers"/>
+            
+        <row>
+            <div id="alert-message">
+                <alert-message v-if="alertMessage" :type="alertMessage.type" :text="alertMessage.text"/>
+            </div>
+        </row>
 
+        <div class="container-fluid">
+            <!-- <div class="form-group form-row col">
+                <input type="search" class="filter form-control" :disabled="!values.users" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
+            </div> -->
+
+            <div id="table" class="list-group">
+                
+                <div v-for="(user, index) of searchList" :key="user.id" class="card">
+                    <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id-'+index" aria-expanded="true">
+                        {{ user.name }} ({{ user.group.name }})
+                    </router-link>
+
+                    <div :id="'id-'+index" class="collapse" data-parent="#table">
+                        <div class="card-body">
+                            
+                            <div class='row'>
+                                <rows label='Gestor'>
+                                    <checkbox @changed="user.admin = !user.admin" id="admin" class="button" :checked="user.admin"/>    
+                                </rows>
+                                <rows label="Email">
+                                    <input data-vv-as="Email" v-validate data-vv-rules="required|email" type="text" class="form-control" name="User-email" v-model="user.email">
+                                    <require-text :error="errors.has('User-email')" :text="errors.first('User-email')" :show="true" :attribute="user.email"/>
+                                </rows>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="card-body">
+                            <row>
+                                <button class="btn btn-outline-primary" @click="updateUser(user)">Atualizar</button>
+                            </row>
+                        </div>
+                    </div>
+
+                </div>
+                
+                 <div class="card" v-if="values.users.length == 0 && values.users">
+                    <a class="btn text-left" dissabled>
+                        Nenhum usuário encontrado
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </div>
 </template>
 
 <script>
-const ModelGroup = require('@/model/group-model').getter
-import { FormRw, FormRws, Require, Checkbox } from "@/components/shared/Form";
-import AddUser from "./AddUser.vue";
+import { FormRw, FormRws, Require, Checkbox } from "@/components/shared/Form"
+import AlertMessage from "@/components/shared/AlertMessage.vue"
+import AddUser from "./AddUser.vue"
 import model, { getter } from '@/model/user-model'
-import User from "@/entity/User";
-import moment from 'moment'
+import User from "@/entity/User"
 
 export default {
     data() {
@@ -75,25 +82,39 @@ export default {
             title: 'Responsavel por Setor',
             groupId: '',
             values: {
-                groups: [],
                 users: [],
             },
-            moment: moment,
             filter: '',
+            find: {
+                finding: false,
+                userFinderName: null,
+            },
+            alertMessage: ''
         }
     },
     methods: {
-        loadValues() {
-            ModelGroup.getGroups().then(res => {this.values.groups = res })
-        },
         loadUserForGroup(groupId) {
             this.groupId = groupId
             this.values.users = ''
-
-            model.loadUsers(this.groupId).then(res => this.values.users = res)
         },
-        addToUsers(user) {
-            this.values.users.push(new User(user))
+        findUserByName() {
+            this.find.finding = true
+
+            getter.getUserByName(this.find.userFinderName).then(res => { 
+                this.values.users = []
+                
+                res.forEach(user => {
+                    this.values.users.push(new User(user))
+                })
+                this.find.userFinderName = null
+                this.find.finding = false
+            })
+        },
+        updateUser(user) {
+            model.doEditUser(user.id, user).then( res => {
+                this.alertMessage = { text: `Usuário <b>${user.id}</b> foi atualizado`, type:"success" }
+                window.scrollTo(0, 100)
+            } )
         },
         submit() {
             model.doEditUsers(this.values.users).then(res => {
@@ -103,7 +124,9 @@ export default {
 
     },
     mounted() {
-        this.loadValues()
+        getter.getUsersAdminWithEmail().then(res => {
+            res.forEach(user => this.values.users.push(new User(user)) );
+        })
     },
     computed: {
         searchList() {
@@ -111,16 +134,18 @@ export default {
             if(this.filter) {
                 let exp = new RegExp(this.filter.trim(), 'i')
                 
-                return this.values.groups.filter(groups => {
+                return this.values.users.filter(user => {
                     
-                    if( exp.test(groups.id)) {
+                    if( exp.test(user.id)) {
                         return exp
-                    } else if( exp.test(groups.name)) {
+                    } else if( exp.test(user.name)) {
+                        return exp
+                    } else if( exp.test(user.group.name)) {
                         return exp
                     }
                 })
             } else {
-                return this.values.groups
+                return this.values.users
             }
         }
     },
@@ -130,6 +155,7 @@ export default {
         'require-text': Require,
         'checkbox': Checkbox,
         'add-user-modal': AddUser,
+        'alert-message': AlertMessage,
     }
 }
 </script>
@@ -137,5 +163,11 @@ export default {
 <style scoped>
     #table div {
         margin-top: 2px;
+    }
+
+    #alert-message {
+        margin-left: 35%;
+        margin-right: 35%;
+        text-align: center;
     }
 </style>

@@ -22,6 +22,13 @@ class UserController extends ControllerAbstract
         return $res->withJson($collection);
     }
 
+    public function getUsersAdminAction($req, $res, $args) {
+        $data = $this->getModel()->getUsersAdminWithEmail();
+        $collection = $this->translateCollection($data);
+        
+        return $res->withJson($collection);
+    }
+
     public function updateUsers($req, $res, $args) {
         $values = $req->getParsedBody();
         $model = $this->getModel();
@@ -52,5 +59,6 @@ class UserController extends ControllerAbstract
         $entity = $model->mount($values);
         return parent::_mountEntity($entity);
     }
+    
 
 }

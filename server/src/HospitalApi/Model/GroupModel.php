@@ -15,7 +15,7 @@ class GroupModel extends SoftdeleteModel
     }
 
     public function findByGroupId($groupId){
-        return $this->getRepository()->findOneByGroupId($groupId);
+        return $this->getRepository()->findOneBy(['GroupId' => $groupId, 'c_removed' => 0]);
     }
 
     public function findEnterprises() {
@@ -23,6 +23,7 @@ class GroupModel extends SoftdeleteModel
         $query
             ->select('g.enterprise')
             ->from($this->entityPath, 'g')
+            ->where('g.c_removed = 0')
             ->distinct('g.enterprise');
         $collection = $query->getQuery()->getResult();
         

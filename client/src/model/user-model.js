@@ -4,8 +4,11 @@ import User from "@/entity/User";
 const getters = {
     getUsers: () => service.getUsers(),
     getUserById: (id) => service.getUsers({ 'id':id }),
+    getUserByName: (name) => service.getUsers({ 'name':name }),
     getUsersByGroupId: (groupId) => service.getUsers({ 'group':groupId, 'c_removed':0 }),
     getUsersActivedByGroupId: (groupId) => service.getUsers({ 'group':groupId }),
+    getUsersAdmin: () => service.getUsers({ 'admin':1, 'c_removed':0 }),
+    getUsersAdminWithEmail: () => service.getUsersAdminWithEmail(),
     getUsersAdminByGroup: (groupId) => service.getUsers({ 'group':groupId, 'admin':1 }),
 }
 

@@ -49,8 +49,8 @@ if(!$model->findBy()){
                 "icon" => "/static/img/links/outlook.png" ,
                 "externalLink" =>  true
             ], [
-                "url" => "/eventos-adversos/" ,
-                "title" => "Evento Adverso" ,
+                "url" => "/notificacao-de-incidentes/" ,
+                "title" => "Notificação de Incidente" ,
                 "icon" => "/static/img/links/qsp.jpg" ,
                 "externalLink" =>  false
             ], [

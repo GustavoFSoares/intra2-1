@@ -50,7 +50,7 @@
                     <td>{{ report.event.description.substr(0, 40) }}</td>
                     <td>{{ report.reportPlace.name }}</td>
                     <td>{{ report.failedPlace.name }}</td>
-                    <td>{{ moment(report.failedTime.date).format('DD/MM/YYYY hh:mm') }}</td>
+                    <td>{{ moment(report.failedTime.date).format('DD/MM/YYYY HH:mm') }}</td>
                     <td>
                         <icon class="text-success" icon="check" v-if="report.patientInvolved"/>
                         <icon class="text-danger" icon="times" v-else/>
@@ -144,7 +144,7 @@ export default {
                         return exp
                     } else if( exp.test(reports.reportPlace.name)) {
                         return exp
-                    } else if( exp.test(moment(reports.failedTime.date).format('DD/MM/YYYY hh:mm'))) {
+                    } else if( exp.test(moment(reports.failedTime.date).format('DD/MM/YYYY HH:mm'))) {
                         return exp
                     }
                 })

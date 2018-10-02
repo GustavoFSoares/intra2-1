@@ -1,8 +1,8 @@
 import http from '../client'
 
 export default {
-    getAllRamals: (id) => {
-        return http.get(`/ramal/all/`, { params: { id: id } }).then( res => res.data )
+    getRamalsForExibition: (id) => {
+        return http.get(`/ramal/exibition/`, { params: { id: id } }).then( res => res.data )
     },
     getRamals: (id) => {
         return http.get(`/ramal/`, { params: { id: id } }).then( res => res.data )

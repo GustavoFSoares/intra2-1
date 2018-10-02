@@ -1,7 +1,7 @@
 <?php
 namespace Helper;
 
-class ArrayDiffer {
+class Differ {
     public static function diff( $ary_1, $ary_2 ) {
         $diff = array();
 

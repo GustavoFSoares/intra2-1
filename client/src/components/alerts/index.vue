@@ -13,9 +13,8 @@
                     <th scope="col">Título</th>
                     <th scope="col">Descrição</th>
                     <th scope="col">Tipo</th>
+                    <th scope="col">Prazo Inicio</th>
                     <th scope="col">Prazo Final</th>
-                    <th scope="col">Status</th>
-                    <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -25,14 +24,12 @@
                     <td>{{ alert.title }}</td>
                     <td>{{ alert.description }}</td>
                     <td :class='`text-${alert.type}`'>{{ alert.type.toUpperCase() }}</td>
-                    <td>DD/mm/YYYY HH:mm</td>
-                    <td>-- Ativo --</td>
+                    <td>{{ moment(alert.beginTime.date).format('DD/MM/YYYY HH:mm') }}</td>
+                    <td>{{ moment(alert.endTime.date).format('DD/MM/YYYY HH:mm') }}</td>
                     <td>
                         <router-link :to='`/usuario/alertas/edit/${alert.id}`'>
                             <i class="fa fa-edit"></i>
                         </router-link>
-                    </td>
-                    <td>
                         <router-link @click.native="remove(alert.id, index)" to="">
                             <i class="text-danger fa fa-trash"></i>
                         </router-link>
@@ -50,11 +47,14 @@
 <script>
 import Alert from "@/entity/alert";
 import model from "@/model/alert";
+import moment from "moment";
+
 export default {
     data() {
         return {
             title: "Alertas",
             alerts: [ new Alert() ],
+            moment: moment,
         }
     },
     methods: {

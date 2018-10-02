@@ -21,10 +21,10 @@ export default {
     closeReport: (id) =>
         http.put(`/incident-reporting/close/${id}`).then(res => res.data),
     
-    addGroupToTransmissionList: (id, data) =>
-        http.put(`/incident-reporting/add-group/${id}`, data).then(res => res.data),
+    addUserToTransmissionList: (id, data) =>
+        http.put(`/incident-reporting/add-user/${id}`, data).then(res => res.data),
     
-    removeGroupToTransmissionList: (id, data) =>
-        http.put(`/incident-reporting/remove-group/${id}`, data).then(res => res.data),
+    removeUserToTransmissionList: (id, data) =>
+        http.put(`/incident-reporting/remove-user/${id}`, data).then(res => res.data),
 
 }
