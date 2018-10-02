@@ -1,8 +1,10 @@
 import http from '../client'
 
 export default {
-    getUsers: (filter = {}) =>
+    getUsers: (filter = {}) => 
         http.get(`/user/`, { params: filter }).then(res => res.data),
+    getUsersAdminWithEmail: () =>
+        http.get(`/user/users-admin-email/`).then(res => res.data),
     editUsers: (data) =>
         http.put(`/user/`, data).then(res => res.data),
     editUser: (id, data) =>

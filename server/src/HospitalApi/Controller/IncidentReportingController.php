@@ -71,7 +71,7 @@ class IncidentReportingController extends ControllerAbstractLongEntity
         return $res->withJson($chats);
     }
 
-    public function insertGroupToTransitionList($req, $res, $args) {
+    public function insertUserToTransitionList($req, $res, $args) {
         $incidentId = $args['id'];
         $group = (object)$req->getParsedBody();
         
@@ -80,7 +80,7 @@ class IncidentReportingController extends ControllerAbstractLongEntity
         return $res->withJson($response);
     }
     
-    public function removeGroupToTransitionList($req, $res, $args) {
+    public function removeUserToTransitionList($req, $res, $args) {
         $incidentId = $args['id'];
         $group = (object)$req->getParsedBody();
         

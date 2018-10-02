@@ -88,12 +88,11 @@ class IncidentReporting extends EntityAbstract
     protected $failedTime;
 
     /**
-     * @ManyToMany(targetEntity="Group")
+     * @ManyToMany(targetEntity="User")
      * @JoinTable(name="Notificacao_Incidente_Lista_Transmissao",
-    
      *      joinColumns={@JoinColumn(name="incidente_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="grupo_id", referencedColumnName="id")}
-     *      )
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
      */
     protected $transmissionList;
 
@@ -266,13 +265,13 @@ class IncidentReporting extends EntityAbstract
     public function getTransmissionList() {
         return $this->transmissionList;
     }
-    public function addGroupToTransmissionList($groups) {
-        $this->transmissionList->add($groups);
+    public function addUserToTransmissionList($user) {
+        $this->transmissionList->add($user);
 
         return $this;
     }
-    public function removeGroupToTransmissionList($groups) {
-        $this->transmissionList->removeElement($groups);
+    public function removeUserToTransmissionList($user) {
+        $this->transmissionList->removeElement($user);
         
         return $this;
     }

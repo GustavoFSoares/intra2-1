@@ -123,7 +123,11 @@ export default {
         }
 
     },
-    mounted() { },
+    mounted() {
+        getter.getUsersAdminWithEmail().then(res => {
+            res.forEach(user => this.values.users.push(new User(user)) );
+        })
+    },
     computed: {
         searchList() {
 
