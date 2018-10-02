@@ -48,7 +48,9 @@ class IncidentReportingModel extends ModelAbstract
     public function updateTransmissionList($incidentId, $user, $type) {
         $this->entity = $this->getRepository()->find($incidentId);
 
-        if(!$user instanceOf \HospitalApi\Entity\User) {
+        if($user instanceOf \HospitalApi\Entity\User) {
+            $user = $this->em->getRepository('HospitalApi\Entity\User')->find($user->getId());
+        } else {
             $user = $this->em->getRepository('HospitalApi\Entity\User')->find($user->id);
         }
 

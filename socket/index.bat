@@ -1,1 +1,1 @@
-start node C:\Users\gustavo.soares\Desktop\teste\index.js /MIN
+start node C:\Apache24\htdocs\intra2\socket\index.js /MIN
