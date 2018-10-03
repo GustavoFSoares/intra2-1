@@ -3,7 +3,11 @@ const Socket = class {
     constructor(id, userName) {
         this.id = id
         this.userName = userName
-        this.io = io(`http://${window.location.hostname}:3000`);
+        if (window.location.hostname == 'gamp-web') {
+            this.io = io(`http://10.100.1.30:3000`);
+        } else {
+            this.io = io(`http://${window.location.hostname}:3000`);
+        }
         this.setUserName(userName)
     }
 
