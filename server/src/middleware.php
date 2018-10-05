@@ -4,6 +4,7 @@ use Symfony\Component\Yaml\Yaml;
 // Application middleware
 
 // e.g: $app->add(new \Slim\Csrf\Guard);
+define('PATH', __DIR__);
 
 loadConfigurations();
 
