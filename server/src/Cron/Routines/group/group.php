@@ -1,7 +1,5 @@
 <?php
-    require __DIR__ . '/../../../../vendor/autoload.php';
-    require __DIR__ . '/../../../../src/middleware.php';
-    session_start();
+    require '../index.php';
 
     $GroupController = new \Cron\Controller\GroupController();
     $GroupController->update();

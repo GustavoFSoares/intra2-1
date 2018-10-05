@@ -53,7 +53,6 @@ class ActiveDirectoryController
         $result = ldap_search($this->_con, "dc=hmd,dc=local", $filter, $justhese);
         
         $info = ldap_get_entries($this->_con, $result);
-
         $lastGroup = '';
         $groups = [ ];
         foreach ($info as $key => $result) {

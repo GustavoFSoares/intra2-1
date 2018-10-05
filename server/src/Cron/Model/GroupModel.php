@@ -21,7 +21,8 @@ class GroupModel extends ModelAbstract
     public function findGroupsId() {
         $query = $this->em->createQueryBuilder();
         $query->select('g.groupId')
-            ->from('HospitalApi\Entity\Group', 'g');
+            ->from('HospitalApi\Entity\Group', 'g')
+            ->where('g.c_removed = 0');
         $values = $query->getQuery()->getResult();
 
         $data = [];
