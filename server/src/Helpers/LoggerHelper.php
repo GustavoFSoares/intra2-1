@@ -36,7 +36,7 @@ class LoggerHelper implements LoggerHelperInterface {
         $file = \Helper\SlugHelper::get($file);
         $file = strtoupper($file).".log";
 
-        $folderDir = "../logs/$type";
+        $folderDir = PATH."/../logs/$type";
         if(!is_dir($folderDir)) { 
            $mk = mkdir($folderDir, 0777, true);
         }
@@ -49,7 +49,7 @@ class LoggerHelper implements LoggerHelperInterface {
         $value = str_replace("\n", "  ", $value);
 
         file_put_contents(self::$fileDir, "$value\n", FILE_APPEND);
-        return $value;
+        return $value."\n";
     }
 
 

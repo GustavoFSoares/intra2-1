@@ -1,13 +1,14 @@
 <?php
 namespace Cron\Controller;
 
+use HospitalApi\BasicApplicationAbstract;
 use HospitalApi\Controller\ActiveDirectoryController;
 use HospitalApi\Entity\Group;
 use Cocur\Slugify\Slugify;
 /**
  * <b>ActiveDirectoryController</b>
  */
-class GroupController
+class GroupController extends BasicApplicationAbstract
 {
 
     public $model;

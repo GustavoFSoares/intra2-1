@@ -1,13 +1,14 @@
 <?php
 namespace Cron\Controller;
 
+use HospitalApi\BasicApplicationAbstract;
 use HospitalApi\Controller\ActiveDirectoryController;
 use HospitalApi\Entity\User;
 use Cocur\Slugify\Slugify;
 /**
  * <b>ActiveDirectoryController</b>
  */
-class UserController
+class UserController extends BasicApplicationAbstract
 {
 
     public $model;
@@ -21,12 +22,10 @@ class UserController
         		 'g', 'h', 'i', 'j', 'k', 'l',
         		 'm', 'n', 'o', 'p', 'q', 'r',
         		 's', 't', 'u', 'v', 'w', 'x',
-                 'y', 'z'];
+                 'y', 'z', '.'];
         
-        \Helper\LoggerHelper::initLogFile('user');
-
-        \Helper\LoggerHelper::writeFile("Inicio: ".date('Y-m-d H:i:s')."\n");
-        \Helper\LoggerHelper::writeFile("Verificando...\n");
+        \Helper\LoggerHelper::initLogFile('cron/user', null, 'USER', 'Y/m/d His');
+        echo \Helper\LoggerHelper::writeFile("Verificando...\n");
         foreach ($alph as $letter) {
             foreach ($alph as $secondLetter) {
                 foreach ($alph as $thirdLetter) {
@@ -54,7 +53,7 @@ class UserController
                                             
                                             $group = $this->getRepositoryGroupById($row['group']['name']);
                                             if(!$group){
-                                                \Helper\LoggerHelper::writeFile("$id Ativo - Grupo nao encontrado\n");
+                                                echo \Helper\LoggerHelper::writeFile("$id --> {$row['group']['name']} <-- Ativo - Grupo nao encontrado\n");
                                             } else {
 
                                                 $User
@@ -63,7 +62,7 @@ class UserController
                                                     ->setGroup($group)
                                                     ->setOccupation($row['occupation']);
                                                 $this->model->doUpdate($User);
-                                                \Helper\LoggerHelper::writeFile("$id Ativo - Atualizado\n");
+                                                echo \Helper\LoggerHelper::writeFile("$id --> {$row['group']['name']} <-- Ativo - Atualizado\n");
                                             }
 
                                         /* Ativo e SEM usuário  cadastrado */
@@ -78,7 +77,7 @@ class UserController
                                             $group = $this->getRepositoryGroupById($row['group']['name']);
 
                                             if(!$group){
-                                                \Helper\LoggerHelper::writeFile("$id Ativo - Grupo nao encontrado\n");
+                                                echo \Helper\LoggerHelper::writeFile("$id --> {$row['group']['name']} <-- Ativo - Grupo nao encontrado\n");
                                             } else {
 
                                                 $User = new User();
@@ -89,7 +88,7 @@ class UserController
                                                     ->setGroup($group)
                                                     ->setOccupation($row['occupation']);
                                                 $this->model->doInsert($User);
-                                                \Helper\LoggerHelper::writeFile("$id Ativo - Adicionado\n");
+                                                echo \Helper\LoggerHelper::writeFile("$id --> {$row['group']['name']} <-- Ativo - Adicionado\n");
                                             }
 
                                         }
@@ -100,11 +99,11 @@ class UserController
                                             $User
                                                 ->setC_removed(false);
                                             $this->model->doUpdate($User);
-                                            \Helper\LoggerHelper::writeFile("$id Desativado - Usuário Inativado\n");
+                                            echo \Helper\LoggerHelper::writeFile("$id --> {$row['group']['name']} <-- Desativado - Usuário Inativado\n");
                                         
                                         /* Desativado e SEM usuário cadastrado */
                                         } else {
-                                            \Helper\LoggerHelper::writeFile("$id Desativado - Ignorado\n");
+                                            echo \Helper\LoggerHelper::writeFile("$id --> {$row['group']['name']} <-- Desativado - Ignorado\n");
                                         }
                                     }
 
@@ -120,8 +119,8 @@ class UserController
                 }
             }
         }
-        \Helper\LoggerHelper::writeFile("--Atualizacao de Funcionarios finalizada--\n");
-        \Helper\LoggerHelper::writeFile("Fim: ".date('Y-m-d H:i:s')."\n");
+        echo \Helper\LoggerHelper::writeFile("--Atualizacao de Funcionarios finalizada--\n");
+        echo \Helper\LoggerHelper::writeFile("Fim: ".date('Y-m-d H:i:s')."\n");
         
     }
 
