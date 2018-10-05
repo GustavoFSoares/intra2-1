@@ -33,7 +33,8 @@ class UserModel extends SoftdeleteModel
     public function findBy($filters) {
         $select = $this->em->createQueryBuilder()
             ->select('u')
-            ->from('HospitalApi\Entity\User', 'u');
+            ->from('HospitalApi\Entity\User', 'u')
+            ->where('u.c_removed = 0');
 
         if( isset($filters['name']) ) {
             $select
@@ -71,6 +72,7 @@ class UserModel extends SoftdeleteModel
             ->select('u')
             ->from($this->getEntityPath(), 'u')
             ->where('u.admin = 1')
+            ->andWhere('u.c_removed = 0')
             ->andWhere('u.email != :null')
             ->setParameter('null', "");
         if($group) {

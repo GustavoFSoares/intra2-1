@@ -12,6 +12,7 @@ export default class User {
             this.admin = user.admin = user.admin ? true : false
             this.ramal = user.ramal
             this.occupation = user.occupation
-            this.c_removed = user.c_removed
+            this.active = user.active ? true : false
+            this.c_removed = user.c_removed ? true : false
         }
 }

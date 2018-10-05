@@ -48,7 +48,7 @@ class LoginController extends ControllerAbstract
     public function doLogin($id) {
 
         $model = $this->getModel();
-        $User = $model->findById($id);
+        $User = $model->getRepository()->find($id);
         $Ad = new ActiveDirectoryController();
         
         if(!$User) {
@@ -79,8 +79,10 @@ class LoginController extends ControllerAbstract
             $User = $model->findById($id);
         }
         
+        $model = new \HospitalApi\Model\StatusMessageModel();
         if($User->isRemoved() || !$Ad->isActive($id)){
-            $model = new \HospitalApi\Model\StatusMessageModel();
+            return $model->getStatus('user_removed')->toArray();
+        } else if(!$User->isActive()) {
             return $model->getStatus('user_inactive')->toArray();
         }
         
