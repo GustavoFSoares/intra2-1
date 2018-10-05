@@ -26,10 +26,40 @@ class RamalModel extends SoftdeleteModel
         return $values;
     }
 
-    public function findAll() {
-        $collection = $this->getRepository()->findBy(['group.c_removed' => 0], ['group' => 'ASC', 'core' => 'ASC']);
+    public function findAll($filters) {
+        $select = $this->em->createQueryBuilder();
+        $select->select('r')
+            ->from($this->getEntityPath(), 'r')
+            ->innerJoin('r.group', 'g', 'WITH', 'r.group = g AND g.c_removed = 0');
+         foreach ($filters as $filter => $value) {
+            $select
+                ->andWhere("r.$filter = :$filter")
+                ->setParameter($filter, $value);
+        }
+        $select
+            ->addOrderBy('r.group', 'ASC')
+            ->addOrderBy('r.core', 'ASC');
 
-        return $collection;
+        return  $select->getQuery()->getREsult();
+    }
+
+    public function findBy($filters) {
+        $select = $this->em->createQueryBuilder();
+        $select->select('r')
+            ->from($this->getEntityPath(), 'r')
+            ->innerJoin('r.group', 'g', 'WITH', 'r.group = g AND g.c_removed = 0');
+         foreach ($filters as $filter => $value) {
+            $select
+                ->andWhere("r.$filter = :$filter")
+                ->setParameter($filter, $value);
+        }
+        $select
+            ->where('r.c_removed = 0')
+            ->addOrderBy('r.group', 'ASC')
+            ->addOrderBy('r.core', 'ASC');
+
+        return  $select->getQuery()->getREsult();
+        
     }
 
     public function filterRamals($filter) {
