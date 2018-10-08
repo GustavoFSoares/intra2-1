@@ -143,5 +143,13 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		}
 		return $this->_model->entity;
 	}
+
+	public function changeStatusAction($req, $res, $args) {
+        $id = $args['id'];
+        $entity = $this->_model->changeStatus($id);
+
+        $return = $this->_model->doUpdate($entity);
+        return $res->withJson(true);
+    }
 	
 }

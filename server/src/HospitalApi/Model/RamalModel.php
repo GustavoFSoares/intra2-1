@@ -17,13 +17,6 @@ class RamalModel extends SoftdeleteModel
         parent::__construct();
     }
 
-    public function changeStatusRamal($ramalId) {
-        $ramal = $this->getRepository()->find($ramalId);
-        $ramal->setActive(!$ramal->isActive());
-        
-        return $ramal;
-    }
-
     public function mount($values) {
         $values = (object)$values;
         $groupRepository = $this->em->getRepository("HospitalApi\Entity\Group");

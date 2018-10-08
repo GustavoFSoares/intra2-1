@@ -13,14 +13,20 @@ abstract class SoftdeleteModel extends ModelAbstract
      * O findBy() realiza uma busca considerando remoção lógica(c_removed)
      * @return Collection
      */
-    public function findBy($filters = []) {
-        if(isset($filters['c_removed'])) {
-            unset($filters['c_removed']);
-        } else {
+    public function findBy($filters = [], $orders = []) {
+        $filters['c_removed'] = 0;
+        $collection = $this->getRepository()->findBy($filters, $orders);
+        
+        return $collection;
+    }
+
+    public function findById($id, $showRemoved = false) {
+        $filters['id'] = $id;
+        if(!$showRemoved) {
             $filters['c_removed'] = 0;
         }
-        
-        $collection = $this->getRepository()->findBy($filters);
+
+        $collection = $this->getRepository()->findOneBy($filters);
         
         return $collection;
     }
@@ -28,5 +34,12 @@ abstract class SoftdeleteModel extends ModelAbstract
     public function doUpdate($obj) {
         $obj->setC_removed($obj->isRemoved() ? true : false);
         return parent::doUpdate($obj);
+    }
+
+    public function changeStatus($id) {
+        $entity = $this->getRepository()->find($id);
+        $entity->setActive(!$entity->isActive());
+        
+        return $entity;
     }
 }

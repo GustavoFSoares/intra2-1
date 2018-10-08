@@ -21,7 +21,9 @@ class ModuleModel extends SoftdeleteModel
             ->from('HospitalApi\Entity\Module', 'm')
             ->innerJoin('m.groups', 'g', 'WITH', 'g.groupId = :group OR m.default = 1')
             ->setParameter('group', $group)
-            ->where('m.c_removed != 1')
+            ->where('m.c_removed = 0')
+            ->andWhere('g.c_removed = 0')
+            ->andWhere('m.active= 1')
             ->andWhere('m.parent IS NULL')
             ->orderBy('m.name', 'asc');
         $collection = $query->getQuery()->getResult();
@@ -29,10 +31,9 @@ class ModuleModel extends SoftdeleteModel
         return $collection;
     }
 
-    public function findAll() {
-        $collection = $this->getRepository()->findBy(['parent' => null]);
-
-        return $collection;
+    public function findBy($filters = [], $orders = []) {
+        $filters['parent'] = null;
+        return parent::findBy($filters, $orders);
     }
 
     public function removeChield($chieldId) {

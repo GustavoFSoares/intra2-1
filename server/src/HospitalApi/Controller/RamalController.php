@@ -35,15 +35,6 @@ class RamalController extends ControllerAbstract
         return $res->withJson($data);
     }
 
-    public function changeStatusAction($req, $res, $args) {
-        $id = $args['id'];
-        $model = $this->getModel();
-        $ramal = $model->changeStatusRamal($id);
-
-        $return = $model->doUpdate($ramal);
-        return $res->withJson(true);
-    }
-
     public function translateCollection($entity) {
         if(empty($arr)){
 			$arr = is_array($entity) ? 
