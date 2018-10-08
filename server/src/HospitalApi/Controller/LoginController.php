@@ -48,7 +48,7 @@ class LoginController extends ControllerAbstract
     public function doLogin($id) {
 
         $model = $this->getModel();
-        $User = $model->getRepository()->find($id);
+        $User = $model->findById($id, true);
         $Ad = new ActiveDirectoryController();
         
         if(!$User) {

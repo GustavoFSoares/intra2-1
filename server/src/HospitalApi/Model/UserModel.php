@@ -16,8 +16,8 @@ class UserModel extends SoftdeleteModel
         parent::__construct();
     }
 
-    public function findById($id) {
-        $User = parent::findById($id);
+    public function findById($id, $showRemoved = false) {
+        $User = parent::findById($id, $showRemoved);
         if($User) {
             $group = $User->getGroup();
             $complement = $User->getComplement();
