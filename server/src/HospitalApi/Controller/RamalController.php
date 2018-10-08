@@ -35,26 +35,12 @@ class RamalController extends ControllerAbstract
         return $res->withJson($data);
     }
 
-    public function delete($req, $res, $args) {
+    public function changeStatusAction($req, $res, $args) {
         $id = $args['id'];
         $model = $this->getModel();
-        
-        $repository = $model->getRepository()->find($id);
-        $repository->setGroup(null);
+        $ramal = $model->changeStatusRamal($id);
 
-        $delete = $model->doDelete($repository);
-        return $res->withJson($delete);
-    }
-
-    public function changeStatus($req, $res, $args) {
-        $id = $args['id'];
-        $model = $this->getModel();
-
-		$repository = $model->getRepository()->find($id);
-		$repository
-			->setC_Removed(!$repository->isRemoved());
-        
-        $delete = $model->doUpdate($repository);
+        $return = $model->doUpdate($ramal);
         return $res->withJson(true);
     }
 

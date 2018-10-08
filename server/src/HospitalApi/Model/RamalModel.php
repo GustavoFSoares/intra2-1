@@ -17,6 +17,13 @@ class RamalModel extends SoftdeleteModel
         parent::__construct();
     }
 
+    public function changeStatusRamal($ramalId) {
+        $ramal = $this->getRepository()->find($ramalId);
+        $ramal->setActive(!$ramal->isActive());
+        
+        return $ramal;
+    }
+
     public function mount($values) {
         $values = (object)$values;
         $groupRepository = $this->em->getRepository("HospitalApi\Entity\Group");
@@ -31,23 +38,25 @@ class RamalModel extends SoftdeleteModel
         $select->select('r')
             ->from($this->getEntityPath(), 'r')
             ->innerJoin('r.group', 'g', 'WITH', 'r.group = g AND g.c_removed = 0');
-         foreach ($filters as $filter => $value) {
+            foreach ($filters as $filter => $value) {
             $select
-                ->andWhere("r.$filter = :$filter")
-                ->setParameter($filter, $value);
+            ->andWhere("r.$filter = :$filter")
+            ->setParameter($filter, $value);
         }
         $select
+            ->where('r.c_removed = 0')
             ->addOrderBy('r.group', 'ASC')
             ->addOrderBy('r.core', 'ASC');
 
-        return  $select->getQuery()->getREsult();
+        return  $select->getQuery()->getResult();
     }
 
     public function findBy($filters) {
         $select = $this->em->createQueryBuilder();
         $select->select('r')
             ->from($this->getEntityPath(), 'r')
-            ->innerJoin('r.group', 'g', 'WITH', 'r.group = g AND g.c_removed = 0');
+            ->innerJoin('r.group', 'g', 'WITH', 'r.group = g AND g.c_removed = 0')
+            ->where('r.c_removed = 0');
          foreach ($filters as $filter => $value) {
             $select
                 ->andWhere("r.$filter = :$filter")
@@ -55,6 +64,7 @@ class RamalModel extends SoftdeleteModel
         }
         $select
             ->where('r.c_removed = 0')
+            ->andWhere('r.active = 1')
             ->addOrderBy('r.group', 'ASC')
             ->addOrderBy('r.core', 'ASC');
 
@@ -67,13 +77,14 @@ class RamalModel extends SoftdeleteModel
         $query->select('r')
             ->from('HospitalApi\Entity\Ramal', 'r')
             ->innerJoin('HospitalApi\Entity\Group', 'g',
-                'WITH', 'g.id = r.group')
+                'WITH', 'g.id = r.group AND g.c_removed = 0')
             ->where('r.number like :filter')
             ->orWhere('r.core like :filter')
             ->orWhere('r.floor like :filter')
             ->orWhere('g.name like :filter')
             ->orderBy('r.group', 'asc')
-            ->andWhere('g.c_removed = 0')
+            ->andWhere('r.c_removed = 0')
+            ->andWhere('r.active = 1')
             ->setParameter('filter', "%$filter%");
         return $query->getQuery()->getResult();
     }
