@@ -17,8 +17,8 @@ class CovenantsModel extends SoftdeleteModel
         parent::__construct();
     }
 
-    public function findAll() {
-        $collection = $this->getRepository()->findAll();
+    public function findBy() {
+        $collection = $this->getRepository()->findBy([]);
 
         return $collection;
     }

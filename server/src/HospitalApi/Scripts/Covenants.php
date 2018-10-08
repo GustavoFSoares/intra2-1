@@ -5,7 +5,7 @@ use HospitalApi\Model\CovenantsModel;
 
 $model = new CovenantsModel();
 
-if (!$model->findAll()) {
+if (!$model->findBy()) {
     $Covenants = [
         ['title' => "Centro Clínico Gaúcho", 'link' => 'http://www.centroclinicogaucho.com.br'],
         ['title' => "Unimed Porto Alegre", 'link' => 'https://www.unimedpoa.com.br'],
