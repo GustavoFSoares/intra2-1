@@ -30,9 +30,9 @@ class ActiveDirectoryController
         if(!$user->password){
             return false;
         }
-        $bind = ldap_bind($this->_con, $this->_getUser($user->id), $user->password);
-        
-        return $bind;
+            $bind = @ldap_bind($this->_con, $this->_getUser($user->id), $user->password);
+            
+            return $bind;
     }
 
     public function getUserContents($login){
