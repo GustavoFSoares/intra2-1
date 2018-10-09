@@ -97,7 +97,7 @@ class UserController extends BasicApplicationAbstract
                                         /* Desativado e COM usuário cadastrado */
                                         if($User) {
                                             $User
-                                                ->setC_removed(false);
+                                                ->setC_removed(true);
                                             $this->model->doUpdate($User);
                                             echo \Helper\LoggerHelper::writeFile("$id --> {$row['group']['name']} <-- Desativado - Usuário Inativado\n");
                                         
