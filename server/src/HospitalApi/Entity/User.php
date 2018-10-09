@@ -59,6 +59,11 @@ class User extends SoftdeleteAbstract
     protected $admin;
 
     /**
+     * @var Boolean @Column(name="ativo", type="boolean", nullable=true, options={"default":true})
+     */
+    protected $active;
+
+    /**
      * @OneToMany(targetEntity="TrainingParticipant", mappedBy="User")
      */
     private $trainingParticipant;
@@ -79,6 +84,7 @@ class User extends SoftdeleteAbstract
         $this->group = new Group();
         $this->occupation = '';
         $this->admin = false;
+        $this->active = true;
     }
 
     public function getId() {
@@ -158,6 +164,18 @@ class User extends SoftdeleteAbstract
     }
     public function setAdmin($admin) {
         $this->admin = $admin ? true : false;
+
+        return $this;
+    }
+    
+    public function isActive() {
+        return $this->getActive();
+    }
+    public function getActive() {
+        return $this->active;
+    }
+    public function setActive($active) {
+        $this->active = $active ? true : false;
 
         return $this;
     }

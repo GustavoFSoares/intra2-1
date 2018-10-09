@@ -11,7 +11,7 @@ class CollaboratorController extends ControllerAbstract
 
     public function getEmployeeTypes($req, $res, $args) {
         $UserTypeModel = new \HospitalApi\Model\UserTypeModel();
-        $collection = $UserTypeModel->findAll();
+        $collection = $UserTypeModel->findBy();
 
         $data = $this->translateCollection($collection);
         return $res->withJson($data);

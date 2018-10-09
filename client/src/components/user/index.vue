@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(user, index) of users" :key="user.id" v-bind:class="{'table-danger': user.c_removed == '1'}">
+                <tr v-for="(user, index) of users" :key="user.id" v-bind:class="{'table-danger': user.active == '0'}">
                     <td>
                         <icon icon="chess-king" v-if="user.admin"/>
                         <icon icon="user-tie" v-if="user.complement"/>
@@ -29,7 +29,7 @@
                     <td>{{ user.level }}</td>
                     <td>{{ user.ramal }}</td>
                     <td>
-                        <icon class="text-success" icon="check-circle" v-if="!user.c_removed"/>
+                        <icon class="text-success" icon="check-circle" v-if="user.active"/>
                         <icon class="text-danger" icon="times-circle" v-else/>
                     </td>
                     <td>

@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(ramal) in searchList" :key="ramal.id" v-bind:class="{ 'table-danger' : ramal.c_removed }">
+                <tr v-for="(ramal, index) in searchList" :key="ramal.id" v-bind:class="{ 'table-danger' : !ramal.active }">
                     <th>{{ ramal.id }}</th>
                     <td>{{ ramal.number }}</td>
                     <td>{{ ramal.group.name }}</td>
@@ -35,15 +35,15 @@
                     <td>{{ ramal.group.enterprise }}</td>
                     <td>{{ ramal.floor }}</td>
                     <td>{{ moment(ramal.c_modified.date).format('DD/MM/YYYY - hh:mm') }}</td>
-                    <td @dblclick="unactive(ramal.id)">
-                        <icon class="text-success" icon="check-circle" v-if="!ramal.c_removed"/>
+                    <td @dblclick="unactive(ramal)">
+                        <icon class="text-success" icon="check-circle" v-if="ramal.active"/>
                         <icon class="text-danger" icon="times-circle" v-else/>
                     </td>
                     <td>
                         <router-link :to='`ramais/edit/${ramal.id}`'>
                             <icon icon="edit"/>
                         </router-link>
-                        <router-link @click.native="remove(ramal.id)" to=''>
+                        <router-link @click.native="remove(ramal.id, index)" to=''>
                             <icon class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
@@ -56,6 +56,7 @@
 <script>
 import model, { getter } from "@/model/ramal-model";
 import moment from 'moment'
+import Alert from "@/components/shared/Alert";
 
 export default {
     data() {
@@ -64,15 +65,34 @@ export default {
             ramals: "",
             filter: "",
             moment: moment,
+            alert: {
+                info: "Houve um erro ao tentar modificar o Ramal. Por favor tente novamente ou contate a TI",
+                delete: {
+                    title: "Tem certeza que deseja excluir?",
+                    message: "Ao confirmar você exclui o Ramal da lista. Tem certeza que deseja prosseguir?",
+                },
+            },
         }
     },
     methods: {
-        remove(id) {
-            confirm("Tem certeza que deseja excluir ?") ?
-                model.doDelete(id).then(res => this.$router.go()) : ""
+        remove(id, index) {
+            Alert.YesNo(this.alert.delete.title, this.alert.delete.message).then(res => {
+                if(res) {
+                    this.ramals.splice(index, 1)
+                    model.doDelete(id).then(res => { }, 
+                        err => {
+                            Alert.Confirm(this.alert.info).then(res => this.$router.go() )
+                        })
+                }
+            })
         },
-        unactive(id) {
-            model.doUnactive(id).then(res => this.$router.go())
+        unactive(ramal) {
+            ramal.active = !ramal.active
+            model.doUnactive(ramal.id).then(res => { },
+                err => {
+                    Alert.Confirm(this.alert.info)
+                    ramal.active = !ramal.active
+                } )
         }
     },
     mounted() {

@@ -26,6 +26,6 @@ $app->group('/ramal', function () {
     $this->put('/{id}', "HospitalApi\Controller\RamalController:update", function (Request $req, Response $res, array $args) { });
     
     $this->delete('/{id}', "HospitalApi\Controller\RamalController:delete", function (Request $req, Response $res, array $args) { });
-    $this->delete('/change-status/{id}', "HospitalApi\Controller\RamalController:changeStatus", function (Request $req, Response $res, array $args) { });
+    $this->delete('/change-status/{id}', "HospitalApi\Controller\RamalController:changeStatusAction", function (Request $req, Response $res, array $args) { });
     
 });

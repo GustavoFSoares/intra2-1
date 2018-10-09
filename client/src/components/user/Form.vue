@@ -27,7 +27,7 @@
         <div class="row mb-3">
             <rows label="Usuário Removido">
                 <br>
-                <checkbox @changed="User.c_removed = !User.c_removed" id="removed" class="button" :checked="User.c_removed"/>
+                <checkbox @changed="User.active = !User.active" id="removed" class="button" :checked="User.active"/>
             </rows>
 
             <rows label="Level">
@@ -108,7 +108,7 @@ export default {
                 this.User = new User(res)
                 
                 document.getElementById('admin').checked = this.User.admin
-                document.getElementById('removed').checked = this.User.c_removed
+                document.getElementById('removed').checked = !this.User.active
             })
         },
         clicou() {

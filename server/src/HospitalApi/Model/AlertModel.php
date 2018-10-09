@@ -32,4 +32,9 @@ class AlertModel extends SoftdeleteModel
      
         return $collection;
     }
+
+    public function findBy($filters = [], $orders = []) {
+        $orders['id'] = 'DESC';
+        return parent::findBy($filters, $orders);
+    }
 }

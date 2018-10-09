@@ -33,6 +33,11 @@ class Ramal extends SoftdeleteAbstract
     protected $floor;
 
     /**
+     * @var Boolean @Column(name="ativo", type="boolean", nullable=true, options={"default":true})
+     */
+    protected $active;
+
+    /**
      * @ManyToOne(targetEntity="Group",cascade={"persist", "remove"})
      * @JoinColumn(name="grupo_id", onDelete="CASCADE")
      */
@@ -43,6 +48,7 @@ class Ramal extends SoftdeleteAbstract
         $this->id = $id;
         $this->number = $number;
         $this->core = $core;
+        $this->active = true;
         $this->group = $group;
     }
 
@@ -87,6 +93,18 @@ class Ramal extends SoftdeleteAbstract
     }
     public function setGroup($group) {
         $this->group = $group;
+
+        return $this;
+    }
+
+    public function getActive() {
+        return $this->active;
+    }
+    public function isActive() {
+        return $this->getActive();
+    }
+    public function setActive($active) {
+        $this->active = $active ? true : false;
 
         return $this;
     }

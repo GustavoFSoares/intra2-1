@@ -13,7 +13,7 @@ class RamalController extends ControllerAbstract
     }
 
     public function findAll($req, $res, $args) {
-        $collection = $this->getModel()->getRepository()->findBy([], ['group' => 'ASC', 'core' => 'ASC']);
+        $collection = $this->getModel()->findAll($args);
         
         $data = $this->translateCollection($collection);
         return $res->withJson($data);
@@ -33,29 +33,6 @@ class RamalController extends ControllerAbstract
 
         $data = $this->translateCollection($collection);
         return $res->withJson($data);
-    }
-
-    public function delete($req, $res, $args) {
-        $id = $args['id'];
-        $model = $this->getModel();
-        
-        $repository = $model->getRepository()->find($id);
-        $repository->setGroup(null);
-
-        $delete = $model->doDelete($repository);
-        return $res->withJson($delete);
-    }
-
-    public function changeStatus($req, $res, $args) {
-        $id = $args['id'];
-        $model = $this->getModel();
-
-		$repository = $model->getRepository()->find($id);
-		$repository
-			->setC_Removed(!$repository->isRemoved());
-        
-        $delete = $model->doUpdate($repository);
-        return $res->withJson(true);
     }
 
     public function translateCollection($entity) {

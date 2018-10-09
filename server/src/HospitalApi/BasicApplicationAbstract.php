@@ -25,4 +25,14 @@ class BasicApplicationAbstract
         return AD;
     }
 
+    public function getApp() {
+        $app = require PATH.'/../public/index.php';
+        return $app;
+    }
+
+    public function getContainer() {
+        $app = require PATH.'/../public/index.php';
+        return $app->getContainer();
+    }
+
 }

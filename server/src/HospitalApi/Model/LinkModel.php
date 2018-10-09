@@ -17,12 +17,7 @@ class LinkModel extends SoftdeleteModel
         parent::__construct();
     }
 
-    public function findAll() {
-        $collection = $this->getRepository()->findBy(
-            ['c_removed' => 0], 
-            ['title' => 'ASC']
-        );
-
-        return $collection;
+    public function findBy($filters = []) {
+        return parent::findBy($filters, ['title' => 'ASC']);
     }
 }

@@ -56,6 +56,11 @@ class Module extends SoftdeleteAbstract
      */
     protected $groups;
 
+    /**
+     * @var Boolean @Column(name="ativo", type="boolean", nullable=true, options={"default":true})
+     */
+    protected $active;
+
 
     public function __construct($id = 0, $name = "", $routeName = "", $icon = "")
     {
@@ -64,6 +69,7 @@ class Module extends SoftdeleteAbstract
         $this->name = $name;
         $this->routeName = $routeName;
         $this->icon = $icon;
+        $this->active = true;
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -156,6 +162,18 @@ class Module extends SoftdeleteAbstract
     }
     public function setParent($parent) {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function isActive() {
+        return $this->getActive();
+    }
+    public function getActive() {
+        return $this->active;
+    }
+    public function setActive($active) {
+        $this->active = $active ? true : false;
 
         return $this;
     }

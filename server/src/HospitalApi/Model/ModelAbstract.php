@@ -41,7 +41,7 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 		$devMode = true;
 
 		$config = Setup::createAnnotationMetadataConfiguration($path, $devMode);
-
+		
 		$connectionOptions = [
 			'dbname' => DATABASE_NAME,
 			'user' => DB_APPLICATION_USER,
@@ -104,8 +104,8 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	 * Retorna uma Array com os resultados da tabela no Banco de Dados
 	 * @return Array 
 	 */
-	public function findBy($filters = []) {
-		$collection = $this->getRepository()->findBy($filters);
+	public function findBy($filters = [], $orders = []) {
+		$collection = $this->getRepository()->findBy($filters, $orders);
 		
 		return $collection;
 	}

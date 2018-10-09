@@ -2,13 +2,13 @@ import service from "@/services/user"
 import User from "@/entity/User";
 
 const getters = {
-    getUsers: () => service.getUsers(),
+    getUsers: () => service.getUsers({ 'active': 1 }),
     getUserById: (id) => service.getUsers({ 'id':id }),
     getUserByName: (name) => service.getUsers({ 'name':name }),
-    getUsersByGroupId: (groupId) => service.getUsers({ 'group':groupId, 'c_removed':0 }),
-    getUsersActivedByGroupId: (groupId) => service.getUsers({ 'group':groupId }),
-    getUsersAdmin: () => service.getUsers({ 'admin':1, 'c_removed':0 }),
-    getUsersAdminWithEmail: () => service.getUsersAdminWithEmail(),
+    getUsersByGroupId: (groupId) => service.getUsers({ 'group':groupId }),
+    getUsersActivedByGroupId: (groupId) => service.getUsers({ 'group': groupId, 'active': 1 }),
+    getUsersAdmin: () => service.getUsers({ 'admin':1, 'active':1 }),
+    getUsersAdminWithEmail: () => service.getUsersAdminWithEmail({ 'active': 1 }),
     getUsersAdminByGroup: (groupId) => service.getUsers({ 'group':groupId, 'admin':1 }),
 }
 

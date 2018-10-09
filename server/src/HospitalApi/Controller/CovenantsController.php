@@ -12,16 +12,7 @@ class CovenantsController extends ControllerAbstract
     public function __construct() {
         parent::__construct(new CovenantsModel());
     }
-
-    public function delete($req, $res, $args) {
-        $id = $args['id'];
-        $model = $this->getModel();
-		$repository = $model->getRepository()->find($id);
-		$delete = $model->doDelete($repository);
-
-		return $res->withJson($delete);
-    }
-
+    
     public function changeStatus($req, $res, $args) {
         $id = $args['id'];
         $model = $this->getModel();

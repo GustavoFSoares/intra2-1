@@ -30,9 +30,9 @@ class ActiveDirectoryController
         if(!$user->password){
             return false;
         }
-        $bind = ldap_bind($this->_con, $this->_getUser($user->id), $user->password);
-        
-        return $bind;
+            $bind = @ldap_bind($this->_con, $this->_getUser($user->id), $user->password);
+            
+            return $bind;
     }
 
     public function getUserContents($login){
@@ -53,7 +53,6 @@ class ActiveDirectoryController
         $result = ldap_search($this->_con, "dc=hmd,dc=local", $filter, $justhese);
         
         $info = ldap_get_entries($this->_con, $result);
-
         $lastGroup = '';
         $groups = [ ];
         foreach ($info as $key => $result) {

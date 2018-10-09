@@ -1,13 +1,14 @@
 <?php
 namespace Cron\Controller;
 
+use HospitalApi\BasicApplicationAbstract;
 use HospitalApi\Controller\ActiveDirectoryController;
 use HospitalApi\Entity\Group;
 use Cocur\Slugify\Slugify;
 /**
  * <b>ActiveDirectoryController</b>
  */
-class GroupController
+class GroupController extends BasicApplicationAbstract
 {
 
     public $model;
@@ -23,8 +24,8 @@ class GroupController
         		 's', 't', 'u', 'v', 'w', 'x',
                  'y', 'z', '.'
         ];
-        
-        \Helper\LoggerHelper::initLogFile('cron', null, 'GROUP', 'Y/m/d his');
+            
+        \Helper\LoggerHelper::initLogFile('cron/group', null, 'GROUP', 'Y/m/d his');
         echo \Helper\LoggerHelper::writeFile("Verificando...\n");
         
         $mappedGroups = $this->model->findGroupsId();
@@ -34,7 +35,7 @@ class GroupController
         foreach ($alph as $letter) {
             foreach ($alph as $secondLetter) {
                 $groups = $AD->getGroups($letter.$secondLetter);
-
+ 
         
                 foreach ($groups as $key => $group) {
                     $groupId = \Helper\SlugHelper::get($group['name']);
@@ -78,7 +79,7 @@ class GroupController
 
         \Helper\LoggerHelper::writeFile("\n");
         foreach ($diffs as $toDelete) {
-            $group = $this->model->findByGroupId($toDelete);
+            $group = $this->model->findBy($toDelete);
             if($group){
                 $group->setC_removed(true);
                 $this->model->doUpdate($group);
