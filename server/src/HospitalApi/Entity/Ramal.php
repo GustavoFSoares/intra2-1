@@ -33,7 +33,7 @@ class Ramal extends SoftdeleteAbstract
     protected $floor;
 
     /**
-     * @var Boolean @Column(type="boolean", nullable=true, options={"default":true})
+     * @var Boolean @Column(name="ativo", type="boolean", nullable=true, options={"default":true})
      */
     protected $active;
 
