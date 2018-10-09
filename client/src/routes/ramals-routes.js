@@ -12,13 +12,13 @@ const ramalsRoutes = [
         path: '/usuario/ramais',
         component: index,
         name: 'ramais',
-        meta: { requiresAuth: true, group: ['recepcoes-hu', 'tecnologia-da-informacao-hu'], adminAuth: true }
+        meta: { requiresAuth: true, group: ['telefonia-hu', 'tecnologia-da-informacao-hu'], adminAuth: true }
     },
     {
         path: '/usuario/ramais/add',
         component: Form,
         name: 'ramais/add',
-        meta: { requiresAuth: true, group: ['recepcoes-hu', 'tecnologia-da-informacao-hu'], adminAuth: true }
+        meta: { requiresAuth: true, group: ['telefonia-hu', 'tecnologia-da-informacao-hu'], adminAuth: true }
     },
     {
         path: '/usuario/ramais/edit/:id',
