@@ -15,6 +15,14 @@ class IncidentReportingNoticicationEmailTemplate extends EmailTemplateAbstract
             ->setBody($report, ['sender'=>$userSender, 'receiver'=>$userReceiver]);
     }
 
+    public function setSender($sebder) {
+        $sender = $this->getEmailDefault();
+        $sender['name'] = 'GAMP - Qualidade e Segurança (Incidentes)';
+
+        $this->sender = $sender;
+        return $this;
+    }
+
     public function setSubject($report) {
         $this->subject = "#{$report->getId()} Notificação de Incidente - {$report->getEvent()->getDescription()}";
 
