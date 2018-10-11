@@ -41,6 +41,9 @@ class IncidentReportingModel extends ModelAbstract
         }
         
         $values->event = $eventRepository->find($values->event['id']);
+        
+        $afterIncident = $this->getRepository()->findOneBy([], ['id'=> 'DESC']);
+        $values->id = $afterIncident->getId()+1;
 
         return $values;
     }
@@ -97,7 +100,7 @@ class IncidentReportingModel extends ModelAbstract
         $query->select('ir')->from($this->getEntityPath(), 'ir');
 
         foreach ($filters as $filter => $value) {
-            if($filter != 'failedPlace') {
+            if($filter != 'failedPlace' && $filter != 'enterpriseWatching' ) {
                 if($value == "true" || $value == "false") {
                     $value = ($value == "true") ? 1 : 0;
                 }
@@ -109,7 +112,10 @@ class IncidentReportingModel extends ModelAbstract
             $query->innerJoin('ir.transmissionList', 'irtl', 'WITH', "irtl.id = {$filters['failedPlace']} OR ir.failedPlace = {$filters['failedPlace']}")
                   ->groupBy('ir.id');
         }
-        $query->orderBy('ir.id', 'DESC');
+        $query
+            ->innerJoin('ir.failedPlace', 'gf', 'WITH', 'gf.enterprise = :enterpriseWatching' )
+            ->setParameter('enterpriseWatching', $filters['enterpriseWatching'])
+            ->orderBy('ir.id', 'DESC');
             
         return $query->getQuery()->getResult();
     }
