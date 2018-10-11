@@ -4,6 +4,7 @@ namespace HospitalApi\Controller;
 use HospitalApi\Model\IncidentReportingModel;
 use HospitalApi\Model\IncidentReportingMessagesModel;
 use HospitalApi\Template\IncidentReportingNoticicationEmailTemplate;
+use HospitalApi\Template\AdverseEventsEmailTemplate;
 use PHPMailer\PHPMailer\Exception;
 
 /**
@@ -116,4 +117,21 @@ class IncidentReportingController extends ControllerAbstractLongEntity
         return $res->withJson($logs);
     }
 
+    public function _mountEntity($values) {
+        $entity = parent::_mountEntity($values);
+
+        $this->sendEmailFor();
+        $entity->setClosed(true);
+        
+        return $entity;
+    }
+
+    public function sendEmailFor() {
+        $model = $this->getModel();
+        $incident = $model->entity;
+        $emailTemplate = new AdverseEventsEmailTemplate($incident);
+            
+        EmailController::sendEmailAction($emailTemplate);          
+    }
+    
 }

@@ -11,47 +11,49 @@ class AdverseEventsEmailTemplate extends EmailTemplateAbstract
     public function __construct($report) {
         $this
             ->setSubject($report) 
-            ->setSender($report) 
-            ->setReceiver($report) 
-            ->setBody($report); 
+            ->setSender(null) 
+            ->setReceiver($report->getFailedPlace()) 
+            ->setBody($report, $this->getSender()['email']); 
     }
 
     public function setSubject($report) {
-        $this->subject = "Evento Adverso - {$report->event['description']}";
+        $this->subject = "#{$report->getId()} - Notificação de Incidente - {$report->getEvent()->getDescription()}";
 
         return $this;
     }
     
-    public function setSender($report) {
-        $this->sender = $report->sender;
+    public function setSender($sender) {
+        $sender = $this->getEmailDefault();
+        $sender['name'] = 'GAMP - Qualidade e Segurança (Incidentes)';
+
+        $this->sender = $sender;
         
         return $this;
     }
 
-    public function setReceiver($report) {
-        if ($report->enterprise['id'] == 'hpsc') {
-            $receiver = "eventoadverso.hpsc@gampcanoas.com.br";
+    public function setReceiver($failedPlace) {
+        if($failedPlace->getEnterprise() == 'HPSC') {
+            $receiverEmail = "eventoadverso.hpsc@gampcanoas.com.br";
         } else {
-            $receiver = "eventoadverso.hu@gampcanoas.com.br";
+            $receiverEmail = "eventoadverso.hu@gampcanoas.com.br";
         }
-        $this->receiver = parent::setReceiver($receiver);
+        parent::setReceiver($receiverEmail);
         
         return $this;
     }
 
-    public function setBody($report) {
+    public function setBody($report, $writer) {
         $this->body = "
+            <h2>#{$report->getId()} - Notificação de Incidente - {$report->getEvent()->getDescription()}</h2>
             <fieldset> 
                 <legend>Colaborador:</legend>";
 
-            if ($report->reporter['anonymous']) {
+            if ($report->getReporterEmail()) {
                 $this->body .= "
-                        <b>Este relato foi enviado Anonimamente</b><br>";
+                    E-mail: {$report->getReporterEmail()}<br>";
             } else {
                 $this->body .= "
-                        Nome: {$report->reporter['name']} <br>
-                        Telefone: {$report->reporter['phonenumber']}<br>
-                        E-mail: {$report->reporter['email']}<br>";
+                    <b>Este relato foi enviado Anonimamente</b><br>";
             }
 
         $this->body .= "
@@ -59,33 +61,31 @@ class AdverseEventsEmailTemplate extends EmailTemplateAbstract
 
             <fieldset>
                 <legend>Local do Evento:</legend>
-                    Unidade: {$report->enterprise['name']}<br>";
-            if ($report->sector) {
-                $this->body .= "
-                        Setor: {$report->sector['name']}<br>";
-            }
+                    Local de quem relatou o evento: {$report->getReportPlace()->getName()}<br>
+                    Local onde ocorreu a falha: {$report->getFailedPlace()->getName()}<br>";
 
         $this->body .= "
             </fieldset><br>
         
             <fieldset>
                 <legend>Descrição Evento:</legend>
-                    Evento: {$report->event['description']}<br>
-                    Horário do Ocorrido: {$report->eventTime}<br>
-                    Descrição: {$report->complement['description']}<br>
-                    Coonduta Aplicada: {$report->complement['conduct']}<br>
+                    Evento: {$report->getEvent()->getDescription()}<br>
+                    Horário que ocorreu a falha: {$report->getFailedTime()->format('d/m/Y H:i')}<br>
+                    Horário que foi feito o relato: {$report->getRecordTime()->format('d/m/Y H:i')}<br>
+                    Descrição: {$report->getDescription()}<br>
+                    Coonduta Aplicada: {$report->getConduct()}<br>
                     
                     <br>
 
                     <fieldset>
                         <legend>Paciente Envolvido:</legend>";
-                    if (!$report->patient['involved']) {
+                    if (!$report->getPatientInvolved()) {
                         $this->body .= "
                             <b>Não houve problemas com paciente</b><br>";
                     } else {
                         $this->body .= "
-                            Nome: {$report->patient['name']}<br>
-                            Número do Atendimento: {$report->patient['number']}<br>";
+                            Nome: {$report->getPatient()['name']}<br>
+                            Número do Atendimento: {$report->getPatient()['id']}<br>";
                     }
                 $this->body .= "
                     </fieldset>
@@ -93,7 +93,7 @@ class AdverseEventsEmailTemplate extends EmailTemplateAbstract
                     
         <br>";
 
-        if ($report->mustReturn && $report->reporter['anonymous'] == false) {
+        if ($report->getMustReturn() && $report->getReporterEmail()) {
             $this->body .= "<b>Por favor, me responda sobre este E-mail</b><br>";
         }
 
