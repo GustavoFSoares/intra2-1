@@ -145,7 +145,7 @@
         </row>
 
         <hr>
-        <row>
+        <row v-if="report.id">
             <chat :id="`ir${id}`" v-if="!report.closed"/>
             <div v-else >
                 <div>
@@ -231,7 +231,7 @@ export default {
     },
     methods: {
         loadValues() {
-            getter.getIncidentById(this.id).then(res => { this.report = new Report(res) } )
+            getter.getIncidentById(this.id).then(res => { this.report = res ? new Report(res) : new Report() } )
             getter.getHistoricByIncident(this.id).then(res => { this.historic = res; } )
             GetterUser.getUsersAdminWithEmail().then(res => this.values.users = res)
         },
@@ -272,9 +272,9 @@ export default {
     computed: {
         gotPermission() {
             if(this.permission == 'undefined') {
-                model.gotPermission(this.group).then(permission => this.permission = permission )
+                model.gotPermission(this.id).then(permission => { this.permission = permission } )
             } else {
-                return this.permission
+                return (this.permission != 'USER' && this.report.id) ? true : false
             }
         }
     },

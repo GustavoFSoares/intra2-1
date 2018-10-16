@@ -65,9 +65,23 @@ class IncidentReportingController extends ControllerAbstractLongEntity
         return $model->doUpdate($entity);
     }
 
+    public function gotPermissionAction($req, $res, $args) {
+        $params = $req->getQueryParams();
+        
+        $this->storeUser($params);
+        
+        $id = isset($params['id']) ? $params['id'] : false;
+        $permission = $this->getModel()->gotPermission($id);
+        
+        return $res->withJson($permission);
+    }
+
     public function getChatsByIncident($req, $res, $args) {
+		$params = $req->getQueryParams();
+		$this->storeUser($params);
+
         $messagesModel = new IncidentReportingMessagesModel();
-        $chats = $messagesModel->findMessagesByIncident($args['id']);
+        $chats = $messagesModel->findMessagesByIncident($params['id']);
         
         return $res->withJson($chats);
     }

@@ -154,9 +154,9 @@ export default {
         },
         gotPermission() {
             if(this.permission == 'undefined') {
-                model.gotPermission(this.group).then(permission => this.permission = permission)
+                model.gotPermission().then(permission => { this.permission = permission } )
             } else {
-                return this.permission
+                return (this.permission != 'USER' && this.permission) ? true : false
             }
         }
     },

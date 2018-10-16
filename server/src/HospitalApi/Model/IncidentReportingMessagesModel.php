@@ -28,19 +28,22 @@ class IncidentReportingMessagesModel extends ModelAbstract
     }
 
     public function findMessagesByIncident($idIncident) {
-        $query = $this->em->createQueryBuilder();
-        $query
+        $incidentModel = new \HospitalApi\Model\IncidentReportingModel();
+
+        $select = $this->em->createQueryBuilder();
+        $select
             ->select([
                 'irm.message',
                 'u.name as user',
                 'irm.time',
                 'irm.read',
-            ])
+                ])
             ->from($this->getEntityPath(), 'irm')
             ->innerJoin('HospitalApi\Entity\User', 'u', 'WITH', 'u = irm.user')
-            ->where("irm.incident = :incidentId")
+            ->innerJoin('irm.incident', 'ir', 'WITH', 'ir = :incidentId')
             ->setParameter('incidentId', $idIncident);
-        return $query->getQuery()->getResult();
+        $select = $incidentModel->showForJustWhoCanSee($select);
+        return $select->getQuery()->getResult();
     }
 
     public function deleteChats($idIncident) {
