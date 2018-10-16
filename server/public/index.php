@@ -17,9 +17,10 @@ if(!isset($_SESSION)) {
 }
 
 // Instantiate the app
-$settings = require __DIR__ . '/../src/settings.php';
+$settings = require_once __DIR__ . '/../src/settings.php';
 
 $app = new \Slim\App($settings);
+new \HospitalApi\BasicApplicationAbstract($app);
 
 // Set up dependencies
 require_once __DIR__ . '/../src/dependencies.php';
@@ -32,4 +33,3 @@ require_once __DIR__ . '/../src/routes.php';
 
 // Run app
 $app->run();
-return $app;

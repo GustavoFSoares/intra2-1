@@ -61,9 +61,10 @@ export default {
     mounted() {
         this.getWarningAlert()
         this.getDangerAlert()
-
-        this.autoload()
     },
+    created() {
+        this.autoload()
+    }
 
 }
 </script>

@@ -37,9 +37,11 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 */
 	public function get($req, $res, $args) {
 		$id = $req->getQueryParam('id');
+		$params = $req->getQueryParams();
 
+		$this->storeUser($params);
 		if ($id === null) {
-			$results = $this->_model->findBy($req->getQueryParams());
+			$results = $this->_model->findBy($params);
 		} else {
 			$results = $this->_model->findById($id);
 		}
@@ -150,6 +152,18 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 
         $return = $this->_model->doUpdate($entity);
         return $res->withJson(true);
-    }
+	}
+	
+	public function storeUser(&$args) {
+		
+		if( array_key_exists('user_id', $args) ) {
+			$user = $this->_model->em->getRepository('HospitalApi\Entity\User')->find($args['user_id']);
+			if($user instanceof \HospitalApi\Entity\User) {
+				$this->getContainer()->get('session')->_init($user);
+			}
+			
+			unset($args['user_id']);
+		}
+	}
 	
 }
