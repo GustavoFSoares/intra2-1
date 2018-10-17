@@ -27,24 +27,9 @@ class IncidentReportingModel extends ModelAbstract
         
         $values->place['reportPlace'] = $groupRepository->find($values->place['reportPlace']['id']);
         $values->place['failedPlace'] = $groupRepository->find($values->place['failedPlace']['id']);
-        $users = $userModel->getUsersAdminWithEmail($values->place['failedPlace']);
-        if(isset($values->id)) {
-            foreach ($users as $user) {
-                $this->updateTransmissionList($values->id, $user, 'add');
-            }
-        } else {
-            $segerUsersAdmin = $userModel->getUsersAdminWithEmail($groupRepository->findByGroupId('seger-hu'));
-            $users = array_merge($users, $segerUsersAdmin);
-            $values->transmissionList = new \Doctrine\Common\Collections\ArrayCollection();
-            foreach ($users as $user) {
-                $values->transmissionList->add($userRepository->find($user->getId()));
-            }
-        }
         
         $values->event = $eventRepository->find($values->event['id']);
         
-        $afterIncident = $this->getRepository()->findOneBy([], ['id'=> 'DESC']);
-        $values->id = $afterIncident->getId()+1;
 
         return $values;
     }

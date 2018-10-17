@@ -134,15 +134,18 @@ class IncidentReportingController extends ControllerAbstractLongEntity
     public function _mountEntity($values) {
         $entity = parent::_mountEntity($values);
 
-        $this->sendEmailFor();
-        $entity->setClosed(true);
+        if($entity->getFailedPlace()->getEnterprise() == 'HPSC') {
+            $this->sendEmailForHpsc($entity);
+        }
         
         return $entity;
     }
 
-    public function sendEmailFor() {
-        $model = $this->getModel();
-        $incident = $model->entity;
+    public function sendEmailForHpsc($incident) {
+        $afterIncident = $this->getModel()->getRepository()->findOneBy([], ['id'=> 'DESC']);
+        $incident
+            ->setId($afterIncident->getId()+1)
+            ->setClosed(true);
         $emailTemplate = new AdverseEventsEmailTemplate($incident);
             
         EmailController::sendEmailAction($emailTemplate);          

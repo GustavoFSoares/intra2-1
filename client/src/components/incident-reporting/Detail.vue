@@ -121,7 +121,7 @@
                     <div v-for="(userAdmin, index) in report.transmissionList" :key="index" class="card">
 
                         <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id'+index" aria-expanded="true" :aria-controls="'id'+index">
-                            <span class="float-left">{{ userAdmin.name }} ({{ userAdmin.group.name }})</span>
+                            <span class="float-left">{{ userAdmin.name }}</span>
                             <router-link class="float-right" to="" @click.native="removeUserToTransmissionList(userAdmin, index)" v-if="gotPermission">
                                 <icon class="text-danger" icon="minus-circle"/>
                             </router-link>
