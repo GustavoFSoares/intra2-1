@@ -106,6 +106,45 @@
         </div>
 
         <hr>
+        <row>
+
+            <div class="container">
+                
+                <label>
+                    <b>Adicionar Usuário Responsavel:</b> <input type="checkbox" v-model="addUser">
+                </label>
+                <row label='Adicionar Usuario' v-if="addUser">
+                    <v-select label="name" :options="(options.users)" v-model="userSelected" @input="addUserToTransmissionList()"/>
+                </row>
+                
+                <div id="table" class="list-group">
+                    <div v-for="(userAdmin, index) in report.transmissionList" :key="index" class="card">
+
+                        <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id'+index" aria-expanded="true" :aria-controls="'id'+index">
+                            <span class="float-left">{{ userAdmin.name }}</span>
+                            <router-link class="float-right" to="" @click.native="removeUserToTransmissionList(userAdmin, index)">
+                                <icon class="text-danger" icon="minus-circle"/>
+                            </router-link>
+                        </router-link>
+
+                        <div :id="'id'+index" class="collapse" data-parent="#table">
+                            <div class="card">
+                                <div class="card-body">
+                                
+                                        <span class="float-right" v-if="userAdmin.email">{{ userAdmin.email }}</span>
+                                        <span class="float-right" v-else><b>Sem email cadastrado</b></span>                                
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            
+        </row>
+
+        <hr>
         <div id="buttons">
             <row>
                 <router-link class="btn btn-outline-secondary btn-lg" to="" tag="button" @click.native="isValidateForm()">
@@ -121,10 +160,12 @@
 
 <script>
 import model, { getter } from "@/model/incident-reporting-model.js"
+const GetterUser = require('@/model/user-model').getter
 import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form/index.js"
 import Report from "@/entity/incidentReporting";
 const GroupModel = require("@/model/group-model").getter
 import moment from "moment";
+import Alert from '@/components/shared/Alert'
 
 export default {
     data() {
@@ -132,6 +173,7 @@ export default {
             id: this.$route.params.id,
             report: new Report(),
             moment: moment,
+            addUser: '',
             reportingEnterprise: '',
             enterprise: {
                 failed: '',
@@ -160,8 +202,16 @@ export default {
                 enterprises: [],
                 sectors: {
                     failed: [],
-                }
-            }
+                },
+                users: []
+            },
+            userSelected: "",
+            alert: {
+                removeUser: {
+                    title: "Deseja Remover esse Usuário?",
+                    message: "Ao clicar 'sim' você remove o usuário da Lista de Transmissão. Deseja Continuar?",
+                },
+            },
         }
     },
     methods: {
@@ -171,6 +221,33 @@ export default {
                 this.enterprise.failed = res.failedPlace
             } )
             GroupModel.getEnterprises().then(res => this.options.enterprises = res)
+            GetterUser.getUsersAdminWithEmail().then(res => this.options.users = res)
+        },
+        addUserToTransmissionList() {
+            if(this.userSelected) {
+                var canAdd = true
+                model.addUserToTransmissionList(this.id, this.userSelected)
+                this.report.transmissionList.forEach(user => {
+                    if(user.id == this.userSelected.id) {
+                        canAdd = false
+                    }
+                });
+
+                if(canAdd) {
+                    this.report.transmissionList.push(this.userSelected)
+                    this.userSelected = null
+                }
+                
+            }
+        },
+        removeUserToTransmissionList(user, userIndex) {
+            
+            Alert.YesNo(this.alert.removeUser.title, this.alert.removeUser.message).then(res => {
+                if(res) {
+                    model.removeUserToTransmissionList(this.id, user)
+                    this.report.transmissionList.splice(userIndex, 1)
+                }
+            })
         },
         loadFailedSectors(){
             let id = this.enterprise.failed ?
