@@ -42,14 +42,15 @@
                     <th scope="col">Horário da Falha</th>
                     <th scope="col">Paciente Envolvido</th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(report) of searchList" :key="report.id" v-bind:class="{'table-info': report.filtered == false, 'table-disabled': report.closed}">
                     <th>{{ report.id }}</th>
-                    <td>{{ report.event.description.substr(0, 40) }}</td>
-                    <td>{{ report.reportPlace.name }}</td>
-                    <td>{{ report.failedPlace.name }}</td>
+                    <td>{{ report.event.substr(0, 40) }}</td>
+                    <td>{{ report.reportPlace }}</td>
+                    <td>{{ report.failedPlace }}</td>
                     <td>{{ moment(report.failedTime.date).format('DD/MM/YYYY HH:mm') }}</td>
                     <td>
                         <icon class="text-success" icon="check" v-if="report.patientInvolved"/>
@@ -63,6 +64,7 @@
                             <icon  class="text-warning" icon="search"/>
                         </router-link>
                     </td>
+                    <td> <span v-if="report.count" class="badge badge-danger"> {{ report.count }} </span> </td>
                 </tr>
             </tbody>
         </table>
@@ -73,15 +75,18 @@
 import model, { getter } from '@/model/incident-reporting-model'
 import moment from 'moment'
 import { Checkbox, FormRws } from '@/components/shared/Form'
+import Socket from "@/model/chat-model";
 
 export default {
     data() {
         return {
             title: 'Lista de Incidentes',
+            socket: null,
             enterpriseTypes: [{id: 'hu', name:"HU"}, {id: 'hpsc', name: "HPSC"}],
             typeExibited: '',
             reports: [],   
             moment: moment,
+            user: this.$session.get('user').name,
             group: this.$session.get('user').group,
             search: {
                 filter: '',
@@ -94,7 +99,7 @@ export default {
     },
     methods: {
         loadValues() {
-            getter.getIncidents(this.group).then(res => {this.reports = res })
+            getter.getIncidents(this.group).then(res => { this.reports = res })
         },
         loadCloseds() {
             this.search.dbFilters.closed = !this.search.dbFilters.closed
@@ -113,8 +118,20 @@ export default {
             getter.getIncidentsWithFilters(this.group, this.search.dbFilters).then(res => { this.reports = res; })
         },
     },
+    created: function () {
+        this.socket = new Socket(`ir`, this.user)
+        model.socketInit(this.socket)
+    },
     mounted() {
         this.loadValues()
+
+        this.socket.io.on(`ir`, (message) => {
+            if( !this.socket.isYou(message.user) ) {
+                model.getSocketId(message.id).then( id => {
+                    this.reports.find( (element, index, array) => (element.id == id) ? element.count++ : "" )
+                })
+            }
+        })
     },
     computed: {
         searchList() {

@@ -103,9 +103,34 @@ class IncidentReportingModel extends ModelAbstract
 
     public function findBy($filters) {
         $select = $this->em->createQueryBuilder();
-        $select->select('ir')->from($this->getEntityPath(), 'ir');
+        $select->select([
+            'ir.id',
+            'rp.name AS reportPlace',
+            'fp.name as failedPlace',
+            'ev.description as event',
+            'ir.description',
+            'ir.conduct',
+            'ir.mustReturn',
+            'ir.patientInvolved',
+            'ir.recordTime',
+            'ir.failedTime',
+            'ir.closed',
+            'ir.filtered',
+            'nir.count'
+        ])->from($this->getEntityPath(), 'ir');
 
         $select = $this->showForJustWhoCanSee($select)->orderBy('ir.id', 'DESC');
+        $select
+            ->leftJoin('HospitalApi\Entity\NotificationsIncidentReporting', 'nir',
+                'WITH', 'nir.incident = ir AND nir.user = :user'
+            )
+            ->setParameter( 'user', $this->getContainer()['session']->get() )
+            
+            ->innerJoin('ir.reportPlace', 'rp', 'WITH', 'ir.reportPlace = rp' )
+            ->innerJoin('ir.failedPlace', 'fp', 'WITH', 'ir.failedPlace = fp' )
+            ->innerJoin('ir.event', 'ev', 'WITH', 'ir.event = ev' )
+            ->addOrderBy('nir.count', 'ASC')
+            ->addOrderBy('ir.id', 'ASC');
         
         foreach ($filters as $filter => $value) {
             if($filter != 'failedPlace' && $filter != 'enterpriseWatching' ) {

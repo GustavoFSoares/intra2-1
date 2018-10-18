@@ -5,14 +5,14 @@ const io = require('socket.io')(http)
 
 io.on('connection', (socket) => {
     socket.on('message', (res) => {
-        return io.emit(`${res.id}/message`, { 'user': socket.username, 'message': res.msg, 'read': false, time: res.time }) }
-    )
+        io.emit(`${res.id}/message`, { 'user': socket.username, 'message': res.msg, 'read': false, time: res.time }) 
+        io.emit(`ir`, { 'user': socket.username, 'id': res.id, 'time': res.time })
+        return io
+    })
     socket.on('join', (res) => {
         if (res.username != null) {
             socket.username = res.username
         }
-        // socket.broadcast.emit(`${res.id}/message`,
-        //     { 'user': 'Server', 'message': socket.username + ' has joined!'})
     })
 })
 

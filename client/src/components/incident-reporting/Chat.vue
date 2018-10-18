@@ -31,7 +31,7 @@
                 </router-link>
             </div>
         </div>
-                
+               
 
     </div>
 </template>
@@ -60,6 +60,9 @@ export default {
         setMessage: function () {
             model.sendMessage(this.$route.params.id, this.message)
             this.message = '';
+            model.getSocketId(this.$route.params.id).then( id => {
+                model.cleanNotification(this.id, this.$session.get('user').id)
+            })
         },
         doScroll() {
             setTimeout(() => {
@@ -83,7 +86,7 @@ export default {
         getter.getChatsByIncident(this.$route.params.id).then(res => { this.chats = res; this.doScroll() })
         
         this.socket = new Socket(this.id, this.user)
-        model.chatInit(this.socket)
+        model.socketInit(this.socket)
     },
     mounted() {
         this.socket.io.on(`${this.id}/message`, (message) => {

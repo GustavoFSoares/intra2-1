@@ -34,7 +34,7 @@ var model = {
             })
         })
     },
-    chatInit: (socket) => {
+    socketInit: (socket) => {
         model.socket = socket
     },
     sendMessage: (id, message) => {
@@ -44,7 +44,16 @@ var model = {
     insertMessage: (id, message) => service.insertMessage({ 'id': id, 'message': message, 'user': window.$session.get('user') }),
     addUserToTransmissionList: (incidentId, data) => service.addUserToTransmissionList(incidentId, data),
     removeUserToTransmissionList: (incidentId, data) => service.removeUserToTransmissionList(incidentId, data),
-    gotPermission: (incidentId = null) => service.getUserPermission({ 'id': incidentId, 'user_id': window.$session.get('user').id })
+    gotPermission: (incidentId = null) => service.getUserPermission({ 'id': incidentId, 'user_id': window.$session.get('user').id }),
+    getSocketId: (messageId) => {
+        let regex = /\d[\d]*/;
+        return new Promise((resolve) => {
+            let match = regex.exec(messageId)
+            
+            resolve(match[0])
+        })
+    },
+    cleanNotification: (id, userId) => service.cleanNotification(id, { 'user_id':userId, 'incident':id })
 }
 export default model
 export const getter = getters

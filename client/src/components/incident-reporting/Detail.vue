@@ -281,6 +281,9 @@ export default {
     mounted() {
         this.loadValues()
     },
+    created() {
+        model.cleanNotification(this.id, this.$session.get('user').id)
+    },
     components: {
         'row': FormRw,
         'rows': FormRws,

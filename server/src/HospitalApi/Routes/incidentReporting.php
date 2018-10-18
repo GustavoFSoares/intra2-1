@@ -18,4 +18,5 @@ $app->group('/incident-reporting', function () {
     $this->put('/remove-user/{id}', "HospitalApi\Controller\IncidentReportingController:removeUserToTransitionList", function (Request $req, Response $res, array $args) { });
     
     $this->delete('/{id}', "HospitalApi\Controller\IncidentReportingController:delete", function (Request $req, Response $res, array $args) { });
+    $this->delete('/clean-notification/[params:.*]', "HospitalApi\Controller\IncidentReportingController:cleanNotificationAction", function (Request $req, Response $res, array $args) { });
 });
