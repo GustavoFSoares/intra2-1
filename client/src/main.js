@@ -9,6 +9,11 @@ import VueTheMask from 'vue-the-mask'
 import VeeValidate, { Validator } from 'vee-validate';
 import translate from 'vee-validate/dist/locale/pt_BR';
 
+import Tooltip from 'vue-directive-tooltip';
+import 'vue-directive-tooltip/css/index.css';
+import '@/../static/directives-styles/VTooltip.css';
+
+Vue.use(Tooltip);
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import 'font-awesome/css/font-awesome.css'

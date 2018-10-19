@@ -5,7 +5,7 @@
 
         <div class="mb-3">
             <div class='row filters'>
-                <rows label='Fechados' v-bind:class="{'filter-not-selected': search.dbFilters.closed == undefined }">
+                <!-- <rows label='Fechados' v-bind:class="{'filter-not-selected': search.dbFilters.closed == undefined }">
                     <checkbox @changed="loadCloseds(true)"/>
                 </rows>
 
@@ -22,7 +22,7 @@
                         <label>Aguardando Análise</label>
                         <checkbox @changed="loadFiltereds(true)"/>
                     </div>
-                </rows>
+                </rows> -->
             </div>
         </div>
         
@@ -58,10 +58,11 @@
                     </td>
                     <td>
                         <router-link :to='`notificacao-de-incidentes/edit/${report.id}`' v-if="gotPermission && report.closed != true">
-                            <icon icon="edit"/>
+                            <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
                         <router-link :to='`notificacao-de-incidentes/detalhe/${report.id}`'>
-                            <icon  class="text-warning" icon="search"/>
+                            <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
+                            <!-- <icon  v-tooltip.notrigger="{ content: 'change', visible: true }" class="text-warning" icon="search"/> -->
                         </router-link>
                     </td>
                     <td> <span v-if="report.count" class="badge badge-danger"> {{ report.count }} </span> </td>
@@ -155,11 +156,11 @@ export default {
                     
                     if( exp.test(reports.id)) {
                         return exp
-                    } else if( exp.test(reports.event.description)) {
+                    } else if( exp.test(reports.event)) {
                         return exp
-                    } else if( exp.test(reports.failedPlace.name)) {
+                    } else if( exp.test(reports.failedPlace)) {
                         return exp
-                    } else if( exp.test(reports.reportPlace.name)) {
+                    } else if( exp.test(reports.reportPlace)) {
                         return exp
                     } else if( exp.test(moment(reports.failedTime.date).format('DD/MM/YYYY HH:mm'))) {
                         return exp
