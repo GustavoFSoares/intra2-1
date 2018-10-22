@@ -79,7 +79,7 @@ class GroupController extends BasicApplicationAbstract
 
         \Helper\LoggerHelper::writeFile("\n");
         foreach ($diffs as $toDelete) {
-            $group = $this->model->findBy($toDelete);
+            $group = $this->model->findByGroupId($toDelete);
             if($group){
                 $group->setC_removed(true);
                 $this->model->doUpdate($group);

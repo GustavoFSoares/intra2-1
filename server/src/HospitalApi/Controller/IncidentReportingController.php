@@ -35,6 +35,8 @@ class IncidentReportingController extends ControllerAbstractLongEntity
 
             $transmissionList = $model->getTransmissionList($incident->getId(), $user->getId());
             
+            $model->updateTransmissionList($incident->getId(), $user, 'add');
+            NotificationsIncidentReportingModel::deleteNotification($incident, $user);
             foreach ($transmissionList as $userReceiver) {
                 NotificationsIncidentReportingModel::plusOne($incident, $userReceiver);
 
@@ -77,9 +79,11 @@ class IncidentReportingController extends ControllerAbstractLongEntity
 
         $model = $this->getModel();
         $messagesModel = new IncidentReportingMessagesModel();
+        $notificationsModel = new NotificationsIncidentReportingModel();
         
         $entity = $model->getRepository()->find($id);
         $messagesModel->deleteChats($entity->getId());
+        $notificationsModel->deleteNotifications($entity->getId());
 
         $entity->setClosed(true);
 

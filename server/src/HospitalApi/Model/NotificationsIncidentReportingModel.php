@@ -40,10 +40,20 @@ class NotificationsIncidentReportingModel extends ModelAbstract
         $model = new NotificationsIncidentReportingModel();
         $notification = $model->existRegister($incident, $user);
         
+        $return = "";
         if($notification) {
             $return = $model->doDelete($notification);
         }
         return $return;
+    }
+
+    public function deleteNotifications($idIncident) {
+        $query = $this->em->createQueryBuilder();
+        $query
+            ->delete($this->getEntityPath(), 'nir')
+            ->where('nir.incident = :incidentId')
+            ->setParameter('incidentId', $idIncident);
+        $query->getQuery()->execute();
     }
 
 }

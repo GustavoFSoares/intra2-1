@@ -60,9 +60,6 @@ export default {
         setMessage: function () {
             model.sendMessage(this.$route.params.id, this.message)
             this.message = '';
-            model.getSocketId(this.$route.params.id).then( id => {
-                model.cleanNotification(this.id, this.$session.get('user').id)
-            })
         },
         doScroll() {
             setTimeout(() => {
