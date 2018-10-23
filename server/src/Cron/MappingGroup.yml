@@ -1,0 +1,56 @@
+HU:
+    - hu-administracao: "administracao-hu"
+    - hu-almoxarifado: "almoxarifado-hu"
+    - hu-ambulatorio: "ambulatorio-hu"
+    - hu-audiometria: "audiometria-hu"
+    - hu-caps-amanhecer: "caps-amanhecer-hu"
+    - hu-caps-recanto-dos-girassois: "caps-recanto-dos-girassois-hu"
+    - hu-caps-travessia: "caps-travessia-hu"
+    - hu-centro-cirurgico: "centro-cirurgico-hu"
+    - hu-centro-de-terapia-endovascular: "hemoterapia-hu" #
+    - hu-centro-obstetrico: "centro-obstetrico-hu"
+    - hu-clinica-medica: "cti-adulto-hu" #
+    - hu-contabilidade: "financeiro-hu" #
+    - hu-crai-canoas: "ambulatorio-hu" #
+    - hu-cti-adulto: "cti-adulto-hu"
+    - hu-cti-neo: "cti-neonatal-hu" #
+    - hu-cti-pediatrica: "cti-pediatrica-hu"
+    - hu-farmacia: "farmacia-hu"
+    - hu-faturamento: "faturamento-hu"
+    - hu-governanca: "governanca-hu"
+    - hu-hemoterapia: "hemoterapia-hu"
+    - hu-laboratorio: "laboratorio-hu"
+    - hu-manutencao: "manutencao-hu"
+    - hu-nutricao: "nutricao-hu"
+    - hu-patologia: "patologia-hu"
+    - hu-psicologia: "servico-de-psicologia-hu" #
+    - hu-radiologia: "radiologia-hu"
+    - hu-recepcao: "recepcoes-hu" #
+    - hu-recursos-humanos: "recursos-humanos-hu"
+    - hu-seguranca-patrimonial: "seguranca-patrimonial" #
+    - hu-servico-de-apoio-ao-cliente: "servico-de-apoio-ao-cliente-hu"
+    - hu-sesmt: "sesmt-hu"
+    - hu-sr-imagem: "hemoterapia-hu" #
+    - hu-tecnologia-da-informacao: "tecnologia-da-informacao-hu"
+    - hu-ui-10-andar-convenio: "unidinternacao-10-andar-hu" #
+    - hu-ui-maternidade: "ui-matern-9-a-alojcjsus-hu" #
+    - hu-ui-pediatrica: "unidinternacao-pediatria-hu" #
+    - hu-ui-pronto-atend-obstetrico: "pronto-atend-obstetrico-hu" #
+    - hu-unid-intern-8-a: "unidinternacao-8-andar-hu" #
+    - upa-hugo-simoes-lagranha: "upa-rio-branco" #
+
+HPSC: 
+    - hpsc-administracao: administracao-hpsc"
+    - hpsc-centro-cirurgico: "centro-cirurgico-hpsc"
+    - hpsc-centro-material-esterelizado: "centro-cirurgico-hpsc" #
+    - hpsc-cti-adulto: "cti-adulto-hpsc"
+    - hpsc-emergencia: "emergencia-hpsc"
+    - hpsc-farmacia: "farmacia-hpsc"
+    - hpsc-governanca: "governanca-hpsc"
+    - hpsc-laboratorio: "laboratorio-hpsc"
+    - hpsc-manutencao: "manutencao-hpsc"
+    - hpsc-radiologia: "radiologia-hpsc"
+    - hpsc-recepcao: "recepcoes-hpsc"
+    - hpsc-unidade-adulto-1: "centro-cirurgico-hpsc" #
+    - hpsc-unidade-adulto-2: "centro-cirurgico-hpsc" #
+    - hpsc-upa-cacapava: "upa-cacapava-hpsc"

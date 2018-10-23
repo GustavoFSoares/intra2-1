@@ -124,6 +124,92 @@ class UserController extends BasicApplicationAbstract
         
     }
 
+    public function integrateWithAdpFileAction() {
+        $adpPath = PATH.'/../files/adp/';
+        
+        $dir = scandir($adpPath);
+        $file = end($dir);
+
+        $excel = new \Helper\ExcelHelper( pathinfo($file, PATHINFO_EXTENSION) );
+        $excel->loadFile($adpPath.$file);
+              
+        foreach ($excel->getRows() as $key => $data) {
+            if($key == 0) {
+                foreach ($data as $key => $label) {
+                    $label = \Helper\SlugHelper::get($label);
+                    $index[$label] = $key;
+                }
+                
+                echo '<br><br>';
+                echo '!!!'.__FILE__.':<b>'.__LINE__.'</b>'.'!!!';
+                echo '<pre>';
+                print_r($index);
+                echo '</pre>';
+                // die('');
+                
+                continue;
+            }
+
+            $User = $this->model->findByNameOrCode($data[$index['nome']], $data[$index['matricula']]);
+            if($User) {
+                
+                $User
+                    ->setCode( $data[$index['matricula']] )
+                    ->setName( $data[$index['nome']] )
+                    ->setOccupation( $data[$index['funcao-nome']] );
+                
+                $groupId = $this->model->getGroupByGroupMappingFiles( $data[$index['centro-de-resultado-nome']] );
+                
+                echo '<br><br>';
+                echo '!!!'.__FILE__.':<b>'.__LINE__.'</b>'.'!!!';
+                echo '<pre>';
+                print_r($groupId);
+                echo '</pre>';
+                die('');
+                
+                $group = $this->model->em->getRepository('HospitalApi\Entity\Group')->findByGroupId($groupId);
+                if($group) {
+                    $User->setGroup($group);
+                }
+
+                $this->model->doUpdate($User);
+                
+            } else {
+                
+                echo '<br><br>';
+                echo '!!!'.__FILE__.':<b>'.__LINE__.'</b>'.'!!!';
+                echo '<pre>';
+                print_r($data);
+                echo '</pre>';
+                // die('');
+                
+            }
+        }
+        echo '</pre>';
+        
+        die('');
+    }
+
+    public function getCentrosDeResultadoAction() {
+        $adpPath = PATH.'/../files/adp/';
+        
+        $dir = scandir($adpPath);
+        $file = end($dir);
+
+        $excel = new \Helper\ExcelHelper( pathinfo($file, PATHINFO_EXTENSION) );
+        $excel->loadFile($adpPath.$file);
+        
+        $centers = $this->model->getCentersFromFile($excel);
+
+        
+        echo '<br><br>';
+        echo '!!!'.__FILE__.':<b>'.__LINE__.'</b>'.'!!!';
+        echo '<pre>';
+        print_r($centers);
+        echo '</pre>';
+        die('');
+    }
+
     public function getModel() {
         return new \HospitalApi\Model\UserModel();
     }
