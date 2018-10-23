@@ -7,3 +7,4 @@ server/composer.lock
 config/.env
 server/public/.htaccess
 .vscode/launch.json
+server/files/
