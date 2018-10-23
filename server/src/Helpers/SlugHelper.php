@@ -21,4 +21,9 @@ class SlugHelper {
         self::initializer();
         return self::$slug->slugify($var);
     }
+    
+    public static function removeSpaces($var){
+        return preg_replace('/\s.\s./', '', $var);
+    }
+
 }

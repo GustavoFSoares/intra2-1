@@ -75,7 +75,7 @@ class GroupController extends BasicApplicationAbstract
             }
         }
         
-        $diffs = \Helper\Differ::diff($existingGroups, $mappedGroups);
+        $diffs = \Helper\DiffHelper::diff($existingGroups, $mappedGroups);
 
         \Helper\LoggerHelper::writeFile("\n");
         foreach ($diffs as $toDelete) {
