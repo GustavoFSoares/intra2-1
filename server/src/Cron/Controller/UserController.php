@@ -26,6 +26,7 @@ class UserController extends BasicApplicationAbstract
                  'y', 'z', '.'];
         
         \Helper\LoggerHelper::initLogFile('cron/user', null, 'USER', 'Y/m/d His');
+        echo \Helper\LoggerHelper::writeFile("Inicio: ".date('Y-m-d H:i:s')."\n");
         echo \Helper\LoggerHelper::writeFile("Verificando...\n");
         foreach ($alph as $letter) {
             foreach ($alph as $secondLetter) {
@@ -128,10 +129,14 @@ class UserController extends BasicApplicationAbstract
         
     }
 
+    public function adpIntegration() {
+        $this->integrateWithAdpFileAction();
+        $this->removeDuplicateUsersAction();
+    }
+
     public function integrateWithAdpFileAction() {
         \Helper\LoggerHelper::initLogFile('cron/user/adp', null, 'USER-ADP', 'Y/m/d His');
         echo \Helper\LoggerHelper::writeFile("Inicio: ".date('Y-m-d H:i:s')."\n");
-        
         
         $adpPath = PATH.'/../files/adp/';
         
@@ -144,8 +149,6 @@ class UserController extends BasicApplicationAbstract
         $GroupModel = new \Cron\Model\GroupModel();
         
         echo \Helper\LoggerHelper::writeFile("Arquivo analizado: $file\n");
-
-
         echo \Helper\LoggerHelper::writeFile("Verificando...\n");
         foreach ($excel->getRows() as $key => $data) {
             if($key == 0) {
@@ -170,12 +173,14 @@ class UserController extends BasicApplicationAbstract
                     ->setByAdp( true );
                 
                 $groupId = $GroupModel->getGroupByGroupMappingFiles( $data[$index['centro-de-resultado-nome']] );
-                
                 $group = $this->model->em->getRepository('HospitalApi\Entity\Group')->findOneByGroupId($groupId);
                 
                 if($group) {
                     $group = $this->model->em->getRepository('HospitalApi\Entity\Group')->find($group->getId());
                     $User->setGroup($group);
+
+                    $this->model->doUpdate($User);
+                    echo \Helper\LoggerHelper::writeFile("$key - {$User->getId()} --> {$group->getName()} <-- Atualizado\n");
                 } else {
                     
                     $this->saveIfGroupNotFound($data[$index['centro-de-resultado-nome']], $groupId, $User);
@@ -183,8 +188,6 @@ class UserController extends BasicApplicationAbstract
                     
                 }
 
-                $this->model->doUpdate($User);
-                echo \Helper\LoggerHelper::writeFile("{$User->getId()} --> {$group->getName()} <-- Atualizado\n");
             } else {
                 try {
    
@@ -203,14 +206,15 @@ class UserController extends BasicApplicationAbstract
                     if($group) {
                         $group = $this->model->em->getRepository('HospitalApi\Entity\Group')->find($group->getId());
                         $User->setGroup($group);
+
+                        $this->model->doInsert($User);
+                        echo \Helper\LoggerHelper::writeFile("$key - {$User->getId()} --> {$group->getName()} <-- Inserido\n");
                     } else {
                         
                         $this->saveIfGroupNotFound($data[$index['centro-de-resultado-nome']], $groupId, $User);
                         continue;
                     }
 
-                    $this->model->doInsert($User);
-                    echo \Helper\LoggerHelper::writeFile("{$User->getId()} --> {$group->getName()} <-- Inserido\n");
                 
                 } catch (UniqueConstraintViolationException $e) {
                     $this->model = new \Cron\Model\UserModel();
@@ -222,6 +226,10 @@ class UserController extends BasicApplicationAbstract
         
         echo \Helper\LoggerHelper::writeFile("--Atualizacao de Funcionarios via ADP-WEB finalizada--\n");
         echo \Helper\LoggerHelper::writeFile("Fim: ".date('Y-m-d H:i:s')."\n");
+    }
+
+    public function removeDuplicateUsersAction() {
+        
     }
 
     public function getModel() {

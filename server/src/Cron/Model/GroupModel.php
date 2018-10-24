@@ -66,7 +66,7 @@ class GroupModel extends ModelAbstract
     
     private function _isUpa($word){
         $word = \Helper\SlugHelper::removeSpaces($word);
-        $re = '/upa/mi';
+        $re = '/upa\s/mi';
         preg_match_all($re, $word, $matches, PREG_SET_ORDER, 0);
         return $matches ? $matches[0][0] : '';
     }
@@ -79,7 +79,7 @@ class GroupModel extends ModelAbstract
             $enterprise = $nameGroup;
         }
 
-        return ['name' => $nameGroup, 'enterprise' => $enterprise];
+        return ['name' => $nameGroup, 'enterprise' => \Helper\SlugHelper::removeAllSpaces($enterprise)];
     }
 
 }

@@ -64,7 +64,7 @@ class LoginController extends ControllerAbstract
             $group = $this->getRepositoryGroupById($user['group']['name']);
 
             if(!$group){
-                $model = new \HospitalApi\Model\StatusMessageModel();
+                $StatusMessageModel = new \HospitalApi\Model\StatusMessageModel();
                 return $model->getStatus('group_not_found')->toArray();
             }
 
@@ -74,19 +74,24 @@ class LoginController extends ControllerAbstract
                 ->setCode($user['code'])
                 ->setName($user['name'])
                 ->setGroup($group)
-                ->setOccupation($user['occupation']);
+                ->setOccupation($user['occupation'])
+                ->setNewLogin();
             $model->doInsert($User);
             $User = $model->findById($id);
         }
         
-        $model = new \HospitalApi\Model\StatusMessageModel();
+        $StatusMessageModel = new \HospitalApi\Model\StatusMessageModel();
         if($User->isRemoved() || !$Ad->isActive($id)){
-            return $model->getStatus('user_removed')->toArray();
+            return $StatusMessageModel->getStatus('user_removed')->toArray();
         } else if(!$User->isActive()) {
-            return $model->getStatus('user_inactive')->toArray();
+            return $StatusMessageModel->getStatus('user_inactive')->toArray();
         }
         
-        return [ 'status' => true, 'user' => $User->toArray() ];
+        $response = [ 'status' => true, 'user' => $User->toArray() ];
+        
+        $this->setNewLogin($User);
+
+        return $response;
     }
 
     public function getRepositoryGroupById($id) {
@@ -94,6 +99,18 @@ class LoginController extends ControllerAbstract
         $group = $groupRepository->findOneByGroupId(\Helper\SlugHelper::get($id));
         
         return $group;
+    }
+
+    public function setNewLogin($user) {
+        $model = $this->getModel();
+        $group = $this->getRepositoryGroupById($user->getGroup()['groupId']);
+        
+        $user = $model->getRepository()->find($user->getId());
+        $user
+            ->setGroup($group)
+            ->setNewLogin();
+
+        $model->doUpdate($user);
     }
 
 }

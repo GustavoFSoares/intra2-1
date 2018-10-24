@@ -43,7 +43,7 @@ class User extends SoftdeleteAbstract
     protected $ramal;
 
     /**
-     * @ManyToOne(targetEntity="Group",cascade={"persist", "remove"})
+     * @ManyToOne(targetEntity="Group",cascade={"remove"})
      * @JoinColumn(name="grupo_id", referencedColumnName="id", nullable=true)
      */
     protected $group;
@@ -82,6 +82,11 @@ class User extends SoftdeleteAbstract
      * @OneToOne(targetEntity="UserComplement", mappedBy="user", cascade={"persist", "remove"})
      */
     protected $complement;
+
+     /**
+     * @var Datetime @Column(name="ultimo_login", type="datetime", nullable=true)
+     */
+    private $lastLogin;
 
     public function __construct() {
         parent::__construct();
@@ -224,6 +229,20 @@ class User extends SoftdeleteAbstract
     }
     public function setComplement($complement) {
         $this->complement = $complement;
+
+        return $this;
+    }
+  
+    public function getLastLogin() {
+        return $this->lastLogin;
+    }
+    public function setLastLogin($lastLogin) {
+        $this->lastLogin = $this->_formatDate($lastLogin);
+
+        return $this;
+    }
+    public function setNewLogin() {
+        $this->lastLogin = new \DateTime();
 
         return $this;
     }

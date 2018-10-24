@@ -51,8 +51,8 @@ class UserModel extends ModelAbstract
         $select
             ->select('u')
             ->from('HospitalApi\Entity\User', 'u')
-            ->where("u.name LIKE :name")
-            ->setParameter('name', $name)
+            ->where("LOWER(u.name) LIKE :name")
+            ->setParameter('name', strtolower($name) )
             ->orWhere("u.code LIKE :code")
             ->setParameter('code', $code);
 
@@ -115,6 +115,9 @@ class UserModel extends ModelAbstract
             $id = "{$this->getFirstName($name)}.{$this->getMiddleName($name)}";
 
             $User->setId( strtolower($id) );
+
+            $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($User->getGroup()->getId());
+            $User->setGroup($group);
 
             if(!$this->findByNameOrCode($User->getName(), $User->getCode())) {
                 $this->doInsert($User);
