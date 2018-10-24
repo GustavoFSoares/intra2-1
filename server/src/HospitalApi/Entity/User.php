@@ -62,6 +62,16 @@ class User extends SoftdeleteAbstract
      * @var Boolean @Column(name="ativo", type="boolean", nullable=true, options={"default":true})
      */
     protected $active;
+    
+    /**
+     * @var Boolean @Column(name="adp", type="boolean", nullable=true, options={"default":false})
+     */
+    private $byAdp;
+    
+    /**
+     * @var Boolean @Column(name="ad", type="boolean", nullable=true, options={"default":false})
+     */
+    private $activeDirectory;
 
     /**
      * @OneToMany(targetEntity="TrainingParticipant", mappedBy="User")
@@ -79,11 +89,13 @@ class User extends SoftdeleteAbstract
         $this->code = '';
         $this->name = '';
         $this->email = '';
-        $this->level = '';
+        $this->level = 1;
         $this->ramal = '';
         $this->group = new Group();
         $this->occupation = '';
         $this->admin = false;
+        $this->byAdp = false;
+        $this->activeDirectory = false;
         $this->active = true;
     }
 
@@ -164,6 +176,24 @@ class User extends SoftdeleteAbstract
     }
     public function setAdmin($admin) {
         $this->admin = $admin ? true : false;
+
+        return $this;
+    }
+
+    public function getByAdp() {
+        return $this->byAdp;
+    }
+    public function setByAdp($byAdp) {
+        $this->byAdp = $byAdp ? true : false;
+
+        return $this;
+    }
+    
+    public function getActiveDirectory() {
+        return $this->activeDirectory;
+    }
+    public function setActiveDirectory($activeDirectory) {
+        $this->activeDirectory = $activeDirectory ? true : false;
 
         return $this;
     }

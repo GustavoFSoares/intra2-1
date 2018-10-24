@@ -3,7 +3,7 @@ namespace Cron\Model;
 
 use HospitalApi\Model\ModelAbstract;
 use HospitalApi\Entity\User;
-use Symfony\Component\Yaml\Yaml;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class UserModel extends ModelAbstract
 {
@@ -55,26 +55,74 @@ class UserModel extends ModelAbstract
             ->setParameter('name', $name)
             ->orWhere("u.code LIKE :code")
             ->setParameter('code', $code);
-        return $select->getQuery()->getOneOrNullResult();
-    }
 
-    public function getGroupByGroupMappingFiles($adpCenter) {
-        $enterprise = $this->discoverEnterprise($adpCenter);
-        $adpCenter = \Helper\SlugHelper::get($adpCenter);
+        try {
+            return $select->getQuery()->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $this->__construct();
 
-        $file = file_get_contents(PATH.'/Cron/MappingGroup.yml');
-        $yaml = Yaml::parse($file);
-        
-        if(in_array($adpCenter, $yaml[$enterprise])) {
-            return $yaml[$enterprise][$adpCenter];
+            $delete = $this->em->createQueryBuilder();
+            $delete
+                ->delete('HospitalApi\Entity\User', 'u')
+                ->where("u.name LIKE :name")
+                ->setParameter('name', $name)
+                ->orWhere("u.code LIKE :code")
+                ->setParameter('code', $code);
+            $delete->getQuery()->execute();
         }
     }
 
-    public function discoverEnterprise($adpCenter) {
-        $re = '/(h[p,u]\w{0,2})/mi';
-        preg_match_all($re, $adpCenter, $matches, PREG_SET_ORDER, 0);
-        
-        return $matches[0][1] ? $matches[0][1] : '';
+    public function makeId($name) {
+        $name = \Helper\SlugHelper::removeSpaces($name);
+        $id = "{$this->getFirstName($name)}.{$this->getLastName($name)}";
+        return strtolower($id);
     }
 
+    public function getFirstName($name) {
+        $re = '/^(\w+)/m';
+
+        preg_match($re, $name, $matches, PREG_OFFSET_CAPTURE, 0);
+        if(!$matches) {
+            return "ERRONOME";
+        }
+        return $matches[0][0];
+    }
+    
+    public function getLastName($name) {
+        $re = '/(\w+)$/m';
+
+        preg_match($re, $name, $matches, PREG_OFFSET_CAPTURE, 0);
+        if(!$matches) {
+            return "ERRONOME";
+        }
+        return $matches[0][0];
+
+    }
+    
+    public function getMiddleName($name) {
+        $re = '/(\s\w*\s)/m';
+
+        preg_match($re, $name, $matches, PREG_OFFSET_CAPTURE, 0);
+        if(!$matches) {
+            return "ERRONOME";
+        }
+        return \Helper\SlugHelper::removeAllSpaces($matches[0][0]);
+    }
+
+    public function insertWithAnotherId(User $User) {
+        try {
+            $name = $User->getName();
+            $id = "{$this->getFirstName($name)}.{$this->getMiddleName($name)}";
+
+            $User->setId( strtolower($id) );
+
+            if(!$this->findByNameOrCode($User->getName(), $User->getCode())) {
+                $this->doInsert($User);
+            }
+
+        } catch (UniqueConstraintViolationException $e) {
+            echo \Helper\LoggerHelper::writeFile("ID: {$User->getId()} Nome: {$User->getName()} Grupo: {$User->getGroup()->getName()}--> NAO CADASTRADO <-- id duplicado\n");
+            $this->__construct();
+        }
+    }
 }
