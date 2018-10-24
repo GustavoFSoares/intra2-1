@@ -23,7 +23,11 @@ class SlugHelper {
     }
     
     public static function removeSpaces($var){
-        return preg_replace('/\s.\s./', '', $var);
+        return trim($var);
+    }
+    
+    public static function removeAllSpaces($var) {
+        return preg_replace('/\s/', '', $var);
     }
 
 }
