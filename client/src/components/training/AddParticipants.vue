@@ -1,16 +1,31 @@
 <template>
-    <div class="container" @keyup.enter="isValidForm">
+    <div class="container">
         <h1>{{ title }}</h1>
         <h2 v-if="training.done" class="finished"><i>(Treinamento Finalizado)</i></h2>
 
         <row>
-            <div class="row">
-                <rows :label="subtitles.user.name" class="col-md-7" >
-                    <v-select v-model="userSelected" label="name" :options="(users)" :disabled="training.done"/>
-                </rows>
-                <rows :label="subtitles.user.code">
-                    <v-select v-model="userSelected" label="code" :options="(users)" :disabled="training.done"/>
-                </rows>
+            <div id="users-filter" @keyup.enter="loadUsers()">
+                <div class="search-area container-fluid">
+                    <div class='row'>
+                        <input id="filter-input" class="form-control col-10" placeholder="Nome ou Matrícula" type="search" v-model="userFilter">
+                        <button id="filter-button" class="btn btn-outline-primary" @click="loadUsers()">
+                            Buscar
+                        </button>
+                        <icon v-if="loading" id="icon" icon="circle-notch" spin/> 
+                    </div>
+                </div>
+            
+                
+                <div id="users-loaded" v-if="users">
+                    <div class="row">
+                        <rows :label="subtitles.user.name" class="col-md-7" >
+                            <v-select v-model="userSelected" label="name" :options="(users)" :disabled="training.done"/>
+                        </rows>
+                        <rows :label="subtitles.user.code">
+                            <v-select v-model="userSelected" label="code" :options="(users)" :disabled="training.done"/>
+                        </rows>
+                    </div>
+                </div>
             </div>
 
             <div>
@@ -85,7 +100,9 @@ export default {
         return {
             id: '',
             title: "",
-            users: [],
+            users: '',
+            loading: '',
+            userFilter: '',
             training: '',
             userSelected: '',
             participantList: '',
@@ -123,8 +140,22 @@ export default {
                     this.training = new Training(res)
                 })
             ModelTrainingParticipant.getter.getParticipantsTraining(this.id).then(res => this.participantList = res)
-            ModelUserGetter.getUsers().then(res => this.users = res)
         },
+        loadUsers() {
+            if(this.userFilter) {
+                this.loading = true
+                ModelUserGetter.getUsersByNameOrCode(this.userFilter).then(res => { 
+                    this.userFilter = ''
+                    this.users = res
+                    this.training.instructor = ''
+                    this.loading = false
+                }, err => {
+                    console.log(err);
+                    this.userFilter = 'TENTE OUTRO NOME MAIS COMPLETO'
+                    this.loading = false
+                })
+            }
+        }
     },
     components: {
         'row': FormRw,
@@ -139,6 +170,32 @@ export default {
 </script>
 
 <style scoped>
+     #users-loaded {
+        margin-top: 20px;
+    }
+
+    #users-filter {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    
+    #users-filter .search-area {
+        margin-left: 3%;
+        margin-right: 3%;
+    }
+
+    #users-filter #filter-button {
+        margin-left: 20px;
+        float: left
+    }
+    
+    #users-filter #icon {
+        font-size: 30px;
+        margin-top: 4px;
+        margin-left: 10px;
+        /* float:left; */
+    }
+
     #buttons {
         margin-top: 5%;
     }

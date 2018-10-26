@@ -5,24 +5,7 @@
 
         <div class="mb-3">
             <div class='row filters'>
-                <!-- <rows label='Fechados' v-bind:class="{'filter-not-selected': search.dbFilters.closed == undefined }">
-                    <checkbox @changed="loadCloseds(true)"/>
-                </rows>
-
-                <rows>
-                    <div class="mb-3 btn-group" role="group">
-                        <router-link to="" class="btn btn-primary" v-for="(type, index) in enterpriseTypes" :key="index" @click.native="search.type = type">{{ type.name }}</router-link>
-                        <router-link to="" class="btn btn-primary" @click.native="search.type = {id: '', name: ''}">Todos</router-link>
-                    </div>
-                    <button class="btn" @click="cleanFilters()">Limpar Filtros</button>
-                </rows>
-
-                <rows v-bind:class="{'filter-not-selected': search.dbFilters.filtered == undefined }">
-                    <div v-if="gotPermission">
-                        <label>Aguardando Análise</label>
-                        <checkbox @changed="loadFiltereds(true)"/>
-                    </div>
-                </rows> -->
+                
             </div>
         </div>
         
@@ -62,7 +45,6 @@
                         </router-link>
                         <router-link :to='`notificacao-de-incidentes/detalhe/${report.id}`'>
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
-                            <!-- <icon  v-tooltip.notrigger="{ content: 'change', visible: true }" class="text-warning" icon="search"/> -->
                         </router-link>
                     </td>
                     <td> <span v-if="report.count" class="badge badge-danger"> {{ report.count }} </span> </td>

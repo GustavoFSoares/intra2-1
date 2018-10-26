@@ -30,8 +30,22 @@
         </div>
         
         <row :label="subtitles.instructor" class="line">
-            <v-select :data-vv-as="subtitles.institutional" v-validate data-vv-rules="required" label="name" :options="(users)" name="Training-instructor" v-model="training.instructor"/>
-            <require-text :error="errors.has('Training-instructor')" :text="errors.first('Training-instructor')" :show="true" :attribute="training.instructor"/>
+            <div id="users-filter" @keyup.enter="loadUsers()">
+                <div class="search-area container-fluid">
+                    <div class='row'>
+                        <input id="filter-input" class="form-control col-10" placeholder="Nome ou Matrícula" type="search" v-model="userFilter">
+                        <button id="filter-button" class="btn btn-outline-primary" @click="loadUsers()">
+                            Buscar
+                        </button>
+                        <icon v-if="loading" id="icon" icon="circle-notch" spin/> 
+                    </div>
+                </div>
+                
+                <div id="users-loaded" v-if="users">
+                    <v-select :data-vv-as="subtitles.institutional" v-validate data-vv-rules="required" label="name" :options="(users)" name="Training-instructor" v-model="training.instructor"/>
+                    <require-text :error="errors.has('Training-instructor')" :text="errors.first('Training-instructor')" :show="true" :attribute="training.instructor"/>
+                </div>
+            </div>
         </row>
 
         <div class="row">
@@ -92,7 +106,9 @@ export default {
         return {
             id: '',
             title: "Cadastro de Treinamento",
-            users: [],
+            users: '',
+            loading: '',
+            userFilter: '',
             training: new Training(),
             subtitles: {
                 name: "Nome Treinamento",
@@ -142,7 +158,6 @@ export default {
         },
         loadValues() {
             ModelGroupGetter.getEnterprises().then(res => this.values.places = res)
-            ModelUserGetter.getUsers().then(res => this.users = res)
             getter.getTrainingsType().then(res => this.values.trainingsType = res)
 
             this.id = this.$route.params.id
@@ -158,6 +173,21 @@ export default {
         },
         getTime(value) {
             this.training.workload = value
+        },
+        loadUsers() {
+            if(this.userFilter) {
+                this.loading = true
+                ModelUserGetter.getUsersByNameOrCode(this.userFilter).then(res => { 
+                    this.userFilter = ''
+                    this.users = res
+                    this.training.instructor = ''
+                    this.loading = false
+                }, err => {
+                    console.log(err);
+                    this.userFilter = 'TENTE OUTRO NOME MAIS COMPLETO'
+                    this.loading = false
+                })
+            }
         }
     },
     components: {
@@ -189,6 +219,33 @@ export default {
 </script>
 
 <style scoped>
+
+    #users-loaded {
+        margin-top: 20px;
+    }
+
+    #users-filter {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    
+    #users-filter .search-area {
+        margin-left: 3%;
+        margin-right: 3%;
+    }
+
+    #users-filter #filter-button {
+        margin-left: 20px;
+        float: left
+    }
+    
+    #users-filter #icon {
+        font-size: 30px;
+        margin-top: 4px;
+        margin-left: 10px;
+        /* float:left; */
+    }
+
     #buttons {
         margin-top: 5%;
     }

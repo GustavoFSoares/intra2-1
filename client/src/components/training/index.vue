@@ -36,13 +36,13 @@
                     <td> <input type="checkbox" @change="isDone(training)" :disabled="training.done ? true : false" v-model="training.done"/></td>
                     <td>
                         <router-link :to='`hora-homem-treinamento/lista-participantes/${training.id}`'>
-                            <icon class="text-success" icon="user-plus"/>
+                            <icon v-tooltip.top="'Lista de Participantes'" class="text-success" icon="user-plus"/>
                         </router-link>
                         <router-link :to='`hora-homem-treinamento/edit/${training.id}`'>
-                            <icon icon="edit"/>
+                            <icon v-tooltip.top="'Editar'" icon="edit"/> 
                         </router-link>
                         <router-link @click.native="remove(training.id, index)" to="">
-                            <icon class="text-danger" icon="trash-alt"/>
+                            <icon v-tooltip.top="'Remover'" class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
                 </tr>

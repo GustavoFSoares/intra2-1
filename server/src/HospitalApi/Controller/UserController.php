@@ -59,6 +59,13 @@ class UserController extends ControllerAbstract
         $entity = $model->mount($values);
         return parent::_mountEntity($entity);
     }
+
+    public function getUserByNameOrCodeAction($req, $res, $args) {
+        $results = $this->getModel()->findUsersByNameOrCode( $req->getParam('name'), $req->getParam('code') );
+        $data = $this->translateCollection($results);
+
+        return $res->withJson($data);
+    }
     
 
 }
