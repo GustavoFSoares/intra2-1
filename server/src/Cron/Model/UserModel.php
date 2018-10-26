@@ -54,7 +54,9 @@ class UserModel extends ModelAbstract
             ->where("LOWER(u.name) LIKE :name")
             ->setParameter('name', strtolower($name) )
             ->orWhere("u.code LIKE :code")
-            ->setParameter('code', $code);
+            ->setParameter('code', $code)
+            ->orWhere("u.id LIKE :id")
+            ->setParameter('id', $this->makeId($name) );
 
         try {
             return $select->getQuery()->getOneOrNullResult();
@@ -73,7 +75,6 @@ class UserModel extends ModelAbstract
     }
 
     public function makeId($name) {
-        $name = \Helper\SlugHelper::removeSpaces($name);
         $id = "{$this->getFirstName($name)}.{$this->getLastName($name)}";
         return strtolower($id);
     }
@@ -127,5 +128,24 @@ class UserModel extends ModelAbstract
             echo \Helper\LoggerHelper::writeFile("ID: {$User->getId()} Nome: {$User->getName()} Grupo: {$User->getGroup()->getName()}--> NAO CADASTRADO <-- id duplicado\n");
             $this->__construct();
         }
+    }
+    
+    public function getProblablyDuplicatedUsers($groupId) {
+        $select = $this->em->createQueryBuilder();
+        $select
+            ->select( [
+                'g.name as groupName',
+                'u1.id AS UserId1', 'u1.name AS UserName1', 'u1.code AS UserCode1',
+                'u2.id AS UserId2', 'u2.name as UserName2', 'u2.code as UserCode2',
+            ])
+            ->from('HospitalApi\Entity\User', 'u1')
+            ->innerJoin('HospitalApi\Entity\User', 'u2', 'WITH', 'u1.id <> u2.id AND 
+                substring(u1.name, 1, 4) LIKE substring(u2.name, 1, 4) ')
+            ->innerJoin('HospitalApi\Entity\Group', 'g', 'WITH', 'g = u1.group AND g = u2.group')
+            ->where("g.groupId LIKE :groupId")
+            ->setParameter('groupId', $groupId)
+            ->andWhere('u1.activeDirectory = 1')
+            ->andWhere('u2.byAdp = 1');
+        return $select->getQuery()->getResult(); 
     }
 }

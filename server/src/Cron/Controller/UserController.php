@@ -130,21 +130,22 @@ class UserController extends BasicApplicationAbstract
     }
 
     public function adpIntegration() {
-        $this->integrateWithAdpFileAction();
-        $this->removeDuplicateUsersAction();
+        $path = PATH.'/../files/adp/';
+        
+        $dir = scandir($path);
+        $file = end($dir);
+
+        \Cron\Model\RotineModel::startRotine('USER-ADP', $file, 'cron/user/adp');
+
+        $this->integrateWithAdpFileAction($file, $path);
+        $this->insertDuplicatedUsersAction();
+
+        \Cron\Model\RotineModel::endRotine();
     }
 
-    public function integrateWithAdpFileAction() {
-        \Helper\LoggerHelper::initLogFile('cron/user/adp', null, 'USER-ADP', 'Y/m/d His');
-        echo \Helper\LoggerHelper::writeFile("Inicio: ".date('Y-m-d H:i:s')."\n");
-        
-        $adpPath = PATH.'/../files/adp/';
-        
-        $dir = scandir($adpPath);
-        $file = end($dir);
-        
+    public function integrateWithAdpFileAction($file, $path) {
         $excel = new \Helper\ExcelHelper( pathinfo($file, PATHINFO_EXTENSION) );
-        $excel->loadFile($adpPath.$file);
+        $excel->loadFile($path.$file);
         
         $GroupModel = new \Cron\Model\GroupModel();
         
@@ -224,11 +225,47 @@ class UserController extends BasicApplicationAbstract
             }
         }
         
-        echo \Helper\LoggerHelper::writeFile("--Atualizacao de Funcionarios via ADP-WEB finalizada--\n");
-        echo \Helper\LoggerHelper::writeFile("Fim: ".date('Y-m-d H:i:s')."\n");
     }
 
-    public function removeDuplicateUsersAction() {
+    public function insertDuplicatedUsersAction() {
+        \Cron\Model\DuplicatedUsersModel::cleanTable();
+        $groupModel = new \Cron\Model\GroupModel();
+        $rotine = \Cron\Model\RotineModel::getInstance()->entity;
+
+        $i = 0;
+
+        echo \Helper\LoggerHelper::writeFile("\n\n---Analistando usuários duplicados---\n");
+        foreach ($groupModel->findGroupsId() as $key => $groupId) {
+            
+            foreach ($this->model->getProblablyDuplicatedUsers($groupId) as $match) {
+                
+                $user1 = [ 'id' => $match['UserId1'], 'name' => $match['UserName1'], 'code' => $match['UserCode1'], ];
+                $user2 = [ 'id' => $match['UserId2'], 'name' => $match['UserName2'], 'code' => $match['UserCode2'], ];
+
+                $user1['name'] = explode('-', \Helper\SlugHelper::get($user1['name']) );
+                $user2['name'] = explode('-', \Helper\SlugHelper::get($user2['name']) );
+
+                $matching = 0;
+                foreach ($user1['name'] as $name1) {
+                    foreach ($user2['name'] as $name2) {
+                        if(strlen($name1) >= 4 && strlen($name2) >= 4) {
+                            
+                            if($name1 == $name2) {
+                                $matching++;
+                            }
+
+                        }
+                    }
+                }
+
+                if($matching >= 2) {
+                    echo \Helper\LoggerHelper::writeFile("{$user1['id']} <-> {$user2['id']} - Compativel\n");
+
+                    \Cron\Model\DuplicatedUsersModel::addUsers($user1['id'], $user2['id'], $rotine);
+                }
+            }
+
+        }
         
     }
 

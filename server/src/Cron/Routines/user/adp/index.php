@@ -1,4 +1,4 @@
 <?php
     require __DIR__."/../../index.php";
-    $GroupController = new \Cron\Controller\UserController();
-    $GroupController->integrateWithAdpFileAction();
+    $UserController = new \Cron\Controller\UserController();
+    $UserController->adpIntegration();
