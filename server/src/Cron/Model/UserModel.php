@@ -76,7 +76,8 @@ class UserModel extends ModelAbstract
 
     public function makeId($name) {
         $id = "{$this->getFirstName($name)}.{$this->getLastName($name)}";
-        return strtolower($id);
+        $id = strtolower($id);
+        return utf8_decode($id);
     }
 
     public function getFirstName($name) {
@@ -147,5 +148,32 @@ class UserModel extends ModelAbstract
             ->andWhere('u1.activeDirectory = 1')
             ->andWhere('u2.byAdp = 1');
         return $select->getQuery()->getResult(); 
+    }
+
+    public function isAvailableCode($code1, $code2) {
+        if( is_int($code1) && is_int($code2) ) {
+            if( strlen($code1) && strlen($code2) ) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public function getMatcingsByName($fullname1, $fullname2) {
+        $matching = 0;
+        foreach ($fullname1 as $name1) {
+            foreach ($fullname2 as $name2) {
+        
+                if(strlen($name1) >= 4 && strlen($name2) >= 4) {
+                    if($name1 == $name2) {
+                        $matching++;
+                    }
+                }
+
+            }
+        }
+
+        return $matching;
     }
 }
