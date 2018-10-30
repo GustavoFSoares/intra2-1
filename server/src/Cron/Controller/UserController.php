@@ -25,7 +25,7 @@ class UserController extends BasicApplicationAbstract
         's', 't', 'u', 'v', 'w', 'x',
         'y', 'z', '.'];
         
-        \Cron\Model\RotineModel::startRotine('USER-AD', 'active-directory', 'cron/user');
+        \Cron\Model\RotineModel::startRotine('USER-AD', 'active-directory', 'cron/user/active-directory');
         echo \Helper\LoggerHelper::writeFile("Verificando...\n");
         foreach ($alph as $letter) {
             foreach ($alph as $secondLetter) {
