@@ -20,13 +20,12 @@ class UserController extends BasicApplicationAbstract
     public function update() {
         $AD = new ActiveDirectoryController();
         $alph = ['a', 'b', 'c', 'd', 'e', 'f',
-        		 'g', 'h', 'i', 'j', 'k', 'l',
-        		 'm', 'n', 'o', 'p', 'q', 'r',
-        		 's', 't', 'u', 'v', 'w', 'x',
-                 'y', 'z', '.'];
+        'g', 'h', 'i', 'j', 'k', 'l',
+        'm', 'n', 'o', 'p', 'q', 'r',
+        's', 't', 'u', 'v', 'w', 'x',
+        'y', 'z', '.'];
         
-        \Helper\LoggerHelper::initLogFile('cron/user', null, 'USER', 'Y/m/d His');
-        echo \Helper\LoggerHelper::writeFile("Inicio: ".date('Y-m-d H:i:s')."\n");
+        \Cron\Model\RotineModel::startRotine('USER-AD', 'active-directory', 'cron/user');
         echo \Helper\LoggerHelper::writeFile("Verificando...\n");
         foreach ($alph as $letter) {
             foreach ($alph as $secondLetter) {
@@ -39,19 +38,20 @@ class UserController extends BasicApplicationAbstract
                             foreach ($users as $user) {
                                 if(is_array($user)) {
 
+                                    $row = [
+                                        'name' => isset($user['displayname'][0]) ? $user['displayname'][0] : '' ,
+                                        'group' => $AD->getGroupArray(isset($user['department']) ? $user['department'][0] : '' ),
+                                        'occupation' => isset($user['description'][0]) ? $user['description'][0] : '',
+                                        'code' => isset($user['physicaldeliveryofficename'][0]) ? $user['physicaldeliveryofficename'][0] : 'sem-matricula',
+                                    ];
+
                                     $id = $user['samaccountname']['0'];
                                     $active = $AD->isActive($id);
-                                    $User = $this->model->getRepository()->find($id);
-                                    
+
+                                    $User = $this->model->findByNameOrCode($row['name'], $row['code'], $id);
                                     if($active) {
                                         /* Ativo e COM usuário cadastrado */
                                         if($User) {
-                                            $row = [
-                                                'name' => $user['displayname'][0],
-                                                'group' => $AD->getGroupArray(isset($user['department']) ? $user['department'][0] : '' ),
-                                                'occupation' => $user['description'][0]?$user['description'][0]:'',
-                                                'code' => $user['physicaldeliveryofficename'][0]?$user['physicaldeliveryofficename'][0]:'sem-matricula',
-                                            ];
                                             
                                             $group = $this->getRepositoryGroupById($row['group']['name']);
                                             if(!$group){
@@ -120,9 +120,8 @@ class UserController extends BasicApplicationAbstract
                 }
             }
         }
-        echo \Helper\LoggerHelper::writeFile("--Atualizacao de Funcionarios finalizada--\n");
-        echo \Helper\LoggerHelper::writeFile("Fim: ".date('Y-m-d H:i:s')."\n");
         
+        \Cron\Model\RotineModel::endRotine();
     }
 
     public function adpIntegration() {
@@ -243,8 +242,13 @@ class UserController extends BasicApplicationAbstract
 
                 $matching = 0;
                 if($this->model->isAvailableCode($user1['code'], $user2['code']))  {
-                    if($user1['code'] != $user2['code']) {
-                        $matching = $this->model->getMatcingsByName($user1['name'], $user2['name']);        
+                    if($user1['code'] == $user2['code']) {
+
+                        $this->getModel()->mergeUsers($user1['id'], $user2['id']);
+                        echo \Helper\LoggerHelper::writeFile("{$user1['id']} <-> {$user2['id']} - Unidos\n");
+
+                    } else {
+                        continue;
                     }
                 } else {
                     $matching = $this->model->getMatcingsByName($user1['name'], $user2['name']);

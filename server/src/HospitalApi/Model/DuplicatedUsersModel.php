@@ -17,32 +17,32 @@ class DuplicatedUsersModel extends ModelAbstract
     }
 
     public function makeMergeUsers($duplicationId) {
+        $positiveResponse = [
+            'users' => "<b>{$this->entity->getUser1()->getId()}</b> - <b>{$this->entity->getUser2()->getId()}</b>",
+            'message' => "Cadastro Unificado",
+            'status' => 'success',
+        ];
+        $negativeResponse = [
+            'users' => "<b>{$this->entity->getUser1()->getId()}</b>-<b>{$this->entity->getUser2()->getId()}</b>",
+            'message' => "Problema ao Unir",
+            'status' => 'danger',
+        ];
+
         $this->entity = $this->getRepository()->find($duplicationId);
         if($this->entity) {
             $userRepository = $this->em->getRepository('HospitalApi\Entity\User');
-            $user1 = $userRepository->find( $this->entity->getUser1()->getId() );
-            $user2 = $userRepository->find( $this->entity->getUser2()->getId() );
-    
-            $user1
-                ->setName( $user2->getName() )
-                ->setCode( $user2->getCode() )
-                ->setOccupation( $user2->getOccupation() );
-    
-            $this->doUpdate($user1);
-            $this->doDelete($this->entity);
-            $this->doDelete($user2);
-
-            $response = [
-                'users' => "<b>{$this->entity->getUser1()->getId()}</b> - <b>{$this->entity->getUser2()->getId()}</b>",
-                'message' => "Cadastro Unificado",
-                'status' => 'success',
-            ];
+            
+            $UserModel = new HospitalApi\Model\UserModel();
+            $merged = $UserModel->mergeUsers( $this->entity->getUser1()->getId(), $this->entity->getUser2()->getId() );
+            
+            if($merged) {
+                $this->doDelete($this->entity);
+                $response = $positiveResponse;
+            } else {
+                $response = $negativeResponse;
+            }
         } else {
-            $response = [
-                'users' => "<b>{$this->entity->getUser1()->getId()}</b>-<b>{$this->entity->getUser2()->getId()}</b>",
-                'message' => "Problema ao Unir",
-                'status' => 'danger',
-            ];
+           $response = $negativeResponse;
         }
 
         return $response;

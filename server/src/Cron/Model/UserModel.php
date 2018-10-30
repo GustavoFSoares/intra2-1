@@ -46,17 +46,26 @@ class UserModel extends ModelAbstract
         return $this->em->getRepository('HospitalApi\Entity\User');
     }
 
-    public function findByNameOrCode($name, $code) {
+    public function findByNameOrCode($name, $code, $id = null) {
         $select = $this->em->createQueryBuilder();
         $select
             ->select('u')
             ->from('HospitalApi\Entity\User', 'u')
             ->where("LOWER(u.name) LIKE :name")
-            ->setParameter('name', strtolower($name) )
-            ->orWhere("u.code LIKE :code")
-            ->setParameter('code', $code)
-            ->orWhere("u.id LIKE :id")
-            ->setParameter('id', $this->makeId($name) );
+            ->setParameter('name', strtolower($name) );
+        
+        if( is_numeric($code) ) {
+            $select
+                ->orWhere("u.code LIKE :code")
+                ->setParameter('code', $code);
+        }
+
+        if($id) {
+            $select->setParameter('id', $id );
+        } else {
+            $select->setParameter('id', $this->makeId($name) );
+        }
+        $select->orWhere("u.id LIKE :id");
 
         try {
             return $select->getQuery()->getOneOrNullResult();
@@ -67,9 +76,19 @@ class UserModel extends ModelAbstract
             $delete
                 ->delete('HospitalApi\Entity\User', 'u')
                 ->where("u.name LIKE :name")
-                ->setParameter('name', $name)
-                ->orWhere("u.code LIKE :code")
-                ->setParameter('code', $code);
+                ->setParameter('name', $name);
+                
+            if(is_numeric($code)) {
+                $delete
+                    ->orWhere("u.code LIKE :code")
+                    ->setParameter('code', $code);
+            }
+            if($id) {
+                $delete->setParameter('id', $id );
+            } else {
+                $delete->setParameter('id', $this->makeId($name) );
+            }
+            $delete->orWhere("u.id LIKE :id");
             $delete->getQuery()->execute();
         }
     }
@@ -151,7 +170,7 @@ class UserModel extends ModelAbstract
     }
 
     public function isAvailableCode($code1, $code2) {
-        if( is_int($code1) && is_int($code2) ) {
+        if( is_numeric($code1) && is_numeric($code2) ) {
             if( strlen($code1) && strlen($code2) ) {
                 return true;
             }
