@@ -43,7 +43,7 @@ class User extends SoftdeleteAbstract
     protected $ramal;
 
     /**
-     * @ManyToOne(targetEntity="Group",cascade={"remove"})
+     * @ManyToOne(targetEntity="Group")
      * @JoinColumn(name="grupo_id", referencedColumnName="id", nullable=true)
      */
     protected $group;
@@ -74,7 +74,7 @@ class User extends SoftdeleteAbstract
     private $activeDirectory;
 
     /**
-     * @OneToMany(targetEntity="TrainingParticipant", mappedBy="User")
+     * @OneToMany(targetEntity="TrainingParticipant", mappedBy="participant", cascade={"persist", "remove"})
      */
     private $trainingParticipant;
 
