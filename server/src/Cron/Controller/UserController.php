@@ -59,10 +59,6 @@ class UserController extends BasicApplicationAbstract
                                             } else {
 
                                                 $User
-                                                    ->setCode($row['code'])
-                                                    ->setName($row['name'])
-                                                    ->setGroup($group)
-                                                    ->setOccupation($row['occupation'])
                                                     ->setActiveDirectory(true);
                                                 $this->model->doUpdate($User);
                                                 echo \Helper\LoggerHelper::writeFile("$id --> {$row['group']['name']} <-- Ativo - Atualizado\n");
@@ -246,16 +242,12 @@ class UserController extends BasicApplicationAbstract
                 $user2['name'] = explode('-', \Helper\SlugHelper::get($user2['name']) );
 
                 $matching = 0;
-                foreach ($user1['name'] as $name1) {
-                    foreach ($user2['name'] as $name2) {
-                        if(strlen($name1) >= 4 && strlen($name2) >= 4) {
-                            
-                            if($name1 == $name2) {
-                                $matching++;
-                            }
-
-                        }
+                if($this->model->isAvailableCode($user1['code'], $user2['code']))  {
+                    if($user1['code'] != $user2['code']) {
+                        $matching = $this->model->getMatcingsByName($user1['name'], $user2['name']);        
                     }
+                } else {
+                    $matching = $this->model->getMatcingsByName($user1['name'], $user2['name']);
                 }
 
                 if($matching >= 2) {
