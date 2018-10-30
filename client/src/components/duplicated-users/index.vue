@@ -41,7 +41,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr v-if="duplicatedUsers.thth == 0">
+                        <tr v-if="duplicatedUsers.length == 0">
                             <td colspan="8"> Nenhum registro encontrado </td>
                         </tr>
                     </tbody>

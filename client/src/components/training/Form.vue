@@ -184,7 +184,7 @@ export default {
                     this.loading = false
                 }, err => {
                     console.log(err);
-                    this.userFilter = 'TENTE OUTRO NOME MAIS COMPLETO'
+                    this.userFilter = 'Erro ao realizar busca'
                     this.loading = false
                 })
             }
