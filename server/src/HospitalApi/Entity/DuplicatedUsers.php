@@ -17,16 +17,16 @@ class DuplicatedUsers extends EntityAbstract
     protected $id;
 
     /**
-     * @ManyToOne(targetEntity="User", cascade={"persist", "remove"})
-     * @JoinColumn(name="user_id1", referencedColumnName="id", onDelete="CASCADE")
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="usuario_id1", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user1;
+    protected $user1;
    
     /**
-     * @ManyToOne(targetEntity="User", cascade={"persist", "remove"})
-     * @JoinColumn(name="user_id2", referencedColumnName="id", onDelete="CASCADE")
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="usuario_id2", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $user2;
+    protected $user2;
 
     /**
      * @var Datetime
@@ -35,10 +35,10 @@ class DuplicatedUsers extends EntityAbstract
     public $time;
 
     /**
-     * @ManyToOne(targetEntity="Rotine", cascade={"persist", "remove"})
-     * @JoinColumn(name="rotina_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ManyToOne(targetEntity="Rotine")
+     * @JoinColumn(name="rotina_id", referencedColumnName="id")
      */
-    private $rotine;
+    protected $rotine;
 
     public function __construct($user1 = '', $user2 = '', $rotine = '') {
         $this->id = '';
