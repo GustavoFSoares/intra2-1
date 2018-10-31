@@ -68,10 +68,11 @@ class UserController extends BasicApplicationAbstract
                                         } else {
                                             $row = [
                                                 'id' => $user['samaccountname'][0],
-                                                'name' => $user['displayname'][0],
+                                                'name' => isset($user['displayname'][0]) ? $user['displayname'][0] : '' ,
                                                 'group' => $AD->getGroupArray(isset($user['department']) ? $user['department'][0] : '' ),
-                                                'occupation' => $user['description'][0]?$user['description'][0]:'',
-                                                'code' => $user['physicaldeliveryofficename'][0]?$user['physicaldeliveryofficename'][0]:'sem-matricula',
+                                                'occupation' => isset($user['description'][0]) ? $user['description'][0] : '',
+                                                'code' => isset($user['physicaldeliveryofficename'][0]) ? $user['physicaldeliveryofficename'][0] : 'sem-matricula',
+                                                'group' => $AD->getGroupArray(isset($user['department']) ? $user['department'][0] : '' ),
                                             ];
                                             $group = $this->getRepositoryGroupById($row['group']['name']);
 
