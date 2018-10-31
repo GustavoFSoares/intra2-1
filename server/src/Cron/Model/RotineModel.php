@@ -32,7 +32,9 @@ class RotineModel extends SoftdeleteModel
         self::getInstance()->entity = $rotine;
         self::getInstance()->doInsert($rotine);
         
-        \Helper\LoggerHelper::initLogFile($target, null, $name, 'Y/m/d His');
+        $rotine = self::getInstance()->em->getRepository('HospitalApi\Entity\Rotine')->findOneBy([], ['id' => 'DESC']);
+        
+        \Helper\LoggerHelper::initLogFile($target, "#ID{$rotine->getId()}", $name, 'Y/m/d His');
         echo \Helper\LoggerHelper::writeFile("Inicio: ".date('Y-m-d H:i:s')."\n");
     }
 

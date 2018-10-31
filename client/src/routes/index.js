@@ -17,6 +17,7 @@ import incidentReportingRoutes from './incident-reporting-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
 import ramalsRoutes from './ramals-routes'
+import rotinesRoutes from './rotines-routes'
 import trainingRoutes from './training-routes'
 import userRoutes from './user-routes'
 
@@ -57,6 +58,7 @@ Routes.addRoutes(incidentReportingRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ramalsRoutes)
+Routes.addRoutes(rotinesRoutes)
 Routes.addRoutes(trainingRoutes)
 Routes.addRoutes(userRoutes)
 
