@@ -43,6 +43,10 @@ class BasicApplicationAbstract
         return self::$_app->getContainer();
     }
 
+    public function getEntityManager() {
+        return self::$_app->getContainer()['em'];
+    }
+
     public function getSpecialDataPermissions() {
        
         $file = file_get_contents(PATH.'/HospitalApi/SpecialDataPermissions.yml');

@@ -16,6 +16,9 @@ if(!isset($_SESSION)) {
     session_start();
 }
 
+// Register middleware
+require_once __DIR__ . '/../src/middleware.php';
+
 // Instantiate the app
 $settings = require_once __DIR__ . '/../src/settings.php';
 
@@ -25,8 +28,6 @@ new \HospitalApi\BasicApplicationAbstract($app);
 // Set up dependencies
 require_once __DIR__ . '/../src/dependencies.php';
 
-// Register middleware
-require_once __DIR__ . '/../src/middleware.php';
 
 // Register routes
 require_once __DIR__ . '/../src/routes.php';

@@ -20,4 +20,5 @@ return [
         ],
     ],
     'session' => new Session(),
+    'em' => \HospitalApi\Model\ModelAbstract::createEntityManager(),
 ];
