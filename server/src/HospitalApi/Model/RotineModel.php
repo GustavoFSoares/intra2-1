@@ -28,21 +28,27 @@ class RotineModel extends SoftdeleteModel
         $files = \Helper\DirectoryHelper::readFiles($folder);
         
         foreach ($files as $file) {
-            if( substr_compare($file, "ID{$this->entity->getId()}", 0, 4) == 0) {
+            $target = "ID{$this->entity->getId()}";
+            if( substr_compare($file, $target, 0, strlen($target) ) == 0) {
                 return [ 'folder' => $folder, 'name' => $file ];
             }
         }
+        return false;
     }
 
     public function getLogsByRotineId($rotineId) {
         $file = $this->localizeLogFile($rotineId);
-        $file = "{$file['folder']}/{$file['name']}";
-
-        $content = [];
-        $logs = [];
-
-        if(file_exists($file)) {
-            $content = explode("\n", file_get_contents($file));
+        $content = false;
+        
+        if($file) {
+            $file = "{$file['folder']}/{$file['name']}";
+    
+            $content = [];
+            $logs = [];
+    
+            if(file_exists($file)) {
+                $content = explode("\n", file_get_contents($file));
+            }
         }
 
         return $content;

@@ -35,9 +35,12 @@ class RotineController extends ControllerAbstract
         $logs = $this->getModel()->getLogsByRotineId($id);
 
         $data = $this->translateCollection($this->getModel()->entity);
-        $file = $this->getModel()->localizeLogFile($id);
-        $data['file'] = $file['name'];
-        $data['logs'] = $logs;
+
+        if($logs) {
+            $file = $this->getModel()->localizeLogFile($id);
+            $data['file'] = $file['name'];
+            $data['logs'] = $logs;
+        }
         
         return $res->withJson($data);
     }
