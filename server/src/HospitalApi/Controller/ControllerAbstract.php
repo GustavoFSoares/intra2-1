@@ -138,6 +138,9 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return void
 	 */
 	public function _mountEntity($values){
+		if( method_exists($this->_model, 'mount') ){
+			$values = $this->_model->mount($values);
+		}
 		foreach ($values as $key => $value) {
 			$method = "set$key";
 			$this->_model->entity

@@ -8,11 +8,6 @@ abstract class ControllerAbstractLongEntity extends ControllerAbstract
         parent::__construct($model);
     }
 
-    public function _mountEntity($values) {
-        $data = $this->getModel()->mount($values);
-        return parent::_mountEntity($data);
-    }
-
     public function translateCollection($entity) {
         if(empty($arr)){
             $arr = is_array($entity) ? 

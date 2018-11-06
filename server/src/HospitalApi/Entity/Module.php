@@ -161,10 +161,10 @@ class Module extends SoftdeleteAbstract
         return $this->parent;
     }
     public function setParent($parent) {
-        if($parent instanceof \HospitalApi\Entity\Module) {
-            $this->parent = $parent;
-        } else {
+        if( is_integer($parent) ) {
             $this->parent = $this->getEntityManager()->getRepository('HospitalApi\Entity\Module')->find($parent);
+        } else {
+            $this->parent = $parent;
         }
 
         return $this;

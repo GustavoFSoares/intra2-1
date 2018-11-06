@@ -11,15 +11,16 @@ $model = new ModuleModel();
         [ 'name' => 'Alertas',                  'routeName' => 'alertas',                        'default' => false, 'icon' => 'exclamation'   , 'parent_route_name' => 'timanager', ],
         [ 'name' => 'Rotinas',                  'routeName' => 'rotinas',                        'default' => false, 'icon' => 'hourglass-half', 'parent_route_name' => 'timanager', ],
         [ 'name' => 'Usuários Duplicados',      'routeName' => 'usuarios-duplicados',            'default' => false, 'icon' => 'user-friends'  , 'parent_route_name' => 'timanager', ],
-        [ 'name' => 'Gerenciador de Módulos',   'routeName' => 'modulos',                        'default' => false, 'icon' => 'box'           , 'parent_route_name' => 'timanager', ],
+        [ 'name' => 'Módulos',                  'routeName' => 'modulos',                        'default' => false, 'icon' => 'box'           , 'parent_route_name' => 'timanager', ],
         [ 'name' => 'Convênios',                'routeName' => 'convenios',                      'default' => false, 'icon' => 'handshake'     , 'parent_route_name' => null,        ],
         [ 'name' => 'Usuários',                 'routeName' => 'usuarios/gerenciador',           'default' => true,  'icon' => 'users'         , 'parent_route_name' => null,        ],
-        [ 'name' => 'Treinamento',              'routeName' => 'training',                       'default' => false, 'icon' => 'trophy'        , 'parent_route_name' => null,        ],
-        [ 'name' => 'Hora Homem Treinamento',   'routeName' => 'hht',                            'default' => false, 'icon' => 'medal'         , 'parent_route_name' => 'training',  ],
+        [ 'name' => 'Ensino e Pesquisa',        'routeName' => 'training',                       'default' => false, 'icon' => 'trophy'        , 'parent_route_name' => null,        ],
+        [ 'name' => 'Treinamentos',             'routeName' => 'hht',                            'default' => false, 'icon' => 'medal'         , 'parent_route_name' => 'training',  ],
         [ 'name' => 'Ramais',                   'routeName' => 'ramais',                         'default' => false, 'icon' => 'phone'         , 'parent_route_name' => null,        ],
         [ 'name' => 'Colaboradores',            'routeName' => 'colaboradores',                  'default' => false, 'icon' => 'user-tie'      , 'parent_route_name' => 'training',  ],
         [ 'name' => 'Notificação de Incidente', 'routeName' => 'notificacao-de-incidentes',      'default' => true,  'icon' => 'medal'         , 'parent_route_name' => null,        ],
         [ 'name' => 'Administradores',          'routeName' => 'gerenciador-de-administradores', 'default' => false, 'icon' => 'crown'         , 'parent_route_name' => null,        ],
+        [ 'name' => 'Salas',                    'routeName' => 'sala-treinamento',               'default' => false, 'icon' => 'building'      , 'parent_route_name' => 'training',  ],
     ];
     
     foreach ($modules as $module) {
