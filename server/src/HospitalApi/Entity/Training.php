@@ -6,7 +6,7 @@ namespace HospitalApi\Entity;
  * @Table(name="Treinamento")
  * <b>Treinamento</b>
  */
-class Training extends EntityAbstract
+class Training extends SoftdeleteAbstract
 {
 
     /**

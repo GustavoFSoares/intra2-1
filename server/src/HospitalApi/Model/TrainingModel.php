@@ -6,7 +6,7 @@ use HospitalApi\Entity\Training;
 /**
  * <b>TraininglModel</b>
  */
-class TrainingModel extends ModelAbstract
+class TrainingModel extends SoftdeleteModel
 {
 
     public $entity;
@@ -62,13 +62,14 @@ class TrainingModel extends ModelAbstract
             ->from('HospitalApi\Entity\Training', 't')
             ->where('t.beginTime > :now')
             ->andWhere('t.done = 0')
+            ->andWhere('t.c_removed = 0')
             ->orderBy('t.beginTime')
             ->setParameter('now', new \DateTime());
         return $query->getQuery()->getResult();
     }
 
     public function doDelete($obj) {
-        $obj->setInstructor(null);
+        $obj->setInstructors(null);
         
         return parent::doDelete($obj);
     }
