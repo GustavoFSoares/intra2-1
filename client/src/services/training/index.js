@@ -4,8 +4,8 @@ export default {
     getTrainingsType: (id) => {
         return http.get(`/training/type/`, { params: { id: id } }).then( res => res.data )
     },
-    getTrainings: (id) => {
-        return http.get(`/training/`, { params: { id: id } }).then(res => res.data )
+    getTrainings: (filters = {}) => {
+        return http.get(`/training/`, { params: filters }).then(res => res.data )
     },
     getTrainingsUnrealized: () => {
         return http.get(`/training/unrealized/`).then(res => res.data )

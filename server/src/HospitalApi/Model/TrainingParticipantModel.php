@@ -115,7 +115,7 @@ class TrainingParticipantModel extends ModelAbstract
             't.beginTime',
             't.endTime',
             't.workload',
-            't.place'
+            't.enterprise'
             ])
             ->from('HospitalApi\Entity\Training', 't')
             ->innerJoin('HospitalApi\Entity\TrainingParticipant', 'trp', 

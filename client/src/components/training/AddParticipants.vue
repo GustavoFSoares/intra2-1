@@ -3,8 +3,8 @@
         <h1>{{ title }}</h1>
         <h2 v-if="training.done" class="finished"><i>(Treinamento Finalizado)</i></h2>
 
-        <row>
-            <div id="users-filter" @keyup.enter="loadUsers()">
+        <row v-if="!training.done">
+            <div id="users-filter" @keyup.enter="loadUsers()" >
                 <div class="search-area container-fluid">
                     <div class='row'>
                         <input id="filter-input" class="form-control col-10" placeholder="Nome ou Matrícula" type="search" v-model="userFilter">

@@ -14,6 +14,7 @@ const model = {
         }
         return false
     },
+    doDelete: (id) => service.delete(id),
 }
 
 export default model

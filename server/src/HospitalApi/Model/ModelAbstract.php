@@ -105,6 +105,10 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	 * @return Array 
 	 */
 	public function findBy($filters = [], $orders = []) {
+		if($this->isInverseOrder()) {
+			$orders['id'] = 'DESC';
+		}
+
 		$collection = $this->getRepository()->findBy($filters, $orders);
 		
 		return $collection;
@@ -161,5 +165,9 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 			return $diffDays == "0";
 		}
 	}
+
+	public function isInverseOrder() {
+        return ( isset($this->inverseOrder) && $this->inverseOrder ) ? true : false;
+    }
 
 }

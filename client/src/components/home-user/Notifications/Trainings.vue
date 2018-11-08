@@ -2,14 +2,14 @@
     <div>
         <div class="card-header" data-toggle="collapse" :data-target="'#id-'+title" aria-expanded="true" :aria-controls="'id-'+title">
             <span class="btn">
-                {{title}}
+               {{title}} <span v-if="trainings.length" class="badge badge-info"> {{ trainings.length }} </span>
             </span>
         </div>
         <div :id="'id-'+title" class="collapse">
             <alert-message id="alert" :type="training.return.type" :text="training.return.text" v-if="training.return" @close="training.return = ''"/>
             
             <div id="module-contents" class="list-group">
-                <a v-for="(train, index) in trainings" :key="index" href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#trainingModal" @click="training.selected = train">
+                <a v-for="(train, index) in trainings" :key="index" href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#trainingModal" @click="addSelected(train)">
                     <icon icon="clock" v-if="moment().diff(train.beginTime.date, 'days') == 0"/>
                     {{ train.id + ' - ' + train.name }}
                 </a>
@@ -27,19 +27,28 @@
                             </div>
 
                             <div class="modal-body">
-                                <div class="row">
-                                    <span class="col text-left"> <b>Multiplicador: </b>
-                                        {{ training.selected.instructor.name }}
-                                        <span>- {{ training.selected.instructor.group.name }}</span>
-                                    </span>
+                                <div>
+                                    <div class="card-body">
+                                        <h5 class="card-subtitle text-left text-muted mb-2">Palestrantes</h5>
+
+                                        <span class="instructor" v-for="(instructor, index) of training.selected.instructors" :key="index">
+                                            <div class="line">
+                                                <cite class="pull-right">
+                                                    {{ instructor.name }}
+                                                </cite><br>
+                                            </div>                                                    
+                                        </span>
+                                    </div>
+                                    <hr id="hr">
                                 </div>
                                 <div class="row">
                                     <span class="col text-left"> <b>Início:</b> {{ moment(training.selected.beginTime.date).format('DD/MM/YYYY - HH:mm') }}</span>
                                     <span class="col"> <b>Carga Horária:</b> {{ training.selected.workload }}</span>
-                                    <span class="col text-right"><b>Local:</b> {{ training.selected.place }}</span>
+                                    <span class="col text-right"><b>Local:</b> {{ training.selected.enterprise }}</span>
                                 </div>
                                 <div class="row">
-                                    
+                                    <span class="col text-left"> <b>Final Previsto:</b> {{ moment(training.selected.endTime.date).format('DD/MM/YYYY - HH:mm') }}</span>
+                                    <span v-if="training.selected.room" class="col text-right"> <b>Sala:</b> {{ training.selected.room.name }}</span>
                                 </div>
                             </div>
 
@@ -91,6 +100,11 @@ export default {
                 
             })
         },
+        addSelected(training) {
+            let workload = model.getWorkloadObject(training.workload)
+            training.workload = `${workload.hour}:${workload.minute}`
+            this.training.selected = training
+        }
     },
     mounted() {
         getter.getTrainingsUnrealized().then(res => { this.trainings = res })
@@ -109,5 +123,9 @@ export default {
     #alert {
         position: relative;
         display: block;
+    }
+
+    #hr {
+        margin-top: -1rem;
     }
 </style>

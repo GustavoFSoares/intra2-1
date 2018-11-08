@@ -10,6 +10,7 @@ class TrainingModel extends ModelAbstract
 {
 
     public $entity;
+    public $inverseOrder = true;
 
     public function __construct() {
         $this->entity = new Training;
@@ -18,12 +19,31 @@ class TrainingModel extends ModelAbstract
 
     public function mount($values) {
         $values = (object)$values;
+        if( isset($values->id) ) {
+            $this->entity = $this->getRepository()->find($values->id);
+        }
 
-        $values->place = is_array($values->place) ? $values->place['enterprise'] : $values->place;
-        $values->institutionalType = ($values->type['id'] == 'institutional') ? $values->institutionalType['name'] : null;
+        $userRepository = $this->em->getRepository('HospitalApi\Entity\User');
+
+        $values->place['enterprise'] = is_array($values->place['group']) ? $values->place['group']['enterprise'] : null;
+        $values->place['room'] = array_key_exists('id', $values->place['room']) ? $values->place['room']['id'] : null;
+        $values->institutionalType = ( isset($values->type['id']) && $values->type['id'] == 'institutional') ? $values->institutionalType['name'] : null;
         $values->type = is_array($values->type) ? $values->type['name'] : $values->type;
-        $values->instructor = $this->em->getRepository("HospitalApi\Entity\User")->findOneById($values->instructor['id']);
-
+        
+        $instructors = new \Doctrine\Common\Collections\ArrayCollection();
+        foreach ($values->instructors as $instructor) {
+            if( isset($instructor['canRemove']) ) {
+                $instructor = $userRepository->find($instructor['id']);
+                if( isset($values->id) ) {
+                    $this->entity->addInstructor($instructor);
+                    $this->doUpdate($this->entity);
+                } else {
+                    $instructors->add($instructor);
+                }
+            }
+        }
+        $values->instructors = $instructors;
+        
         return $values;
     }
 
