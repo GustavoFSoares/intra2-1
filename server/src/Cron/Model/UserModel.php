@@ -160,12 +160,14 @@ class UserModel extends ModelAbstract
             ])
             ->from('HospitalApi\Entity\User', 'u1')
             ->innerJoin('HospitalApi\Entity\User', 'u2', 'WITH', 'u1.id <> u2.id AND 
-                substring(u1.name, 1, 4) LIKE substring(u2.name, 1, 4) ')
+                substring(u1.name, 1, 3) LIKE substring(u2.name, 1, 3) ')
             ->innerJoin('HospitalApi\Entity\Group', 'g', 'WITH', 'g = u1.group AND g = u2.group')
             ->where("g.groupId LIKE :groupId")
             ->setParameter('groupId', $groupId)
             ->andWhere('u1.activeDirectory = 1')
-            ->andWhere('u2.byAdp = 1');
+            ->andWhere('u2.byAdp = 1')
+            ->andWhere('length(u1.id) > 2')
+            ->andWhere('length(u1.id) > 2');
         return $select->getQuery()->getResult(); 
     }
 
