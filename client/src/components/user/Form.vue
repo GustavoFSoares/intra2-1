@@ -69,10 +69,10 @@
 
         <div id="buttons">
             <row>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm">
+                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm" :disabled="sending">
                     Editar
                 </button>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'usuarios/gerenciador'}" tag="button">
+                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'usuarios/gerenciador'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
             </row>
@@ -90,9 +90,10 @@ import { FormRw, FormRws, Require } from "@/components/shared/Form";
 export default {
     data(){
         return {
-            id: '',
+            id: this.$route.params.id,
             title: "Editar Usuário",
-            User: new User()
+            User: new User(),
+            sending: false,
         }
     },
     methods: {
@@ -100,10 +101,18 @@ export default {
             this.$validator.validateAll().then(success => success  ? this.submit():"")
         },
         submit() {
-            model.doEditUser(this.id, this.User).then(() => this.$router.go('-1') )
+            this.sending = true
+            model.doEditUser(this.id, this.User).then(() => {
+                this.sending = false
+                this.$alert.success('Usuario Editado')
+
+                this.$router.go('-1')
+            }, err => {
+                this.sending = false
+                this.$alert.danger('Erro ao Atualizar')
+            })
         },
         loadValues() {
-            this.id = this.$route.params.id
             getter.getUserById(this.id).then(res => {
                 this.User = new User(res)
                 
@@ -111,9 +120,6 @@ export default {
                 document.getElementById('removed').checked = !this.User.active
             })
         },
-        clicou() {
-            
-        }
     },
     components: {
         'row': FormRw,

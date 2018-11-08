@@ -100,8 +100,6 @@ export default {
                 
             }
         }
-                
-            // }
             
     },
     mounted() {
