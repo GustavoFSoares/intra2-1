@@ -30,6 +30,7 @@ import AlertGetters from '@/services/alerts/getters.js'
 import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
 import { FormRws, TopAlert } from "@/components/shared/Form/index.js"
+import Vue from 'vue'
 
 export default {
     name: 'App',
@@ -56,13 +57,59 @@ export default {
         },
         autoload() {
             window.$session = this.$session
+        },
+        mountPrototype() {
+            var context = this
+            Vue.prototype.$alert = {
+                success: function(content = 'conteudo', title = ' Sucesso!' ) {
+                    context.$uiv_notify({
+                        type: 'success',
+                        title:  title,
+                        content: content,
+                        customClass: 'show',
+                        html: true,
+                    })
+                },
+                danger: function(content = 'conteudo', title = ' Erro!' ) {
+                    context.$uiv_notify({
+                        type: 'danger',
+                        title: title,
+                        content: content,
+                        customClass: 'show',
+                        html: true,
+                    })
+                },
+                warning: function(content = 'conteudo', title = ' Aviso!' ) {
+                    context.$uiv_notify({
+                        type: 'warning',
+                        title: title,
+                        content: content,
+                        customClass: 'show',
+                        html: true,
+                    })
+                },
+                info: function(content = 'conteudo', title = ' Informação!' ) {
+                    context.$uiv_notify({
+                        type: 'info',
+                        title: title,
+                        content: content,
+                        customClass: 'show',
+                        html: true,
+                    })
+                },
+                
+            }
         }
+                
+            // }
+            
     },
     mounted() {
         this.getWarningAlert()
         this.getDangerAlert()
     },
     created() {
+        this.mountPrototype()
         this.autoload()
     }
 
