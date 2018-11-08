@@ -53,16 +53,16 @@
             </rows>
         </div>
 
-        <row label="Removido" v-if="isEdit()">
-            <input type="checkbox" v-model="collaborator.c_removed">
+        <row label="Ativo" v-if="isEdit()">
+            <input type="checkbox" v-model="collaborator.active">
         </row>
 
         <div id="buttons">
             <row>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm">
+                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" :disabled="sending" @click="isValidForm">
                     Cadastrar Colaborador
                 </button>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'colaboradores'}" tag="button">
+                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'colaboradores'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
             </row>
@@ -78,8 +78,9 @@ import Collaborator from "@/entity/User/Collaborator.js";
 export default {
     data(){
         return {
-            id: '',
+            id: this.$route.params.id,
             title: "Cadastro de Colaboradores",
+            sending: false,
             collaborator: new Collaborator(),
             subtitles: {
                 id: "Matrícula",
@@ -103,20 +104,32 @@ export default {
             this.$validator.validateAll().then(success => success ? this.submit():"")
         },
         submit() {
+            this.sending = true
             this.collaborator.complement.hire = document.getElementById("hire").value
             this.collaborator.complement.fire = document.getElementById("fire").value
 
             if(this.isEdit(this.id)){
-                model.doUpdate(this.id, this.collaborator).then(res => this.$router.go('-1'))
+                model.doUpdate(this.id, this.collaborator).then(res => { 
+                    this.$router.go('-1')
+                    this.sending = false
+                }, err => {
+                    this.sending = false
+                    this.$alert.danger('Erro ao Editar')
+                })
             } else {
-                model.doInsert(this.collaborator).then(res => this.$router.go('-1'))
+                model.doInsert(this.collaborator).then(res => { 
+                    this.$router.go('-1') 
+                    this.sending = false
+                }, err => {
+                    this.sending = false
+                    this.$alert.danger('Erro ao Inserir')
+                })
             }
         },
         loadValues() {
             getter.getGroups().then(res => this.values.groups = res )
             getter.getCollaboratorTypes().then(res => this.values.collaboratorTypes = res )
 
-            this.id = this.$route.params.id
             if(this.isEdit()) {
                 getter.getCollaboratorById(this.id).then(res => {
                     this.collaborator = new Collaborator(res)
