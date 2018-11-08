@@ -49,8 +49,7 @@ export default {
             roomsTraining: [],
             moment: moment,
             alert: {
-                done: { title: "Treinamento Realizado?", message: "Você está marcando este treinamento como realizado. <BR>Tem certeza que deseja realizar essa ação?" },
-                remove: { title: "Tem certeza que deseja excluir?", message: "Você está excluindo um treinamento. <BR>Tem certeza que deseja continuar?" }
+                remove: { title: "Tem certeza que deseja excluir?", message: "Você está excluindo uma sala. <BR>Tem certeza que deseja continuar?" }
             }
         }
     },
@@ -59,19 +58,10 @@ export default {
             Alert.Confirm(this.alert.remove.message).then(res => {
                 if(res){
                     model.doDelete(id)
-                    this.trainings.splice(index, 1)
+                    this.roomsTraining.splice(index, 1)
                 }
             })
         },
-        isDone(training) {
-            Alert.YesNo(this.alert.done.title, this.alert.done.message).then(res => {
-                if(res){
-                    model.isDone(training.id)
-                } else {
-                    training.done = false
-                }}
-            )
-        }
     },
     mounted() {
         getter.getRoomsTraining().then(res => { this.roomsTraining = res })

@@ -21,10 +21,10 @@
 
         <div id="buttons">
             <row>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm">
+                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" :disabled="sending" @click="isValidForm">
                     Cadastrar Sala
                 </button>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'sala-treinamento'}" tag="button">
+                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'sala-treinamento'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
             </row>
@@ -44,6 +44,7 @@ export default {
             id: this.$route.params.id,
             title: "Cadastro de Salas",
             roomTraining: {},
+            sending: false,
             subtitles: {
                 name: "Nome da Sala",
                 group: "Setor",
@@ -73,11 +74,24 @@ export default {
         },
         submit() {
             this.roomTraining.floor = this.roomTraining.floor.value ? this.roomTraining.floor.value : this.roomTraining.floor
+            this.sending = true
             
             if(this.isEdit(this.id)){
-                model.doUpdate(this.id, this.roomTraining).then(res => this.$router.go('-1'))
+                model.doUpdate(this.id, this.roomTraining).then(res => { 
+                    this.$router.go('-1') 
+                    this.sending = false
+                }, err => {
+                    this.$alert.danger('Erro ao Inserir')
+                    this.sending = false
+                })
             } else {
-                model.doInsert(this.roomTraining).then(res => this.$router.go('-1'))
+                model.doInsert(this.roomTraining).then(res => { 
+                    this.$router.go('-1') 
+                    this.sending = false
+                }, err => {
+                    this.$alert.danger('Erro ao Editar')
+                    this.sending = false
+                })
             }
         },
         loadValues() {
