@@ -50,46 +50,39 @@ class UserModel extends ModelAbstract
         $select = $this->em->createQueryBuilder();
         $select
             ->select('u')
-            ->from('HospitalApi\Entity\User', 'u')
-            ->where("LOWER(u.name) LIKE :name")
-            ->setParameter('name', strtolower($name) );
-        
-        if( is_numeric($code) ) {
-            $select
-                ->orWhere("u.code LIKE :code")
-                ->setParameter('code', $code);
-        }
+            ->from('HospitalApi\Entity\User', 'u');
 
         if($id) {
             $select->setParameter('id', $id );
         } else {
             $select->setParameter('id', $this->makeId($name) );
         }
-        $select->orWhere("u.id LIKE :id");
+        $select->where("u.id LIKE :id");
+        $User = $select->getQuery()->getOneOrNullResult();
+
+        if($User) {
+            return $User;
+        } else {
+            $select = $this->em->createQueryBuilder();
+            $select
+                ->select('u')
+                ->from('HospitalApi\Entity\User', 'u')
+                ->where("LOWER(u.name) LIKE :name")
+                ->setParameter('name', strtolower($name) );
+    
+            if( is_numeric($code) ) {
+                $select
+                    ->orWhere("u.code LIKE :code")
+                    ->setParameter('code', $code);
+            }
+        }
 
         try {
             return $select->getQuery()->getOneOrNullResult();
         } catch (\Exception $e) {
             $this->__construct();
-
-            $delete = $this->em->createQueryBuilder();
-            $delete
-                ->delete('HospitalApi\Entity\User', 'u')
-                ->where("u.name LIKE :name")
-                ->setParameter('name', $name);
-                
-            if(is_numeric($code)) {
-                $delete
-                    ->orWhere("u.code LIKE :code")
-                    ->setParameter('code', $code);
-            }
-            if($id) {
-                $delete->setParameter('id', $id );
-            } else {
-                $delete->setParameter('id', $this->makeId($name) );
-            }
-            $delete->orWhere("u.id LIKE :id");
-            $delete->getQuery()->execute();
+            
+            return null;
         }
     }
 
@@ -140,7 +133,7 @@ class UserModel extends ModelAbstract
             $group = $this->em->getRepository('HospitalApi\Entity\Group')->find($User->getGroup()->getId());
             $User->setGroup($group);
 
-            if(!$this->findByNameOrCode($User->getName(), $User->getCode())) {
+            if(!$this->findByNameOrCode( $User->getName(), $User->getCode(), $User->getId() )) {
                 $this->doInsert($User);
             }
 
