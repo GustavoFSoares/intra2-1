@@ -11,11 +11,14 @@ import adverseEventsRoutes from './adverse-events-routes'
 import alertsRoutes from './alerts-routes'
 import collaboratorsRoutes from './collaborators-routes'
 import covenantRoutes from './covenants-routes'
+import duplicatedUsersRoutes from './duplicated-users-routes'
 import homeUserRoutes from './home-user-routes'
 import incidentReportingRoutes from './incident-reporting-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
 import ramalsRoutes from './ramals-routes'
+import roomTrainingRoutes from './room-training-routes'
+import rotinesRoutes from './rotines-routes'
 import trainingRoutes from './training-routes'
 import userRoutes from './user-routes'
 
@@ -50,11 +53,14 @@ Routes.addRoutes(adverseEventsRoutes)
 Routes.addRoutes(alertsRoutes)
 Routes.addRoutes(collaboratorsRoutes)
 Routes.addRoutes(covenantRoutes)
+Routes.addRoutes(duplicatedUsersRoutes)
 Routes.addRoutes(homeUserRoutes)
 Routes.addRoutes(incidentReportingRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ramalsRoutes)
+Routes.addRoutes(roomTrainingRoutes)
+Routes.addRoutes(rotinesRoutes)
 Routes.addRoutes(trainingRoutes)
 Routes.addRoutes(userRoutes)
 

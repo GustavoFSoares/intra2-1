@@ -42,22 +42,11 @@ class UserController extends ControllerAbstract
         return $res->withJson($update);
     }
 
-    public function update($req, $res, $args) {
-        $values = $req->getParsedBody();
+    public function getUserByNameOrCodeAction($req, $res, $args) {
+        $results = $this->getModel()->findUsersByNameOrCode( $req->getParam('name'), $req->getParam('code') );
+        $data = $this->translateCollection($results);
 
-        $model = $this->getModel();
-        $model->entity = $this->_mountEntity($values);
-        
-		$update = $model->doUpdate($model->entity);
-
-        return $res->withJson($update);
-    }
-
-    public function _mountEntity($values){
-        $model = $this->getModel();
-        
-        $entity = $model->mount($values);
-        return parent::_mountEntity($entity);
+        return $res->withJson($data);
     }
     
 

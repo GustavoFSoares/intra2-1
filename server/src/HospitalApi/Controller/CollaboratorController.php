@@ -3,7 +3,7 @@ namespace HospitalApi\Controller;
 
 use HospitalApi\Model\CollaboratorModel;
 
-class CollaboratorController extends ControllerAbstract
+class CollaboratorController extends ControllerAbstractLongEntity
 {
     public function __construct() {
         parent::__construct(new CollaboratorModel());
@@ -18,49 +18,14 @@ class CollaboratorController extends ControllerAbstract
     }
 
     public function _mountEntity($values){
-        $entity = parent::_mountEntity($values);
-        $values = $this->getModel()->mount($entity);
+        foreach ($values as $key => $value) {
+			$method = "set$key";
+			$this->getModel()->entity
+				->$method($value);
+		}
+        $values = $this->getModel()->mount($this->getModel()->entity);
         
         return $values;
     }
 
-    public function translateCollection($entity) {
-        if(empty($arr)){
-			$arr = is_array($entity) ? 
-				[] : null;
-        }
-        
-        if($entity) {
-            if(is_array($entity)){
-                foreach ($entity as $key => $value) {
-                    $arr[$key] = $this->translateCollection($value);
-                }
-            } else {
-                $arrayEntity = $entity->toArray();
-                foreach ($arrayEntity as $key => $value) {
-                    if($value instanceof \HospitalApi\Entity\EntityAbstract){
-                        $arr[$key] = $this->translateCollection($value);
-        
-                    } else {
-                        if(array_key_exists($key, $entity->toArray())) {
-                            $result = $value;
-        
-                            if(method_exists($result, "toArray")) {
-        
-                                foreach ($result->toArray() as $k => $val) {
-                                    $arr[$key][$k] = $this->translateCollection($val);
-                                }
-                                
-                            } else {
-                                $arr[$key] = $value;
-                            }
-                        }
-                    }
-        
-                }
-                
-            }
-        }
-        return $arr;
-    }
 }

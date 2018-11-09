@@ -1,0 +1,7 @@
+INCIDENT-REPORTING:
+    ALL_DATA:
+        - 'tecnologia-da-informacao-hu'
+    HU_DATA:
+        - 'seger-hu'
+    HPSC_DATA:
+        - 'seger-hpsc'

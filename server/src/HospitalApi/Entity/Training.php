@@ -6,7 +6,7 @@ namespace HospitalApi\Entity;
  * @Table(name="Treinamento")
  * <b>Treinamento</b>
  */
-class Training extends EntityAbstract
+class Training extends SoftdeleteAbstract
 {
 
     /**
@@ -21,11 +21,16 @@ class Training extends EntityAbstract
      */
     protected $name;
 
-    
     /**
      * @var String @Column(name="local", type="string", length=255)
      */
-    protected $place;
+    protected $enterprise;
+    
+    /**
+     * @ManyToOne(targetEntity="RoomTraining")
+     * @JoinColumn(name="sala_id", referencedColumnName="id", nullable=true)
+     */
+    protected $room;
     
     /**
      * @var String @Column(name="tipo", type="string", length=255)
@@ -33,15 +38,18 @@ class Training extends EntityAbstract
     protected $type;
 
     /**
-     * @var String @Column(name="tipoInstitucional", type="string", length=255, nullable=true)
+     * @var String @Column(name="tipo_institucional", type="string", length=255, nullable=true)
      */
     protected $institutionalType;
     
     /**
-     * @ManyToOne(targetEntity="User",cascade={"persist", "remove"})
-     * @JoinColumn(name="instrutor_id", nullable=false)
+     * @ManyToMany(targetEntity="User")
+     * @JoinTable(name="Treinamento_Instrutor",
+     *      joinColumns={@JoinColumn(name="treinamento_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="instrutor_id", referencedColumnName="id")}
+     *      )
      */
-    protected $instructor;
+    protected $instructors;
     
     /**
      * @var DateTime @Column(name="inicio_hora_treinamento", type="datetime", options={"default":"CURRENT_TIMESTAMP"})
@@ -54,7 +62,7 @@ class Training extends EntityAbstract
     protected $endTime;
 
     /**
-     * @var String @Column(name="carga_horaria", type="string")
+     * @var String @Column(name="carga_horaria", type="float")
      */
     protected $workload;
 
@@ -68,9 +76,10 @@ class Training extends EntityAbstract
         $this->id = '';
         $this->name = '';
         $this->place = '';
+        $this->room = '';
         $this->type = '';
         $this->institutionalType = '';
-        $this->instructor = new User();
+        $this->instructors = new \Doctrine\Common\Collections\ArrayCollection();
         $this->beginTime = new \DateTime();
         $this->endTime = null;
         $this->workload = '';
@@ -95,11 +104,34 @@ class Training extends EntityAbstract
         return $this;
     }
 
+    public function getEnterprise() {
+        return $this->enterprise;
+    }
+    public function setEnterprise($enterprise) {
+        $this->enterprise = $enterprise;
+
+        return $this;
+    }
+    
+    public function getRoom() {
+        return $this->room;
+    }
+    public function setRoom($room) {
+        if( is_integer($room) ) {
+            $this->room = $this->getEntityManager()->getRepository('HospitalApi\Entity\RoomTraining')->find($room);
+        } else {
+            $this->room = $room;
+        }
+
+        return $this;
+    }
+
     public function getPlace() {
         return $this->place;
     }
     public function setPlace($place) {
-        $this->place = $place;
+        $this->setEnterprise($place['enterprise']);
+        $this->setRoom($place['room']);
 
         return $this;
     }
@@ -122,11 +154,21 @@ class Training extends EntityAbstract
         return $this;
     }
 
-    public function getInstructor() {
-        return $this->instructor;
+    public function getInstructors() {
+        return $this->instructors;
     }
-    public function setInstructor($instructor) {
-        $this->instructor = $instructor;
+    public function addInstructor($instructor) {
+        $this->instructors->add($instructor);
+
+        return $this;
+    }
+    public function removeInstructor($instructor) {
+        $this->instructors->removeElement($instructor);
+        
+        return $this;
+    }
+    public function setInstructors($instructors) {
+        $this->instructors = $instructors;
 
         return $this;
     }
@@ -166,5 +208,12 @@ class Training extends EntityAbstract
 
         return $this;
     }
+
+    // public function _formatDate($date) {
+    //     $date = date("Y-m-d H:i:s", $date);
+    //     $date = \DateTime::createFromFormat("Y-m-d H:i:s", $date);
+
+    //     return $date;
+    // }
 
 }

@@ -121,7 +121,7 @@
                     <div v-for="(userAdmin, index) in report.transmissionList" :key="index" class="card">
 
                         <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id'+index" aria-expanded="true" :aria-controls="'id'+index">
-                            <span class="float-left">{{ userAdmin.name }} ({{ userAdmin.group.name }})</span>
+                            <span class="float-left">{{ userAdmin.name }}</span>
                             <router-link class="float-right" to="" @click.native="removeUserToTransmissionList(userAdmin, index)" v-if="gotPermission">
                                 <icon class="text-danger" icon="minus-circle"/>
                             </router-link>
@@ -145,7 +145,7 @@
         </row>
 
         <hr>
-        <row>
+        <row v-if="report.id">
             <chat :id="`ir${id}`" v-if="!report.closed"/>
             <div v-else >
                 <div>
@@ -231,7 +231,7 @@ export default {
     },
     methods: {
         loadValues() {
-            getter.getIncidentById(this.id).then(res => { this.report = new Report(res) } )
+            getter.getIncidentById(this.id).then(res => { this.report = res ? new Report(res) : new Report() } )
             getter.getHistoricByIncident(this.id).then(res => { this.historic = res; } )
             GetterUser.getUsersAdminWithEmail().then(res => this.values.users = res)
         },
@@ -272,14 +272,17 @@ export default {
     computed: {
         gotPermission() {
             if(this.permission == 'undefined') {
-                model.gotPermission(this.group).then(permission => this.permission = permission )
+                model.gotPermission(this.id).then(permission => { this.permission = permission } )
             } else {
-                return this.permission
+                return (this.permission != 'USER' && this.report.id) ? true : false
             }
         }
     },
     mounted() {
         this.loadValues()
+    },
+    created() {
+        model.cleanNotification(this.id, this.$session.get('user').id)
     },
     components: {
         'row': FormRw,

@@ -43,7 +43,7 @@ class User extends SoftdeleteAbstract
     protected $ramal;
 
     /**
-     * @ManyToOne(targetEntity="Group",cascade={"persist", "remove"})
+     * @ManyToOne(targetEntity="Group")
      * @JoinColumn(name="grupo_id", referencedColumnName="id", nullable=true)
      */
     protected $group;
@@ -62,9 +62,19 @@ class User extends SoftdeleteAbstract
      * @var Boolean @Column(name="ativo", type="boolean", nullable=true, options={"default":true})
      */
     protected $active;
+    
+    /**
+     * @var Boolean @Column(name="adp", type="boolean", nullable=true, options={"default":false})
+     */
+    private $byAdp;
+    
+    /**
+     * @var Boolean @Column(name="ad", type="boolean", nullable=true, options={"default":false})
+     */
+    private $activeDirectory;
 
     /**
-     * @OneToMany(targetEntity="TrainingParticipant", mappedBy="User")
+     * @OneToMany(targetEntity="TrainingParticipant", mappedBy="participant", cascade={"persist", "remove"})
      */
     private $trainingParticipant;
 
@@ -73,17 +83,24 @@ class User extends SoftdeleteAbstract
      */
     protected $complement;
 
+     /**
+     * @var Datetime @Column(name="ultimo_login", type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
     public function __construct() {
         parent::__construct();
         $this->id = '';
         $this->code = '';
         $this->name = '';
         $this->email = '';
-        $this->level = '';
+        $this->level = 1;
         $this->ramal = '';
         $this->group = new Group();
         $this->occupation = '';
         $this->admin = false;
+        $this->byAdp = false;
+        $this->activeDirectory = false;
         $this->active = true;
     }
 
@@ -167,6 +184,24 @@ class User extends SoftdeleteAbstract
 
         return $this;
     }
+
+    public function getByAdp() {
+        return $this->byAdp;
+    }
+    public function setByAdp($byAdp) {
+        $this->byAdp = $byAdp ? true : false;
+
+        return $this;
+    }
+    
+    public function getActiveDirectory() {
+        return $this->activeDirectory;
+    }
+    public function setActiveDirectory($activeDirectory) {
+        $this->activeDirectory = $activeDirectory ? true : false;
+
+        return $this;
+    }
     
     public function isActive() {
         return $this->getActive();
@@ -194,6 +229,20 @@ class User extends SoftdeleteAbstract
     }
     public function setComplement($complement) {
         $this->complement = $complement;
+
+        return $this;
+    }
+  
+    public function getLastLogin() {
+        return $this->lastLogin;
+    }
+    public function setLastLogin($lastLogin) {
+        $this->lastLogin = $this->_formatDate($lastLogin);
+
+        return $this;
+    }
+    public function setNewLogin() {
+        $this->lastLogin = new \DateTime();
 
         return $this;
     }

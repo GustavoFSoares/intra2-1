@@ -25,7 +25,7 @@ class GroupController extends BasicApplicationAbstract
                  'y', 'z', '.'
         ];
             
-        \Helper\LoggerHelper::initLogFile('cron/group', null, 'GROUP', 'Y/m/d his');
+        \Cron\Model\RotineModel::startRotine('GROUP', 'active-directory', 'cron/group');
         echo \Helper\LoggerHelper::writeFile("Verificando...\n");
         
         $mappedGroups = $this->model->findGroupsId();
@@ -36,7 +36,7 @@ class GroupController extends BasicApplicationAbstract
             foreach ($alph as $secondLetter) {
                 $groups = $AD->getGroups($letter.$secondLetter);
  
-        
+                
                 foreach ($groups as $key => $group) {
                     $groupId = \Helper\SlugHelper::get($group['name']);
                     
@@ -75,11 +75,11 @@ class GroupController extends BasicApplicationAbstract
             }
         }
         
-        $diffs = \Helper\Differ::diff($existingGroups, $mappedGroups);
+        $diffs = \Helper\DiffHelper::diff($existingGroups, $mappedGroups);
 
         \Helper\LoggerHelper::writeFile("\n");
         foreach ($diffs as $toDelete) {
-            $group = $this->model->findBy($toDelete);
+            $group = $this->model->findByGroupId($toDelete);
             if($group){
                 $group->setC_removed(true);
                 $this->model->doUpdate($group);
@@ -87,7 +87,7 @@ class GroupController extends BasicApplicationAbstract
             }
         }
         
-        \Helper\LoggerHelper::writeFile("--Atualizacao de Grupos finalizada--\n");
+        \Cron\Model\RotineModel::endRotine();
     }
 
     public function getModel() {

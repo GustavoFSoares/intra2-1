@@ -44,6 +44,10 @@ class ModuleModel extends SoftdeleteModel
     }
 
     public function mount($values) {
+        if( !array_key_exists('parent', $values) ) {
+            return $values;    
+        }
+
         $parent = $this->getRepository()->find($values['parent']['id']);
         
         if(array_key_exists('id', $values)) {

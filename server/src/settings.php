@@ -1,4 +1,5 @@
 <?php
+use HospitalApi\Controller\Session;
 date_default_timezone_set("America/Sao_Paulo");
 
 return [
@@ -18,4 +19,6 @@ return [
             'level' => \Monolog\Logger::DEBUG,
         ],
     ],
+    'session' => new Session(),
+    'em' => \HospitalApi\Model\ModelAbstract::createEntityManager(),
 ];

@@ -1,8 +1,18 @@
 <?php
 namespace HospitalApi;
+use Symfony\Component\Yaml\Yaml;
 
 class BasicApplicationAbstract
 {
+
+    private static $_app;
+    
+    public function __construct($app) {
+        if (isset(self::$_app)) {
+            return $this;
+        }
+        self::$_app = $app;
+    }
 
     public function isDebug(){
         return DEBUG_ACTIVE;
@@ -26,13 +36,23 @@ class BasicApplicationAbstract
     }
 
     public function getApp() {
-        $app = require PATH.'/../public/index.php';
-        return $app;
+        return self::$_app;
     }
 
     public function getContainer() {
-        $app = require PATH.'/../public/index.php';
-        return $app->getContainer();
+        return self::$_app->getContainer();
     }
 
+    public function getEntityManager() {
+        return self::$_app->getContainer()['em'];
+    }
+
+    public function getSpecialDataPermissions() {
+       
+        $file = file_get_contents(PATH.'/HospitalApi/SpecialDataPermissions.yml');
+        $yaml = Yaml::parse($file);
+        
+        return $yaml;
+    }
+        
 }

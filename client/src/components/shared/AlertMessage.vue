@@ -21,7 +21,8 @@ export default {
     props: {
         text: String,
         type: String,
-        icon: {default: ''}
+        icon: {default: ''},
+        timeout: {default: 3500}
     },
     methods: {
         concatClass() {
@@ -29,7 +30,7 @@ export default {
             this.internClass = "alert alert-"+this.type+" fade show"
             setTimeout(() => {
                 $('#alert').fadeOut()
-            }, 3500);
+            }, this.timeout);
         },
         close() {
             $('#alert').fadeOut()

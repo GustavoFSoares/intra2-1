@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(collaborator) of searchList" :key="collaborator.id" v-bind:class="{'table-danger': collaborator.c_removed == '1'}">
+                <tr v-for="(collaborator) of searchList" :key="collaborator.id" v-bind:class="{'table-danger': !collaborator.active == '1'}">
                     <td>{{ collaborator.id }}</td>
                     <td>{{ collaborator.name }}</td>
                     <td>{{ collaborator.complement.type.name }}</td>
@@ -49,15 +49,15 @@
                     <td>{{ moment(collaborator.complement.fire.date).format('DD/MM/YYYY') }}</td>
                     <td>{{ collaborator.complement.turn }}</td>
                     <td>
-                        <icon class="text-success" icon="check-circle" v-if="!collaborator.c_removed"/>
+                        <icon class="text-success" icon="check-circle" v-if="collaborator.active"/>
                         <icon class="text-danger" icon="times-circle" v-else/>
                     </td>
                     <td>
-                        <router-link :to='`edit/${collaborator.id}`'>
-                            <icon icon="edit"/>
+                        <router-link :to='`colaboradores/edit/${collaborator.id}`'>
+                            <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
                         <router-link @click.native="remove(collaborator.id)" to="">
-                            <icon class="text-danger" icon="trash-alt"/>
+                            <icon v-tooltip.top="'Remover'" class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
                 </tr>
@@ -69,6 +69,7 @@
 <script>
 import model, { getter } from '@/model/collaborator-model'
 import moment from 'moment'
+import Alert from "@/components/shared/Alert"
 
 export default {
     data() {
@@ -81,17 +82,23 @@ export default {
                 type: ''
             },
             types: '',
+            alert: {
+                remove: { title: "Tem certeza que deseja excluir?", message: "Você está excluindo um Colaborador. <BR>Tem certeza que deseja continuar?" }
+            }
         }
     },
     methods: {
         mounteCollaborators() {
-            getter.getCollaborators().then(res => {this.collaborators = res })
+            getter.getCollaborators().then(res => {this.collaborators = res; console.log(res) })
             getter.getCollaboratorTypes().then(res => {this.types = res })
         },
-        remove(id){
-           if (confirm("Tem certeza que deseja excluir?")) {
-                model.doDelete(id).then(res => this.$router.go())
-            }
+        remove(id, index){
+            Alert.Confirm(this.alert.remove.message).then(res => {
+                if(res){
+                    model.doDelete(id)
+                    this.collaborators.splice(index, 1)
+                }
+            })
         },
     },
     mounted() {

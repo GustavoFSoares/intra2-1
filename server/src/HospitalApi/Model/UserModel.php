@@ -103,4 +103,55 @@ class UserModel extends SoftdeleteModel
 
         return $values;
     }
+
+    public function findUsersByNameOrCode($name = "", $code = "") {
+        $select = $this->em->createQueryBuilder();
+        $select
+            ->select('u')
+            ->from($this->getEntityPath(), 'u');
+        if($name && is_string($name) ) {
+            $select->OrWhere('u.name LIKE :name')->setParameter('name', "%".strtolower($name)."%" );
+        }
+
+        if($code && is_numeric($code) ) {
+            $select->OrWhere("u.code LIKE :code")->setParameter('code', "%$code%" );
+        }
+        $select->andWhere('u.c_removed = 0');
+        
+        $Users = $select->getQuery()->getResult();
+        $users = [];
+        if($Users) {
+            foreach ($Users as $User) {
+                $group = $User->getGroup();
+                $complement = $User->getComplement();
+                
+                $User->setGroup($group->toArray());
+                if($complement){
+                    $User->setComplement($complement->toArray());
+                }
+                $users[] = $User;
+            }
+        }
+        return $users;
+    }
+
+    public function mergeUsers($userId1, $userId2) {
+        $user1 = $this->getRepository()->find( $userId1 );
+        $user2 = $this->getRepository()->find( $userId2 );
+
+        $user1
+            ->setName( $user2->getName() )
+            ->setCode( $user2->getCode() )
+            ->setOccupation( $user2->getOccupation() );
+    
+        try {
+            $this->doUpdate($user1);
+            $this->doDelete($user2);
+            
+            return true;
+        } catch(\Exception $e) {
+            return false;
+        }
+
+    }
 }

@@ -8,7 +8,7 @@
                     <th scope="col">Nome</th>
                     <th scope="col">Local</th>
                     <th scope="col">Horário de Início</th>
-                    <th scope="col">Carga Horária</th>
+                    <th scope="col">Horário de Fim</th>
                     <th></th>
                 </tr>
             </thead>
@@ -16,9 +16,9 @@
                 <tr v-for="(training, index) in trainings" :key="training.id" v-bind:class="{'table-danger': moment().diff(training.beginTime.date, 'days') == 0}">
                     <td>{{ training.id }}</td>
                     <td>{{ training.name }}</td>
-                    <td>{{ training.place.substr(0, 16) }}</td>
+                    <td>{{ training.enterprise.substr(0, 16) }}</td>
                     <td>{{ moment(training.beginTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
-                    <td>{{ training.workload }}</td>
+                    <td>{{ moment(training.endTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
                     <td> 
                         <router-link to="" class="text-danger" @click.native="exitTraining(training, index)">
                             <icon id='icon' icon="times-circle"/>   
@@ -27,7 +27,6 @@
                 </tr>
             </tbody>
         </table>
-
     </div>
 </template>
 

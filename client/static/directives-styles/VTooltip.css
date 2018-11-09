@@ -1,0 +1,19 @@
+.vue-tooltip {
+    background-color: rgba(59, 59, 59, 0.623);
+}
+
+.vue-tooltip[x-placement="left"] .tooltip-arrow {
+    border-color: rgba(59, 59, 59, 0.330);
+}
+    
+.vue-tooltip[x-placement^="right"] .tooltip-arrow {
+    border-color: rgba(59, 59, 59, 0.330);
+}
+    
+.vue-tooltip[x-placement^="bottom"] .tooltip-arrow {
+    border-color: rgba(59, 59, 59, 0.330);
+}
+    
+.vue-tooltip[x-placement^="top"] .tooltip-arrow {
+    border-color: rgba(59, 59, 59, 0.330);
+}

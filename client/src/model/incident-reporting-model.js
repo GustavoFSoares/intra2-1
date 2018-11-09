@@ -6,26 +6,14 @@ const PermissionList = [
 
 const GroupModel = require("@/model/group-model").getter
 const getters = {
-    getIncidents: (group) => {
-        return model.gotPermission(group).then(permission => {
-            if (permission) {
-                return service.getIncidents()
-            }
-            return service.getIncidents({ 'failedPlace':group.id, 'filtered': 1 })
-        })
-    },
-    getIncidentsWithFilters: (group, filters) => {
-        return model.gotPermission(group).then(permission => {
-            if (permission) {
-                return service.getIncidents( filters )
-            }
-            return service.getIncidents({ 'failedPlace': group.id, 'filtered': 1, 'closed': filters.closed })
-        })
-    },
-    getIncidentById: (id) => service.getIncidents({'id': id}),
+    getIncidents: () => service.getIncidents({ 'user_id': window.$session.get('user').id }),
+    getIncidentsWithFilters: (group, filters) => service.getIncidents(
+        { 'filtered': 1, 'closed': filters.closed }
+    ),
+    getIncidentById: (id) => service.getIncidents({ 'id': id, 'user_id': window.$session.get('user').id }),
     getHistoricByIncident: (id) => service.getHistoricByIncident(id),
     getEvents: () => service.getEvents(),
-    getChatsByIncident: (incidentId) => service.getChatsByIncident(incidentId),
+    getChatsByIncident: (incidentId) => service.getChatsByIncident({ 'id': incidentId, 'user_id': window.$session.get('user').id }),
 }
 var model = {
     socket: '',
@@ -46,7 +34,7 @@ var model = {
             })
         })
     },
-    chatInit: (socket) => {
+    socketInit: (socket) => {
         model.socket = socket
     },
     sendMessage: (id, message) => {
@@ -56,17 +44,16 @@ var model = {
     insertMessage: (id, message) => service.insertMessage({ 'id': id, 'message': message, 'user': window.$session.get('user') }),
     addUserToTransmissionList: (incidentId, data) => service.addUserToTransmissionList(incidentId, data),
     removeUserToTransmissionList: (incidentId, data) => service.removeUserToTransmissionList(incidentId, data),
-    gotPermission: (group) => {
-        return new Promise(resolve => {
-            PermissionList.forEach(list => {
-                if(group.groupId == list) {
-                    resolve(true)
-                }
-            })
-
-            resolve(false)
+    gotPermission: (incidentId = null) => service.getUserPermission({ 'id': incidentId, 'user_id': window.$session.get('user').id }),
+    getSocketId: (messageId) => {
+        let regex = /\d[\d]*/;
+        return new Promise((resolve) => {
+            let match = regex.exec(messageId)
+            
+            resolve(match[0])
         })
-    }
+    },
+    cleanNotification: (id, userId) => service.cleanNotification(id, { 'user_id':userId, 'incident':id })
 }
 export default model
 export const getter = getters

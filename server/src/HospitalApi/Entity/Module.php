@@ -50,8 +50,8 @@ class Module extends SoftdeleteAbstract
      * Many Modules have Many Groupss.
      * @ManyToMany(targetEntity="Group")
      * @JoinTable(name="Modulo_Grupo",
-     *      joinColumns={@JoinColumn(name="modulo_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="grupo_id", referencedColumnName="id")}
+     *      joinColumns={@JoinColumn(name="modulo_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="grupo_id", referencedColumnName="id", onDelete="CASCADE")}
      *      )
      */
     protected $groups;
@@ -161,7 +161,11 @@ class Module extends SoftdeleteAbstract
         return $this->parent;
     }
     public function setParent($parent) {
-        $this->parent = $parent;
+        if( is_integer($parent) ) {
+            $this->parent = $this->getEntityManager()->getRepository('HospitalApi\Entity\Module')->find($parent);
+        } else {
+            $this->parent = $parent;
+        }
 
         return $this;
     }

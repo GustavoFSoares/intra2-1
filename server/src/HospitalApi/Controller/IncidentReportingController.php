@@ -3,6 +3,7 @@ namespace HospitalApi\Controller;
 
 use HospitalApi\Model\IncidentReportingModel;
 use HospitalApi\Model\IncidentReportingMessagesModel;
+use HospitalApi\Model\NotificationsIncidentReportingModel;
 use HospitalApi\Template\IncidentReportingNoticicationEmailTemplate;
 use HospitalApi\Template\AdverseEventsEmailTemplate;
 use PHPMailer\PHPMailer\Exception;
@@ -34,14 +35,15 @@ class IncidentReportingController extends ControllerAbstractLongEntity
 
             $transmissionList = $model->getTransmissionList($incident->getId(), $user->getId());
             
+            $model->updateTransmissionList($incident->getId(), $user, 'add');
+            NotificationsIncidentReportingModel::deleteNotification($incident, $user);
             foreach ($transmissionList as $userReceiver) {
+                NotificationsIncidentReportingModel::plusOne($incident, $userReceiver);
+
                 $emailTemplate = new IncidentReportingNoticicationEmailTemplate($incident, $user, $userReceiver);
                 EmailController::sendEmailAction($emailTemplate);
             }
-            
-            $logMessage = $messageEntity->getTime()->format('Y/m/d H:i:s')." ";
-            $logMessage .= $user->getName()."(".$user->getGroup()->getName()."): ".$messageEntity->getMessage();
-            \Helper\LoggerHelper::writeFile($logMessage);
+            $this->makeLog($messageEntity, $user);
 
         } catch(Exception $e) {
             $model = new \HospitalApi\Model\StatusMessageModel();
@@ -51,23 +53,60 @@ class IncidentReportingController extends ControllerAbstractLongEntity
         return $res->withJson($result);
     }
 
+    public function makeLog($messageEntity, $user) {
+        $logMessage = $messageEntity->getTime()->format('Y/m/d H:i:s')." ";
+        $logMessage .= $user->getName()."(".$user->getGroup()->getName()."): ".$messageEntity->getMessage();
+        \Helper\LoggerHelper::writeFile($logMessage);        
+    }
+
+    public function get($req, $res, $args) {
+        $id = $req->getQueryParam('id');
+		$params = $req->getQueryParams();
+
+		$this->storeUser($params);
+		if ($id === null) {
+			$data = $this->getModel()->findBy($params);
+		} else {
+			$results = $this->getModel()->findById($id);
+            $data = $this->translateCollection($results);
+        }
+        
+		return $res->withJson($data);
+    }
+    
     public function closeReportAction($req, $res, $args) {
         $id = $args['id'];
 
         $model = $this->getModel();
         $messagesModel = new IncidentReportingMessagesModel();
+        $notificationsModel = new NotificationsIncidentReportingModel();
         
         $entity = $model->getRepository()->find($id);
         $messagesModel->deleteChats($entity->getId());
+        $notificationsModel->deleteNotifications($entity->getId());
 
         $entity->setClosed(true);
 
         return $model->doUpdate($entity);
     }
 
+    public function gotPermissionAction($req, $res, $args) {
+        $params = $req->getQueryParams();
+        
+        $this->storeUser($params);
+        
+        $id = isset($params['id']) ? $params['id'] : false;
+        $permission = $this->getModel()->gotPermission($id);
+        
+        return $res->withJson($permission);
+    }
+
     public function getChatsByIncident($req, $res, $args) {
+		$params = $req->getQueryParams();
+		$this->storeUser($params);
+
         $messagesModel = new IncidentReportingMessagesModel();
-        $chats = $messagesModel->findMessagesByIncident($args['id']);
+        $chats = $messagesModel->findMessagesByIncident($params['id']);
         
         return $res->withJson($chats);
     }
@@ -120,18 +159,33 @@ class IncidentReportingController extends ControllerAbstractLongEntity
     public function _mountEntity($values) {
         $entity = parent::_mountEntity($values);
 
-        $this->sendEmailFor();
-        $entity->setClosed(true);
+        // if($entity->getFailedPlace()->getEnterprise() == 'HPSC') {
+            $this->sendEmailFor($entity);
+        // }
         
         return $entity;
     }
 
-    public function sendEmailFor() {
-        $model = $this->getModel();
-        $incident = $model->entity;
+    public function sendEmailFor($incident) {
+        $afterIncident = $this->getModel()->getRepository()->findOneBy([], ['id'=> 'DESC']);
+        $incident
+            ->setId($afterIncident->getId()+1)
+            ->setClosed(true);
         $emailTemplate = new AdverseEventsEmailTemplate($incident);
             
-        EmailController::sendEmailAction($emailTemplate);          
+        EmailController::sendEmailAction($emailTemplate);
+    }
+
+    public function cleanNotificationAction($req, $res, $args) {
+        $params = $req->getQueryParams();
+        
+        $this->storeUser($params);
+        $incident = $this->getModel()->findById($params['incident']);
+        if($incident) {
+            NotificationsIncidentReportingModel::deleteNotification($incident, $this->getContainer()['session']->get());
+        }
+
+        return $res->withJson(true);
     }
     
 }

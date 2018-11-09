@@ -23,7 +23,7 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	public function __construct() {
 		$this->entityPath = get_class($this->entity);
 		$this->entityPath ? 
-			$this->em = $this->createEntityManager() : "";
+			$this->em = $this->getEntityManager() : "";
 		$this->now = new DateTime();
 	}
 
@@ -35,8 +35,8 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	 * Retorna um EntityManager com os métodos do Doctrine
 	 * @return EntityManager
 	 */
-	public function createEntityManager() {
-
+	public static function createEntityManager() {
+		
 		$path = ['HospitalApi\Entity'];
 		$devMode = true;
 
@@ -105,6 +105,10 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	 * @return Array 
 	 */
 	public function findBy($filters = [], $orders = []) {
+		if($this->isInverseOrder()) {
+			$orders['id'] = 'DESC';
+		}
+
 		$collection = $this->getRepository()->findBy($filters, $orders);
 		
 		return $collection;
@@ -161,5 +165,9 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 			return $diffDays == "0";
 		}
 	}
+
+	public function isInverseOrder() {
+        return ( isset($this->inverseOrder) && $this->inverseOrder ) ? true : false;
+    }
 
 }

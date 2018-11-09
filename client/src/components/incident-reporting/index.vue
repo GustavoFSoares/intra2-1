@@ -5,24 +5,7 @@
 
         <div class="mb-3">
             <div class='row filters'>
-                <rows label='Fechados' v-bind:class="{'filter-not-selected': search.dbFilters.closed == undefined }">
-                    <checkbox @changed="loadCloseds(true)"/>
-                </rows>
-
-                <rows>
-                    <div class="mb-3 btn-group" role="group">
-                        <router-link to="" class="btn btn-primary" v-for="(type, index) in enterpriseTypes" :key="index" @click.native="search.type = type">{{ type.name }}</router-link>
-                        <router-link to="" class="btn btn-primary" @click.native="search.type = {id: '', name: ''}">Todos</router-link>
-                    </div>
-                    <button class="btn" @click="cleanFilters()">Limpar Filtros</button>
-                </rows>
-
-                <rows v-bind:class="{'filter-not-selected': search.dbFilters.filtered == undefined }">
-                    <div v-if="gotPermission">
-                        <label>Aguardando Análise</label>
-                        <checkbox @changed="loadFiltereds(true)"/>
-                    </div>
-                </rows>
+                
             </div>
         </div>
         
@@ -42,14 +25,15 @@
                     <th scope="col">Horário da Falha</th>
                     <th scope="col">Paciente Envolvido</th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(report) of searchList" :key="report.id" v-bind:class="{'table-info': report.filtered == false, 'table-disabled': report.closed}">
                     <th>{{ report.id }}</th>
-                    <td>{{ report.event.description.substr(0, 40) }}</td>
-                    <td>{{ report.reportPlace.name }}</td>
-                    <td>{{ report.failedPlace.name }}</td>
+                    <td>{{ report.event.substr(0, 40) }}</td>
+                    <td>{{ report.reportPlace }}</td>
+                    <td>{{ report.failedPlace }}</td>
                     <td>{{ moment(report.failedTime.date).format('DD/MM/YYYY HH:mm') }}</td>
                     <td>
                         <icon class="text-success" icon="check" v-if="report.patientInvolved"/>
@@ -57,12 +41,13 @@
                     </td>
                     <td>
                         <router-link :to='`notificacao-de-incidentes/edit/${report.id}`' v-if="gotPermission && report.closed != true">
-                            <icon icon="edit"/>
+                            <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
                         <router-link :to='`notificacao-de-incidentes/detalhe/${report.id}`'>
-                            <icon  class="text-warning" icon="search"/>
+                            <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
                         </router-link>
                     </td>
+                    <td> <span v-if="report.count" class="badge badge-danger"> {{ report.count }} </span> </td>
                 </tr>
             </tbody>
         </table>
@@ -73,15 +58,18 @@
 import model, { getter } from '@/model/incident-reporting-model'
 import moment from 'moment'
 import { Checkbox, FormRws } from '@/components/shared/Form'
+import Socket from "@/model/chat-model";
 
 export default {
     data() {
         return {
             title: 'Lista de Incidentes',
+            socket: null,
             enterpriseTypes: [{id: 'hu', name:"HU"}, {id: 'hpsc', name: "HPSC"}],
             typeExibited: '',
             reports: [],   
             moment: moment,
+            user: this.$session.get('user').name,
             group: this.$session.get('user').group,
             search: {
                 filter: '',
@@ -94,7 +82,7 @@ export default {
     },
     methods: {
         loadValues() {
-            getter.getIncidents(this.group).then(res => {this.reports = res })
+            getter.getIncidents(this.group).then(res => { this.reports = res })
         },
         loadCloseds() {
             this.search.dbFilters.closed = !this.search.dbFilters.closed
@@ -113,8 +101,20 @@ export default {
             getter.getIncidentsWithFilters(this.group, this.search.dbFilters).then(res => { this.reports = res; })
         },
     },
+    created: function () {
+        this.socket = new Socket(`ir`, this.user)
+        model.socketInit(this.socket)
+    },
     mounted() {
         this.loadValues()
+
+        this.socket.io.on(`ir`, (message) => {
+            if( !this.socket.isYou(message.user) ) {
+                model.getSocketId(message.id).then( id => {
+                    this.reports.find( (element, index, array) => (element.id == id) ? element.count++ : "" )
+                })
+            }
+        })
     },
     computed: {
         searchList() {
@@ -138,11 +138,11 @@ export default {
                     
                     if( exp.test(reports.id)) {
                         return exp
-                    } else if( exp.test(reports.event.description)) {
+                    } else if( exp.test(reports.event)) {
                         return exp
-                    } else if( exp.test(reports.failedPlace.name)) {
+                    } else if( exp.test(reports.failedPlace)) {
                         return exp
-                    } else if( exp.test(reports.reportPlace.name)) {
+                    } else if( exp.test(reports.reportPlace)) {
                         return exp
                     } else if( exp.test(moment(reports.failedTime.date).format('DD/MM/YYYY HH:mm'))) {
                         return exp
@@ -154,9 +154,9 @@ export default {
         },
         gotPermission() {
             if(this.permission == 'undefined') {
-                model.gotPermission(this.group).then(permission => this.permission = permission)
+                model.gotPermission().then(permission => { this.permission = permission } )
             } else {
-                return this.permission
+                return (this.permission != 'USER' && this.permission) ? true : false
             }
         }
     },

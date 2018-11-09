@@ -2,6 +2,7 @@
 namespace HospitalApi\Model;
 
 use HospitalApi\Entity\IncidentReporting;
+use Doctrine\ORM\QueryBuilder;
 
 
 /**
@@ -26,24 +27,9 @@ class IncidentReportingModel extends ModelAbstract
         
         $values->place['reportPlace'] = $groupRepository->find($values->place['reportPlace']['id']);
         $values->place['failedPlace'] = $groupRepository->find($values->place['failedPlace']['id']);
-        $users = $userModel->getUsersAdminWithEmail($values->place['failedPlace']);
-        if(isset($values->id)) {
-            foreach ($users as $user) {
-                $this->updateTransmissionList($values->id, $user, 'add');
-            }
-        } else {
-            $segerUsersAdmin = $userModel->getUsersAdminWithEmail($groupRepository->findByGroupId('seger-hu'));
-            $users = array_merge($users, $segerUsersAdmin);
-            $values->transmissionList = new \Doctrine\Common\Collections\ArrayCollection();
-            foreach ($users as $user) {
-                $values->transmissionList->add($userRepository->find($user->getId()));
-            }
-        }
         
         $values->event = $eventRepository->find($values->event['id']);
         
-        $afterIncident = $this->getRepository()->findOneBy([], ['id'=> 'DESC']);
-        $values->id = $afterIncident->getId()+1;
 
         return $values;
     }
@@ -72,10 +58,21 @@ class IncidentReportingModel extends ModelAbstract
         return true;
     }
 
-    public function userInList($user) {
-        $res = $this->entity->getTransmissionList()->exists( function($key, $entry) use ($user) {
-            return ($entry->getId() == $user->getId());
-        });
+    public function userInList($user, $id = null) {
+        $entity = null;
+        if($this->entity->getId()) {
+            $entity = $this->entity;
+        } else if($id) {
+            $entity = $this->getRepository()->find($id);
+        }
+
+        if($entity) {
+            $res = $entity->getTransmissionList()->exists( function($key, $entry) use ($user) {
+                return ($entry->getId() == $user->getId());
+            });
+        } else {
+            $res = false;
+        }
         return $res;
     }
 
@@ -95,30 +92,91 @@ class IncidentReportingModel extends ModelAbstract
         return $select->getQuery()->getResult();
     }
 
-    public function findBy($filters) {
-        $query = $this->em->createQueryBuilder();
-        $query->select('ir')->from($this->getEntityPath(), 'ir');
+    public function findById($id) {
+        $select = $this->em->createQueryBuilder();
+        $select->select('ir')->from($this->getEntityPath(), 'ir');
 
+        $select = $this->showForJustWhoCanSee($select)->where("ir.id = $id");
+
+        return $select->getQuery()->getOneOrNullResult();
+    }
+
+    public function findBy($filters) {
+        $select = $this->em->createQueryBuilder();
+        $select->select([
+            'ir.id',
+            'rp.name AS reportPlace',
+            'fp.name as failedPlace',
+            'ev.description as event',
+            'ir.description',
+            'ir.conduct',
+            'ir.mustReturn',
+            'ir.patientInvolved',
+            'ir.recordTime',
+            'ir.failedTime',
+            'ir.closed',
+            'ir.filtered',
+            'nir.count'
+        ])->from($this->getEntityPath(), 'ir');
+
+        $select = $this->showForJustWhoCanSee($select)->orderBy('ir.id', 'DESC');
+        $select
+            ->leftJoin('HospitalApi\Entity\NotificationsIncidentReporting', 'nir',
+                'WITH', 'nir.incident = ir AND nir.user = :user'
+            )
+            ->setParameter( 'user', $this->getContainer()['session']->get() )
+            
+            ->innerJoin('ir.reportPlace', 'rp', 'WITH', 'ir.reportPlace = rp' )
+            ->innerJoin('ir.failedPlace', 'fp', 'WITH', 'ir.failedPlace = fp' )
+            ->innerJoin('ir.event', 'ev', 'WITH', 'ir.event = ev' )
+            ->addOrderBy('nir.count', 'ASC')
+            ->addOrderBy('ir.id', 'ASC');
+        
         foreach ($filters as $filter => $value) {
             if($filter != 'failedPlace' && $filter != 'enterpriseWatching' ) {
                 if($value == "true" || $value == "false") {
                     $value = ($value == "true") ? 1 : 0;
                 }
-                $query->andWhere("ir.$filter = :$filter")
+                $select->andWhere("ir.$filter = :$filter")
                       ->setParameter($filter, $value);
             }
         }
-        if(isset($filters['failedPlace'])) {
-            $query->innerJoin('ir.transmissionList', 'irtl', 'WITH', "irtl.id = {$filters['failedPlace']} OR ir.failedPlace = {$filters['failedPlace']}")
-                  ->groupBy('ir.id');
-        }
-        $query
-            ->innerJoin('ir.failedPlace', 'gf', 'WITH', 'gf.enterprise = :enterpriseWatching' )
-            ->setParameter('enterpriseWatching', $filters['enterpriseWatching'])
-            ->orderBy('ir.id', 'DESC');
             
-        return $query->getQuery()->getResult();
+        return $select->getQuery()->getResult();
     }
 
+    public function showForJustWhoCanSee(QueryBuilder $select ) {
+        switch ($this->getContainer()['session']->gotPermission('incident-reporting')) {
+            case 'ALL_DATA':
+                break;
+            
+            case 'HU_DATA':
+                $select->innerJoin('ir.failedPlace', 'irfp', 'WITH', "irfp.enterprise <> 'HPSC'");
+                break;
+            
+            case 'HPSC_DATA':
+                $select->innerJoin('ir.failedPlace', 'irfp', 'WITH', "irfp.enterprise like 'HPSC'");
+                break;
+            
+            default: 
+                $select
+                    ->innerJoin('ir.transmissionList', 'irtl', 'WITH', "irtl = :user")
+                    ->setParameter('user', $this->getContainer()['session']->get()->getId())
+                    ->where('ir.filtered = 1');
+                break;
+        }
+       
+        return $select;
+    }
+
+    public function gotPermission($id) {
+        $permission = $this->getContainer()['session']->gotPermission('incident-reporting');
+        if($permission == 'USER') {
+            $permission = 
+                $this->userInList($this->getContainer()['session']->get(), $id) ? "USER" : false;
+        }
+
+        return $permission;
+    }
 
 }
