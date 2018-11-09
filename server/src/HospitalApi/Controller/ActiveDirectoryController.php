@@ -88,7 +88,7 @@ class ActiveDirectoryController
     private function _doRequest() {
         $bind = ldap_bind($this->_con, $this->_getUser(AD_USER), AD_PASSWORD);
         if(!$bind){
-            throw new Exception("Erro de Autenticação - Servidor LDAP não autenticado", 401);
+            $this->_doRequest();
         }
     }
         
