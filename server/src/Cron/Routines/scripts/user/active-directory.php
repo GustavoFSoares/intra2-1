@@ -1,4 +1,9 @@
 <?php
     require __DIR__."/../../index.php";
     $UserController = new \Cron\Controller\UserController();
-    $UserController->update();
+    try {
+        $UserController->update();
+    } catch(\Exception $e) {
+        echo \Helper\LoggerHelper::writeFile("=====================================================");
+        echo \Helper\LoggerHelper::writeFile("ERRO - {$e->getMessage()}\n");
+    }

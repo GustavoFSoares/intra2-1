@@ -138,6 +138,10 @@ class UserModel extends SoftdeleteModel
     public function mergeUsers($userId1, $userId2) {
         $user1 = $this->getRepository()->find( $userId1 );
         $user2 = $this->getRepository()->find( $userId2 );
+        
+        if(!$user1 || !$user2 ) {
+            return false;
+        }
 
         $user1
             ->setName( $user2->getName() )

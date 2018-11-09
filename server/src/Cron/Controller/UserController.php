@@ -156,7 +156,7 @@ class UserController extends BasicApplicationAbstract
                 
                 continue;
             }
-            
+  
             $data[ $index['nome'] ]        = \Helper\SlugHelper::removeSpaces($data[ $index['nome'] ]);
             $data[ $index['funcao-nome'] ] = \Helper\SlugHelper::removeSpaces($data[ $index['funcao-nome'] ]);
             

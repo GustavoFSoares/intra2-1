@@ -11,6 +11,7 @@ class ActiveDirectoryController
     private $_con;
     private $user;
     private $password;
+    private $_bind;
     
     public function __construct() {
         $adminUser = "servweb";
@@ -86,10 +87,17 @@ class ActiveDirectoryController
     }
     
     private function _doRequest() {
-        $bind = ldap_bind($this->_con, $this->_getUser(AD_USER), AD_PASSWORD);
+        $bind = $this->getBind();
         if(!$bind){
             $this->_doRequest();
         }
+    }
+
+    public function getBind() {
+        if(!$this->_bind) {
+            $this->_bind = ldap_bind($this->_con, $this->_getUser(AD_USER), AD_PASSWORD);
+        }
+        return $this->_bind;
     }
         
     public function isActive($id){

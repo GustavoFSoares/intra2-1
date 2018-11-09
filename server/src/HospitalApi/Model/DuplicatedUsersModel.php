@@ -17,6 +17,7 @@ class DuplicatedUsersModel extends ModelAbstract
     }
 
     public function makeMergeUsers($duplicationId) {
+        $this->entity = $this->getRepository()->find($duplicationId);
         $positiveResponse = [
             'users' => "<b>{$this->entity->getUser1()->getId()}</b> - <b>{$this->entity->getUser2()->getId()}</b>",
             'message' => "Cadastro Unificado",
@@ -28,11 +29,10 @@ class DuplicatedUsersModel extends ModelAbstract
             'status' => 'danger',
         ];
 
-        $this->entity = $this->getRepository()->find($duplicationId);
         if($this->entity) {
             $userRepository = $this->em->getRepository('HospitalApi\Entity\User');
             
-            $UserModel = new HospitalApi\Model\UserModel();
+            $UserModel = new \HospitalApi\Model\UserModel();
             $merged = $UserModel->mergeUsers( $this->entity->getUser1()->getId(), $this->entity->getUser2()->getId() );
             
             if($merged) {
