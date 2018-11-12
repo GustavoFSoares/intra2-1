@@ -5,6 +5,7 @@ use Symfony\Component\Yaml\Yaml;
 
 // e.g: $app->add(new \Slim\Csrf\Guard);
 define('PATH', __DIR__);
+define('DOCS', __DIR__."/../../../docs/");
 
 loadConfigurations();
 
