@@ -1,3 +1,4 @@
+var date = new Date()
 export default class Training {
     constructor(training = { place: '', enterprise: '', room: '' }) {
         this.id = training.id
@@ -9,8 +10,8 @@ export default class Training {
         this.type = training.type
         this.institutionalType = training.institutionalType
         this.instructors = training.instructors ? training.instructors : []
-        this.beginTime = training.beginTime ? new Date(training.beginTime.date) : new Date()
-        this.endTime = training.endTime ? new Date(training.endTime.date) : new Date()
+        this.beginTime = training.beginTime ? new Date(training.beginTime.date) : new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), '00')
+        this.endTime = training.endTime ? new Date(training.endTime.date) : new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()+1, '00')
         this.workload = training.workload
         this.done = training.done ? true : false
     }
