@@ -156,7 +156,6 @@ export default {
         return {
             id: this.$route.params.id,
             title: "Cadastro de Treinamento",
-            Texto: '>>Local onde será realizado treinamento<<',
             dateTraining: new Date(),
             loading: false,
             sending: false,
@@ -183,7 +182,13 @@ export default {
                 }
             },
             values: {
-                type: [ {id: "institutional", name: "Institucional"}, {id: "extern", name: "Treinamento Externo"}, {id: "specific-technician", name: "Técnico-Específico"}, {id: "selfdevelpment", name: "Autodesenvolvimento"}, ],
+                type: [ 
+                    {id: "selfdevelpment", name: "Autodesenvolvimento"},
+                    {id: "institutional", name: "Institucional"},
+                    {id: "specific-technician", name: "Técnico-Específico"},
+                    {id: "extern", name: "Treinamento Externo"},
+                    {id: "meeting", name: "Reunião"},
+                ],
                 institutionalTypes: [ {id: "quality", name: "Qualidade e Segurança"}, {id: "humanity", name: "Humanização"}, {id: "economy", name: "Econômico Financeiro"}, ],
                 places: [],
                 trainingsType: [],
