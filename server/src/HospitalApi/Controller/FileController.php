@@ -19,6 +19,10 @@ class FileController extends BasicApplicationAbstract
         return $this->_model;
     }
 
+    public function getFileAction($req, $res, $args) {
+        return \Helper\DirectoryHelper::fileDownload($req->getParam('filePath'));
+    }
+
     public function getOrganogramAction($req, $res, $args) {
         
         $fileName = $req->getQueryParam('fileName');

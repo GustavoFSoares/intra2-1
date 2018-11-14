@@ -3,25 +3,32 @@ namespace Helper;
 
 class DirectoryHelper {
 
-    public static function getFilesArray($path, $fileToIgnore = null) {
-        if(!isset($folder)) {
-            $folder = [];
-        }
+    private static $extensionsToIgnore = [
+        'db' => 'DB',
+    ];
+
+    public static function getFilesArray($path, $fileToIgnore = null, $fileinfo = null) {
+        $father = $fileinfo ? $fileinfo->getBasename() : 'root';
+
         $dir = new \DirectoryIterator($path);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
                 if($fileinfo->isDir()) {
                     $folder[] = [
                         'dir' => true,
+                        'father' => $father,
                         'name' => utf8_encode($fileinfo->getBasename()),
-                        $fileinfo->getBasename() => self::getFilesArray($fileinfo->getPathname(), $fileToIgnore)
+                        $fileinfo->getBasename() => self::getFilesArray($fileinfo->getPathname(), $fileToIgnore, $fileinfo),
                     ];
                 } else if($fileinfo->getBasename() != $fileToIgnore){
-                    $folder[] = [
-                        'name' => utf8_encode($fileinfo->getBasename()),
-                        'extension' => $fileinfo->getExtension(),
-                        'path' => utf8_encode($fileinfo->getPathname()),
-                    ];
+                    if(self::isValidExtension( $fileinfo->getExtension() )) {
+                        $folder[] = [
+                            'name' => utf8_encode($fileinfo->getBasename()),
+                            'father' => $father,
+                            'extension' => $fileinfo->getExtension(),
+                            'path' => utf8_encode($fileinfo->getPathname()),
+                        ];
+                    }
                 }
             }
         }
@@ -51,11 +58,13 @@ class DirectoryHelper {
                 
                 } else if($fileinfo->getBasename() == $file){
                     
-                    return [
-                        'name' => utf8_encode($fileinfo->getBasename()),
-                        'extension' => $fileinfo->getExtension(),
-                        'path' => utf8_encode($fileinfo->getPathname()),
-                    ];
+                    if(self::isValidExtension( $fileinfo->getExtension() )) {
+                        return [
+                            'name' => utf8_encode($fileinfo->getBasename()),
+                            'extension' => $fileinfo->getExtension(),
+                            'path' => utf8_encode($fileinfo->getPathname()),
+                        ];
+                    }
 
                 }
 
@@ -78,5 +87,9 @@ class DirectoryHelper {
         } else {
             return 'File Not found';
         }
+    }
+
+    private static function isValidExtension($extension) {
+        return !array_key_exists($extension, self::$extensionsToIgnore);
     }
 }
