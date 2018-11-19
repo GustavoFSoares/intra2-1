@@ -16,6 +16,7 @@ import homeUserRoutes from './home-user-routes'
 import incidentReportingRoutes from './incident-reporting-routes'
 import loginRoutes from './login-routes'
 import modulesRoutes from './modules-routes'
+import ombudsmanRoutes from './ombudsman-routes'
 import popsRoutes from './pops-routes'
 import ramalsRoutes from './ramals-routes'
 import roomTrainingRoutes from './room-training-routes'
@@ -59,6 +60,7 @@ Routes.addRoutes(homeUserRoutes)
 Routes.addRoutes(incidentReportingRoutes)
 Routes.addRoutes(loginRoutes)
 Routes.addRoutes(modulesRoutes)
+Routes.addRoutes(ombudsmanRoutes)
 Routes.addRoutes(popsRoutes)
 Routes.addRoutes(ramalsRoutes)
 Routes.addRoutes(roomTrainingRoutes)
