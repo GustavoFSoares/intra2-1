@@ -2,7 +2,7 @@
     <div class="container" :id="`${componentKey}table`">
         <div v-for="(file, index) in folderList" :key="`${componentKey}-${index}`">
                 <router-link to="" :id="`#label-${index}-${componentKey}`" class="list-group-item list-group-item-action text-left" data-toggle="collapse" :data-target="`#id-${componentKey}-${index}`" aria-expanded="true" :aria-controls="`id-${componentKey}-${index}`" v-if="file.dir">
-                    {{ file.name }}
+                    <span v-bind:class="{'title': componentKey == 1}">{{ file.name }}</span>
                 </router-link>
 
                 <div :id="`id-${componentKey}-${index}`" class="collapse" v-bind:class="{'show': !file.dir}" :aria-labelledby="`#label-${index}-${componentKey}`" :data-parent="`#${componentKey}table`">
@@ -97,5 +97,9 @@ export default {
 
     .opened {
         color: #609
+    }
+
+    .title {
+        font-weight: bold;
     }
 </style>
