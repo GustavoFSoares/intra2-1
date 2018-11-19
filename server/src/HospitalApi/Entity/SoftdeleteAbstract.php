@@ -43,7 +43,7 @@ abstract class SoftdeleteAbstract extends EntityAbstract
     }
 
     public function setC_removed($c_removed){
-        $this->c_removed = $c_removed;
+        $this->c_removed = (Boolean)$c_removed;
 
         return $this;
     }
