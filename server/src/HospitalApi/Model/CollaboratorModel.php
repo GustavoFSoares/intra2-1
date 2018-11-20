@@ -79,22 +79,20 @@ class CollaboratorModel extends SoftdeleteModel
     }
 
     public function getLastUserCollaboratorByType($type) {
-        $query = $this->em->createQueryBuilder();
-        $query
+        $select = $this->em->createQueryBuilder();
+        $select
             ->select('u')
             ->from('HospitalApi\Entity\User', 'u')
             ->innerJoin('HospitalApi\Entity\UserComplement', 'uc',
                 'WITH', 'u = uc.user');
-        $query
+        $select
             ->where('uc.type = :type')
-            ->setParameter('type', $type);
-        $query->setMaxResults('1');
-        $data = $query->getQuery()->getResult();
+            ->setParameter('type', $type)
+            ->orderBy('u.id', 'desc')
+            ->setMaxResults('1');
+        $data = $select->getQuery()->getOneOrNullResult();
         
-        if($data) {
-            return $data[0];
-        }
-        return null;
+        return $data;
     }
 
 }
