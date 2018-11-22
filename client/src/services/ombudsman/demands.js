@@ -8,8 +8,8 @@ export default {
         http.post(`/ombudsman/demands/`, demand).then(res => res.data),
     
     update: (id, demand) =>
-        http.put(`/ombudsman/demands/:${id}`, demand).then(res => res.data),
+        http.put(`/ombudsman/demands/${id}`, demand).then(res => res.data),
     
     delete: (id) =>
-        http.delete(`/ombudsman/demands/:${id}`, demand).then(res => res.data),
+        http.delete(`/ombudsman/demands/${id}`).then(res => res.data),
 }

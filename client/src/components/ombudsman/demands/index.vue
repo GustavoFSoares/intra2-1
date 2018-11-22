@@ -30,10 +30,10 @@
                         <icon v-tooltip.top="'Ativar'" class="text-danger" icon="times-circle" v-else/>
                     </td>
                     <td>
-                        <router-link :to='`ouvidoria/demandas/edit/${demand.id}`'>
+                        <router-link :to='`demandas/edit/${demand.id}`'>
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
-                        <router-link @click.native="remove(demand.id)" to="">
+                        <router-link @click.native="remove(demand.id, index)" to="">
                             <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
@@ -45,25 +45,38 @@
 </template>
 
 <script>
-import model, { getter } from "@/model/ombudsman-model";
+import { DemandModel, getter } from "@/model/ombudsman-model";
 import moment from 'moment'
+import Alert from "@/components/shared/Alert";
 
 export default {
     data() {
         return {
             title: "Demandas de Ouvidoria",
+            filter: '',
             demands: [],
             moment: moment,
-            filter: ''
+            alert: {
+                remove: { message: "Tem certeza que deseja excluir?" }
+            },
         }
     },
     methods: { 
-        remove(id){
-            confirm("Tem certeza que deseja excluir?") ?
-                model.doDeleteCovenant(id).then(res => this.$router.go()):''
+        remove(id, index){
+            Alert.Confirm(this.alert.remove.message).then(res => {
+                if(res){
+                    DemandModel.doDeleteDemand(id).then(res => {
+                        this.$alert.success(`Demanda <b>#${id}</b> excluída`)
+                        }, err => {
+                        this.$alert.danger("Demanda não excluída")
+                        this.$route.go()
+                    })
+                    this.demands.splice(index, 1)
+                }
+            })
         },
         changeStatus(demand){
-            model.changeDemandStatus(demand)
+            DemandModel.changeDemandStatus(demand)
         }
         
     },

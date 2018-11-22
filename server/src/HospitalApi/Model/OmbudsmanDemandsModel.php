@@ -6,7 +6,7 @@ use HospitalApi\Entity\OmbudsmanDemands;
 /**
  * <b>OmbudsmanDemandsModel</b>
  */
-class OmbudsmanDemandsModel extends ModelAbstract
+class OmbudsmanDemandsModel extends SoftdeleteModel
 {
 
     public $entity;

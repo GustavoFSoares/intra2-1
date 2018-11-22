@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import model, { getter } from "@/model/ombudsman-model";
+import model, { DemandModel, getter } from "@/model/ombudsman-model";
 import { FormRw, FormRws, Require } from "@/components/shared/Form";
 
 export default {
@@ -47,17 +47,17 @@ export default {
         submit() {
             this.sending = true
             if(this.isEdit()){
-                model.doUpdateDemand(this.demand).then(() => {
+                DemandModel.doUpdateDemand(this.demand).then(() => {
                     this.$alert.success('Demanda Editada!')
                     
                     this.$router.push({ name: 'ouvidoria/demandas'})
                 }, err => {
-                    this.$alert.success('Erro ao Editar!')
+                    this.$alert.danger('Erro ao Editar!')
                     this.sending = false
                 })
             } else {
-                model.doInsertDemand(this.demand).then(() => {
-                    this.$alert.danger('Demanda Inserida!')
+                DemandModel.doInsertDemand(this.demand).then(() => {
+                    this.$alert.success('Demanda Inserida!')
 
                     this.$router.push({ name: 'ouvidoria/demandas'})
                 }, err => {
