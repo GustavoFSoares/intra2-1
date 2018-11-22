@@ -18,7 +18,7 @@
                 <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm" :disabled="sending">
                     Cadastrar Demanda
                 </button>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria-demandas'}" tag="button" :disabled="sending">
+                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria/demandas'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
             </row>
@@ -50,7 +50,7 @@ export default {
                 model.doUpdateDemand(this.demand).then(() => {
                     this.$alert.success('Demanda Editada!')
                     
-                    this.$router.push({ name: 'ouvidoria-demandas'})
+                    this.$router.push({ name: 'ouvidoria/demandas'})
                 }, err => {
                     this.$alert.success('Erro ao Editar!')
                     this.sending = false
@@ -59,7 +59,7 @@ export default {
                 model.doInsertDemand(this.demand).then(() => {
                     this.$alert.danger('Demanda Inserida!')
 
-                    this.$router.push({ name: 'ouvidoria-demandas'})
+                    this.$router.push({ name: 'ouvidoria/demandas'})
                 }, err => {
                     this.$alert.danger('Erro ao Inserir!')
                     this.sending = false

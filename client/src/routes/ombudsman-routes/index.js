@@ -21,3 +21,5 @@ export default [
         meta: { requiresAuth: true, adminAuth: true }
     },
 ]
+export const ombudsmanDemandsRoutes = require('./demans').default
+export const ombudsmanTypesRoutes = require('./types').default

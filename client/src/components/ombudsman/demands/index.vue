@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <h1>{{ title }}</h1>
 
-        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'ouvidoria-demandas/add'}" tag="button">
+        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'ouvidoria/demandas/add'}" tag="button">
             Cadastrar Demandas
         </router-link>
 
@@ -30,7 +30,7 @@
                         <icon v-tooltip.top="'Ativar'" class="text-danger" icon="times-circle" v-else/>
                     </td>
                     <td>
-                        <router-link :to='`ouvidoria-demandas/edit/${demand.id}`'>
+                        <router-link :to='`ouvidoria/demandas/edit/${demand.id}`'>
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
                         <router-link @click.native="remove(demand.id)" to="">
