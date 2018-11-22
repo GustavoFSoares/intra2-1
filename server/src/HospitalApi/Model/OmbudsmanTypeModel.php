@@ -17,8 +17,15 @@ class OmbudsmanTypeModel extends SoftdeleteModel
     }
 
     public function mount($values) {
-        if(!$values['id']) {
-            $values['id'] = substr($values['name'], 0, 3);
+        if(!isset($values['id'])) {
+            $values['id'] = strtoupper( substr($values['name'], 0, 3) );
+            if($Type = $this->getRepository()->find($values['id'])) {
+                $Type
+                    ->setName($values['name'])
+                    ->setC_removed(false);
+                $this->doUpdate($Type);
+                return [];
+            }
         }
 
         return $values;

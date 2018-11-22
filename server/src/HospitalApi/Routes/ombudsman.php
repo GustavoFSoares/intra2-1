@@ -12,7 +12,7 @@ $app->group('/ombudsman/demands', function() {
         $this->delete('/{id}', "HospitalApi\Controller\OmbudsmanDemandsController:delete", function(Request $req, Response $res, array $args) { });
 });
 
-$app->group('/ombudsman/type', function() {
+$app->group('/ombudsman/types', function() {
         $this->get('[/{params:.*}]', "HospitalApi\Controller\OmbudsmanTypeController:get", function(Request $req, Response $res, array $args) { });
         
         $this->post('/', "HospitalApi\Controller\OmbudsmanTypeController:insert", function(Request $req, Response $res, array $args) { });
