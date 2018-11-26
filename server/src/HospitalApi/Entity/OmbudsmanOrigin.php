@@ -3,10 +3,10 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
- * @Table(name="Ouvidoria_Tipo")
- * <b>OmbudsmanType</b>
+ * @Table(name="Ouvidoria_Origem")
+ * <b>OmbudsmanOrigin</b>
  */
-class OmbudsmanType extends SoftdeleteAbstract
+class OmbudsmanOrigin extends SoftdeleteAbstract
 {
     
     /**

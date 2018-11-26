@@ -2,17 +2,17 @@
 
 namespace HospitalApi\Model;
 
-use HospitalApi\Entity\OmbudsmanType;
+use HospitalApi\Entity\OmbudsmanOrigin;
 /**
- * <b>OmbudsmanTypeModel</b>
+ * <b>OmbudsmanOriginModel</b>
  */
-class OmbudsmanTypeModel extends SoftdeleteModel
+class OmbudsmanOriginModel extends SoftdeleteModel
 {
 
     public $entity;
 
     public function __construct() {
-        $this->entity = new OmbudsmanType;
+        $this->entity = new OmbudsmanOrigin;
         parent::__construct();
     }
 

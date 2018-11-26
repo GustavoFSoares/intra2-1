@@ -1,6 +1,6 @@
 <template>
     <div class="col-md">
-        <label v-if="label" :for="id">{{ label }}: </label>
+        <label v-if="label" :for="id" v-html="label+':'"></label>
         <slot>
             
         </slot>

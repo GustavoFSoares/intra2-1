@@ -16,4 +16,16 @@ class OmbudsmanModel extends SoftdeleteModel
         parent::__construct();
     }
 
+    public function getLastKeyOfOrigin($origin) {
+        $data = $this->getRepository()->findOneBy(['origin'=>$origin->getId()]);
+        $select = $this->em->createQueryBuilder();
+        $select->select('o')
+            ->from($this->entityPath, 'o')
+            ->where("o.origin = :origin")
+            ->setParameter('origin', $origin)
+            ->orderBy('o.id', 'DESC')
+            ->setMaxResults('1');
+        return $select->getQuery()->getOneOrNullResult();
+    }
+
 }
