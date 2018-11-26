@@ -1,6 +1,6 @@
 import service from "@/services/ombudsman"
 import DemandService from "@/services/ombudsman/demands"
-import TypeService from "@/services/ombudsman/types"
+import OriginService from "@/services/ombudsman/origin"
 
 const getters = {
     getOmbudsmans: () => service.getOmbudsmans(),
@@ -9,8 +9,8 @@ const getters = {
     getDemands: () => DemandService.getDemands(),
     getDemandById: (id) => DemandService.getDemands({ 'id':id }),
     
-    getTypes: () => TypeService.getTypes(),
-    getTypeById: (id) => TypeService.getTypes({ 'id':id }),
+    getOrigins: () => OriginService.getOrigins(),
+    getOriginById: (id) => OriginService.getOrigins({ 'id':id }),
 }
 
 const model = {
@@ -28,14 +28,14 @@ const DemandsModel = {
     },
 }
 
-export const TypesModel = {
-    doInsertType: (type) => TypeService.insert(type),
-    doUpdateType: (type) => TypeService.update(type.id, type),
-    doDeleteType: (id) => TypeService.delete(id),
+export const OriginsModel = {
+    doInsertOrigin: (origin) => OriginService.insert(origin),
+    doUpdateOrigin: (origin) => OriginService.update(origin.id, origin),
+    doDeleteOrigin: (id) => OriginService.delete(id),
 }
 
 export default model
 
 export const getter = getters
-export const TypeModel = TypesModel
+export const OriginModel = OriginsModel
 export const DemandModel = DemandsModel

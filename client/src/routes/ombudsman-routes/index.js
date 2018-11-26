@@ -22,4 +22,4 @@ export default [
     },
 ]
 export const ombudsmanDemandsRoutes = require('./demans').default
-export const ombudsmanTypesRoutes = require('./types').default
+export const ombudsmanOriginsRoutes = require('./origins').default

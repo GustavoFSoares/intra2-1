@@ -4,21 +4,21 @@
 
         <div class='row mb-3' v-if="isEdit()">
             <rows label="ID" class="col-md-3">
-                <input data-vv-as="ID" type="text" class="form-control" name="type-id" v-model="type.id" disabled>
+                <input data-vv-as="ID" type="text" class="form-control" name="type-id" v-model="origin.id" disabled>
             </rows>
         </div>
 
         <row id="name" label="Nome">
-            <input data-vv-as="Nome" v-validate data-vv-rules="required" type="text" class="form-control" name="type-name" v-model="type.name">
-            <require-text :error="errors.has('type-name')" :text="errors.first('type-name')" :show="true" :attribute="type.name"/>
+            <input data-vv-as="Nome" v-validate data-vv-rules="required" type="text" class="form-control" name="type-name" v-model="origin.name">
+            <require-text :error="errors.has('type-name')" :text="errors.first('type-name')" :show="true" :attribute="origin.name"/>
         </row>
 
         <div id="buttons">
             <row>
                 <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm" :disabled="sending">
-                    Cadastrar Tipo
+                    Cadastrar Origem
                 </button>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria/tipos'}" tag="button" :disabled="sending">
+                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria/origem'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
             </row>
@@ -28,15 +28,15 @@
 </template>
 
 <script>
-import model, { TypeModel, getter } from "@/model/ombudsman-model";
+import model, { OriginModel, getter } from "@/model/ombudsman-model";
 import { FormRw, FormRws, Require } from "@/components/shared/Form";
 
 export default {
     data(){
         return {
             id: this.$route.params.id,
-            title: "Adicionar Tipo",
-            type: {},
+            title: "Adicionar Origem",
+            origin: {},
             sending: false,
         }
     },
@@ -47,19 +47,19 @@ export default {
         submit() {
             this.sending = true
             if(this.isEdit()){
-                TypeModel.doUpdateType(this.type).then(() => {
-                    this.$alert.success('Tipo Editada!')
+                OriginModel.doUpdateOrigin(this.origin).then(() => {
+                    this.$alert.success('Origem Editada!')
                     
-                    this.$router.push({ name: 'ouvidoria/tipos'})
+                    this.$router.push({ name: 'ouvidoria/origem'})
                 }, err => {
                     this.$alert.danger('Erro ao Editar!')
                     this.sending = false
                 })
             } else {
-                TypeModel.doInsertType(this.type).then(() => {
-                    this.$alert.success('Tipo Inserido!')
+                OriginModel.doInsertOrigin(this.origin).then(() => {
+                    this.$alert.success('Origem Inserida!')
 
-                    this.$router.push({ name: 'ouvidoria/tipos'})
+                    this.$router.push({ name: 'ouvidoria/origem'})
                 }, err => {
                     this.$alert.danger('Erro ao Inserir!')
                     this.sending = false
@@ -68,8 +68,8 @@ export default {
         },
         loadValues() {
             if(this.isEdit()) { 
-                getter.getTypeById(this.id).then(res => {
-                    this.type = res
+                getter.getOriginById(this.id).then(res => {
+                    this.origin = res
                 })
             }
         },

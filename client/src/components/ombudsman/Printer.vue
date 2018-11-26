@@ -49,7 +49,7 @@ export default {
         }
     },
     mounted() {
-        getter.getTypes().then(res => { this.origin = res })
+        getter.getOrigins().then(res => { this.origin = res })
     },
     components: {
         'modal': require("@/components/shared/Modal.vue").default,
