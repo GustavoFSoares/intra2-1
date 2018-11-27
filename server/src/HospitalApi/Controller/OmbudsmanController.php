@@ -1,7 +1,7 @@
 <?php
 namespace HospitalApi\Controller;
 
-use HospitalApi\Model\OmbudsmanDemandsModel;
+use HospitalApi\Model\OmbudsmanModel;
 use HospitalApi\Template\Document\DocumentFactory;
 
 /**
@@ -10,7 +10,7 @@ use HospitalApi\Template\Document\DocumentFactory;
 class OmbudsmanController extends ControllerAbstractLongEntity
 {
     public function __construct() {
-        parent::__construct(new OmbudsmanDemandsModel());
+        parent::__construct(new OmbudsmanModel());
     }
 
     public function printDocumentAction($req, $res, $args) {

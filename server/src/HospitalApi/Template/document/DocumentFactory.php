@@ -30,7 +30,7 @@ class DocumentFactory
         $this->doc->SetFont('times', '', 12);
         
         // add a page
-        for ($i=0; $i < $pages; $i++) { 
+        for ($i=0; $i < $pages; $i++) {
             $this->doc->AddPage();
 
             $this->doc->ln(12);

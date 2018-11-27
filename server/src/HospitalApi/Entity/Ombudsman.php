@@ -18,10 +18,10 @@ class Ombudsman extends SoftdeleteAbstract
     /**
      * @var Datetime @Column(name="data_registro", type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
-    protected $register;
+    protected $registerTime;
 
     /**
-     * @var String @Column(name="tipo", type="string", length=255, nullable=true)
+     * @var @Column(name="tipo", type="string", length=255, nullable=true)
      */
     protected $type;
     
@@ -38,7 +38,7 @@ class Ombudsman extends SoftdeleteAbstract
     protected $ombudsmanUser;
     
     /**
-     * @ManyToOne(targetEntity="OmbudsmanType")
+     * @ManyToOne(targetEntity="OmbudsmanOrigin")
      * @JoinColumn(name="origem_id", referencedColumnName="id")
      */
     protected $origin;
@@ -70,15 +70,16 @@ class Ombudsman extends SoftdeleteAbstract
     protected $sugestion;
 
     /**
-     * @var String @Column(name="descricao_ouvidor", type="string")
+     * @var String @Column(name="descricao_ouvidor", type="text", nullable=true)
      */
     protected $ombudsmanDescription;
 
-    public function __contruct($url = '', $title = '', $icon = '', $externalLink = false) {
+    public function __construct($id = '', $origin = null) {
         parent::__construct();
-        $this->id = '';
-        $this->register = new \DateTime();
-        $this->type = '';
+        $this->id = $id;
+        $this->registerTime = new \DateTime();
+        $this->type = null;
+        $this->origin = $origin;
         $this->group = null;
         $this->ombudsmanUser = null;
         $this->origin = null;
@@ -96,11 +97,21 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     
-    public function getUrl() {
-        return $this->url;
+    public function getType() {
+        return $this->type;
     }
-    public function setUrl($url) {
-        $this->url = $url;
+    public function setType($type) {
+        $this->type = $type;
+        
+        return $this;
+    }
+   
+    public function getOrigin() {
+        return $this->origin;
+    }
+    public function setOrigin($origin) {
+        $this->origin = $origin;
+        $this->registerTime = new \DateTime();
         
         return $this;
     }

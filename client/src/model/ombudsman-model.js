@@ -3,7 +3,9 @@ import DemandService from "@/services/ombudsman/demands"
 import OriginService from "@/services/ombudsman/origin"
 
 const getters = {
-    getOmbudsmans: () => service.getOmbudsmans(),
+    getOmbudsmans: () => service.getOmbudsmans({ }),
+    getOmbudsmansReported: () => service.getOmbudsmans({ 'reported': 1 }),
+    getOmbudsmansWaiting: () => service.getOmbudsmans({ 'reported': 0 }),
     getOmbudsmanById: (id) => service.getOmbudsmans({ 'id':id }),
     
     getDemands: () => DemandService.getDemands(),

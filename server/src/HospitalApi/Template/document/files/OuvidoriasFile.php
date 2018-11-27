@@ -1,15 +1,20 @@
 <?php
 namespace HospitalApi\Template\Document\Files;
 
+use \HospitalApi\Model\OmbudsmanModel;
+use \HospitalApi\Entity\Ombudsman;
+
 require_once(PATH.'/../vendor/tecnick.com/tcpdf/tcpdf.php');
 class OuvidoriasFile extends \TCPDF {
 
     public $key;
-    public $type;
+    public $origin;
+    private $_model;
     private $_EnablePageCounter = false;
 
     public function __construct($params) {
-        $this->type = strtoupper($params['type']);
+        $this->origin = $params['origin'];
+        $this->_model = new OmbudsmanModel();
         
         if(isset($params['pageCount'])) {
             $this->_EnablePageCounter = true;
@@ -30,15 +35,7 @@ class OuvidoriasFile extends \TCPDF {
         $this->MultiCell(0, 0, 'SERVIÇO DE OUVIDORIA', 0, 'R', 0, 1, '', '', true);
         $this->ln(1);
 
-        switch ($this->type) {
-            case 'AMB':
-                $this->MultiCell(0, 0, 'AMBULATÓRIO/ELETIVO', 0, 'R', 0, 1, '', '', true);
-                break;
-            
-            case 'INT':
-                $this->MultiCell(0, 0, 'PACIENTES INTERNADOS', 0, 'R', 0, 1, '', '', true);
-                break;
-        }
+        $this->MultiCell(0, 0, strtoupper($this->origin->getName()), 0, 'R', 0, 1, '', '', true);
 	}
 
 	// Page footer
@@ -56,7 +53,8 @@ class OuvidoriasFile extends \TCPDF {
     
     public function getContent() {
         $key = $this->_getKey();
-        
+        $this->insertOmbudman();
+
         $line = "<span>_________________________________________________________________________________________</span>";
             $space = '<span class="clear">_</span>';
             $html = "
@@ -81,7 +79,7 @@ class OuvidoriasFile extends \TCPDF {
                 </div>";
 
 
-            switch ($this->type) {
+            switch ($this->origin->getId()) {
                 case 'AMB':
                 $html .= 
                 "<div>
@@ -141,21 +139,28 @@ class OuvidoriasFile extends \TCPDF {
         if($this->key) {
             $this->key['number']++;
         } else {
-            $data = null;
+            $data = $this->_model->getLastKeyOfOrigin($this->origin);
 
             if($data) {
                 $this->key = [
-                    'prefix' => substr($data, 0, 3),
-                    'number' => substr($data, 3)+1
+                    'prefix' => substr($data->getId(), 0, 3),
+                    'number' => substr($data->getId(), 3)+1
                 ];
             } else {
                 $this->key = [
-                    'prefix' => $this->type,
+                    'prefix' => $this->origin->getId(),
                     'number' => '1001',
                 ];
             }
         }
         
         return $this->key;
+    }
+
+    public function insertOmbudman() {
+        $id = "{$this->key['prefix']}{$this->key['number']}";
+        $ombudsman = new Ombudsman($id);
+        $ombudsman->setOrigin($this->origin);
+        $this->_model->doInsert($ombudsman);
     }
 }

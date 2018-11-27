@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md">
+    <div class="col-md mb-3">
         <label v-if="label" :for="id" v-html="label+':'"></label>
         <slot>
             
