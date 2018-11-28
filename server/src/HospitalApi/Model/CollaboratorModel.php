@@ -55,6 +55,8 @@ class CollaboratorModel extends SoftdeleteModel
             ->from('HospitalApi\Entity\User', 'u')
             ->innerJoin('HospitalApi\Entity\UserComplement', 'uc',
                 'WITH', 'u = uc.user')
+            ->orderBy('uc.type')
+            ->orderBy('u.c_created')
             ->where('u.c_removed = 0');
         
         return $query->getQuery()->getResult();
@@ -88,7 +90,7 @@ class CollaboratorModel extends SoftdeleteModel
         $select
             ->where('uc.type = :type')
             ->setParameter('type', $type)
-            ->orderBy('u.id', 'desc')
+            ->orderBy('u.c_created', 'desc')
             ->setMaxResults('1');
         $data = $select->getQuery()->getOneOrNullResult();
         

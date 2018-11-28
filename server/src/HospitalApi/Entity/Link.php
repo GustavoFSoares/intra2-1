@@ -3,6 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
+ * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * @Table(name="Link")
  * <b>Link</b>
  * Classe POJO responsável por manter os atributos de um Link,

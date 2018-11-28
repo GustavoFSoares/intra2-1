@@ -3,6 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
+ * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * @Table(name="Usuario")
  * <b>User</b>
  * Classe POJO responsável por manter os atributos de um User,
@@ -245,6 +246,22 @@ class User extends SoftdeleteAbstract
         $this->lastLogin = new \DateTime();
 
         return $this;
+    }
+
+    /**
+    * @\Doctrine\ORM\Mapping\preUpdate
+    */
+    public function set() {
+        $select = $this->getEntityManager()->createQueryBuilder();
+        $select->select([ 'u.c_created', 'u.lastLogin', ])
+            ->from($this->getClassName(), 'u')
+            ->where("u.id = '{$this->id}'");
+        $data = $select->getQuery()->getOneOrNullResult();
+        
+        $this->c_created = $data['c_created'];
+        if(!$this->lastLogin) {
+            $this->lastLogin = $data['lastLogin'];
+        }
     }
 
 }

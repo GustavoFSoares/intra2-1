@@ -53,6 +53,13 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 		return EntityManager::create($connectionOptions, $config);
 	}
 
+	public function restartEntityPath(Type $var = null) {
+		$em = self::createEntityManager();
+		
+		$this->getContainer()['em'] = $em;
+		$this->em = $em;
+	}
+
 	/**
 	 * @method doInsert()
 	 * Recebe um Objeto de Entity, contendo os valores que irão

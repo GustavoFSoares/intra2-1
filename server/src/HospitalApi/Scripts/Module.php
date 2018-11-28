@@ -21,6 +21,10 @@ $model = new ModuleModel();
         [ 'name' => 'Notificação de Incidente', 'routeName' => 'notificacao-de-incidentes',      'default' => true,  'icon' => 'medal'         , 'parent_route_name' => null,        ],
         [ 'name' => 'Administradores',          'routeName' => 'gerenciador-de-administradores', 'default' => false, 'icon' => 'crown'         , 'parent_route_name' => null,        ],
         [ 'name' => 'Salas',                    'routeName' => 'sala-treinamento',               'default' => false, 'icon' => 'building'      , 'parent_route_name' => 'training',  ],
+        [ 'name' => 'Ouvidoria',                'routeName' => 'ombudsman',                      'default' => false, 'icon' => 'comments'      , 'parent_route_name' => '',          ],
+        [ 'name' => 'Demandas',                 'routeName' => 'ouvidoria/demandas',             'default' => false, 'icon' => 'list-alt'      , 'parent_route_name' => 'ombudsman', ],
+        [ 'name' => 'Origem de Ouvidoria',      'routeName' => 'ouvidoria/origem',               'default' => false, 'icon' => 'clipboard'     , 'parent_route_name' => 'ombudsman',  ],
+        [ 'name' => 'Relatos',                  'routeName' => 'ouvidoria',                      'default' => false, 'icon' => 'bullhorn'      , 'parent_route_name' => 'ombudsman', ],
     ];
     
     foreach ($modules as $module) {

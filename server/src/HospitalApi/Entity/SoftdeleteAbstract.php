@@ -9,7 +9,7 @@ use DateTime;
  * receberá um Atributo Obrigatório $c_removed Boolean, que 
  * indica se aquele registro deve ser exclúido, mas não apagado da Base de Dados
  */
-abstract class SoftdeleteAbstract extends EntityAbstract
+ abstract class SoftdeleteAbstract extends EntityAbstract
 {
 
     /**
@@ -17,6 +17,12 @@ abstract class SoftdeleteAbstract extends EntityAbstract
      *      @Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
      */
     public $c_modified;
+
+    /**
+     * @var Datetime
+     *      @Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
+     */
+    protected $c_created;
 
     /**
      * @var Boolean
@@ -43,9 +49,29 @@ abstract class SoftdeleteAbstract extends EntityAbstract
     }
 
     public function setC_removed($c_removed){
-        $this->c_removed = $c_removed;
+        $this->c_removed = (Boolean)$c_removed;
 
         return $this;
     }
-}
+
+    /**
+    * @\Doctrine\ORM\Mapping\preUpdate
+    */
+    public function set() {
+        $select = $this->getEntityManager()->createQueryBuilder();
+        $select->select('t.c_created')
+            ->from($this->getClassName(), 't')
+            ->where("t.id = '{$this->id}'");
+        $data = $select->getQuery()->getOneOrNullResult();
+        
+        $this->c_created = $data['c_created'];
+    }
     
+    /**
+    * @\Doctrine\ORM\Mapping\prePersist
+    */
+    public function newInsert() {
+        $this->c_created = new DateTime();
+    }
+
+}

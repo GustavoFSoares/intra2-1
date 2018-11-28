@@ -156,7 +156,7 @@ class UserController extends BasicApplicationAbstract
                 
                 continue;
             }
-  
+            
             $data[ $index['nome'] ]        = \Helper\SlugHelper::removeSpaces($data[ $index['nome'] ]);
             $data[ $index['funcao-nome'] ] = \Helper\SlugHelper::removeSpaces($data[ $index['funcao-nome'] ]);
             
@@ -177,7 +177,7 @@ class UserController extends BasicApplicationAbstract
                     $User->setGroup($group);
 
                     $this->model->doUpdate($User);
-                    echo \Helper\LoggerHelper::writeFile("$key - {$User->getId()} --> {$group->getName()} <-- Atualizado\n");
+                    echo \Helper\LoggerHelper::writeFile("$key - ({$User->getCode()}) {$User->getId()} --> {$group->getName()} <-- Atualizado\n");
                 } else {
                     
                     $this->saveIfGroupNotFound($data[$index['centro-de-resultado-nome']], $groupId, $User);
@@ -205,16 +205,16 @@ class UserController extends BasicApplicationAbstract
                         $User->setGroup($group);
 
                         $this->model->doInsert($User);
-                        echo \Helper\LoggerHelper::writeFile("$key - {$User->getId()} --> {$group->getName()} <-- Inserido\n");
+                        echo \Helper\LoggerHelper::writeFile("$key - ({$User->getCode()}) {$User->getId()} --> {$group->getName()} <-- Inserido\n");
                     } else {
-                        
+                        echo \Helper\LoggerHelper::writeFile("$key - ({$User->getCode()}) {$User->getId()} --> Grupo não encontrado <--\n");
                         $this->saveIfGroupNotFound($data[$index['centro-de-resultado-nome']], $groupId, $User);
                         continue;
                     }
 
                 
                 } catch (UniqueConstraintViolationException $e) {
-                    $this->model = new \Cron\Model\UserModel();
+                    $this->model->restartEntityPath();
                     $this->model->insertWithAnotherId($User);
                 }
                 

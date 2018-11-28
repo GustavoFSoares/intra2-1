@@ -59,10 +59,12 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return void
 	 */
 	public function insert($req, $res, $args) {
+		$save = true;
 		$values = $req->getParsedBody();
-		$this->_mountEntity($values);
-		
-		$save = $this->_model->doInsert($this->_model->entity);
+		$entity = $this->_mountEntity($values);
+		if($entity->canPersist()) {
+			$save = $this->_model->doInsert($entity);
+		}
 
 		return $res->withJson($save);
 	}
@@ -76,10 +78,12 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return void
 	 */
 	public function update($req, $res, $args) {
+		$update = true;
 		$values = $req->getParsedBody();
 		$entity = $this->_mountEntity($values);
-		
-		$update = $this->_model->doUpdate($entity);
+		if($entity->canPersist()) {
+			$update = $this->_model->doUpdate($entity);
+		}
 		
 		return $res->withJson($update);
 	}
@@ -140,6 +144,9 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	public function _mountEntity($values){
 		if( method_exists($this->_model, 'mount') ){
 			$values = $this->_model->mount($values);
+			if(!$values) {
+				$this->_model->entity->setLikeError();
+			}
 		}
 		foreach ($values as $key => $value) {
 			$method = "set$key";

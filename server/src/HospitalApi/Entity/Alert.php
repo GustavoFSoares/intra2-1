@@ -3,6 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
+ * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * @Table(name="Alerta")
  * <b>Alertas</b>
  * Classe POJO responsavel pela gerência dos Eventos Adversos(AdverseEvents)
