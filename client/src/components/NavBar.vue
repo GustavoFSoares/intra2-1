@@ -35,7 +35,7 @@ export default {
                 {name: "Convênios", link:"/convenios", externalLink: false },
                 {name: "Ramais", link:"/ramais", externalLink: false },
                 {name: "Arquivos", link:"http://gamp-web/?tela=arquivos", externalLink: true },
-                {name: "POPS", link:"http://gamp-web/?tela=pops", externalLink: true },
+                {name: "POPS", link:"/pops", externalLink: false },
                 {name: "Institucional", link:"http://gamp-web/?tela=institucional", externalLink: true },
                 {name: "Comissões", link:"http://gamp-web/?tela=comissoes", externalLink: true },
             ],

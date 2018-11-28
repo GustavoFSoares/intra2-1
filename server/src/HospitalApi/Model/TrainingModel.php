@@ -56,6 +56,10 @@ class TrainingModel extends SoftdeleteModel
         return true;
     }
 
+    public function findBy($filters = []) {
+        return parent::findBy($filters, ['beginTime' => 'DESC']);
+    }
+
     public function getUnrealized(){
         $query = $this->em->createQueryBuilder();
         $query->select('t')

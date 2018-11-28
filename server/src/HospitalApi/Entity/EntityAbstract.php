@@ -12,7 +12,7 @@ use Datetime;
  */
 abstract class EntityAbstract extends BasicApplicationAbstract
 {
-    
+    private $_alowed = true;
     public function __construct() { }
 
     /**
@@ -95,6 +95,16 @@ abstract class EntityAbstract extends BasicApplicationAbstract
             }
         }
         return $date;
+    }
+
+    public function setLikeError() {
+        $this->_alowed = false;
+    }
+    public function set_Alowed($alowed) {
+        $this->_alowed = $alowed;
+    }
+    public function canPersist() {
+        return $this->_alowed;
     }
 
 }

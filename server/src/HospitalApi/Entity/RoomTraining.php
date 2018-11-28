@@ -3,6 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
+ * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * @Table(name="Sala_Treinamento")
  * <b>RoomTraining</b>
  * Classe contendo o objeto dos Ramais cadastrados

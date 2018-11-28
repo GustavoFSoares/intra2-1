@@ -173,6 +173,10 @@ export default {
             getter.getModules().then(res => this.values.modules = res)
         },
         routeExists() {
+            if(!this.isChield) {
+                return true
+            }
+
             let route = this.$router.resolve({name: this.Module.routeName})
             
             if(route && route.href !== '/'){

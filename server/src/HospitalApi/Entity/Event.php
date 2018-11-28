@@ -3,6 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
+ * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * @Table(name="Evento")
  * <b>Events</b>
  * Classe POJO descrição dos <b>Tipos<b> de Evento Adversos possíveis
