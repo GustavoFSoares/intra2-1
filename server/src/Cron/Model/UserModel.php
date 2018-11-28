@@ -55,9 +55,11 @@ class UserModel extends ModelAbstract
         if($id) {
             $select->setParameter('id', $id );
         } else {
-            $select->setParameter('id', $this->makeId($name) );
+            $select
+                ->setParameter('id', $this->makeId($name) )
+                ->where("u.code = '$code'");
         }
-        $select->where("u.id LIKE :id");
+        $select->andWhere("u.id LIKE :id");
         $User = $select->getQuery()->getOneOrNullResult();
 
         if($User) {
@@ -135,6 +137,10 @@ class UserModel extends ModelAbstract
 
             if(!$this->findByNameOrCode( $User->getName(), $User->getCode(), $User->getId() )) {
                 $this->doInsert($User);
+                echo \Helper\LoggerHelper::writeFile("({$User->getCode()}) {$User->getId()} --> {$group->getName()} <-- Inserido com outro ID\n");
+            } else {
+                $this->doUpdate($User);
+                echo \Helper\LoggerHelper::writeFile("({$User->getCode()}) {$User->getId()} --> {$group->getName()} <-- Atualizado com outro ID\n");
             }
 
         } catch (UniqueConstraintViolationException $e) {

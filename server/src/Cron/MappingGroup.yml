@@ -54,6 +54,7 @@ HU:
     hu-tecnologia-da-informacao: "tecnologia-da-informacao-hu"
     hu-telefonia: "telefonia-hu"
     hu-tomografia-computadorizada: "radiologia-hu"
+    hu-ui-cuidados-especiais-8-andar: "unidinternacao-10-andar-hu" #
     hu-ui-10-andar-convenio: "unidinternacao-10-andar-hu" #
     hu-ui-10-andar-saude-mental: "unidinternacao-10-andar-hu"
     hu-ui-maternidade: "ui-matern-9-a-alojcjsus-hu" #
@@ -69,6 +70,7 @@ HPSC:
     hpsc-ambulatorio: "ambulatorio-hpsc"
     hpsc-centro-cirurgico: "centro-cirurgico-hpsc"
     hpsc-centro-material-esterelizado: "centro-cirurgico-hpsc" #
+    hpsc-clinica-medica: "cti-adulto-hpsc"
     hpsc-cti-adulto: "cti-adulto-hpsc"
     hpsc-emergencia: "emergencia-hpsc"
     hpsc-farmacia: "farmacia-hpsc"
@@ -95,7 +97,7 @@ HPSC:
     hpsc-unidade-adulto-1: "centro-cirurgico-hpsc" #
     hpsc-unidade-adulto-2: "centro-cirurgico-hpsc" #
     hpsc-unidade-adulto-3: "cti-adulto-hpsc"
-
+    hpsc-unidade-pediatrica: "centro-cirurgico-hpsc"
 
 UPA:
     hpsc-upa-cacapava: "upa-cacapava-hpsc"
