@@ -19,7 +19,8 @@ class ModuleModel extends SoftdeleteModel
         $query
             ->select('m')
             ->from('HospitalApi\Entity\Module', 'm')
-            ->leftJoin('m.groups', 'g', 'WITH', 'g.groupId = :group OR m.default = 1')
+            ->innerJoin('HospitalApi\Entity\Group', 'g', 'WITH', 'g.groupId = :group OR m.default = 1')
+            ->innerJoin('m.groups', 'mg', 'WITH', 'mg = g')
             ->setParameter('group', $group)
             ->where('m.c_removed = 0')
             ->andWhere('m.active= 1')
