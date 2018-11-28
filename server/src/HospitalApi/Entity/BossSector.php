@@ -3,6 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
+ * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * @Table(name="Responsavel_Setor")
  * <b>BossSector</b>
  * Classe POJO que contém os atributos de um Chefe de Setor,

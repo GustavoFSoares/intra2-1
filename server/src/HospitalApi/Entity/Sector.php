@@ -3,6 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
+ * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * @Table(name="Setor")
  * <b>Sector</b>
  * Classe POJO responsável por manter os atributos da tabela Setor,

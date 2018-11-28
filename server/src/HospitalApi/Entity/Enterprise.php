@@ -3,6 +3,7 @@ namespace HospitalApi\Entity;
 
 /**
  * @Entity
+ * @\Doctrine\ORM\Mapping\HasLifecycleCallbacks
  * @Table(name="Empresa")
  * <b>Enterprise</b>
  * Classe POJO que mantêm o Nome da Empresa(Hospital)
