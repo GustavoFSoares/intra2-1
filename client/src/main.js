@@ -5,6 +5,7 @@ import VueResource from 'vue-resource'
 import router from './routes'
 
 import * as uiv from 'uiv'
+import Scrollspy from 'vue2-scrollspy';
 import VueSession from 'vue-session'
 import VueTheMask from 'vue-the-mask'
 import VeeValidate, { Validator } from 'vee-validate';
@@ -31,6 +32,7 @@ Vue.config.productionTip = false
 
 Validator.localize('pt_BR', translate)
 Vue.use(uiv, { prefix: 'uiv', locale })
+Vue.use(Scrollspy)
 Vue.use(VueResource)
 Vue.use(VueSession)
 Vue.use(VueTheMask)
