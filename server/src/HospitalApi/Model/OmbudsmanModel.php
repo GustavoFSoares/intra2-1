@@ -28,4 +28,23 @@ class OmbudsmanModel extends SoftdeleteModel
         return $select->getQuery()->getOneOrNullResult();
     }
 
+    public function getOmbudsmansWaiting($params = []) {
+        $select = $this->em->createQueryBuilder();
+        $select->select([
+            'o.id AS id',
+            'ori.id AS origin',
+        ]);
+        $select
+            ->from($this->entityPath, 'o')
+            ->innerJoin('o.origin', 'ori', 'WITH', 'o.origin = ori')
+            ->where('o.reported = 0');
+        foreach ($params as $key => $value) {
+            $select->andWhere("o.$key = :$key")
+                ->setParameter($key, $value);
+        }
+        $data = $select->getQuery()->getResult();
+
+        return $data;
+    }
+
 }
