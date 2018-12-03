@@ -171,6 +171,11 @@ class UserController extends BasicApplicationAbstract
                     ->setByAdp( true );
                 
                 $groupId = $GroupModel->getGroupByGroupMappingFiles( $data[$index['centro-de-resultado-nome']] );
+                if(!$groupId) {
+                    echo \Helper\LoggerHelper::writeFile("$key - Usuário ({$data[ $index['nome'] ]}) - sem grupo cadastrado\n");
+                    continue;
+                }
+                
                 $group = $this->model->em->getRepository('HospitalApi\Entity\Group')->findOneByGroupId($groupId);
                 
                 if($group) {

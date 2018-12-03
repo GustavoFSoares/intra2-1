@@ -51,7 +51,7 @@
                         
                         <div class="card-body">
                             <row>
-                                <button class="btn btn-outline-primary" @click="updateUser(user)">Atualizar</button>
+                                <button class="btn btn-outline-primary" @click="updateUser(user)" :disabled="sending">Atualizar</button>
                             </row>
                         </div>
                     </div>
@@ -81,6 +81,7 @@ export default {
         return {
             title: 'Responsavel por Setor',
             groupId: '',
+            sending: false,
             values: {
                 users: [],
             },
@@ -111,10 +112,16 @@ export default {
             })
         },
         updateUser(user) {
+            this.sending = true
             model.doEditUser(user.id, user).then( res => {
                 this.alertMessage = { text: `Usuário <b>${user.id}</b> foi atualizado`, type:"success" }
+                this.sending = false
                 window.scrollTo(0, 100)
-            } )
+            }, err => {
+                this.sending = false
+                this.$alert.danger('Erro ao atualizar o gestor')
+                this.$router.go()
+            })
         },
         submit() {
             model.doEditUsers(this.values.users).then(res => {

@@ -12,7 +12,7 @@
                 </router-link>
             </rows>
 
-            <rows label="<b>Imprimir Ouvidoria</b>" @click.native="openPrinter()">
+            <rows>
                 <printer ref="printer"/>
             </rows>
 

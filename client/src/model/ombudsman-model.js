@@ -5,7 +5,7 @@ import OriginService from "@/services/ombudsman/origin"
 const getters = {
     getOmbudsmans: () => service.getOmbudsmans({ }),
     getOmbudsmansReported: () => service.getOmbudsmans({ 'reported': 1 }),
-    getOmbudsmansWaiting: () => service.getOmbudsmans({ 'reported': 0 }),
+    getOmbudsmansWaiting: () => service.getOmbudsmansWaiting({ }),
     getOmbudsmanById: (id) => service.getOmbudsmans({ 'id':id }),
     
     getDemands: () => DemandService.getDemands(),

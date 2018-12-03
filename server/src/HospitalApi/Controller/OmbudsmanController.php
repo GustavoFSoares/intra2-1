@@ -22,5 +22,12 @@ class OmbudsmanController extends ControllerAbstractLongEntity
         exit;
     }
 
+    public function getWaitingAction($req, $res, $args) {
+        $params = $req->getParams();
+        $data = $this->getModel()->getOmbudsmansWaiting($params);
+
+        return $res->withJson($data);
+    }
+
     
 }

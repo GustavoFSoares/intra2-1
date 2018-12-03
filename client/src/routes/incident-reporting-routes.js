@@ -31,6 +31,6 @@ export default [
         path: '/usuario/notificacao-de-incidentes/edit/:id',
         name: 'notificacao-de-incidentes/edit',
         component: Edit,
-        meta: { requiresAuth: true, groupAuth: ['tecnologia-da-informacao-hu', 'seger-hu'] }
+        meta: { requiresAuth: true, groupAuth: ['tecnologia-da-informacao-hu', 'seger-hu', 'scih-hu'] }
     },
 ]

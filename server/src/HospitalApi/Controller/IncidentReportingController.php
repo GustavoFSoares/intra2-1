@@ -159,9 +159,9 @@ class IncidentReportingController extends ControllerAbstractLongEntity
     public function _mountEntity($values) {
         $entity = parent::_mountEntity($values);
 
-        // if($entity->getFailedPlace()->getEnterprise() == 'HPSC') {
+        if($entity->getFailedPlace()->getEnterprise() == 'HPSC') {
             $this->sendEmailFor($entity);
-        // }
+        }
         
         return $entity;
     }
