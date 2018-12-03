@@ -1,6 +1,6 @@
 <template>
     <div id="all-modal">
-        <div class="modal fade" id="content-modal" tabindex="-1" role="dialog" aria-labelledby="content-modal" aria-hidden="true">
+        <div class="modal fade" :id="id" tabindex="-1" role="dialog" :aria-labelledby="id" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -31,17 +31,28 @@ export default {
         title: String,
         submitlabel: {type: String, default: 'Ok'},
     },
+    data() {
+        return {
+            id: '',
+        }
+    },
     methods: {
         send() {
             this.$emit('return')
-            $('#content-modal').modal('hide')
+            $(`#${this.id}`).modal('hide')
         },
         show() {
-            $('#content-modal').modal('show')
+            $(`#${this.id}`).modal('show')
         }
     },
-    mounted() {
-        // $('#content-modal').modal('show')
+    created() {
+        let space = /\s/g;
+        if(this.title) {
+            this.id=this.title.replace(space, "")
+        } else {
+            this.id = 'modal'
+        }
+        
     }
 }
 </script>

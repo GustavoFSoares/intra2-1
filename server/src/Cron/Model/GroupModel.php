@@ -36,7 +36,11 @@ class GroupModel extends ModelAbstract
 
     public function getGroupByGroupMappingFiles($adpCenter) {
         $group = $this->getGroupArray($adpCenter);
+        
         $adpCenter = \Helper\SlugHelper::get($adpCenter);
+        if(!$adpCenter) {
+            return false;
+        }
 
         $file = file_get_contents(PATH.'/Cron/MappingGroup.yml');
         $yaml = Yaml::parse($file);

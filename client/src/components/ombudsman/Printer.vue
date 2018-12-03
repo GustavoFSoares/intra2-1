@@ -1,9 +1,22 @@
 <template>
     <div>
-        <router-link to="">
-            <icon icon="print" size="3x"/>
-        </router-link>
-        <modal title="Impressão de Ouvidorias" ref="modal" @return="exportFile()">
+        <div class='row'>
+            <rows label='<b>Imprimir Ouvidoria</b>'>
+                <div>
+                    <router-link to="" @click.native="open('newFolder')">
+                        <icon icon="print" size="3x"/>
+                    </router-link>
+                </div>
+            </rows>
+            <rows label='<b>Re-imprimir</b>'>
+                <div>
+                    <router-link to="" @click.native="open('olderOmbudsman')">
+                        <icon icon="print" class="text-danger" size="3x"/>
+                    </router-link>
+                </div>
+            </rows>
+        </div>
+        <modal title="Impressão de Ouvidorias" ref="newFolder" @return="exportFile()">
             <div class='row pull-center'>
                 <rows label='Origem de Ouvidoria' class="col-md-8">
                     <v-select :options="origin" label="name" v-model="doc.origin"/>
@@ -24,6 +37,11 @@
                 </rows>
             </div>
         </modal>
+        <modal title="Ouvidorias Perdidas" ref="olderOmbudsman" @return="alert('imprimir')">
+            <div>
+                123
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -41,11 +59,17 @@ export default {
         }
     },
     methods: {
-        openModal() {
-            this.$refs.modal.show()
+        open(type) {
+            if(type == 'newFolder') {
+                this.$refs.newFolder.show()
+            } else {
+                this.$refs.olderOmbudsman.show()
+            }
+        },
+        doPrint() {
         },
         exportFile() {
-            window.open(`${window.location.protocol}//${window.location.hostname}:3001/ombudsman/doc/?page=${this.doc.page}&type=${this.doc.origin.id}`, '_target')
+            window.open(`${window.location.protocol}//${window.location.hostname}:3001/ombudsman/doc/?page=${this.doc.page}&origin=${this.doc.origin.id}`, '_target')
         }
     },
     mounted() {

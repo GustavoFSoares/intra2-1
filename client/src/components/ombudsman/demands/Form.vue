@@ -48,20 +48,14 @@ export default {
             this.sending = true
             if(this.isEdit()){
                 DemandModel.doUpdateDemand(this.demand).then(() => {
-                    this.$alert.success('Demanda Editada!')
-                    
                     this.$router.push({ name: 'ouvidoria/demandas'})
                 }, err => {
-                    this.$alert.danger('Erro ao Editar!')
                     this.sending = false
                 })
             } else {
                 DemandModel.doInsertDemand(this.demand).then(() => {
-                    this.$alert.success('Demanda Inserida!')
-
                     this.$router.push({ name: 'ouvidoria/demandas'})
                 }, err => {
-                    this.$alert.danger('Erro ao Inserir!')
                     this.sending = false
                 })
             }

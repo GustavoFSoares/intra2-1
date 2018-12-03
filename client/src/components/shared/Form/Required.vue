@@ -17,7 +17,7 @@ export default {
         text: String,
         attribute: '',
         error: Boolean,
-        show: { Boolean, default: false }
+        show: { Boolean, default: true }
     }
 }
 </script>

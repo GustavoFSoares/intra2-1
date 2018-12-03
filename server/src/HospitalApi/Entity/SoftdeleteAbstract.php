@@ -54,6 +54,8 @@ use DateTime;
         return $this;
     }
 
+    public function setC_created($c_created) { }
+
     /**
     * @\Doctrine\ORM\Mapping\preUpdate
     */

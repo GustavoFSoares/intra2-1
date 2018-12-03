@@ -169,10 +169,10 @@
         <hr>
         <div id="buttons">
             <row>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'notificacao-de-incidentes'}" tag="button">
+                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'notificacao-de-incidentes'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
-                <router-link class="btn btn-outline-danger btn-lg" to="" tag="button" v-if="gotPermission && !report.closed" @click.native="closeReport()">
+                <router-link class="btn btn-outline-danger btn-lg" to="" tag="button" v-if="gotPermission && !report.closed" @click.native="closeReport()" :disabled="sending">
                     Finalizar Incidente
                 </router-link>
             </row>
@@ -199,6 +199,7 @@ export default {
             group: this.$session.get('user').group,
             permission: 'undefined',
             historic: 'undefined',
+            sending: false,
             subtitles: {
                 event: "Tipo do Evento",
                 report: "Relato do Incidente:",
@@ -264,7 +265,15 @@ export default {
         closeReport() {
             Alert.YesNo(this.alert.closeReport.title, this.alert.closeReport.message).then(res => {
                 if(res) {
-                    model.closeReport(this.id).then(res => this.$router.go('-1') )
+                    this.sending = true
+                    model.closeReport(this.id).then(res => {
+                        this.$alert.success(`Treinamento <b>#${this.id}</b> Finzalizado`)
+                        this.$router.go('-1')
+                        this.sending.false
+                    }, err => {
+                        this.$alert.danger(`Erro ao Finzalizar`)
+                        this.sending.false
+                    } )
                 }
             })
         }

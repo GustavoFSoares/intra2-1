@@ -147,10 +147,10 @@
         <hr>
         <div id="buttons">
             <row>
-                <router-link class="btn btn-outline-secondary btn-lg" to="" tag="button" @click.native="isValidateForm()">
+                <router-link class="btn btn-outline-secondary btn-lg" to="" tag="button" @click.native="isValidateForm()" :disabled="sending">
                     Concluir Análise
                 </router-link>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'notificacao-de-incidentes'}" tag="button">
+                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'notificacao-de-incidentes'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
             </row>
@@ -175,6 +175,7 @@ export default {
             moment: moment,
             addUser: '',
             reportingEnterprise: '',
+            sending: false,
             enterprise: {
                 failed: '',
                 report: '',
@@ -264,9 +265,17 @@ export default {
             }
         },
         submit() {
+            this.sending=true
             this.report.filtered = true;
             
-            model.doUpdate(this.id, this.report).then(res => this.$router.go('-1'))
+            model.doUpdate(this.id, this.report).then(res => {
+                this.$router.go('-1')
+                this.$alert.success(`Incidente <b>#${this.id}</b> Filtrado`)
+                this.sending = false
+            }, err => {
+                this.sending = false
+                this.$alert.danger(`Erro ao filtrar`)
+            })
         },
         isValidateForm() {
             this.$validator.validateAll().then(success => success? this.submit():"")

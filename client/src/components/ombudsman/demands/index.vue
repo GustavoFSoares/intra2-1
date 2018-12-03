@@ -65,11 +65,8 @@ export default {
         remove(id, index){
             Alert.Confirm(this.alert.remove.message).then(res => {
                 if(res){
-                    DemandModel.doDeleteDemand(id).then(res => {
-                        this.$alert.success(`Demanda <b>#${id}</b> excluída`)
-                        }, err => {
-                        this.$alert.danger("Demanda não excluída")
-                        this.$route.go()
+                    DemandModel.doDeleteDemand(id).then(res => null, err => {
+                        this.$route.go() 
                     })
                     this.demands.splice(index, 1)
                 }
