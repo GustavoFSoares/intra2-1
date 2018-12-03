@@ -106,28 +106,41 @@
 
                             </div>
                         </div>
-                    </section>
 
-                    <section :id="sections.type.id" class="mb-3">
-                        <div class="row">
+                        <div class="row mt-3">
                             <rows v-for="(type, index) in types" :key="index">
-                                <input type="radio" v-validate data-vv-rules="required" :data-vv-as="sections.type.label" :value="type.name" v-model="ombudsman.type" name="Ombudsman-type">
+                                <input type="radio" v-validate data-vv-rules="required" :data-vv-as="'Tipos de demanda'" :value="type.name" v-model="ombudsman.type" name="Ombudsman-type">
                                 <label :for="index">{{ type.name }}</label>
                             </rows>
                         </div>
                         <require-text :error="errors.has('Ombudsman-type')" :text="errors.first('Ombudsman-type')"/>
                     </section>
 
-                    <!-- <section :id="sections.demands.id" class="mb-3">
+                    <section :id="sections.demands.id" class="mb-3">
                         <div>
                             <h4 class="title">{{ sections.demands.label }}</h4>
                         </div>
                         <hr>
 
-                        <row label=''>
-                            
+                        <row :label="sections.demands.label">
+                            <v-select v-model="demand" name="Ombudsman-demands" label="name" :options="values.demands" @input="insertDemands()"/>
                         </row>
-                    </section> -->
+
+                        <div class="card border-secondary mb-2">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div v-for="(demand, index) in ombudsman.demands" class="col-md-4" :key="demand.id">
+                                        <p>
+                                            <span>{{demand.name}}</span>
+                                            <router-link to="" @click.native="removeDemand(demand, index)">
+                                                <icon class="text-danger" icon="minus-circle"/>
+                                            </router-link>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                     <section :id="sections.report.id" class="mb-3">
                         <div>
@@ -230,6 +243,7 @@ export default {
             title: "Registro de Ouvidorias",
             ombudsmanId: '',
             ombudsman: new Ombudsman(),
+            demand: '',
             show: false,
             address: {},
             types: [
@@ -243,10 +257,10 @@ export default {
             sections: {
                 code: { id: "code", label: "Código"},
                 userInformations: { id: "user-informations", label: "Dados do Relator"},
-                type: { id: "ombudsman-type", label: "Tipos de Ouvidoria"},
+                // type: { id: "ombudsman-type", label: "Tipos de Ouvidoria"},
+                demands: { id: "demands", label: "Demandas"},
                 report: { id: "report", label: "Relato"},
                 ombudsmanReport: { id: "ombudsman-report", label: "Ouvidor"},
-                demands: { id: "demands", label: "Demandas"},
             },
             subtitles: {
                 personData: { title: "Dados Pessoais", name: "Nome Paciente", birthday: "Data de Nascimento", phoneNumber: "Telefone", reporterName: "Nome Relatante", reporterEmail: "Email", },
@@ -272,6 +286,22 @@ export default {
                 this.ombudsman.origin = { id: this.ombudsmanId.origin }
             }
         },
+        insertDemands() {
+            if(this.demand) {
+                if(!this.demandExist) {
+                    this.ombudsman.demands.push(this.demand)
+                } else {
+                    alert('já existe')
+                }
+                
+                setTimeout(() => {
+                    this.demand = ''
+                }, 100);
+            }
+        },
+        removeDemand(demand, index) {
+            this.ombudsman.demands.splice(index, '1')
+        },
         isValidForm() {
             this.$validator.validateAll().then(success => success? this.submit():"")
         },
@@ -287,6 +317,16 @@ export default {
                 return (this.permission != 'USER' && this.report.id) ? true : false
             }
         },
+        demandExist() {
+            let exist = false
+            this.ombudsman.demands.forEach(demand => {
+                if(demand.id == this.demand.id) {
+                    exist = true
+                }
+            });
+            
+            return exist
+        }
     },
     mounted() {
         this.loadValues()
