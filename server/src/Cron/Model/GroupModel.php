@@ -45,8 +45,10 @@ class GroupModel extends ModelAbstract
         $file = file_get_contents(PATH.'/Cron/MappingGroup.yml');
         $yaml = Yaml::parse($file);
         
-        if(array_key_exists($adpCenter, $yaml[ strtoupper($group['enterprise']) ])) {
+        if(isset( $yaml[ strtoupper($group['enterprise']) ] ) && array_key_exists($adpCenter, $yaml[ strtoupper($group['enterprise']) ])) {
             return $yaml[ $group['enterprise'] ][$adpCenter];
+        } else {
+            return $adpCenter;
         }
     }
 
