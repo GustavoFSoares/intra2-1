@@ -16,6 +16,50 @@ class OmbudsmanModel extends SoftdeleteModel
         parent::__construct();
     }
 
+    public function mount($values) {
+        $values = (object)$values;
+        $values->ombudsman = $this->em->getRepository('HospitalApi\Entity\User')->find($values->ombudsman['id']);
+        if(isset($values->manager) && $values->manager) {
+            $values->manager = $this->em->getRepository('HospitalApi\Entity\User')->find($values->manager['id']);
+        } else {
+            $values->manager = null;
+        }
+        $values->origin = $this->em->getRepository('HospitalApi\Entity\OmbudsmanOrigin')->find($values->origin['id']);
+        $values->reported = true;
+        
+        if( isset($values->ombudsmanUser['id']) && $values->ombudsmanUser['id'] ){
+            $ombudsmanUser = $this->em->getRepository('HospitalApi\Entity\OmbudsmanUser')->find($values->ombudsmanUser['id']);
+        } else {   
+            if( !$ombudsmanUser = $this->em->getRepository('HospitalApi\Entity\OmbudsmanUser')->findOneByPatientName($values->ombudsmanUser['patientName']) ) {
+                $ombudsmanUser = new \HospitalApi\Entity\OmbudsmanUser();
+            }
+        }
+        $ombudsmanUser
+            ->setPatientName($values->ombudsmanUser['patientName'])
+            ->setBirthday($values->ombudsmanUser['birthday'])
+            ->setEmail($values->ombudsmanUser['email'])
+            ->setDeclarantName($values->ombudsmanUser['declarantName'])
+            ->setPhoneNumber($values->ombudsmanUser['phoneNumber'])
+            ->setAddress($values->ombudsmanUser['address']);
+        $values->ombudsmanUser = $ombudsmanUser;
+
+        switch ($values->origin->getId()) {
+            case 'INT':
+                $values->group = null;
+                break;
+            
+            case 'AMB':
+                if($values->group) {
+                    $values->group = $this->em->getRepository('HospitalApi\Entity\Group')->find($values->group['id']);
+                }
+                $values->bed = null;
+                break;
+            
+        }
+
+        return $values;
+    }
+
     public function getLastKeyOfOrigin($origin) {
         $data = $this->getRepository()->findOneBy(['origin'=>$origin->getId()]);
         $select = $this->em->createQueryBuilder();

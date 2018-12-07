@@ -28,10 +28,10 @@
                     <th scope="col">#</th>
                     <th scope="col">Origem</th>
                     <th scope="col">Tipo</th>
-                        <th scope="col">Setor Responsável</th>
-                        <th scope="col">Leito</th>
+                    <th scope="col">Local</th>
                     <th scope="col">Ouvidor</th>
                     <th scope="col">Paciente</th>
+                    <th scope="col">Demandas</th>
                     <th scope="col">Modificado em:</th>
                     <th scope="col"></th>
                 </tr>
@@ -39,15 +39,22 @@
             <tbody>
                 <tr v-for="(ombudsman, index) of searchList" :key="index">
                     <th scope="row">{{ ombudsman.id }}</th>
-                    <td>{{ ombudsman.origin.name }}</td>
+                    <td>{{ ombudsman.origin.id }}</td>
                     <td>{{ ombudsman.type }}</td>
-                        <td>{{ ombudsman.group.name }}</td>
-                        <td>{{ ombudsman.bed }}</td>
-                    <td>{{ ombudsman.ombudsman.name }}</td>
-                    <td>{{ ombudsman.ombudsmanUser }}</td>
+                    <td v-if="ombudsman.origin.id == 'AMB'">
+                        {{ ombudsman.group.name }}
+                    </td>
+                    <td v-else-if="ombudsman.origin.id == 'INT'">
+                        {{ ombudsman.bed }}
+                    </td>
+                    <td>{{ ombudsman.ombudsman.name.substr(0, 15) }}...</td>
+                    <td>{{ ombudsman.ombudsmanUser.patientName.toUpperCase().substr(0, 15) }}</td>
+                    <td>
+
+                    </td>
                     <td>{{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
                     <td>
-                        <router-link :to='`tipos/edit/${ombudsman.id}`'>
+                        <router-link :to='`ouvidoria/edit/${ombudsman.id}`'>
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
                         <router-link @click.native="remove(ombudsman.id, index)" to="">
@@ -63,7 +70,7 @@
 <script>
 import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
 import Alert from '@/components/shared/Alert'
-import { OriginModel, getter } from "@/model/ombudsman-model";
+import model, { getter } from "@/model/ombudsman-model";
 import moment from 'moment'
 
 export default {
@@ -83,11 +90,8 @@ export default {
         remove(id, index){
             Alert.Confirm(this.alert.remove.message).then(res => {
                 if(res){
-                    OriginModel.doDeleteOrigin(id).then(res => {
-                        this.$alert.success(`Tipo <b>#${id}</b> excluído`)
-                        }, err => {
-                        this.$alert.danger("Tipo não excluído")
-                        this.$router.go()
+                    model.doDelete(id).then(res, err => {
+                        setTimeout(() => { this.$router.go() }, 3000);
                     })
                     this.origins.splice(index, 1)
                 }
@@ -99,7 +103,7 @@ export default {
         
     },
     mounted() {
-        getter.getOmbudsmansReported().then(res => { this.origins = res; console.log(res[0]) })
+        getter.getOmbudsmansReported().then(res => { this.origins = res; })
     },
     computed: {
         searchList() {

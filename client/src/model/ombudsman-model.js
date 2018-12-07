@@ -17,6 +17,9 @@ const getters = {
 
 const model = {
     isEdit: (id) => id ? true : false,
+    doUpdate: (demand) => service.update(demand.id, demand),
+
+    doDelete: (demandId) => service.delete(demandId),
 }
 
 const DemandsModel = {
@@ -28,6 +31,17 @@ const DemandsModel = {
 
         return DemandsModel.doUpdateDemand(demand)
     },
+    demandExist: (demands, demandSelected) => {
+        let exist = false
+        
+        demands.forEach(demand => {
+            if (demand.id == demandSelected.id) {
+                exist = true
+            }
+        });
+
+        return exist
+    }
 }
 
 export const OriginsModel = {

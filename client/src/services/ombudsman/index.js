@@ -14,10 +14,10 @@ export default  {
 
     update: (id, demand) => {
         window.httpMessage = { success: `Ouvidoria <b>#${id} Atualizada</b>`, error: "Ouvidoria <b>não Atualizada</b>", show: true }
-        return http.put(`/ombudsman/:${id}`, demand).then(res => res.data)
+        return http.put(`/ombudsman/${id}`, demand).then(res => res.data)
     },
 
     delete: (id) => {
-        window.httpMessage = { success: `Ouvidoria <b>#${id}</b> Excluído`, error: "Ouvidoria <b>não Atualizada</b>", show: true }
-        return http.delete(`/ombudsman/:${id}`).then(res => res.data) },
+        window.httpMessage = { success: `Ouvidoria <b>#${id}</b> Excluído`, error: "Ouvidoria <b>não Excluída</b>", show: true }
+        return http.delete(`/ombudsman/${id}`).then(res => res.data) },
 }

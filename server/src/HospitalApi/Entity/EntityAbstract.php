@@ -85,6 +85,12 @@ abstract class EntityAbstract extends BasicApplicationAbstract
         if(!($date instanceof \DateTime) && $date != null) {
             if(is_array($date) && array_key_exists('date', $date)){
                 $date = new \DateTime($date['date']);
+            } else if(substr($date, -1) == "Z") {
+                $date = explode('T', $date);
+                $date[1] = substr($date[1], 0, -5);
+
+                $date = date("Y-m-d H:i:s", strtotime("{$date[0]} {$date[1]}"));
+                $date = DateTime::createFromFormat("Y-m-d H:i:s", $date);
             } else {
                 $search = [' ', '-', '/'];
                 $reclace = ['', ' ', '-'];

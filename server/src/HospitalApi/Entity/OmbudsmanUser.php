@@ -89,7 +89,7 @@ class OmbudsmanUser extends SoftdeleteAbstract
         return $this->birthday;
     }
     public function setBirthday($birthday) {
-        $this->birthday = $birthday;
+        $this->birthday = $this->_formatDate($birthday);
         
         return $this;
     }

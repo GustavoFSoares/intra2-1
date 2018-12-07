@@ -1,5 +1,6 @@
 <?php
 namespace HospitalApi\Entity;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity
@@ -63,8 +64,8 @@ class Ombudsman extends SoftdeleteAbstract
     /**
      * @ManyToMany(targetEntity="OmbudsmanDemands")
      * @JoinTable(name="Ouvidoria_Ouvidoria_Demandas",
-     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@JoinColumn(name="demanda_id", referencedColumnName="id", onDelete="CASCADE")}
+     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="demanda_id", referencedColumnName="id")}
      *      )
      */
     protected $demands;
@@ -116,7 +117,7 @@ class Ombudsman extends SoftdeleteAbstract
         $this->manager = null;
         $this->managerResponse = null;
         $this->origin = $origin;
-        $this->demands = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->demands = new ArrayCollection();
         $this->type = null;
         $this->bed = null;
         $this->group = null;
@@ -222,7 +223,10 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     public function setDemands($demands) {
-        $this->demands = $demands;
+        foreach ($demands as $demand) {
+            $demandsArray[] = $this->getEntityManager()->getRepository('HospitalApi\Entity\OmbudsmanDemands')->find($demand['id']);
+        }
+        $this->demands = new ArrayCollection($demandsArray);
 
         return $this;
     }
@@ -273,10 +277,10 @@ class Ombudsman extends SoftdeleteAbstract
     }
     
     public function getReported() {
-        return $this->respeported;
+        return $this->reported;
     }
-    public function setReported($respeported) {
-        $this->respeported = (Boolean)$respeported;
+    public function setReported($reported) {
+        $this->reported = (Boolean)$reported;
         
         return $this;
     }    
