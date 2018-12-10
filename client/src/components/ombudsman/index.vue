@@ -32,7 +32,7 @@
                     <th scope="col">Ouvidor</th>
                     <th scope="col">Paciente</th>
                     <th scope="col">Demandas</th>
-                    <th scope="col">Modificado em:</th>
+                    <th scope="col">Registrado em:</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -50,10 +50,15 @@
                     <td>{{ ombudsman.ombudsman.name.substr(0, 15) }}...</td>
                     <td>{{ ombudsman.ombudsmanUser.patientName.toUpperCase().substr(0, 15) }}</td>
                     <td>
-
+                        <div v-for="demand in ombudsman.demands" :key="demand.id">
+                            <div class="demands"><icon icon="angle-double-right"/><i>{{ demand.name }}</i></div>
+                        </div>
                     </td>
                     <td>{{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
                     <td>
+                        <router-link :to='`ouvidoria/detalhe/${ombudsman.id}`'>
+                            <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
+                        </router-link>
                         <router-link :to='`ouvidoria/edit/${ombudsman.id}`'>
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
@@ -140,17 +145,11 @@ export default {
     }
 
     #printer {
-        /* 
-        display: block;
-        position: fixed;
-
-        margin-right: 15%; 
-        */
         text-align: right;
     }
 
-    .row {
-        /* display: inline-flex; */
+    .demands {
+        text-align: left
     }
 </style>
 

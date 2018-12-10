@@ -9,6 +9,8 @@ use HospitalApi\Entity\Ombudsman;
 class OmbudsmanModel extends SoftdeleteModel
 {
 
+    protected $_ORDERS = [ 'registerTime' => 'DESC' ];
+
     public $entity;
 
     public function __construct() {
