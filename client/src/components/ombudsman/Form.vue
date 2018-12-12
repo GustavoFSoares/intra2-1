@@ -238,7 +238,7 @@
                         
                             <blockquote class="blockquote pull-right" id="ombudsman-logged">
                                 <footer class="blockquote-footer">Você está logado como
-                                    <cite title="Source Title"><b> {{ $session.get('user').name }} </b></cite>
+                                    <cite title="Source Title"><b> {{ ombudsman.ombudsman.name }} </b></cite>
                                 </footer>
                             </blockquote>
                         </div>
@@ -275,23 +275,7 @@ export default {
             id: this.$route.params.id,
             title: "Registro de Ouvidorias",
             ombudsmanId: '',
-            ombudsman: new Ombudsman(
-                // {
-                // id: "AMB1001",
-                // description: 'DESC',
-                // ombudsman: window.$session.get('user'),
-                // ombudsmanDescription: 'Info',
-                // ombudsmanUser: {
-                //     patientName: "Joacir",
-                //     birthday: "07/08/1997",
-                //     phoneNumber: "(51)98470-0974",
-                //     declarantName: "Gustavo",
-                //     email: "gustavo10.fsoares@gmail.com"
-                // },
-                // // origin: "AMB",
-                // sugestion: "SUG",
-            // }
-            ),
+            ombudsman: new Ombudsman( ),
             demandSelected: '',
             sending: false,
             show: false,
@@ -335,6 +319,8 @@ export default {
                 getter.getOmbudsmanById(this.id).then(res => {
                     this.ombudsman = new Ombudsman(res); 
                 })
+            } else {
+                this.ombudsman.ombudsman = this.$session.get('user')
             }
         },
         loadOmbudsman() {
@@ -385,7 +371,8 @@ export default {
             return DemandModel.demandExist(this.ombudsman.demands, this.demandSelected)
         },
         userAddress() {
-            return `${this.address.street}, Nº ${this.address.number} - ${this.address.neighborhood} - ${this.address.city} CEP: ${this.address.postCode}`
+            let postCode = this.address.postCode ? ` - CEP: ${this.address.postCode}`:""
+            return `${this.address.street}, Nº ${this.address.number} - ${this.address.neighborhood} - ${this.address.city} ${postCode}`
         }
     },
     mounted() {

@@ -10,7 +10,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class Ombudsman extends SoftdeleteAbstract
 {
-    
+
     /**
      * @var Integer @Id
      *     @Column(name="id", type="string", length=255)
@@ -87,6 +87,12 @@ class Ombudsman extends SoftdeleteAbstract
     protected $group;
     
     /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="ouvidor_resposta_id", referencedColumnName="id", nullable=true)
+     */
+    protected $ombudsmanToResponse;
+
+    /**
      * @var String @Column(name="resposta_ao_paciente", type="text", nullable=true)
      */
     protected $responseToUser;
@@ -121,6 +127,7 @@ class Ombudsman extends SoftdeleteAbstract
         $this->type = null;
         $this->bed = null;
         $this->group = null;
+        $this->ombudsmanToResponse = null;
         $this->responseToUser = null;
         $this->registerTime = null;
         $this->reported = false;
@@ -140,7 +147,7 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->ombudsmanUser;
     }
     public function setOmbudsmanUser($ombudsmanUser) {
-        $this->ombudsmanUser = $ombudsmanUser;
+        $this->ombudsmanUser = $this->getRepositoryOf('OmbudsmanUser', $ombudsmanUser);
         
         return $this;
     }
@@ -167,7 +174,7 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->ombudsman;
     }
     public function setOmbudsman($ombudsman) {
-        $this->ombudsman = $ombudsman;
+        $this->ombudsman = $this->getRepositoryOf('User', $ombudsman);
         
         return $this;
     }
@@ -185,7 +192,7 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->manager;
     }
     public function setManager($manager) {
-        $this->manager = $manager;
+        $this->manager = $this->getRepositoryOf('User', $manager);
         
         return $this;
     }
@@ -203,7 +210,7 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->origin;
     }
     public function setOrigin($origin) {
-        $this->origin = $origin;
+        $this->origin = $this->getRepositoryOf('OmbudsmanOrigin', $origin);
         
         return $this;
     }
@@ -224,7 +231,7 @@ class Ombudsman extends SoftdeleteAbstract
     }
     public function setDemands($demands) {
         foreach ($demands as $demand) {
-            $demandsArray[] = $this->getEntityManager()->getRepository('HospitalApi\Entity\OmbudsmanDemands')->find($demand['id']);
+            $demandsArray[] = $this->getRepositoryOf('OmbudsmanDemands', $demand);
         }
         $this->demands = new ArrayCollection($demandsArray);
 
@@ -253,11 +260,20 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->group;
     }
     public function setGroup($group) {
-        $this->group = $group;
+        $this->group = $this->getRepositoryOf('Group', $group);
         
         return $this;
     }
     
+    public function getOmbudsmanToResponse() {
+        return $this->ombudsmanToResponse;
+    }
+    public function setOmbudsmanToResponse($ombudsmanToResponse) {
+        $this->ombudsmanToResponse = $this->getRepositoryOf('User', $ombudsmanToResponse);
+        
+        return $this;
+    }
+
     public function getResponseToUser() {
         return $this->responseToUser;
     }

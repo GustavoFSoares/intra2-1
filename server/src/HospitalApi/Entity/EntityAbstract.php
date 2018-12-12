@@ -13,6 +13,8 @@ use Datetime;
 abstract class EntityAbstract extends BasicApplicationAbstract
 {
     private $_alowed = true;
+    private $_repositories = [];
+
     public function __construct() { }
 
     /**
@@ -111,6 +113,22 @@ abstract class EntityAbstract extends BasicApplicationAbstract
     }
     public function canPersist() {
         return $this->_alowed;
+    }
+
+    public function getRepositoryOf($repositoryName, $entity) {
+        if($entity instanceof EntityAbstract) {
+            return $entity;
+        } else if( array_key_exists('id', $entity) ) {
+            if( array_key_exists($repositoryName, $this->_repositories)) {
+                return $this->_repositories[$repositoryName]->find($entity['id']);
+            } else {
+                $this->_repositories[$repositoryName] = $this->getEntityManager()->getRepository("HospitalApi\Entity\\$repositoryName");
+                
+                return $this->_repositories[$repositoryName]->find($entity['id']);
+            }
+        } else {
+            return null;
+        }
     }
 
 }
