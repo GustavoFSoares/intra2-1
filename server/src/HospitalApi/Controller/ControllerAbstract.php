@@ -179,5 +179,16 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 			unset($args['user_id']);
 		}
 	}
+
+	public function gotPermissionAction($req, $res, $args) {
+        $params = $req->getQueryParams();
+        
+        $this->storeUser($params);
+        
+        $id = isset($params['id']) ? $params['id'] : false;
+        $permission = $this->_model->gotPermission($id);
+        
+        return $res->withJson($permission);
+    }
 	
 }

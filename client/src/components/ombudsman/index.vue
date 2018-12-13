@@ -7,13 +7,13 @@
             <rows>
                 <h1>{{ title }}</h1>
 
-                <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'ouvidoria/add'}" tag="button">
+                <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'ouvidoria/add'}" tag="button" v-if="gotPermission">
                     Cadastrar Ouvidoria
                 </router-link>
             </rows>
 
             <rows>
-                <printer ref="printer"/>
+                <printer ref="printer" v-if="gotPermission"/>
             </rows>
 
         </div>
@@ -59,10 +59,10 @@
                         <router-link :to='`ouvidoria/detalhe/${ombudsman.id}`'>
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
                         </router-link>
-                        <router-link :to='`ouvidoria/edit/${ombudsman.id}`'>
+                        <router-link :to='`ouvidoria/edit/${ombudsman.id}`' v-if="gotPermission">
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
-                        <router-link @click.native="remove(ombudsman.id, index)" to="">
+                        <router-link @click.native="remove(ombudsman.id, index)" to=""  v-if="gotPermission">
                             <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
@@ -88,7 +88,8 @@ export default {
             alert: {
                 remove: { message: "Tem certeza que deseja Excluir?" }
             },
-            teste: false
+            teste: false,
+            permission: 'undefined',
         }
     },
     methods: { 
@@ -108,6 +109,7 @@ export default {
         
     },
     mounted() {
+        model.get
         getter.getOmbudsmansReported().then(res => { this.origins = res; })
     },
     computed: {
@@ -129,6 +131,13 @@ export default {
                 })
             } else {
                 return this.origins
+            }
+        },
+        gotPermission() {
+            if(this.permission == 'undefined') {
+                model.gotPermission().then(permission => { this.permission = permission; } )
+            } else {
+                return (this.permission != 'USER' && this.permission) ? true : false
             }
         }
     },
