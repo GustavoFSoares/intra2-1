@@ -27,4 +27,8 @@ export default class Ombudsman {
         this.relevance = ombudsman.relevance
         this.reportedBy = ombudsman.reportedBy
     }
+
+    exist() {
+        return this.id ? true : false
+    }
 }

@@ -56,6 +56,17 @@ const DemandsModel = {
     }
 }
 
+const chats = {
+    saveMessage(id, message) {
+        console.log(message);
+    },
+    getChats(id) {
+        return new Promise(resolve => {
+            resolve([])
+        })
+    }
+}
+
 export const OriginsModel = {
     doInsertOrigin: (origin) => OriginService.insert(origin),
     doUpdateOrigin: (origin) => OriginService.update(origin.id, origin),
@@ -67,3 +78,4 @@ export default model
 export const getter = getters
 export const OriginModel = OriginsModel
 export const DemandModel = DemandsModel
+export const chat = chats

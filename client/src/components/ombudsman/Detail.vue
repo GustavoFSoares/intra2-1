@@ -154,8 +154,11 @@
                 </div>
             </div>
         </section>
-        
 
+        <div class="mt-3 mb-3">
+            <chat :id="'om'+id" model_path="ombudsman-model" v-if="ombudsman.exist()"/>
+        </div>
+        
         <div id="buttons">
             <row>
                 <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending" v-if="ombudsman.status != 'finished' && ombudsman.id">
@@ -212,6 +215,7 @@ export default {
         'rows': FormRws,
         'ombudsman-closing': require('./closing/Ombudsman.vue').default,
         'manager-closing': require('./closing/Manager.vue').default,
+        'chat': require('@/components/shared/chat').default,
     },
     mounted() {
         getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = res ? new Ombudsman(res) : new Ombudsman() })
