@@ -242,6 +242,14 @@
                                 </footer>
                             </blockquote>
                         </div>
+
+                        <div class="row mt-3">
+                            <div v-for="(relevance, index) in relevances" :key="index" class="col-md type">
+                                <input type="radio" v-validate data-vv-rules="required" :data-vv-as="'Relevância'" :value="relevance.name" v-model="ombudsman.relevance" name="Ombudsman-relevance">
+                                <label :for="index">{{ relevance.name }}</label>
+                            </div>
+                            <require-text :error="errors.has('Ombudsman-relevance')" :text="errors.first('Ombudsman-relevance')"/>
+                        </div>
                     </section>
                 </div>
 
@@ -287,6 +295,12 @@ export default {
                 { name: 'Sugestão', },
                 { name: 'Elogio', },
                 { name: 'Outros', },
+            ],
+            relevances: [
+                { name: 'Baixo', },
+                { name: 'Médio', },
+                { name: 'Alta', },
+                { name: 'Muito Alta', },
             ],
             sections: {
                 code: { id: "code", label: "Código"},

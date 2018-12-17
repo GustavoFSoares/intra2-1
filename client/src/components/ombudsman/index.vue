@@ -26,12 +26,13 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Origem</th>
+                    <!-- <th scope="col">Origem</th> -->
                     <th scope="col">Tipo</th>
                     <th scope="col">Local</th>
                     <th scope="col">Ouvidor</th>
                     <th scope="col">Paciente</th>
                     <th scope="col">Demandas</th>
+                    <th scope="col">Relevância</th>
                     <th scope="col">Registrado em:</th>
                     <th scope="col"></th>
                 </tr>
@@ -39,7 +40,7 @@
             <tbody>
                 <tr v-for="(ombudsman, index) of searchList" :key="index" v-bind:class="getClassTable(ombudsman.status)">
                     <th scope="row">{{ ombudsman.id }}</th>
-                    <td>{{ ombudsman.origin.id }}</td>
+                    <!-- <td>{{ ombudsman.origin.id }}</td> -->
                     <td>{{ ombudsman.type }}</td>
                     <td v-if="ombudsman.origin.id == 'AMB'">
                         {{ ombudsman.group.name }}
@@ -54,6 +55,7 @@
                             <div class="demands"><icon icon="angle-double-right"/><i>{{ demand.name }}</i></div>
                         </div>
                     </td>
+                    <td>{{ ombudsman.relevance }}</td>                    
                     <td>{{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
                     <td>
                         <router-link :to='`ouvidoria/detalhe/${ombudsman.id}`'>

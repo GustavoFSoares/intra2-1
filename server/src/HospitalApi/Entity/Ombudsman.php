@@ -116,6 +116,11 @@ class Ombudsman extends SoftdeleteAbstract
      * @var String @Column(name="status", type="string", options={"default":"created"})
      */
     protected $status;
+    
+    /**
+     * @var String @Column(name="relevancia", type="string", options={"default":"BAIXO"})
+     */
+    protected $relevance;
 
     public function __construct($id = '', $origin = null) {
         parent::__construct();
@@ -321,6 +326,15 @@ class Ombudsman extends SoftdeleteAbstract
     }
     public function setStatus($status) {
         $this->status = $status;
+        
+        return $this;
+    }
+    
+    public function getRelevance() {
+        return $this->relevance;
+    }
+    public function setRelevance($relevance) {
+        $this->relevance = strtoupper($relevance);
         
         return $this;
     }
