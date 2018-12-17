@@ -4,9 +4,9 @@ import OriginService from "@/services/ombudsman/origin"
 
 const getters = {
     getOmbudsmans: () => service.getOmbudsmans({ }),
-    getOmbudsmansReported: () => service.getOmbudsmans({ 'reported': 1 }),
+    getOmbudsmansReported: () => service.getOmbudsmans({ 'reported': 1, 'user_id': window.$session.get('user').id }),
     getOmbudsmansWaiting: () => service.getOmbudsmansWaiting({ }),
-    getOmbudsmanById: (id) => service.getOmbudsmans({ 'id':id }),
+    getOmbudsmanById: (id) => service.getOmbudsmans({ 'id': id, 'user_id': window.$session.get('user').id }),
     
     getDemands: () => DemandService.getDemands(),
     getDemandById: (id) => DemandService.getDemands({ 'id':id }),
@@ -20,6 +20,18 @@ const model = {
     doUpdate: (demand) => service.update(demand.id, demand),
 
     doDelete: (demandId) => service.delete(demandId),
+    gotPermission: (ombudsmanId = null) => service.getPermission({ 'id': ombudsmanId, 'user_id': window.$session.get('user').id }),
+    setManagerResponse: (id, response) => service.setManagerResponse(id, { 
+                                                                    'id': id,
+                                                                    'manager': response.manager,
+                                                                    'managerResponse': response.managerResponse,
+                                                            }),
+    setOmbudsmanToResponse: (id, response) => service.setOmbudsmanResponse(id, { 
+                                                                    'id': id,
+                                                                    'ombudsmanToResponse': response.ombudsman,
+                                                                    'responseToUser': response.ombudsmanResponse,
+                                                                }),
+    addManager: (ombudsmanId, user) => service.addManager(ombudsmanId, user),
 }
 
 const DemandsModel = {

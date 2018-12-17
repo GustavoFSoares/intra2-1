@@ -31,7 +31,9 @@ $app->group('/ombudsman', function() {
         $this->post('/', "HospitalApi\Controller\OmbudsmanController:insert", function(Request $req, Response $res, array $args) { });
 
         $this->put('/{id}', "HospitalApi\Controller\OmbudsmanController:update", function(Request $req, Response $res, array $args) { });
-        $this->put('/response/{id}', "HospitalApi\Controller\OmbudsmanController:setResponseAction", function(Request $req, Response $res, array $args) { });
-
+        $this->put('/manager-response/{id}', "HospitalApi\Controller\OmbudsmanController:setManagerResponseAction", function(Request $req, Response $res, array $args) { });
+        $this->put('/ombudsman-response/{id}', "HospitalApi\Controller\OmbudsmanController:setOmbudsmanResponseAction", function(Request $req, Response $res, array $args) { });
+        $this->put('/add-manager/{id}', "HospitalApi\Controller\OmbudsmanController:addManagerAction", function(Request $req, Response $res, array $args) { });
+        
         $this->delete('/{id}', "HospitalApi\Controller\OmbudsmanController:delete", function(Request $req, Response $res, array $args) { });
 }); 

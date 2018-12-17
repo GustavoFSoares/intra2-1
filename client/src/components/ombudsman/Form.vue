@@ -113,10 +113,10 @@
                         </div>
 
                         <div class="row mt-3">
-                            <rows v-for="(type, index) in types" :key="index">
+                            <div v-for="(type, index) in types" :key="index" class="col-md type">
                                 <input type="radio" v-validate data-vv-rules="required" :data-vv-as="'Tipos de demanda'" :value="type.name" v-model="ombudsman.type" name="Ombudsman-type">
                                 <label :for="index">{{ type.name }}</label>
-                            </rows>
+                            </div>
                         </div>
                         <require-text :error="errors.has('Ombudsman-type')" :text="errors.first('Ombudsman-type')"/>
                     </section>
@@ -410,6 +410,22 @@ export default {
     .watched {
         pointer-events:none;
         color:grey;
+    }
+
+    @media(min-width: 1231px) and (max-width: 1400px) {
+        #navigation div {
+            margin-top: -2%;
+        }
+    }
+
+    @media (max-width: 1230px) {
+        .type {
+            min-width: 250px;
+        }
+
+        #navigation div {
+            margin-top: -3%;
+        }
     }
 
 </style>

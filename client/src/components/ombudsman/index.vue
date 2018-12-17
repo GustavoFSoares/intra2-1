@@ -22,7 +22,7 @@
             <input type="search" class="filter form-control" :disabled="!origins" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
         </div>
 
-        <table class="table table-striped">
+        <table class="table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(ombudsman, index) of searchList" :key="index">
+                <tr v-for="(ombudsman, index) of searchList" :key="index" v-bind:class="getClassTable(ombudsman.status)">
                     <th scope="row">{{ ombudsman.id }}</th>
                     <td>{{ ombudsman.origin.id }}</td>
                     <td>{{ ombudsman.type }}</td>
@@ -59,10 +59,10 @@
                         <router-link :to='`ouvidoria/detalhe/${ombudsman.id}`'>
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
                         </router-link>
-                        <router-link :to='`ouvidoria/edit/${ombudsman.id}`' v-if="gotPermission">
+                        <router-link :to='`ouvidoria/edit/${ombudsman.id}`' v-if="ombudsman.status=='registered' && gotPermission">
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
-                        <router-link @click.native="remove(ombudsman.id, index)" to=""  v-if="gotPermission">
+                        <router-link @click.native="remove(ombudsman.id, index)" to=""  v-if="ombudsman.status=='registered' && gotPermission">
                             <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
@@ -105,11 +105,28 @@ export default {
         },
         openPrinter() {
             this.$refs.printer.openModal();
+        },
+        getClassTable(status) {
+            switch (status) {
+                case 'finished':
+                    return 'table-disabled'     
+                    break;
+            
+                case 'waiting-manager':
+                    return 'table-info'     
+                    break;
+            
+                case 'table-warning':
+                    return 'manager-received'     
+                    break;
+            
+                default:
+                    return ''
+                    break;
+            }
         }
-        
     },
     mounted() {
-        model.get
         getter.getOmbudsmansReported().then(res => { this.origins = res; })
     },
     computed: {
@@ -135,11 +152,11 @@ export default {
         },
         gotPermission() {
             if(this.permission == 'undefined') {
-                model.gotPermission().then(permission => { this.permission = permission; } )
+                model.gotPermission().then(permission => { this.permission = permission; console.log(permission)} )
             } else {
                 return (this.permission != 'USER' && this.permission) ? true : false
             }
-        }
+        },
     },
     components: {
         'rows': FormRws,
@@ -159,6 +176,12 @@ export default {
 
     .demands {
         text-align: left
+    }
+
+    .table-disabled {
+        cursor: default;
+        text-decoration: none;
+        color: #8a8a8a9c;
     }
 </style>
 

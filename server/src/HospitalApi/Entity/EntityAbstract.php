@@ -118,7 +118,7 @@ abstract class EntityAbstract extends BasicApplicationAbstract
     public function getRepositoryOf($repositoryName, $entity) {
         if($entity instanceof EntityAbstract) {
             return $entity;
-        } else if( array_key_exists('id', $entity) ) {
+        } else if( is_array($entity) && array_key_exists('id', $entity) ) {
             if( array_key_exists($repositoryName, $this->_repositories)) {
                 return $this->_repositories[$repositoryName]->find($entity['id']);
             } else {

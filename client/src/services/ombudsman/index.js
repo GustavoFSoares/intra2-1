@@ -19,9 +19,15 @@ export default  {
     update: (id, demand) => {
         window.httpMessage = { success: `Ouvidoria <b>#${id} Atualizada</b>`, error: "Ouvidoria <b>não Atualizada</b>", show: true }
         return http.put(`/ombudsman/${id}`, demand).then(res => res.data) },
-    setResponse: (id, response) => {
+    setManagerResponse: (id, response) => {
         window.httpMessage = { success: `Relato adicionado <b>#${id}</b>`, error: "Relato <b>não adicionado</b>", show: true }
-        return http.put(`/ombudsman/response/${id}`, response).then(res => res.data) },
+        return http.put(`/ombudsman/manager-response/${id}`, response).then(res => res.data) },
+    setOmbudsmanResponse: (id, response) => {
+        window.httpMessage = { success: `Relato adicionado <b>#${id}</b>`, error: "Relato <b>não adicionado</b>", show: true }
+        return http.put(`/ombudsman/ombudsman-response/${id}`, response).then(res => res.data) },
+    addManager: (id, user) => {
+        window.httpMessage = { success: `Resposável <b>Adicionado</b>`, error: "Responsável <b>não adicionado</b>", show: true }
+        return http.put(`/ombudsman/add-manager/${id}`, user).then(res => res.data) },
 
     delete: (id) => {
         window.httpMessage = { success: `Ouvidoria <b>#${id}</b> Excluído`, error: "Ouvidoria <b>não Excluída</b>", show: true }

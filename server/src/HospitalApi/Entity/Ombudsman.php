@@ -64,8 +64,8 @@ class Ombudsman extends SoftdeleteAbstract
     /**
      * @ManyToMany(targetEntity="OmbudsmanDemands")
      * @JoinTable(name="Ouvidoria_Ouvidoria_Demandas",
-     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="demanda_id", referencedColumnName="id")}
+     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="demanda_id", referencedColumnName="id", onDelete="CASCADE")}
      *      )
      */
     protected $demands;
@@ -111,6 +111,11 @@ class Ombudsman extends SoftdeleteAbstract
      * @var Boolean @Column(name="paciente_respondido", type="boolean", nullable=true, options={"default":false})
      */
     protected $answered;
+   
+    /**
+     * @var String @Column(name="status", type="string", options={"default":"created"})
+     */
+    protected $status;
 
     public function __construct($id = '', $origin = null) {
         parent::__construct();
@@ -132,6 +137,7 @@ class Ombudsman extends SoftdeleteAbstract
         $this->registerTime = null;
         $this->reported = false;
         $this->answered = false;
+        $this->status = 'created';
     }
 
     public function getId() {
@@ -306,6 +312,15 @@ class Ombudsman extends SoftdeleteAbstract
     }
     public function setAnswered($answered) {
         $this->answered = (Boolean)$answered;
+        
+        return $this;
+    }
+    
+    public function getStatus() {
+        return $this->status;
+    }
+    public function setStatus($status) {
+        $this->status = $status;
         
         return $this;
     }

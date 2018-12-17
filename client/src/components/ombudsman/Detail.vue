@@ -144,14 +144,21 @@
         <hr>
         <section class="mb-3" v-if="ombudsman.id">
             <h4 class="title">Fechamento</h4>
-            <ombudsman-closing v-if="gotPermission" :ombudsman="ombudsman" ref="closing"/>
-            <manager-closing v-else :ombudsman="ombudsman" ref="closing"/> 
+            
+            <div class="card border-secondary">
+                <div class="card-body">
+
+                    <ombudsman-closing v-if="gotPermission" :ombudsman="ombudsman" ref="closing"/>
+                    <manager-closing v-else :ombudsman="ombudsman" ref="closing"/> 
+
+                </div>
+            </div>
         </section>
         
 
         <div id="buttons">
             <row>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending">
+                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending" v-if="ombudsman.status != 'finished'">
                     Registrar Relato
                 </button>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria'}" tag="button" :disabled="sending">
@@ -207,7 +214,7 @@ export default {
         'manager-closing': require('./closing/Manager.vue').default,
     },
     mounted() {
-        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = new Ombudsman(res); })
+        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = new Ombudsman(res); console.log(res) })
     }
 }
 </script>

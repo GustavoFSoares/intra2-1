@@ -29,11 +29,31 @@ class OmbudsmanController extends ControllerAbstractLongEntity
         return $res->withJson($data);
     }
 
-    public function setResponseAction($req, $res, $args) {
+    public function setManagerResponseAction($req, $res, $args) {
         $values = $req->getParsedBody();
+        $values['status'] = 'manager-received';
+
         $this->getModel()->setResponse($values);
         
         return $res->withJson(true);
+    }
+
+    public function setOmbudsmanResponseAction($req, $res, $args) {
+        $values = $req->getParsedBody();
+        $values['status'] = 'finished';
+
+        $this->getModel()->setResponse($values);
+        
+        return $res->withJson(true);
+    }
+
+    public function addManagerAction($req, $res, $args) {
+        $id = $req->getAttribute('id');
+        $user = $req->getParsedBody();
+
+        $response = $this->getModel()->addManager($id, $user);
+
+        return $res->withJson($response);
     }
 
     
