@@ -25,5 +25,6 @@ export default class Ombudsman {
         this.answered = ombudsman.answered ? true : false
         this.status = ombudsman.status
         this.relevance = ombudsman.relevance
+        this.reportedBy = ombudsman.reportedBy
     }
 }

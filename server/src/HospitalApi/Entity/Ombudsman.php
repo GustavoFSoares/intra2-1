@@ -118,9 +118,14 @@ class Ombudsman extends SoftdeleteAbstract
     protected $status;
     
     /**
-     * @var String @Column(name="relevancia", type="string", options={"default":"BAIXO"})
+     * @var String @Column(name="relevancia", type="string", nullable=true, options={"default":"BAIXO"})
      */
     protected $relevance;
+
+    /**
+     * @var String @Column(name="relatado_por", type="string", nullable=true, options={"default":""})
+     */
+    protected $reportedBy;
 
     public function __construct($id = '', $origin = null) {
         parent::__construct();
@@ -143,6 +148,8 @@ class Ombudsman extends SoftdeleteAbstract
         $this->reported = false;
         $this->answered = false;
         $this->status = 'created';
+        $this->relevance = null;
+        $this->reportedBy = null;
     }
 
     public function getId() {
@@ -334,7 +341,16 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->relevance;
     }
     public function setRelevance($relevance) {
-        $this->relevance = strtoupper($relevance);
+        $this->relevance = $relevance;
+        
+        return $this;
+    }
+    
+    public function getReportedBy() {
+        return $this->reportedBy;
+    }
+    public function setReportedBy($reportedBy) {
+        $this->reportedBy = $reportedBy;
         
         return $this;
     }

@@ -181,6 +181,13 @@
                         </div>
                         <hr>
 
+                        <div class="row mt-3">
+                            <div v-for="(reporterOption, index) in reporterOptions" :key="index" class="col-md type">
+                                <input type="radio" v-validate data-vv-rules="required" :data-vv-as="'Canal Recebimento'" :value="reporterOption.name" v-model="ombudsman.reportedBy" name="Ombudsman-reportedBy">
+                                <label :for="index">{{ reporterOption.name }}</label>
+                            </div>
+                            <require-text :error="errors.has('Ombudsman-reportedBy')" :text="errors.first('Ombudsman-reportedBy')"/>
+                        </div>
                         <div class="card border-secondary mb-2">
                             <div class="card-body">
 
@@ -297,10 +304,15 @@ export default {
                 { name: 'Outros', },
             ],
             relevances: [
-                { name: 'Baixo', },
-                { name: 'Médio', },
+                { name: 'Baixa', },
+                { name: 'Média', },
                 { name: 'Alta', },
-                { name: 'Muito Alta', },
+                { name: 'Urgente', },
+            ],
+            reporterOptions:[
+                { name: 'Presencial' },
+                { name: 'Telefone' },
+                { name: 'E-Mail' },
             ],
             sections: {
                 code: { id: "code", label: "Código"},
