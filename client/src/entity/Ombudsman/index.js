@@ -1,6 +1,6 @@
 const OmbudsmanUser = require('./OmbudsmanUser').default
 export default class Ombudsman {
-    constructor(ombudsman = { group: '', ombudsman: '', registerTime: '', ombudsmanUser: new OmbudsmanUser(), origin: { } }) {
+    constructor(ombudsman = { id: '', group: '', ombudsman: '', registerTime: '', ombudsmanUser: new OmbudsmanUser(), origin: { } }) {
         this.id = ombudsman.id
         this.ombudsmanUser = new OmbudsmanUser(ombudsman.ombudsmanUser)
         this.ombudsmanUserDescription = ombudsman.ombudsmanUserDescription

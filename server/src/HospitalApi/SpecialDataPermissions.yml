@@ -7,7 +7,9 @@ INCIDENT-REPORTING:
         - 'seger-hpsc'
 
 OMBUDSMAN:
-    ADMIN:
-        - 'tecnologia-da-informacao-hu'
+    ALL_DATA:
+    HU_DATA:
         - 'servico-de-apoio-ao-cliente-hu'
+        - 'tecnologia-da-informacao-hu'
+    HPSC_DATA:
         - 'servico-apoio-ao-cliente-hpsc'

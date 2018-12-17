@@ -79,14 +79,37 @@ class OmbudsmanModel extends SoftdeleteModel
         return $select->getQuery()->getResult();
     }
 
+    public function findById($id) {
+        $select = $this->em->createQueryBuilder();
+        $select->select('o')->from($this->getEntityPath(), 'o');
+
+        $select = $this->showForJustWhoCanSee($select)
+            ->andWhere('o.id = :id')
+            ->setParameter('id', $id);
+
+        return $select->getQuery()->getOneOrNullResult();
+    }
+
     public function showForJustWhoCanSee(QueryBuilder $select ) {
         switch ($this->getContainer()['session']->gotPermission('ombudsman')) {
-            case 'ADMIN':
+            case 'ALL_DATA':
+                break;
+            
+            case 'HU_DATA':
+                $select
+                    ->leftJoin('HospitalApi\Entity\Group', 'g', 'WITH', 'g = o.group')
+                    ->andWhere("g.enterprise = 'HU'")
+                    ->OrWhere($select->expr()->isNull('o.group'));
+                break;
+            
+            case 'HPSC_DATA':
+                $select
+                    ->innerJoin('o.group', 'g', 'WITH', "g.enterprise = 'HPSC'");
                 break;
             
             default: 
                 $select
-                    ->where('o.manager = :user')
+                    ->andWhere('o.manager = :user')
                     ->setParameter('user', $this->getContainer()['session']->get()->getId());
                 break;
         }

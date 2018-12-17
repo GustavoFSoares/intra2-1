@@ -158,7 +158,7 @@
 
         <div id="buttons">
             <row>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending" v-if="ombudsman.status != 'finished'">
+                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending" v-if="ombudsman.status != 'finished' && ombudsman.id">
                     Registrar Relato
                 </button>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria'}" tag="button" :disabled="sending">
@@ -178,7 +178,7 @@ export default {
     data() {
         return {
             id: this.$route.params.id,
-            ombudsman: new Ombudsman( ),
+            ombudsman: new Ombudsman(),
             moment: require('moment'),
             sending: false,
             permission: 'undefined',
@@ -214,7 +214,7 @@ export default {
         'manager-closing': require('./closing/Manager.vue').default,
     },
     mounted() {
-        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = new Ombudsman(res); console.log(res) })
+        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = res ? new Ombudsman(res) : new Ombudsman() })
     }
 }
 </script>
