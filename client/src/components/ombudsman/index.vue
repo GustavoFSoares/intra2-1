@@ -30,9 +30,10 @@
                     <th scope="col">Tipo</th>
                     <th scope="col">Local</th>
                     <th scope="col">Ouvidor</th>
-                    <th scope="col">Paciente</th>
+                    <!-- <th scope="col">Paciente</th> -->
                     <th scope="col">Demandas</th>
                     <th scope="col">Relevância</th>
+                    <th scope="col">Relatado por:</th>
                     <th scope="col">Registrado em:</th>
                     <th scope="col"></th>
                 </tr>
@@ -49,13 +50,14 @@
                         {{ ombudsman.bed }}
                     </td>
                     <td>{{ ombudsman.ombudsman.name.substr(0, 15) }}...</td>
-                    <td>{{ ombudsman.ombudsmanUser.patientName.toUpperCase().substr(0, 15) }}</td>
+                    <!-- <td>{{ ombudsman.ombudsmanUser.patientName.toUpperCase().substr(0, 15) }}</td> -->
                     <td>
                         <div v-for="demand in ombudsman.demands" :key="demand.id">
                             <div class="demands"><icon icon="angle-double-right"/><i>{{ demand.name }}</i></div>
                         </div>
                     </td>
                     <td>{{ ombudsman.relevance }}</td>                    
+                    <td>{{ ombudsman.reportedBy }}</td>                    
                     <td>{{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
                     <td>
                         <router-link :to='`ouvidoria/detalhe/${ombudsman.id}`'>
