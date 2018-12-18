@@ -33,7 +33,8 @@ $app->group('/ombudsman', function() {
         $this->put('/{id}', "HospitalApi\Controller\OmbudsmanController:update", function(Request $req, Response $res, array $args) { });
         $this->put('/manager-response/{id}', "HospitalApi\Controller\OmbudsmanController:setManagerResponseAction", function(Request $req, Response $res, array $args) { });
         $this->put('/ombudsman-response/{id}', "HospitalApi\Controller\OmbudsmanController:setOmbudsmanResponseAction", function(Request $req, Response $res, array $args) { });
-        $this->put('/add-manager/{id}', "HospitalApi\Controller\OmbudsmanController:addManagerAction", function(Request $req, Response $res, array $args) { });
+        $this->put('/add-manager/{id}/{type}', "HospitalApi\Controller\OmbudsmanController:addManagerAction", function(Request $req, Response $res, array $args) { });
+        $this->put('/remove-manager/{id}/{type}', "HospitalApi\Controller\OmbudsmanController:removeManagerAction", function(Request $req, Response $res, array $args) { });
         
         $this->delete('/{id}', "HospitalApi\Controller\OmbudsmanController:delete", function(Request $req, Response $res, array $args) { });
 }); 

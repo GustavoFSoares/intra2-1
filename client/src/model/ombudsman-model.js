@@ -31,7 +31,8 @@ const model = {
                                                                     'ombudsmanToResponse': response.ombudsman,
                                                                     'responseToUser': response.ombudsmanResponse,
                                                                 }),
-    addManager: (ombudsmanId, user) => service.addManager(ombudsmanId, user),
+    addManager: (ombudsmanId, user, type) => service.addManager(ombudsmanId, user, type),
+    removeManager: (ombudsmanId, user, type) => service.removeManager(ombudsmanId, user, type),
 }
 
 const DemandsModel = {

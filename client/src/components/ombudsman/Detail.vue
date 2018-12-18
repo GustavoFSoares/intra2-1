@@ -142,15 +142,72 @@
         </row>
 
         <hr>
-        <section class="mb-3" v-if="ombudsman.id">
-            <h4 class="title">Fechamento</h4>
+        <section class="mb-3" v-if="gotPermission">
+            <h4 class="title">Lista de Acompanhantes</h4>
             
             <div class="card border-secondary">
                 <div class="card-body">
+                    <add-users :manager_list="ombudsman.managerList" :tranmission_list="ombudsman.transmissionList" v-if="gotPermission" @sendUser="addUser" />
+                    <!-- <ombudsman-closing v-if="gotPermission" :ombudsman="ombudsman" ref="closing"/> -->
+                    <!-- <manager-closing v-else :ombudsman="ombudsman" ref="closing"/>  -->
 
-                    <ombudsman-closing v-if="gotPermission" :ombudsman="ombudsman" ref="closing"/>
-                    <manager-closing v-else :ombudsman="ombudsman" ref="closing"/> 
+                    <div class='row'>
+                        <rows>
+                            
+                            <h4 class="title">Lista de Responsáveis:</h4>
+                            <div id="manager" class="list-group">
+                                <div v-for="(userAdmin, index) in ombudsman.managerList" :key="index" class="card">
 
+                                    <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id-m'+index" aria-expanded="true" :aria-controls="'id-m'+index">
+                                        <span class="float-left">{{ userAdmin.name }}</span>
+                                        <router-link class="float-right" to="" v-if="gotPermission" @click.native="removeUser(userAdmin, index, 'manager')">
+                                            <icon class="text-danger" icon="minus-circle"/>
+                                        </router-link>
+                                    </router-link>
+
+                                    <div :id="'id-m'+index" class="collapse" data-parent="#manager">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <span class="float-right" v-if="userAdmin.email">{{ userAdmin.email }}</span>
+                                                <span class="float-right" v-else><b>Sem email cadastrado</b></span>                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <h5 class="text-danger" v-if="ombudsman.managerList.length == 0"> Nenhum Responsável Adicionado </h5>
+                            </div>
+
+                        </rows>
+                        <rows>
+                            
+                            <h4 class="title">Observando:</h4>
+                            <div id="companion" class="list-group">
+                                <div v-for="(userAdmin, index) in ombudsman.transmissionList" :key="index" class="card">
+
+                                    <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id-c'+index" aria-expanded="true" :aria-controls="'id-c'+index">
+                                        <span class="float-left">{{ userAdmin.name }}</span>
+                                        <router-link class="float-right" to="" v-if="gotPermission" @click.native="removeUser(userAdmin, index, 'companion')">
+                                            <icon class="text-danger" icon="minus-circle"/>
+                                        </router-link>
+                                    </router-link>
+
+                                    <div :id="'id-c'+index" class="collapse" data-parent="#companion">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <span class="float-right" v-if="userAdmin.email">{{ userAdmin.email }}</span>
+                                                <span class="float-right" v-else><b>Sem email cadastrado</b></span>                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <h5 class="text-danger" v-if="ombudsman.transmissionList.length == 0"> Nenhum Observador Adicionado </h5>
+                            </div>
+
+                        </rows>
+                    </div>
+                    
                 </div>
             </div>
         </section>
@@ -176,6 +233,7 @@
 import Ombudsman from "@/entity/Ombudsman";
 import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
 import model, { getter } from '@/model/ombudsman-model'
+import Alert from '@/components/shared/Alert'
 
 export default {
     data() {
@@ -200,6 +258,35 @@ export default {
                 this.sending = false
             })
         },
+        addUser(user, type) {
+            switch (type) {
+                case 'manager':
+                    this.ombudsman.managerList.push(user)
+                    
+                    break;
+                
+                case 'companion':
+                    this.ombudsman.transmissionList.push(user)
+                    break;
+            }
+        },
+        removeUser(user, index, type) {
+            Alert.YesNo("Tem certeza?", "Você está removendo um responsável. Deseja Continuar?").then( res => {
+                if(res) {
+                    switch (type) {
+                    case 'manager':
+                        this.ombudsman.managerList.splice(index, 1)
+                        
+                        break;
+                    
+                    case 'companion':
+                        this.ombudsman.transmissionList.splice(index, 1)
+                        break;
+                    }
+                    model.removeManager(this.id, user, type)
+                }
+            })
+        }
     },
     computed: {
         gotPermission() {
@@ -213,6 +300,7 @@ export default {
     components: {
         'row': FormRw,
         'rows': FormRws,
+        'add-users': require('./AddUsers.vue').default,
         'ombudsman-closing': require('./closing/Ombudsman.vue').default,
         'manager-closing': require('./closing/Manager.vue').default,
         'chat': require('@/components/shared/chat').default,

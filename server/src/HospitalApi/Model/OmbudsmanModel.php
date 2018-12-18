@@ -4,6 +4,7 @@ namespace HospitalApi\Model;
 
 use HospitalApi\Entity\Ombudsman;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 /**
  * <b>OmbudsmanModel</b>
  */
@@ -174,16 +175,45 @@ class OmbudsmanModel extends SoftdeleteModel
         return $this->doUpdate($this->entity);
     }
 
-    public function addManager($id, $user) {
+    public function addManager($id, $user, $type) {
         $this->entity = $this->getRepository()->find($id);
-        $this->entity->setManager($user);
+        switch ($type) {
+            case 'manager':
+                $this->entity->addManagerOnList($user);
+                break;
+            
+            case 'companion':
+                $this->entity->addManagerOnTransmissionList($user);
+                break;
+        }
         $this->entity->setStatus('waiting-manager');
 
         try {
             $this->doUpdate($this->entity);
-            return true;
-        } catch(\Exception $e) {
-            return false;
+            return ['status' => true];
+        } catch(UniqueConstraintViolationException $e) {
+            return ['status' => false, 'code' => 409,];
+        }
+    }
+
+    public function removeManager($id, $user, $type) {
+        $this->entity = $this->getRepository()->find($id);
+        switch ($type) {
+            case 'manager':
+                $this->entity->removeManagerOnList($user);
+                break;
+            
+            case 'companion':
+                $this->entity->removeManagerOnTransmissionList($user);
+                break;
+        }
+        $this->entity->setStatus('waiting-manager');
+
+        try {
+            $this->doUpdate($this->entity);
+            return ['status' => true];
+        } catch(UniqueConstraintViolationException $e) {
+            return ['status' => false, 'code' => 409,];
         }
     }
     

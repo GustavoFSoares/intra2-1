@@ -49,6 +49,24 @@ class Ombudsman extends SoftdeleteAbstract
      * @JoinColumn(name="gestor_id", referencedColumnName="id", nullable=true)
      */
     protected $manager;
+    
+    /**
+     * @ManyToMany(targetEntity="User")
+     * @JoinTable(name="Ouvidorias_Lista_Responsavel",
+     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
+     */
+    protected $managerList;
+    
+    /**
+     * @ManyToMany(targetEntity="User")
+     * @JoinTable(name="Ouvidorias_Lista_Transmissao",
+     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
+     */
+    protected $transmissionList;
 
     /**
      * @var String @Column(name="descricao_gestor", type="text", nullable=true)
@@ -135,7 +153,9 @@ class Ombudsman extends SoftdeleteAbstract
         $this->ombudsmanUserSugestion = null;
         $this->ombudsman = null;
         $this->ombudsmanDescription = null;
-        $this->manager = null;
+        $this->manager = new ArrayCollection();
+        $this->managerList = new ArrayCollection();
+        $this->transmissionList = null;
         $this->managerResponse = null;
         $this->origin = $origin;
         $this->demands = new ArrayCollection();
@@ -215,6 +235,50 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     
+    public function getManagerList() {
+        return $this->managerList;
+    }
+    public function addManagerOnList($manager) {
+        $this->managerList->add( $this->getRepositoryOf('User', $manager) );
+
+        return $this;
+    }
+    public function removeManagerOnList($manager) {
+        $this->managerList->removeElement( $this->getRepositoryOf('User', $manager) );
+        
+        return $this;
+    }
+    public function setManagerList($managerList) {
+        foreach ($managerList as $manager) {
+            $managersArray[] = $this->getRepositoryOf('User', $manager);
+        }
+        $this->managerList = new ArrayCollection($managersArray);
+
+        return $this;
+    }
+    
+    public function getTransmissionList() {
+        return $this->transmissionList;
+    }
+    public function addManagerOnTransmissionList($manager) {
+        $this->transmissionList->add( $this->getRepositoryOf('User', $manager) );
+
+        return $this;
+    }
+    public function removeManagerOnTransmissionList($manager) {
+        $this->transmissionList->removeElement( $this->getRepositoryOf('User', $manager) );
+        
+        return $this;
+    }
+    public function setTransmissionList($transmissionList) {
+        foreach ($managerList as $manager) {
+            $managersArray[] = $this->getRepositoryOf('User', $manager);
+        }
+        $this->managerList = new ArrayCollection($managersArray);
+
+        return $this;
+    }
+
     public function getManagerResponse() {
         return $this->managerResponse;
     }
@@ -236,7 +300,6 @@ class Ombudsman extends SoftdeleteAbstract
     public function getDemands() {
         return $this->demands;
     }
-
     public function addDemand($demand) {
         $this->demands->add($demand);
 

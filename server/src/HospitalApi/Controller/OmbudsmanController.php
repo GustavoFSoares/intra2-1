@@ -49,11 +49,22 @@ class OmbudsmanController extends ControllerAbstractLongEntity
 
     public function addManagerAction($req, $res, $args) {
         $id = $req->getAttribute('id');
+        $type = $req->getAttribute('type');
+
         $user = $req->getParsedBody();
+        $response = $this->getModel()->addManager($id, $user, $type);
 
-        $response = $this->getModel()->addManager($id, $user);
+        return $res->withJson($response['status'], $response['code']);
+    }
+    
+    public function removeManagerAction($req, $res, $args) {
+        $id = $req->getAttribute('id');
+        $type = $req->getAttribute('type');
 
-        return $res->withJson($response);
+        $user = $req->getParsedBody();
+        $response = $this->getModel()->removeManager($id, $user, $type);
+
+        return $res->withJson($response['status'], $response['code']);
     }
 
     
