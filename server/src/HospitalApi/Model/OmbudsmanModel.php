@@ -177,15 +177,23 @@ class OmbudsmanModel extends SoftdeleteModel
 
     public function addManager($id, $user, $type) {
         $this->entity = $this->getRepository()->find($id);
-        switch ($type) {
-            case 'manager':
-                $this->entity->addManagerOnList($user);
-                break;
+        
+        if($this->managerInOmbudsman($user, $id) ) {
+            return ['status' => false, 'code' => 409,];
+        } else {
             
-            case 'companion':
-                $this->entity->addManagerOnTransmissionList($user);
-                break;
+            switch ($type) {
+                case 'manager':
+                    $this->entity->addManagerOnList($user);
+                    break;
+                
+                case 'companion':
+                    $this->entity->addManagerOnTransmissionList($user);
+                    break;
+            }
+
         }
+        
         $this->entity->setStatus('waiting-manager');
 
         try {
@@ -217,7 +225,13 @@ class OmbudsmanModel extends SoftdeleteModel
         }
     }
 
-        public function managerInOmbudsman($user, $ombudsmanId) {
+    public function managerInOmbudsman($user, $ombudsmanId) {
+        if(!$user instanceof \HospitalApi\Entity\EntityAbstract) {
+            if( array_key_exists('id', $user) ){
+                $user = $this->em->getRepository('HospitalApi\Entity\User')->find($user['id']);
+            }
+        }
+
         if(!$this->entity->getId()) {
             $this->entity = $this->getRepository()->find($ombudsmanId);
         }
