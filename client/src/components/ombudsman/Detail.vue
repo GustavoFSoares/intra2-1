@@ -1,5 +1,7 @@
 <template>
         <div class="container">
+        
+        <h3 class="text-danger text-right" v-if="permission == 'COMPANION'">Você está acompanhando!</h3>
         <row>
             <h2>
                 #{{ombudsman.id}} - {{ ombudsman.type }} (<i>{{ ombudsman.origin.name }}</i>)
@@ -142,13 +144,13 @@
         </row>
 
         <hr>
-        <section class="mb-3" v-if="gotPermission">
+        <section class="mb-3" v-if="gotAdminPermission">
             <h4 class="title">Lista de Acompanhantes</h4>
             
             <div class="card border-secondary">
                 <div class="card-body">
-                    <add-users :manager_list="ombudsman.managerList" :tranmission_list="ombudsman.transmissionList" v-if="gotPermission" @sendUser="addUser" />
-                    <!-- <ombudsman-closing v-if="gotPermission" :ombudsman="ombudsman" ref="closing"/> -->
+                    <add-users :manager_list="ombudsman.managerList" :tranmission_list="ombudsman.transmissionList" v-if="gotAdminPermission" @sendUser="addUser" />
+                    <!-- <ombudsman-closing v-if="gotAdminPermission" :ombudsman="ombudsman" ref="closing"/> -->
                     <!-- <manager-closing v-else :ombudsman="ombudsman" ref="closing"/>  -->
 
                     <div class='row'>
@@ -160,7 +162,7 @@
 
                                     <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id-m'+index" aria-expanded="true" :aria-controls="'id-m'+index">
                                         <span class="float-left">{{ userAdmin.name }}</span>
-                                        <router-link class="float-right" to="" v-if="gotPermission" @click.native="removeUser(userAdmin, index, 'manager')">
+                                        <router-link class="float-right" to="" v-if="gotAdminPermission" @click.native="removeUser(userAdmin, index, 'manager')">
                                             <icon class="text-danger" icon="minus-circle"/>
                                         </router-link>
                                     </router-link>
@@ -187,7 +189,7 @@
 
                                     <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id-c'+index" aria-expanded="true" :aria-controls="'id-c'+index">
                                         <span class="float-left">{{ userAdmin.name }}</span>
-                                        <router-link class="float-right" to="" v-if="gotPermission" @click.native="removeUser(userAdmin, index, 'companion')">
+                                        <router-link class="float-right" to="" v-if="gotAdminPermission" @click.native="removeUser(userAdmin, index, 'companion')">
                                             <icon class="text-danger" icon="minus-circle"/>
                                         </router-link>
                                     </router-link>
@@ -213,7 +215,7 @@
         </section>
 
         <div class="mt-3 mb-3">
-            <chat :id="'om'+id" model_path="ombudsman-model" v-if="ombudsman.exist()"/>
+            <chat :id="'om'+id" model_path="ombudsman-model" v-if="ombudsman.exist()" :can_write="permission != 'COMPANION'"/>
         </div>
         
         <div id="buttons">
@@ -286,15 +288,18 @@ export default {
                     model.removeManager(this.id, user, type)
                 }
             })
-        }
+        },
+        getPermission() {
+            if(this.permission == 'undefined') {
+                model.gotPermission(this.id).then(permission => { this.permission = permission; } )
+            } else {
+                return this.permission
+            }
+        },
     },
     computed: {
-        gotPermission() {
-            if(this.permission == 'undefined') {
-                model.gotPermission().then(permission => { this.permission = permission; } )
-            } else {
-                return (this.permission != 'USER' && this.permission) ? true : false
-            }
+        gotAdminPermission() {
+            return (this.getPermission() != 'MANAGER' && this.getPermission() != 'COMPANION') ? true : false
         }
     },
     components: {
@@ -306,6 +311,7 @@ export default {
         'chat': require('@/components/shared/chat').default,
     },
     mounted() {
+        this.getPermission()
         getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = res ? new Ombudsman(res) : new Ombudsman() })
     }
 }

@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div id="sendMessage-box" class="row">
+        <div id="sendMessage-box" class="row" v-if="can_write">
             <div class="col-md-10" id="sendMessage-content">
                 <textarea v-model="message" line="10" class="form-control" @click="readAllMessages()" :disabled="chats == null" placeholder="Escreva seu relato:"/>
             </div>
@@ -55,6 +55,7 @@ export default {
     props: {
         id: '',
         model_path: '',
+        can_write: { default: true},
     },
     methods: {
         setMessage: function () {

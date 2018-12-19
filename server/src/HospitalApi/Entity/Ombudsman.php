@@ -45,12 +45,6 @@ class Ombudsman extends SoftdeleteAbstract
     protected $ombudsmanDescription;
 
     /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="gestor_id", referencedColumnName="id", nullable=true)
-     */
-    protected $manager;
-    
-    /**
      * @ManyToMany(targetEntity="User")
      * @JoinTable(name="Ouvidorias_Lista_Responsavel",
      *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
@@ -67,11 +61,6 @@ class Ombudsman extends SoftdeleteAbstract
      * )
      */
     protected $transmissionList;
-
-    /**
-     * @var String @Column(name="descricao_gestor", type="text", nullable=true)
-     */
-    protected $managerResponse;
 
     /**
      * @ManyToOne(targetEntity="OmbudsmanOrigin")
@@ -153,10 +142,8 @@ class Ombudsman extends SoftdeleteAbstract
         $this->ombudsmanUserSugestion = null;
         $this->ombudsman = null;
         $this->ombudsmanDescription = null;
-        $this->manager = new ArrayCollection();
         $this->managerList = new ArrayCollection();
         $this->transmissionList = null;
-        $this->managerResponse = null;
         $this->origin = $origin;
         $this->demands = new ArrayCollection();
         $this->type = null;
@@ -226,15 +213,6 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     
-    public function getManager() {
-        return $this->manager;
-    }
-    public function setManager($manager) {
-        $this->manager = $this->getRepositoryOf('User', $manager);
-        
-        return $this;
-    }
-    
     public function getManagerList() {
         return $this->managerList;
     }
@@ -279,15 +257,6 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
 
-    public function getManagerResponse() {
-        return $this->managerResponse;
-    }
-    public function setManagerResponse($managerResponse) {
-        $this->managerResponse = $managerResponse;
-        
-        return $this;
-    }
-    
     public function getOrigin() {
         return $this->origin;
     }

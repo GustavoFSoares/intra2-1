@@ -8,10 +8,8 @@ export default class Ombudsman {
         this.ombudsman = ombudsman.ombudsman
         this.ombudsmanDescription = ombudsman.ombudsmanDescription
         
-        this.manager = ombudsman.manager
         this.transmissionList = ombudsman.transmissionList ? ombudsman.transmissionList : []
         this.managerList = ombudsman.managerList ? ombudsman.managerList : []
-        this.managerResponse = ombudsman.managerResponse
         
         this.origin = ombudsman.origin
         this.demands = ombudsman.demands ? ombudsman.demands : []

@@ -110,7 +110,10 @@ class OmbudsmanModel extends SoftdeleteModel
             
             default: 
                 $select
-                    ->andWhere('o.manager = :user')
+                    ->leftJoin('o.managerList', 'om', 'WITH', 'om = :user')
+                    ->leftJoin('o.transmissionList', 'ot', 'WITH', 'ot = :user')
+                    ->andWhere('om = :user')
+                    ->orWhere('ot = :user')
                     ->setParameter('user', $this->getContainer()['session']->get()->getId());
                 break;
         }
@@ -152,17 +155,14 @@ class OmbudsmanModel extends SoftdeleteModel
     public function gotPermission($id) {
         $permission = $this->getContainer()['session']->gotPermission('ombudsman');
         
-        // if($permission == 'USER') {
-        //     $permission = 
-        //         $this->managerInOmbudsman($this->getContainer()['session']->get(), $id) ? "USER" : false;
-        // }
+        if($permission == 'USER') {
+            $permission = 
+                $this->managerInOmbudsman($this->getContainer()['session']->get(), $id);
+        }
         
         return $permission;
     }
 
-    public function managerInOmbudsman($user, $ombudsmanId) {
-        
-    }
 
     public function setResponse($values) {
         $this->entity = $this->getRepository()->find($values['id']);
@@ -215,6 +215,35 @@ class OmbudsmanModel extends SoftdeleteModel
         } catch(UniqueConstraintViolationException $e) {
             return ['status' => false, 'code' => 409,];
         }
+    }
+
+        public function managerInOmbudsman($user, $ombudsmanId) {
+        if(!$this->entity->getId()) {
+            $this->entity = $this->getRepository()->find($ombudsmanId);
+        }
+
+        if($this->entity) {
+            $manager = $this->entity->getManagerList()->exists( function($key, $entry) use ($user) {
+                return ($entry->getId() == $user->getId() );
+            });
+
+            if($manager) {
+                $res = 'MANAGER';
+            } else {
+                $companion = $this->entity->getTransmissionList()->exists( function($key, $entry) use ($user) {
+                    return ($entry->getId() == $user->getId());
+                });
+                if($companion) {
+                    $res = 'COMPANION';
+                } else {
+                    $res = false;
+                }
+            }
+        } else {
+            $res = false;
+        }
+
+        return $res;
     }
     
 
