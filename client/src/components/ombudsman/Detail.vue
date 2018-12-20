@@ -215,7 +215,7 @@
         </section>
 
         <div class="mt-3 mb-3">
-            <chat :id="'om'+id" model_path="ombudsman-model" v-if="ombudsman.exist()" :can_write="permission != 'COMPANION'"/>
+            <chat :id="'om'+id" model_path="ombudsman-model" title="Acompanhamento da Ouvidoria" v-if="ombudsman.exist()" :can_write="permission != 'COMPANION'"/>
         </div>
         
         <div id="buttons">

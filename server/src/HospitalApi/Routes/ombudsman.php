@@ -26,9 +26,11 @@ $app->group('/ombudsman', function() {
         $this->get('/doc/[/{origin}/{page}]', "HospitalApi\Controller\OmbudsmanController:printDocumentAction", function(Request $req, Response $res, array $args) { }); 
         $this->get('/waiting[/{params:.*}]', "HospitalApi\Controller\OmbudsmanController:getWaitingAction", function(Request $req, Response $res, array $args) { });
         $this->get('/permission/[params:.*]', "HospitalApi\Controller\OmbudsmanController:gotPermissionAction", function (Request $req, Response $res, array $args) { });
+        $this->get('/messages/[/{params:.*}]', "HospitalApi\Controller\OmbudsmanController:getChatsByOmbudsmanAction", function (Request $req, Response $res, array $args) { });
         $this->get('[/{params:.*}]', "HospitalApi\Controller\OmbudsmanController:get", function(Request $req, Response $res, array $args) { });
         
         $this->post('/', "HospitalApi\Controller\OmbudsmanController:insert", function(Request $req, Response $res, array $args) { });
+        $this->post('/messages/', "HospitalApi\Controller\OmbudsmanController:insertChatAction", function (Request $req, Response $res, array $args) { });
 
         $this->put('/{id}', "HospitalApi\Controller\OmbudsmanController:update", function(Request $req, Response $res, array $args) { });
         $this->put('/manager-response/{id}', "HospitalApi\Controller\OmbudsmanController:setManagerResponseAction", function(Request $req, Response $res, array $args) { });

@@ -2,6 +2,7 @@
 namespace HospitalApi\Controller;
 
 use HospitalApi\Model\OmbudsmanModel;
+use HospitalApi\Model\OmbudsmanMessagesModel;
 use HospitalApi\Template\Document\DocumentFactory;
 
 /**
@@ -65,6 +66,59 @@ class OmbudsmanController extends ControllerAbstractLongEntity
         $response = $this->getModel()->removeManager($id, $user, $type);
 
         return $res->withJson($response['status'], $response['code']);
+    }
+
+    public function insertChatAction($req, $res, $args) {
+        $values = (object)$req->getParsedBody();
+
+        $model = $this->getModel();
+        $messagesModel = new OmbudsmanMessagesModel();
+        $messageEntity = $messagesModel->mount($values);
+        
+        $result = $messagesModel->doInsert($messageEntity);
+        
+        try {
+            $ombudsman = $messageEntity->getOmbudsman();
+            $user = $messageEntity->getUser();
+            
+            \Helper\LoggerHelper::initLogFile('ombudsman-messages', "#".$ombudsman->getId(), 'ombudsman');
+
+        //     $transmissionList = $model->getTransmissionList($incident->getId(), $user->getId());
+            
+        //     $model->updateTransmissionList($incident->getId(), $user, 'add');
+        //     NotificationsIncidentReportingModel::deleteNotification($incident, $user);
+        //     foreach ($transmissionList as $userReceiver) {
+        //         NotificationsIncidentReportingModel::plusOne($incident, $userReceiver);
+
+        //         $emailTemplate = new IncidentReportingNoticicationEmailTemplate($incident, $user, $userReceiver);
+        //         EmailController::sendEmailAction($emailTemplate);
+        //     }
+            $this->makeLog($messageEntity, $user);
+
+        } catch(Exception $e) {
+            $model = new \HospitalApi\Model\StatusMessageModel();
+            $result = $model->getStatus('notification_not_send')->toArray();
+            return $res->withJson($result, 401);
+        }
+        
+        return $res->withJson($result);
+    }
+
+    public function makeLog($messageEntity, $user) {
+        $logMessage = $messageEntity->getTime()->format('Y/m/d H:i:s')." ";
+        $logMessage .= $user->getName()."(".$user->getGroup()->getName()."): ".$messageEntity->getMessage();
+        \Helper\LoggerHelper::writeFile($logMessage);        
+    }
+
+    public function getChatsByOmbudsmanAction($req, $res, $args) {
+        $values = $req->getParams();
+        
+        $id = $req->getParam('id');
+        $this->storeUser($values);
+
+        $messagesModel = new OmbudsmanMessagesModel();
+        $data = $messagesModel->findMessagesByOmbudsman($id);
+        return $res->withJson($data);
     }
 
     

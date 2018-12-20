@@ -11,10 +11,17 @@ export default  {
         window.httpMessage = { error: "Erro ao buscar <b>Permissões</b>", show: true }
         return http.get('/ombudsman/permission/', { params: params }).then(res => res.data)
     },
+    getChatsByOmbudsman: (filter = { }) => {
+        window.httpMessage = { error: "Erro ao buscar <b>Mensagens</b>", show: true }
+        return http.get(`/ombudsman/messages/`, { params: filter }).then(res => res.data)
+    },
 
     insert: (demand) => {
         window.httpMessage = { success: "Ouvidoria <b>Inserida</b>", error: "Ouvidoria <b>não Inserida</b>", show: true }
         return http.post(`/ombudsman/`, demand).then(res => res.data) },
+    insertMessage: (data) =>{
+        window.httpMessage = { error: "Mensagem <b>não Enviada</b>", show: true }
+        http.post(`/ombudsman/messages/`, data).then(res => res.data) },
         
     update: (id, demand) => {
         window.httpMessage = { success: `Ouvidoria <b>#${id} Atualizada</b>`, error: "Ouvidoria <b>não Atualizada</b>", show: true }

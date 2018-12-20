@@ -58,14 +58,8 @@ const DemandsModel = {
 }
 
 const chats = {
-    saveMessage(id, message) {
-        console.log(message);
-    },
-    getChats(id) {
-        return new Promise(resolve => {
-            resolve([])
-        })
-    }
+    saveMessage: (id, message) => service.insertMessage({ 'id': id, 'message': message, 'user': window.$session.get('user') }) ,
+    getChats: (id) => service.getChatsByOmbudsman({ 'id': id, 'user_id': window.$session.get('user').id }),
 }
 
 export const OriginsModel = {

@@ -259,6 +259,21 @@ class OmbudsmanModel extends SoftdeleteModel
 
         return $res;
     }
+
+    public function getManagersList($ombudsmanId, $userId) {
+        $select = $this->em->createQueryBuilder()
+            ->select('u')
+            ->from('HospitalApi\Entity\User', 'u')
+            ->innerJoin('HospitalApi\Entity\Ombudsman', 'o', 'WITH', 'o.id = :ombudsman')
+            ->innerJoin('ir.transmissionList', 'irtl', 'WITH', 'irtl = u')
+            ->where('u.admin = 1')
+            ->andWhere('u.id != :user')
+            ->andWhere('u.c_removed = 0')
+            ->andWhere(!$select->expr()->isNull('u.email'))
+            ->setParameter('user', $userId)
+            ->setParameter('ombudsman', $ombudsmanId);
+        return $select->getQuery()->getResult();
+    }
     
 
 }

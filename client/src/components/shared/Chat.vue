@@ -1,6 +1,9 @@
 <template>
     <div class='container'>
-
+        <div v-if="title">
+            <h2 class="text-center">{{ title }}</h2>
+            <hr>
+        </div>
         <div class="row">
             <div id="chatbox">
                 <div class="chat" v-for="(chat, index) of chats" :key="index">
@@ -11,7 +14,7 @@
                                     {{ chat.user }}
                                     <icon class="icon text-warning float-right" icon="exclamation-triangle" v-if="!chat.read"/>
                                 </h5>
-                                <p class="card-text">{{ chat.message }}</p>
+                                <p v-bind:class="{'anotherchat-message':chat.user!=user}" class="card-text">{{ chat.message }}</p>
                             </blockquote>
                             <footer class="time blockquote-footer text-right">
                                 {{ moment(chat.time.date).format('DD/MM/YYYY HH:mm') }}
@@ -56,6 +59,7 @@ export default {
         id: '',
         model_path: '',
         can_write: { default: true},
+        title: { default: false},
     },
     methods: {
         setMessage: function () {
@@ -106,14 +110,17 @@ export default {
     },
     created: function () {
         this.prepareFunctions().then(res => {
-            this.getChats(this.$route.params.id).then(res => this.chats = res)
+            this.getChats(this.$route.params.id).then(res => {
+                this.chats = res
+                this.doScroll()
+            })
         })
         
         this.socket = new Socket(this.id, this.user)
     },
     mounted() {
         this.socket.io.on(`${this.id}/message`, (message) => {
-           this.socket.isYou(message.user) ? message.read = true : ''
+            this.socket.isYou(message.user) ? message.read = true : ''
             
             this.chats.push(message);
             this.doScroll()
@@ -140,6 +147,9 @@ export default {
         margin-left: 0%;
         background-color: rgba(206, 206, 206, 0.329);
     }
+    .anotherchat-message {
+        text-align: left;
+    }
 
     .youchat {
         margin-right: 5px;
@@ -151,7 +161,6 @@ export default {
     #sendMessage-box {
         margin-top: 20px;
     }
-    
     #sendMessage-button {
         margin-top: 5px;
     }
