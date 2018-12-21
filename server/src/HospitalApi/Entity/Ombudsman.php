@@ -227,6 +227,7 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     public function setManagerList($managerList) {
+        $managersArray = [];
         foreach ($managerList as $manager) {
             $managersArray[] = $this->getRepositoryOf('User', $manager);
         }
@@ -249,7 +250,8 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     public function setTransmissionList($transmissionList) {
-        foreach ($managerList as $manager) {
+        $managersArray = [];
+        foreach ($transmissionList as $manager) {
             $managersArray[] = $this->getRepositoryOf('User', $manager);
         }
         $this->managerList = new ArrayCollection($managersArray);
@@ -280,6 +282,7 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     public function setDemands($demands) {
+        $demandsArray = [];
         foreach ($demands as $demand) {
             $demandsArray[] = $this->getRepositoryOf('OmbudsmanDemands', $demand);
         }

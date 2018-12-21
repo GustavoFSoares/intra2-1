@@ -26,6 +26,10 @@ abstract class EntityAbstract extends BasicApplicationAbstract
     public function getClassName() {
         return get_class($this);
     }
+    
+    public function getClassShortName() {
+        return (new \ReflectionClass($this))->getShortName();
+    }
 
     /**
      * @method getClassVars()
