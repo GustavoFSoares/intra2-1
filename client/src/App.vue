@@ -130,6 +130,15 @@ export default {
         margin-top: 10px;
     }
 
+    .text-default {
+        color: #2c3e50;
+    }
+
+    .text-disabled {
+        color: rgba(105, 105, 105, 0.548);
+        font-weight: bold;
+    }
+
     div {
         /* outline: 1px dotted gray; */
     }
