@@ -97,7 +97,7 @@ export default {
                 resolve(true)
             })
         },
-        saveMessage(){},  // this methods will be subscribed
+        saveMessage(){}, // this methods will be subscribed
         getChats(){}, // this methods will be subscribed
         sendMessage(id, message) {
             this.saveMessage(id, message)

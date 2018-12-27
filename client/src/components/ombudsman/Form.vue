@@ -16,6 +16,8 @@
             </div>
             
             <div id="content" class="col-md order-md-2">
+                <import-file :id="filePlace" :file_name="ombudsman.id" :post_function="uploadFile"/>
+
                 <div data-target="#form" v-scroll-spy>
                                     
                     <section :id="sections.code.id">
@@ -44,7 +46,7 @@
                                 <hr>
 
                                 <div class='row'>
-                                    <rows :label="subtitles.personData.name" class="col-md-7">
+                                    <rows :label="subtitles.personData.name" class="col-md-5">
                                         <input type="text" name="Ombudsman-ombudsmanUser-patientName" v-validate data-vv-rules="required" :data-vv-as="subtitles.personData.name" class="form-control" v-model="ombudsman.ombudsmanUser.patientName">
                                         <require-text :error="errors.has('Ombudsman-ombudsmanUser-patientName')" :text="errors.first('Ombudsman-ombudsmanUser-patientName')"/>
                                     </rows>
@@ -283,6 +285,7 @@ const GetterGroup = require('@/model/group-model').getter
 import Ombudsman from "@/entity/Ombudsman";
 import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
 import Alert from "@/components/shared/Alert"
+import VFile from "@/components/shared/VFile/V-file-pdf"
 
 export default {
     data() {
@@ -366,6 +369,7 @@ export default {
                 setTimeout(() => { this.demandSelected = '' }, 100);
             }
         },
+        uploadFile: model.uploadFile,
         removeDemand(demand, index) {
             this.ombudsman.demands.splice(index, '1')
         },
@@ -399,7 +403,14 @@ export default {
         userAddress() {
             let postCode = this.address.postCode ? ` - CEP: ${this.address.postCode}`:""
             return `${this.address.street}, Nº ${this.address.number} - ${this.address.neighborhood} - ${this.address.city} ${postCode}`
-        }
+        },
+        filePlace() {
+            let id = false
+            if(this.ombudsman.id) {
+                id = `Ombudsman/${this.ombudsman.id}`
+            }
+            return id
+        },
     },
     mounted() {
         this.loadValues()
@@ -409,6 +420,7 @@ export default {
         'rows': FormRws,
         'v-select': VueSelect,
         'require-text': Require,
+        'import-file': VFile,
     },
 }
 </script>
@@ -438,13 +450,24 @@ export default {
         color:grey;
     }
 
-    @media(min-width: 1231px) and (max-width: 1400px) {
+    @media (min-width: 1301px) {
         #navigation div {
             margin-top: -2%;
         }
     }
 
-    @media (max-width: 1230px) {
+    @media (max-width: 1300px) and (min-width: 1000px) {
+        .type {
+            min-width: 250px;
+        }
+
+        #navigation div {
+            margin-top: -6%;
+        }
+    }
+
+    
+    @media (max-width: 900px) {
         .type {
             min-width: 250px;
         }

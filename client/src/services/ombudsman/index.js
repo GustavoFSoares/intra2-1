@@ -22,6 +22,10 @@ export default  {
     insertMessage: (data) =>{
         window.httpMessage = { error: "Mensagem <b>não Enviada</b>", show: true }
         http.post(`/ombudsman/messages/`, data).then(res => res.data) },
+    uploadFile: (file, name) => { 
+        window.httpMessage = { success: `Arquivo <b>#${name} salvo!</b>`, error: "Arquivo <b>não Salvo</b>", show: true }
+        return http.post('/ombudsman/file/', file, { params: { 'name': name} }).then(res => res.data)
+    },
         
     update: (id, demand) => {
         window.httpMessage = { success: `Ouvidoria <b>#${id} Atualizada</b>`, error: "Ouvidoria <b>não Atualizada</b>", show: true }

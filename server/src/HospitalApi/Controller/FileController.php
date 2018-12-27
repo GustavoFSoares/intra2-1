@@ -20,7 +20,7 @@ class FileController extends BasicApplicationAbstract
     }
 
     public function getFileAction($req, $res, $args) {
-        return \Helper\DirectoryHelper::fileDownload($req->getParam('filePath'));
+        return \Helper\DirectoryHelper::fileDownload($req->getParam('filePath'), $req->getParam('onScreen'));
     }
 
     public function getOrganogramAction($req, $res, $args) {
@@ -35,5 +35,16 @@ class FileController extends BasicApplicationAbstract
         $files = $this->getModel()->getPops();
                 
         return $res->withJson($files);
+    }
+
+    public function checkFileExistAction($req, $res, $args) {
+        $file = FILES.$req->getParam('partialPath');
+        if( file_exists($file) ) {
+            $response = $file;
+        } else {
+            $response = false;
+        }
+
+        return $res->withJson($response);
     }
 }

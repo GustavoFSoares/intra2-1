@@ -2,12 +2,17 @@
         <div class="container">
         
         <h3 class="text-danger text-right" v-if="permission == 'COMPANION'">Você está acompanhando!</h3>
-        <row>
-            <h2>
-                #{{ombudsman.id}} - {{ ombudsman.type }} (<i>{{ ombudsman.origin.name }}</i>)
-                <span class="closed" v-if="ombudsman.answered">(Finalizado)</span>
-            </h2>
-        </row>
+        <div class='row'>
+            <rows class="col-md-9">
+                <h2>
+                    #{{ombudsman.id}} - {{ ombudsman.type }} (<i>{{ ombudsman.origin.name }}</i>)
+                    <span class="closed" v-if="ombudsman.answered">(Finalizado)</span>
+                </h2>    
+            </rows>
+            <rows>
+                <import-file :id="filePlace" :only_exibition="true"/>
+            </rows>
+        </div>
 
         <hr>
         <row>
@@ -300,7 +305,14 @@ export default {
     computed: {
         gotAdminPermission() {
             return (this.getPermission() != 'MANAGER' && this.getPermission() != 'COMPANION') ? true : false
-        }
+        },
+        filePlace() {
+            let id = false
+            if(this.ombudsman.id) {
+                id = `Ombudsman/${this.ombudsman.id}`
+            }
+            return id
+        },
     },
     components: {
         'row': FormRw,
@@ -309,6 +321,7 @@ export default {
         'ombudsman-closing': require('./closing/Ombudsman.vue').default,
         'manager-closing': require('./closing/Manager.vue').default,
         'chat': require('@/components/shared/chat').default,
+        'import-file': require('@/components/shared/VFile/V-file-pdf').default,
     },
     mounted() {
         this.getPermission()

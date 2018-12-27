@@ -111,6 +111,30 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		return $res->withJson($delete);
 	}
 
+	public function uploadFileAction($req, $res, $args) {
+		$files = $req->getUploadedFiles();
+
+		if(array_key_exists('file', $files)) {
+			$file = $files['file'];
+			
+			$destiny = FILES."{$this->_model->entity->getClassShortName()}";
+			if( !is_dir($destiny) ) {
+				mkdir($destiny);
+			}
+			$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+			$destiny = "$destiny/{$req->getParam('name')}.$extension";
+
+			$file->moveTo($destiny);
+			$response = $destiny;
+
+		} else {
+			$res->withCode(401);
+			$response = "File Not Found";
+		}
+
+		return $res->withJson($response);
+	}
+
 	/**
 	 * @method translateCollection()
 	 * Recebe a busca do Banco de Dados como Objeto

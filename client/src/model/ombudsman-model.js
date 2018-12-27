@@ -33,6 +33,7 @@ const model = {
                                                                 }),
     addManager: (ombudsmanId, user, type) => service.addManager(ombudsmanId, user, type),
     removeManager: (ombudsmanId, user, type) => service.removeManager(ombudsmanId, user, type),
+    uploadFile: (file, fileName) => service.uploadFile(file, fileName),
 }
 
 const DemandsModel = {

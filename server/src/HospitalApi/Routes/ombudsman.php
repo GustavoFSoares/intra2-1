@@ -31,6 +31,7 @@ $app->group('/ombudsman', function() {
         
         $this->post('/', "HospitalApi\Controller\OmbudsmanController:insert", function(Request $req, Response $res, array $args) { });
         $this->post('/messages/', "HospitalApi\Controller\OmbudsmanController:insertChatAction", function (Request $req, Response $res, array $args) { });
+        $this->post('/file[/{params:.*}]', "HospitalApi\Controller\OmbudsmanController:uploadFileAction", function (Request $req, Response $res, array $args) { });
 
         $this->put('/{id}', "HospitalApi\Controller\OmbudsmanController:update", function(Request $req, Response $res, array $args) { });
         $this->put('/manager-response/{id}', "HospitalApi\Controller\OmbudsmanController:setManagerResponseAction", function(Request $req, Response $res, array $args) { });
