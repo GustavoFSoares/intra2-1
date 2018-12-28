@@ -121,5 +121,13 @@ class OmbudsmanController extends ControllerAbstractLongEntity
         return $res->withJson($data);
     }
 
+    public function reprintAction($req, $res, $args) {
+        $params = $req->getParams();
+        $this->storeUser($params);
+        new DocumentFactory('Ouvidorias', 1, $params);
+
+        exit;
+    }
+
     
 }

@@ -24,6 +24,7 @@ $app->group('/ombudsman/origin', function() {
 
 $app->group('/ombudsman', function() {
         $this->get('/doc/[/{origin}/{page}]', "HospitalApi\Controller\OmbudsmanController:printDocumentAction", function(Request $req, Response $res, array $args) { }); 
+        $this->get('/doc/reprint[/{id:.*}]', "HospitalApi\Controller\OmbudsmanController:reprintAction", function(Request $req, Response $res, array $args) { }); 
         $this->get('/waiting[/{params:.*}]', "HospitalApi\Controller\OmbudsmanController:getWaitingAction", function(Request $req, Response $res, array $args) { });
         $this->get('/permission/[params:.*]', "HospitalApi\Controller\OmbudsmanController:gotPermissionAction", function (Request $req, Response $res, array $args) { });
         $this->get('/messages/[/{params:.*}]', "HospitalApi\Controller\OmbudsmanController:getChatsByOmbudsmanAction", function (Request $req, Response $res, array $args) { });
