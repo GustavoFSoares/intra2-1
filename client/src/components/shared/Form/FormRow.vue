@@ -1,7 +1,7 @@
 <template>
     <div class="mb-3">
         <div :class="textAlign">
-            <label v-if="label" :for="id">{{ label }}: </label>
+            <label v-if="label" :for="id" v-html="label+':'"> </label>
             <slot>
 
             </slot>

@@ -16,7 +16,7 @@
 
         <div>
             <router-link to="/">
-                <img id="logo" class="rounded mx-auto" src="@/../static/img/logo-gamp.jpg">
+                <img id="logo" class="rounded mx-auto" src="@/../static/img/logo-prefeitura.png">
             </router-link>
         </div>
 
@@ -128,6 +128,15 @@ export default {
     #logo {
         width: 20%;
         margin-top: 10px;
+    }
+
+    .text-default {
+        color: #2c3e50;
+    }
+
+    .text-disabled {
+        color: rgba(105, 105, 105, 0.548);
+        font-weight: bold;
     }
 
     div {

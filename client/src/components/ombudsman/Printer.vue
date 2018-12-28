@@ -37,21 +37,23 @@
                 </rows>
             </div>
         </modal>
-        <modal title="Ouvidorias Perdidas" ref="olderOmbudsman" @return="alert('imprimir')">
-            <div>
-                123
-            </div>
+        <modal title="Ouvidorias Perdidas" ref="olderOmbudsman" @return="doPrint()">
+            <row label='Ouvidoria Paradas'>
+                <v-select :options="stopeds" label="id" v-model="ombudsman"/>
+            </row>
         </modal>
     </div>
 </template>
 
 <script>
 import { getter } from "@/model/ombudsman-model";
-import { VueSelect, FormRws } from "@/components/shared/Form";
+import { VueSelect, FormRws, FormRw } from "@/components/shared/Form";
 export default {
     data() {
         return {
             origin: [],
+            stopeds: [],
+            ombudsman: '',
             doc: {
                 page: '1',
                 origin: '',
@@ -67,6 +69,7 @@ export default {
             }
         },
         doPrint() {
+            window.open(`${window.location.protocol}//${window.location.hostname}:3001/ombudsman/doc/reprint/?id=${this.ombudsman.id}&user_id=${this.$session.get('user').id}`, '_target')
         },
         exportFile() {
             window.open(`${window.location.protocol}//${window.location.hostname}:3001/ombudsman/doc/?page=${this.doc.page}&origin=${this.doc.origin.id}`, '_target')
@@ -74,11 +77,13 @@ export default {
     },
     mounted() {
         getter.getOrigins().then(res => { this.origin = res })
+        getter.getOmbudsmansWaiting().then(res => { this.stopeds = res })
     },
     components: {
         'modal': require("@/components/shared/Modal.vue").default,
         'v-select': VueSelect,
         'rows': FormRws,
+        'row': FormRw,
     }
 }
 </script>

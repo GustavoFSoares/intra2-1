@@ -1,4 +1,5 @@
 import index from '@/components/ombudsman';
+import Detail from '@/components/ombudsman/Detail.vue';
 import Form from '@/components/ombudsman/Form.vue';
 
 export default [
@@ -18,6 +19,12 @@ export default [
         path: '/usuario/ouvidoria/edit/:id',
         name: 'ouvidoria/edit',
         component: Form,
+        meta: { requiresAuth: true, adminAuth: true }
+    },
+    {
+        path: '/usuario/ouvidoria/detalhe/:id',
+        name: 'ouvidoria/detalhe',
+        component: Detail,
         meta: { requiresAuth: true, adminAuth: true }
     },
 ]

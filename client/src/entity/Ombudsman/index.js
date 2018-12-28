@@ -1,18 +1,34 @@
 const OmbudsmanUser = require('./OmbudsmanUser').default
 export default class Ombudsman {
-    constructor(ombudsman = { group: '', ombudsman: '', registerTime: '', ombudsmanUser: new OmbudsmanUser(), }) {
+    constructor(ombudsman = { id: '', group: '', ombudsman: '', registerTime: '', ombudsmanUser: new OmbudsmanUser(), origin: { } }) {
         this.id = ombudsman.id
-        this.bed = ombudsman.bed // *
-        this.description = ombudsman.description
-        this.demands = []
-        this.group = ombudsman.group // *
-        this.ombudsman = ombudsman.ombudsman ? ombudsman.ombudsman : window.$session.get('user')
+        this.ombudsmanUser = new OmbudsmanUser(ombudsman.ombudsmanUser)
+        this.ombudsmanUserDescription = ombudsman.ombudsmanUserDescription
+        this.ombudsmanUserSugestion = ombudsman.ombudsmanUserSugestion
+        this.ombudsman = ombudsman.ombudsman
         this.ombudsmanDescription = ombudsman.ombudsmanDescription
-        this.ombudsmanUser = ombudsman.ombudsmanUser ? ombudsman.ombudsmanUser : new OmbudsmanUser()
+        
+        this.transmissionList = ombudsman.transmissionList ? ombudsman.transmissionList : []
+        this.managerList = ombudsman.managerList ? ombudsman.managerList : []
+        
         this.origin = ombudsman.origin
-        this.registerTime = ombudsman.registerTime
-        this.reported = ombudsman.reported ? true : false
-        this.sugestion = ombudsman.sugestion
+        this.demands = ombudsman.demands ? ombudsman.demands : []
         this.type = ombudsman.type
+
+        this.bed = ombudsman.bed
+        this.group = ombudsman.group
+        
+        this.ombudsmanToResponse = ombudsman.ombudsmanToResponse
+        this.responseToUser = ombudsman.responseToUser
+        this.registerTime = ombudsman.registerTime ? ombudsman.registerTime : new Date()
+        this.reported = ombudsman.reported ? true : false
+        this.answered = ombudsman.answered ? true : false
+        this.status = ombudsman.status
+        this.relevance = ombudsman.relevance
+        this.reportedBy = ombudsman.reportedBy
+    }
+
+    exist() {
+        return this.id ? true : false
     }
 }

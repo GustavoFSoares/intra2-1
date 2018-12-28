@@ -21,8 +21,8 @@ client.interceptors.response.use(response => {
     return response;
 }, error => {
     if(window.httpMessage) {
-        if (window.httpMessage && window.httpMessage.error && show) {
-            show = false
+        if (window.httpMessage.error && window.httpMessage.show) {
+            window.httpMessage.show = false
             window.$alert.danger(window.httpMessage.error)
             window.statusMessage = ''
         }

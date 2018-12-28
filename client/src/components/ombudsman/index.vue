@@ -7,13 +7,13 @@
             <rows>
                 <h1>{{ title }}</h1>
 
-                <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'ouvidoria/add'}" tag="button">
+                <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'ouvidoria/add'}" tag="button" v-if="gotPermission">
                     Cadastrar Ouvidoria
                 </router-link>
             </rows>
 
             <rows>
-                <printer ref="printer"/>
+                <printer ref="printer" v-if="gotPermission"/>
             </rows>
 
         </div>
@@ -22,35 +22,51 @@
             <input type="search" class="filter form-control" :disabled="!origins" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
         </div>
 
-        <table class="table table-striped">
+        <table class="table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Origem</th>
+                    <!-- <th scope="col">Origem</th> -->
                     <th scope="col">Tipo</th>
-                        <th scope="col">Setor Responsável</th>
-                        <th scope="col">Leito</th>
+                    <th scope="col">Local</th>
                     <th scope="col">Ouvidor</th>
-                    <th scope="col">Paciente</th>
-                    <th scope="col">Modificado em:</th>
+                    <!-- <th scope="col">Paciente</th> -->
+                    <th scope="col">Demandas</th>
+                    <th scope="col">Relevância</th>
+                    <th scope="col">Relatado por:</th>
+                    <th scope="col">Registrado em:</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(ombudsman, index) of searchList" :key="index">
+                <tr v-for="(ombudsman, index) of searchList" :key="index" v-bind:class="getClassTable(ombudsman.status)">
                     <th scope="row">{{ ombudsman.id }}</th>
-                    <td>{{ ombudsman.origin.name }}</td>
+                    <!-- <td>{{ ombudsman.origin.id }}</td> -->
                     <td>{{ ombudsman.type }}</td>
-                        <td>{{ ombudsman.group.name }}</td>
-                        <td>{{ ombudsman.bed }}</td>
-                    <td>{{ ombudsman.ombudsman.name }}</td>
-                    <td>{{ ombudsman.ombudsmanUser }}</td>
+                    <td v-if="ombudsman.origin.id == 'AMB'">
+                        {{ ombudsman.group.name }}
+                    </td>
+                    <td v-else-if="ombudsman.origin.id == 'INT'">
+                        {{ ombudsman.bed }}
+                    </td>
+                    <td>{{ ombudsman.ombudsman.name.substr(0, 15) }}...</td>
+                    <!-- <td>{{ ombudsman.ombudsmanUser.patientName.toUpperCase().substr(0, 15) }}</td> -->
+                    <td>
+                        <div v-for="demand in ombudsman.demands" :key="demand.id">
+                            <div class="demands"><icon icon="angle-double-right"/><i>{{ demand.name }}</i></div>
+                        </div>
+                    </td>
+                    <td>{{ ombudsman.relevance }}</td>                    
+                    <td>{{ ombudsman.reportedBy }}</td>                    
                     <td>{{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
                     <td>
-                        <router-link :to='`tipos/edit/${ombudsman.id}`'>
+                        <router-link :to='`ouvidoria/detalhe/${ombudsman.id}`'>
+                            <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
+                        </router-link>
+                        <router-link :to='`ouvidoria/edit/${ombudsman.id}`' v-if="ombudsman.status=='registered' && gotPermission">
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
-                        <router-link @click.native="remove(ombudsman.id, index)" to="">
+                        <router-link @click.native="remove(ombudsman.id, index)" to=""  v-if="ombudsman.status=='registered' && gotPermission">
                             <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
@@ -63,7 +79,7 @@
 <script>
 import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
 import Alert from '@/components/shared/Alert'
-import { OriginModel, getter } from "@/model/ombudsman-model";
+import model, { getter } from "@/model/ombudsman-model";
 import moment from 'moment'
 
 export default {
@@ -76,18 +92,16 @@ export default {
             alert: {
                 remove: { message: "Tem certeza que deseja Excluir?" }
             },
-            teste: false
+            teste: false,
+            permission: 'undefined',
         }
     },
     methods: { 
         remove(id, index){
             Alert.Confirm(this.alert.remove.message).then(res => {
                 if(res){
-                    OriginModel.doDeleteOrigin(id).then(res => {
-                        this.$alert.success(`Tipo <b>#${id}</b> excluído`)
-                        }, err => {
-                        this.$alert.danger("Tipo não excluído")
-                        this.$router.go()
+                    model.doDelete(id).then(res, err => {
+                        setTimeout(() => { this.$router.go() }, 3000);
                     })
                     this.origins.splice(index, 1)
                 }
@@ -95,11 +109,29 @@ export default {
         },
         openPrinter() {
             this.$refs.printer.openModal();
+        },
+        getClassTable(status) {
+            switch (status) {
+                case 'finished':
+                    return 'table-disabled'     
+                    break;
+            
+                case 'waiting-manager':
+                    return 'table-info'     
+                    break;
+            
+                case 'table-warning':
+                    return 'manager-received'     
+                    break;
+            
+                default:
+                    return ''
+                    break;
+            }
         }
-        
     },
     mounted() {
-        getter.getOmbudsmansReported().then(res => { this.origins = res; console.log(res[0]) })
+        getter.getOmbudsmansReported().then(res => { this.origins = res; })
     },
     computed: {
         searchList() {
@@ -121,7 +153,14 @@ export default {
             } else {
                 return this.origins
             }
-        }
+        },
+        gotPermission() {
+            if(this.permission == 'undefined') {
+                model.gotPermission().then(permission => { this.permission = permission; console.log(permission)} )
+            } else {
+                return (this.permission != 'USER' && this.permission) ? true : false
+            }
+        },
     },
     components: {
         'rows': FormRws,
@@ -136,17 +175,17 @@ export default {
     }
 
     #printer {
-        /* 
-        display: block;
-        position: fixed;
-
-        margin-right: 15%; 
-        */
         text-align: right;
     }
 
-    .row {
-        /* display: inline-flex; */
+    .demands {
+        text-align: left
+    }
+
+    .table-disabled {
+        cursor: default;
+        text-decoration: none;
+        color: #8a8a8a9c;
     }
 </style>
 
