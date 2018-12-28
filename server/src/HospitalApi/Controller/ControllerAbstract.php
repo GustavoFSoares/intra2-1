@@ -111,6 +111,30 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		return $res->withJson($delete);
 	}
 
+	public function uploadFileAction($req, $res, $args) {
+		$files = $req->getUploadedFiles();
+
+		if(array_key_exists('file', $files)) {
+			$file = $files['file'];
+			
+			$destiny = FILES."{$this->_model->entity->getClassShortName()}";
+			if( !is_dir($destiny) ) {
+				mkdir($destiny);
+			}
+			$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+			$destiny = "$destiny/{$req->getParam('name')}.$extension";
+
+			$file->moveTo($destiny);
+			$response = $destiny;
+
+		} else {
+			$res->withCode(401);
+			$response = "File Not Found";
+		}
+
+		return $res->withJson($response);
+	}
+
 	/**
 	 * @method translateCollection()
 	 * Recebe a busca do Banco de Dados como Objeto
@@ -142,6 +166,10 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return void
 	 */
 	public function _mountEntity($values){
+		if(isset($values['id']) && $values['id']) {
+			$this->_model->entity = $this->_model->getRepository()->find($values['id']);
+		}
+
 		if( method_exists($this->_model, 'mount') ){
 			$values = $this->_model->mount($values);
 			if(!$values) {
@@ -175,5 +203,16 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 			unset($args['user_id']);
 		}
 	}
+
+	public function gotPermissionAction($req, $res, $args) {
+        $params = $req->getQueryParams();
+        
+        $this->storeUser($params);
+        
+        $id = isset($params['id']) ? $params['id'] : false;
+        $permission = $this->_model->gotPermission($id);
+        
+        return $res->withJson($permission);
+    }
 	
 }

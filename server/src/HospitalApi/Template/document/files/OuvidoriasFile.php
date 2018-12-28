@@ -9,12 +9,25 @@ class OuvidoriasFile extends \TCPDF {
 
     public $key;
     public $origin;
+    public $reprint = false;
     private $_model;
     private $_EnablePageCounter = false;
 
     public function __construct($params) {
-        $this->origin = $params['origin'];
         $this->_model = new OmbudsmanModel();
+
+        if(array_key_exists('id', $params)) { 
+            $this->key = $this->brokeId( $params['id'] );
+            $ombudsman = $this->_model->findById( $params['id'] );
+            if(!$ombudsman) {
+                return;
+            }
+            $this->origin = $ombudsman->getOrigin();
+            $this->reprint = true;
+        } else {
+            $this->origin = $params['origin'];
+        }
+
         
         if(isset($params['pageCount'])) {
             $this->_EnablePageCounter = true;
@@ -53,7 +66,9 @@ class OuvidoriasFile extends \TCPDF {
     
     public function getContent() {
         $key = $this->_getKey();
-        $this->insertOmbudman();
+        if(!$this->reprint) {
+            $this->insertOmbudman();
+        }
 
         $line = "<span>_________________________________________________________________________________________</span>";
             $space = '<span class="clear">_</span>';
@@ -72,7 +87,7 @@ class OuvidoriasFile extends \TCPDF {
             $html .= "
             <body>
                 <div>
-                    <span class=".'"code"'.">Nº {$key['prefix']}{$key['number']} /2018</span>
+                    <span class=".'"code"'.">Nº {$key['prefix']}{$key['number']} /".date('Y')."</span>
                 </div>
                 <div>
                     <span>Nome completo do Paciente:_________________________________________________________________</span>
@@ -137,7 +152,9 @@ class OuvidoriasFile extends \TCPDF {
     private function _getKey() {
         
         if($this->key) {
-            $this->key['number']++;
+            if(!$this->reprint) {
+                $this->key['number']++;
+            }
         } else {
             $data = $this->_model->getLastKeyOfOrigin($this->origin);
 
@@ -162,5 +179,12 @@ class OuvidoriasFile extends \TCPDF {
         $ombudsman = new Ombudsman($id);
         $ombudsman->setOrigin($this->origin);
         $this->_model->doInsert($ombudsman);
+    }
+
+    public function brokeId($id) {
+        return [
+            'prefix'=>substr($id, 0, 3),
+            'number'=>substr($id, 3),
+        ];
     }
 }

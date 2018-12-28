@@ -73,15 +73,22 @@ class DirectoryHelper {
         return false;
     }
 
-    public static function fileDownload($file) {
+    public static function fileDownload($file, $onScreen = false) {
         if ( file_exists($file) ) {
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment;filename="'.basename($file).'"');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
+            if($onScreen) {
+                header('Content-type: application/pdf');
+                header('Content-Disposition: inline; filename="'.basename($file).'"');
+                header('Content-Transfer-Encoding: binary');
+                header('Accept-Ranges: bytes');
+            } else {
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment;filename="'.basename($file).'"');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+            }
             header('Content-Length: ' . filesize($file));
-            
+
             readfile($file);
             exit;
         } else {

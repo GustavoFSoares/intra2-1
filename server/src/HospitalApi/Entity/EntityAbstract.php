@@ -13,6 +13,8 @@ use Datetime;
 abstract class EntityAbstract extends BasicApplicationAbstract
 {
     private $_alowed = true;
+    private $_repositories = [];
+
     public function __construct() { }
 
     /**
@@ -23,6 +25,10 @@ abstract class EntityAbstract extends BasicApplicationAbstract
      */
     public function getClassName() {
         return get_class($this);
+    }
+    
+    public function getClassShortName() {
+        return (new \ReflectionClass($this))->getShortName();
     }
 
     /**
@@ -85,6 +91,12 @@ abstract class EntityAbstract extends BasicApplicationAbstract
         if(!($date instanceof \DateTime) && $date != null) {
             if(is_array($date) && array_key_exists('date', $date)){
                 $date = new \DateTime($date['date']);
+            } else if(substr($date, -1) == "Z") {
+                $date = explode('T', $date);
+                $date[1] = substr($date[1], 0, -5);
+
+                $date = date("Y-m-d H:i:s", strtotime("{$date[0]} {$date[1]}"));
+                $date = DateTime::createFromFormat("Y-m-d H:i:s", $date);
             } else {
                 $search = [' ', '-', '/'];
                 $reclace = ['', ' ', '-'];
@@ -105,6 +117,22 @@ abstract class EntityAbstract extends BasicApplicationAbstract
     }
     public function canPersist() {
         return $this->_alowed;
+    }
+
+    public function getRepositoryOf($repositoryName, $entity) {
+        if($entity instanceof EntityAbstract) {
+            return $entity;
+        } else if( is_array($entity) && array_key_exists('id', $entity) ) {
+            if( array_key_exists($repositoryName, $this->_repositories)) {
+                return $this->_repositories[$repositoryName]->find($entity['id']);
+            } else {
+                $this->_repositories[$repositoryName] = $this->getEntityManager()->getRepository("HospitalApi\Entity\\$repositoryName");
+                
+                return $this->_repositories[$repositoryName]->find($entity['id']);
+            }
+        } else {
+            return null;
+        }
     }
 
 }

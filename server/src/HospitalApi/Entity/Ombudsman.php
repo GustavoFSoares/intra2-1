@@ -1,5 +1,6 @@
 <?php
 namespace HospitalApi\Entity;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity
@@ -9,7 +10,7 @@ namespace HospitalApi\Entity;
  */
 class Ombudsman extends SoftdeleteAbstract
 {
-    
+
     /**
      * @var Integer @Id
      *     @Column(name="id", type="string", length=255)
@@ -44,15 +45,22 @@ class Ombudsman extends SoftdeleteAbstract
     protected $ombudsmanDescription;
 
     /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="gestor_id", referencedColumnName="id", nullable=true)
+     * @ManyToMany(targetEntity="User")
+     * @JoinTable(name="Ouvidorias_Lista_Responsavel",
+     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
      */
-    protected $manager;
-
+    protected $managerList;
+    
     /**
-     * @var String @Column(name="descricao_gestor", type="text", nullable=true)
+     * @ManyToMany(targetEntity="User")
+     * @JoinTable(name="Ouvidorias_Lista_Transmissao",
+     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
      */
-    protected $managerResponse;
+    protected $transmissionList;
 
     /**
      * @ManyToOne(targetEntity="OmbudsmanOrigin")
@@ -86,6 +94,12 @@ class Ombudsman extends SoftdeleteAbstract
     protected $group;
     
     /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="ouvidor_resposta_id", referencedColumnName="id", nullable=true)
+     */
+    protected $ombudsmanToResponse;
+
+    /**
      * @var String @Column(name="resposta_ao_paciente", type="text", nullable=true)
      */
     protected $responseToUser;
@@ -104,6 +118,21 @@ class Ombudsman extends SoftdeleteAbstract
      * @var Boolean @Column(name="paciente_respondido", type="boolean", nullable=true, options={"default":false})
      */
     protected $answered;
+   
+    /**
+     * @var String @Column(name="status", type="string", options={"default":"created"})
+     */
+    protected $status;
+    
+    /**
+     * @var String @Column(name="relevancia", type="string", nullable=true, options={"default":"BAIXO"})
+     */
+    protected $relevance;
+
+    /**
+     * @var String @Column(name="relatado_por", type="string", nullable=true, options={"default":""})
+     */
+    protected $reportedBy;
 
     public function __construct($id = '', $origin = null) {
         parent::__construct();
@@ -113,17 +142,21 @@ class Ombudsman extends SoftdeleteAbstract
         $this->ombudsmanUserSugestion = null;
         $this->ombudsman = null;
         $this->ombudsmanDescription = null;
-        $this->manager = null;
-        $this->managerResponse = null;
+        $this->managerList = new ArrayCollection();
+        $this->transmissionList = null;
         $this->origin = $origin;
-        $this->demands = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->demands = new ArrayCollection();
         $this->type = null;
         $this->bed = null;
         $this->group = null;
+        $this->ombudsmanToResponse = null;
         $this->responseToUser = null;
         $this->registerTime = null;
         $this->reported = false;
         $this->answered = false;
+        $this->status = 'created';
+        $this->relevance = null;
+        $this->reportedBy = null;
     }
 
     public function getId() {
@@ -139,7 +172,7 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->ombudsmanUser;
     }
     public function setOmbudsmanUser($ombudsmanUser) {
-        $this->ombudsmanUser = $ombudsmanUser;
+        $this->ombudsmanUser = $this->getRepositoryOf('OmbudsmanUser', $ombudsmanUser);
         
         return $this;
     }
@@ -166,7 +199,7 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->ombudsman;
     }
     public function setOmbudsman($ombudsman) {
-        $this->ombudsman = $ombudsman;
+        $this->ombudsman = $this->getRepositoryOf('User', $ombudsman);
         
         return $this;
     }
@@ -180,29 +213,57 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     
-    public function getManager() {
-        return $this->manager;
+    public function getManagerList() {
+        return $this->managerList;
     }
-    public function setManager($manager) {
-        $this->manager = $manager;
+    public function addManagerOnList($manager) {
+        $this->managerList->add( $this->getRepositoryOf('User', $manager) );
+
+        return $this;
+    }
+    public function removeManagerOnList($manager) {
+        $this->managerList->removeElement( $this->getRepositoryOf('User', $manager) );
         
         return $this;
     }
-    
-    public function getManagerResponse() {
-        return $this->managerResponse;
-    }
-    public function setManagerResponse($managerResponse) {
-        $this->managerResponse = $managerResponse;
-        
+    public function setManagerList($managerList) {
+        $managersArray = [];
+        foreach ($managerList as $manager) {
+            $managersArray[] = $this->getRepositoryOf('User', $manager);
+        }
+        $this->managerList = new ArrayCollection($managersArray);
+
         return $this;
     }
     
+    public function getTransmissionList() {
+        return $this->transmissionList;
+    }
+    public function addManagerOnTransmissionList($manager) {
+        $this->transmissionList->add( $this->getRepositoryOf('User', $manager) );
+
+        return $this;
+    }
+    public function removeManagerOnTransmissionList($manager) {
+        $this->transmissionList->removeElement( $this->getRepositoryOf('User', $manager) );
+        
+        return $this;
+    }
+    public function setTransmissionList($transmissionList) {
+        $managersArray = [];
+        foreach ($transmissionList as $manager) {
+            $managersArray[] = $this->getRepositoryOf('User', $manager);
+        }
+        $this->managerList = new ArrayCollection($managersArray);
+
+        return $this;
+    }
+
     public function getOrigin() {
         return $this->origin;
     }
     public function setOrigin($origin) {
-        $this->origin = $origin;
+        $this->origin = $this->getRepositoryOf('OmbudsmanOrigin', $origin);
         
         return $this;
     }
@@ -210,7 +271,6 @@ class Ombudsman extends SoftdeleteAbstract
     public function getDemands() {
         return $this->demands;
     }
-
     public function addDemand($demand) {
         $this->demands->add($demand);
 
@@ -222,7 +282,11 @@ class Ombudsman extends SoftdeleteAbstract
         return $this;
     }
     public function setDemands($demands) {
-        $this->demands = $demands;
+        $demandsArray = [];
+        foreach ($demands as $demand) {
+            $demandsArray[] = $this->getRepositoryOf('OmbudsmanDemands', $demand);
+        }
+        $this->demands = new ArrayCollection($demandsArray);
 
         return $this;
     }
@@ -249,11 +313,20 @@ class Ombudsman extends SoftdeleteAbstract
         return $this->group;
     }
     public function setGroup($group) {
-        $this->group = $group;
+        $this->group = $this->getRepositoryOf('Group', $group);
         
         return $this;
     }
     
+    public function getOmbudsmanToResponse() {
+        return $this->ombudsmanToResponse;
+    }
+    public function setOmbudsmanToResponse($ombudsmanToResponse) {
+        $this->ombudsmanToResponse = $this->getRepositoryOf('User', $ombudsmanToResponse);
+        
+        return $this;
+    }
+
     public function getResponseToUser() {
         return $this->responseToUser;
     }
@@ -273,10 +346,10 @@ class Ombudsman extends SoftdeleteAbstract
     }
     
     public function getReported() {
-        return $this->respeported;
+        return $this->reported;
     }
-    public function setReported($respeported) {
-        $this->respeported = (Boolean)$respeported;
+    public function setReported($reported) {
+        $this->reported = (Boolean)$reported;
         
         return $this;
     }    
@@ -286,6 +359,33 @@ class Ombudsman extends SoftdeleteAbstract
     }
     public function setAnswered($answered) {
         $this->answered = (Boolean)$answered;
+        
+        return $this;
+    }
+    
+    public function getStatus() {
+        return $this->status;
+    }
+    public function setStatus($status) {
+        $this->status = $status;
+        
+        return $this;
+    }
+    
+    public function getRelevance() {
+        return $this->relevance;
+    }
+    public function setRelevance($relevance) {
+        $this->relevance = $relevance;
+        
+        return $this;
+    }
+    
+    public function getReportedBy() {
+        return $this->reportedBy;
+    }
+    public function setReportedBy($reportedBy) {
+        $this->reportedBy = $reportedBy;
         
         return $this;
     }
