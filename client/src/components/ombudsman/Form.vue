@@ -383,8 +383,8 @@ export default {
             
             model.doUpdate(this.ombudsman).then(res => { 
                 this.sending = false
-                this.$router.go('-1') 
-            }, err => {
+                this.$router.push({ name: "ouvidoria" })
+            }).catch(err => {
                 this.sending = false
             }) 
         },
@@ -458,7 +458,7 @@ export default {
 
     @media (max-width: 1300px) and (min-width: 1000px) {
         .type {
-            min-width: 250px;
+            min-width: 200px;
         }
 
         #navigation div {

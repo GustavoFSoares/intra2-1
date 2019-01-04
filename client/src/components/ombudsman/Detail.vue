@@ -4,7 +4,7 @@
         <h3 class="text-danger text-right" v-if="permission == 'COMPANION'">Você está acompanhando!</h3>
         <div class='row'>
             <rows class="col-md-9">
-                <h2>
+                <h2> {{ombudsman.status}}
                     #{{ombudsman.id}} - {{ ombudsman.type }} (<i>{{ ombudsman.origin.name }}</i>)
                     <span class="closed" v-if="ombudsman.answered">(Finalizado)</span>
                 </h2>    
@@ -59,7 +59,7 @@
         <hr>
         <div>
             <row>
-                <div id="description" class="col col-11">
+                <div id="description" class="col">
                     <div class="card border-secondary">
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2 text-muted">Descrição:</h6>
@@ -72,7 +72,7 @@
             </row>
             
             <row>
-                <div id="sugestion" class="col col-11">
+                <div id="sugestion" class="col">
                     <div class="card border-secondary">
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2 text-muted">Sugestão:</h6>
@@ -333,10 +333,6 @@ export default {
 <style>
     .closed {
         color: red;
-    }
-
-    #sugestion {
-        margin-left: 10%;
     }
 
     .signature {

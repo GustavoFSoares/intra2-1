@@ -19,7 +19,7 @@
         </div>
 
         <div class="form-group form-row col mt-3">
-            <input type="search" class="filter form-control" :disabled="!origins" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
+            <input type="search" class="filter form-control" :disabled="!ombudsmans" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
         </div>
 
         <table class="table">
@@ -56,7 +56,7 @@
                             <div class="demands"><icon icon="angle-double-right"/><i>{{ demand.name }}</i></div>
                         </div>
                     </td>
-                    <td>{{ ombudsman.relevance }}</td>                    
+                    <td>{{ ombudsman.relevance.toUpperCase() }}</td>                    
                     <td>{{ ombudsman.reportedBy }}</td>                    
                     <td>{{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
                     <td>
@@ -87,7 +87,7 @@ export default {
         return {
             title: "Ouvidorias",
             filter: '',
-            origins: [],
+            ombudsmans: [],
             moment: moment,
             alert: {
                 remove: { message: "Tem certeza que deseja Excluir?" }
@@ -103,7 +103,7 @@ export default {
                     model.doDelete(id).then(res, err => {
                         setTimeout(() => { this.$router.go() }, 3000);
                     })
-                    this.origins.splice(index, 1)
+                    this.ombudsmans.splice(index, 1)
                 }
             })
         },
@@ -112,18 +112,23 @@ export default {
         },
         getClassTable(status) {
             switch (status) {
+            
+                case 'registered':
+                    return 'table-info'
+                    break;
+
+                case 'waiting-manager':
+                    return ''
+                    break;
+            
+                case 'manager-received':
+                    return 'table-warning'
+                    break;
+            
                 case 'finished':
                     return 'table-disabled'     
                     break;
-            
-                case 'waiting-manager':
-                    return 'table-info'     
-                    break;
-            
-                case 'table-warning':
-                    return 'manager-received'     
-                    break;
-            
+
                 default:
                     return ''
                     break;
@@ -131,7 +136,7 @@ export default {
         }
     },
     mounted() {
-        getter.getOmbudsmansReported().then(res => { this.origins = res; })
+        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; })
     },
     computed: {
         searchList() {
@@ -139,7 +144,7 @@ export default {
                 let exp = new RegExp(this.filter.trim(), 'i')
                 
                 let list = ''
-                return this.origins.filter(origin => {
+                return this.ombudsmans.filter(origin => {
                     if( exp.test(origin.name)) {
                         return exp
                     } else if( exp.test(origin.id)) {
@@ -151,7 +156,7 @@ export default {
                     }
                 })
             } else {
-                return this.origins
+                return this.ombudsmans
             }
         },
         gotPermission() {
