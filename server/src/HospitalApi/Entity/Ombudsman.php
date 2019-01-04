@@ -47,8 +47,8 @@ class Ombudsman extends SoftdeleteAbstract
     /**
      * @ManyToMany(targetEntity="User")
      * @JoinTable(name="Ouvidorias_Lista_Responsavel",
-     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     protected $managerList;
@@ -56,8 +56,8 @@ class Ombudsman extends SoftdeleteAbstract
     /**
      * @ManyToMany(targetEntity="User")
      * @JoinTable(name="Ouvidorias_Lista_Transmissao",
-     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")}
+     *      joinColumns={@JoinColumn(name="ouvidoria_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     protected $transmissionList;

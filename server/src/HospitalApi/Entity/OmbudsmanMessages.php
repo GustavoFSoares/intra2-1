@@ -44,7 +44,7 @@ class OmbudsmanMessages extends EntityAbstract
     /**
      * @var Ombudsman
      *      @ManytoOne(targetEntity="Ombudsman")
-     *      @JoinColumn(name="ouvidoria_id")
+     *      @JoinColumn(name="ouvidoria_id", onDelete="CASCADE")
      */
     protected $ombudsman;
 
