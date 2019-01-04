@@ -22,7 +22,7 @@ export default class Ombudsman {
         this.responseToUser = ombudsman.responseToUser
         this.registerTime = ombudsman.registerTime ? ombudsman.registerTime : new Date()
         this.reported = ombudsman.reported ? true : false
-        this.answered = ombudsman.answered ? true : false
+        this.closed = ombudsman.closed ? true : false
         this.status = ombudsman.status
         this.relevance = ombudsman.relevance
         this.reportedBy = ombudsman.reportedBy

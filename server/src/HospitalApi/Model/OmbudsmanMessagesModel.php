@@ -31,7 +31,16 @@ class OmbudsmanMessagesModel extends ModelAbstract
 
     public function findMessagesByOmbudsman($idOmbudsman) {
         $ombudsmanModel = new \HospitalApi\Model\OmbudsmanModel();
+        if(!$ombudsmanModel->findById($idOmbudsman)->isClosed()) {
+            $result = $this->getMessagesByOmbudsman($idOmbudsman);
+        } else {
+            $result = $this->getHistoricByOmbudsman($idOmbudsman);
+        }
+        return $result;
+    }
 
+    public function getMessagesByOmbudsman($id) {
+        $ombudsmanModel = new \HospitalApi\Model\OmbudsmanModel();
         $select = $this->em->createQueryBuilder();
         $select
             ->select([
@@ -43,9 +52,15 @@ class OmbudsmanMessagesModel extends ModelAbstract
             ->from($this->getEntityPath(), 'om')
             ->innerJoin('om.ombudsman', 'o', 'WITH', 'o = :ombudsmanId')
             ->innerJoin('HospitalApi\Entity\User', 'u', 'WITH', 'u = om.user')
-            ->setParameter('ombudsmanId', $idOmbudsman);
+            ->setParameter('ombudsmanId', $id);
         $select = $ombudsmanModel->showForJustWhoCanSee($select);
         return $select->getQuery()->getResult();
+    }
+
+    public function getHistoricByOmbudsman($id) {
+        $result = \Helper\LoggerHelper::getLogs( $this->entity->getClassShortName(), $id );
+
+        return $result;
     }
 
     public function deleteChats($idOmbudsman) {

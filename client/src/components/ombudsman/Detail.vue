@@ -123,7 +123,7 @@
 
             <rows label="Horário do Relato">
                 <p> <icon icon="clock"/>
-                    {{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY HH:mm') }}
+                    {{ ombudsman.registerTime.date | humanizeDate }}
                 </p>
             </rows>
         </div>
@@ -220,17 +220,24 @@
         </section>
 
         <div class="mt-3 mb-3">
-            <chat :id="'om'+id" model_path="ombudsman-model" title="Acompanhamento da Ouvidoria" v-if="ombudsman.exist()" :can_write="permission != 'COMPANION'"/>
+            <chat :id="'om'+id" model_path="ombudsman-model" title="Acompanhamento da Ouvidoria" v-if="ombudsman.exist()" :can_write="permission != 'COMPANION'" :closed="ombudsman.closed"/>
         </div>
         
         <div id="buttons">
             <row>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending" v-if="ombudsman.status != 'finished' && ombudsman.id">
-                    Registrar Relato
-                </button>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria'}" tag="button" :disabled="sending">
-                    Voltar
-                </router-link>
+                <div class="buttons" v-if="gotAdminPermission">
+                    <button v-if="(ombudsman.status == 'waiting-manager' || ombudsman.status == 'registered')  && ombudsman.exist()" class="btn btn-outline-warning btn-lg" type="button" @click="closeChat()" :disabled="sending">
+                        Finalizar Mensagens
+                    </button>
+                    <button v-if="ombudsman.status == 'closed' && ombudsman.exist()" class="btn btn-outline-danger btn-lg" type="button" @click="submit()" :disabled="sending">
+                        Registrar Relato
+                    </button>
+                </div>
+                <div class="buttons">
+                    <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria'}" tag="button" :disabled="sending">
+                        Voltar
+                    </router-link>
+                </div>
             </row>
         </div>
     </div>
@@ -247,7 +254,6 @@ export default {
         return {
             id: this.$route.params.id,
             ombudsman: new Ombudsman(),
-            moment: require('moment'),
             sending: false,
             permission: 'undefined',
             values: {
@@ -259,11 +265,19 @@ export default {
     }, 
     methods: {
         
-        submit() {
+        closeChat() {
             this.sending = true
-            this.$refs.closing.submit().then(res => this.$router.push({ name: 'ouvidoria'}), err => {
+            model.closeChat(this.ombudsman).then(res => {
+                this.sending = false
+                this.ombudsman = Object.assign( this.ombudsman, res )
+                console.log(this.ombudsman);
+                
+            }).catch(err => {
                 this.sending = false
             })
+            // this.$refs.closing.submit().then(res => this.$router.push({ name: 'ouvidoria'}), err => {
+            //     this.sending = false
+            // })
         },
         addUser(user, type) {
             switch (type) {
@@ -339,4 +353,9 @@ export default {
         text-align: right;
         margin-right: 20px;
     }
+
+    .buttons {
+        display: inline;
+    }
+
 </style>

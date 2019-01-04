@@ -1,49 +1,68 @@
 <template>
     <div class='container'>
-        <div v-if="title">
-            <h2 class="text-center">{{ title }}</h2>
-            <hr>
-        </div>
-        <div class="row">
-            <div id="chatbox">
-                <div class="chat" v-for="(chat, index) of chats" :key="index">
-                    <div class="card anotherchat" v-bind:class="{'youchat':chat.user==user}" @mouseover="chat.read = true">
-                        <div class="card-body">
-                            <blockquote class="content-chat">
-                                <h5 v-if="chat.user!=user" class="card-title">
-                                    {{ chat.user }}
-                                    <icon class="icon text-warning float-right" icon="exclamation-triangle" v-if="!chat.read"/>
-                                </h5>
-                                <p v-bind:class="{'anotherchat-message':chat.user!=user}" class="card-text">{{ chat.message }}</p>
-                            </blockquote>
-                            <footer class="time blockquote-footer text-right">
-                                {{ moment(chat.time.date).format('DD/MM/YYYY HH:mm') }}
-                            </footer>
+        <section v-if="!closed" id="message">
+            <div v-if="title">
+                <h2 class="text-center">{{ title }}</h2>
+                <hr>
+            </div>
+            <div class="row">
+                <div id="chatbox">
+                    <div class="chat" v-for="(chat, index) of chats" :key="index">
+                        <div class="card anotherchat" v-bind:class="{'youchat':chat.user==user}" @mouseover="chat.read = true">
+                            <div class="card-body">
+                                <blockquote class="content-chat">
+                                    <h5 v-if="chat.user!=user" class="card-title">
+                                        {{ chat.user }}
+                                        <icon class="icon text-warning float-right" icon="exclamation-triangle" v-if="!chat.read"/>
+                                    </h5>
+                                    <p v-bind:class="{'anotherchat-message':chat.user!=user}" class="card-text">{{ chat.message }}</p>
+                                </blockquote>
+                                <footer class="time blockquote-footer text-right">
+                                    {{ chat.time.date | humanizeDate }}
+                                </footer>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="sendMessage-box" class="row" v-if="can_write">
-            <div class="col-md-10" id="sendMessage-content">
-                <textarea v-model="message" line="10" class="form-control" @click="readAllMessages()" :disabled="chats == null" placeholder="Escreva seu relato:"/>
+            <div id="sendMessage-box" class="row" v-if="can_write">
+                <div class="col-md-10" id="sendMessage-content">
+                    <textarea v-model="message" line="10" class="form-control" @click="readAllMessages()" :disabled="chats == null" placeholder="Escreva seu relato:"/>
+                </div>
+                <div class="col-md" id="sendMessage-button">
+                    <router-link to="" class="btn btn-outline-secondary btn-lg" tag="button" @click.native="setMessage()" :disabled="!this.message">
+                        Enviar
+                    </router-link>
+                </div>
             </div>
-            <div class="col-md" id="sendMessage-button">
-                <router-link to="" class="btn btn-outline-secondary btn-lg" tag="button" @click.native="setMessage()" :disabled="!this.message">
-                    Enviar
-                </router-link>
-            </div>
-        </div>
-               
+        </section>
 
+        <section v-else id="logs">
+            <div class="text-left">
+                <div class="card">
+                    <div class="card-body historic">
+                        <h6 class="card-subtitle mb-2 text-muted">Histórico do Relato   :</h6>
+                        <div class="card-text">
+                            <span class="historic-body" v-for="(line, index) of chats" :key="index">
+                                <span class="time">
+                                    <span v-if="line.time.date">{{ moment(line.time.date).format('YYYY/MM/DD - HH:mm:ss') }}</span>
+                                    <span v-else>{{ line.time }}</span>
+                                </span>
+                                <span class="user">{{ line.user }}:</span>
+                                <span class="message">{{ line.message }}</span>
+                                <br/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </template>
 
 <script>
 var socket
-import moment from "moment";
 import Socket from "@/model/chat-model";
-import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
 
 export default {
     data() {
@@ -51,7 +70,7 @@ export default {
             message: '',
             user: this.$session.get('user').name,
             socket: null,
-            moment: moment,
+            moment: require('moment'),
             chats: null
         }
     },
@@ -60,6 +79,7 @@ export default {
         model_path: '',
         can_write: { default: true},
         title: { default: false},
+        closed: { default: false},
     },
     methods: {
         setMessage: function () {
@@ -103,10 +123,6 @@ export default {
             this.saveMessage(id, message)
             this.socket.sendMessage(message)
         }
-    },
-    comments: {
-        'row': FormRw,
-        'rows': FormRws,
     },
     created: function () {
         this.prepareFunctions().then(res => {
@@ -167,5 +183,17 @@ export default {
 
     .icon {
         margin-left: 15px;
+    }
+
+    .historic {
+        background-color: rgba(224, 224, 224, 0.425);
+    }
+
+    .historic-body {
+        font-size: 15px;
+    }
+
+    .historic-body .time {
+        color: rgb(8, 184, 8);
     }
 </style>

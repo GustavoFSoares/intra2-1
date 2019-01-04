@@ -129,5 +129,19 @@ class OmbudsmanController extends ControllerAbstractLongEntity
         exit;
     }
 
+    public function closeChatAction($req, $res, $args) {
+        $model = $this->getModel();
+        
+        $values = $req->getParsedBody();
+        $return = $this->getModel()->closeOmbudsman($values);
+        if(!$return) {
+            $res->withCode(500);
+        }
+        $messagesModel = new OmbudsmanMessagesModel();
+        $messagesModel->deleteChats( $model->entity->getId() );
+
+        return $res->withJson($return);
+    }
+
     
 }

@@ -58,7 +58,7 @@
                     </td>
                     <td>{{ ombudsman.relevance.toUpperCase() }}</td>                    
                     <td>{{ ombudsman.reportedBy }}</td>                    
-                    <td>{{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY - HH:mm') }}</td>
+                    <td>{{ ombudsman.registerTime.date | humanizeDate }}</td>
                     <td>
                         <router-link :to='`ouvidoria/detalhe/${ombudsman.id}`'>
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
@@ -151,7 +151,7 @@ export default {
                         return exp
                     } else if( exp.test(origin.registerTime)) {
                         return exp
-                    } else if( exp.test(moment(origin.registerTime.date).format('DD/MM/YYYY - HH:mm'))) {
+                    } else if( exp.test( this.$options.filters.humanizeDate(origin.registerTime.date) ) ) {
                         return exp
                     }
                 })

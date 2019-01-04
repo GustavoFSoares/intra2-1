@@ -275,5 +275,20 @@ class OmbudsmanModel extends SoftdeleteModel
         return $select->getQuery()->getResult();
     }
     
+    public function closeOmbudsman($values) {
+        if( array_key_exists('id', $values) ){
+            $this->entity = $this->getRepository()->find($values['id']);
+            $this->entity
+                ->setClosed(true)
+                ->setStatus('closed');
+            $this->doUpdate($this->entity);
 
+            return [
+                'status' => $this->entity->getStatus(),
+                'closed' => $this->entity->getClosed(),
+            ];
+        } else {
+            return false;
+        }
+    }
 }
