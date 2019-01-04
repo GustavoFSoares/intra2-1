@@ -52,6 +52,46 @@ class LoggerHelper implements LoggerHelperInterface {
         return $value."\n";
     }
 
+    public static function getLogs($class, $id) {
+        $re = '/[A-Z][a-z]*/';
+        preg_match_all($re, $class, $classArray);
+        
+        if( !isset($classArray[0]) ) {
+            return false;
+        } else {
+            $classArray = $classArray[0];
+        }
+
+        $class = strtoLower( implode('-', $classArray ) );
+        $file = LOGS."$class/$id";
+        foreach ($classArray as &$breakName) {
+            if( strToUpper($breakName) != "MESSAGES" ) {
+                $file .= "-".strToUpper($breakName);
+            }
+        }
+        $file .= ".log";
+        
+        $content = [];
+        $logs = [];
+
+        if(file_exists($file)) {
+            $content = explode("\n", file_get_contents($file));
+        }
+        
+        foreach ($content as $key => $line) {
+            if($line) {
+                $logs[$key]['time'] = substr($line, 0, 20);
+                $logUser = substr($line, 20);
+                $logUser = explode(':', $logUser);
+                
+                $logs[$key]['user'] = $logUser[0];
+                $logs[$key]['message'] = $logUser[1];
+            }
+        }
+        
+        return $logs;
+    }
+
 
 }
 

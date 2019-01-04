@@ -7,6 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 define('PATH', __DIR__);
 define('DOCS', __DIR__."/../../../docs/");
 define('FILES', __DIR__."/../files/");
+define('LOGS', __DIR__."/../logs/");
 
 loadConfigurations();
 
