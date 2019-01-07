@@ -7,7 +7,7 @@
                 <div class="col-md-6 mb-6 order-md-2">
                     <div id="alert-message">
                         <row v-show="email">
-                            <alert-message :text="email.text" :type="email.type"/>
+                            <alert-message ref="AlertMessage" :text="email.text" :type="email.type"/>
                         </row>
                     </div>
 
@@ -90,6 +90,7 @@ export default {
                     this.email.type = LoginStatus.failed.type
                     this.email.text = res.message
                 }
+                this.$refs.AlertMessage.show()
 
             })
         }
