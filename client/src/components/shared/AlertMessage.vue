@@ -35,6 +35,9 @@ export default {
         close() {
             $('#alert').fadeOut()
             this.$emit('close')
+        },
+        show() {
+            $("#alert").fadeIn()
         }
     },
     mounted(){
