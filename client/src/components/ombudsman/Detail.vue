@@ -4,7 +4,7 @@
         <h3 class="text-danger text-right" v-if="permission == 'COMPANION'">Você está acompanhando!</h3>
         <div class='row'>
             <rows class="col-md-9">
-                <h2>
+                <h2> {{ombudsman.status}}
                     #{{ombudsman.id}} - {{ ombudsman.type }} (<i>{{ ombudsman.origin.name }}</i>)
                     <span class="closed" v-if="ombudsman.answered">(Finalizado)</span>
                 </h2>    
@@ -59,7 +59,7 @@
         <hr>
         <div>
             <row>
-                <div id="description" class="col col-11">
+                <div id="description" class="col">
                     <div class="card border-secondary">
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2 text-muted">Descrição:</h6>
@@ -72,7 +72,7 @@
             </row>
             
             <row>
-                <div id="sugestion" class="col col-11">
+                <div id="sugestion" class="col">
                     <div class="card border-secondary">
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2 text-muted">Sugestão:</h6>
@@ -123,7 +123,7 @@
 
             <rows label="Horário do Relato">
                 <p> <icon icon="clock"/>
-                    {{ moment(ombudsman.registerTime.date).format('DD/MM/YYYY HH:mm') }}
+                    {{ ombudsman.registerTime.date | humanizeDate }}
                 </p>
             </rows>
         </div>
@@ -138,12 +138,7 @@
                             {{ ombudsman.ombudsmanDescription }}
                         </p>
                     </div>
-                    
-                    <blockquote class="blockquote pull-right signature">
-                        <footer class="blockquote-footer">Ouvidor que relatou: 
-                            <cite title="Source Title"><b> {{ ombudsman.ombudsman.name }} </b></cite>
-                        </footer>
-                    </blockquote>
+                    <signature label="Ouvidor que relatou" :username="ombudsman.ombudsman.name"/>
                 </div>
             </div>
         </row>
@@ -155,8 +150,6 @@
             <div class="card border-secondary">
                 <div class="card-body">
                     <add-users :manager_list="ombudsman.managerList" :tranmission_list="ombudsman.transmissionList" v-if="gotAdminPermission" @sendUser="addUser" />
-                    <!-- <ombudsman-closing v-if="gotAdminPermission" :ombudsman="ombudsman" ref="closing"/> -->
-                    <!-- <manager-closing v-else :ombudsman="ombudsman" ref="closing"/>  -->
 
                     <div class='row'>
                         <rows>
@@ -219,18 +212,29 @@
             </div>
         </section>
 
-        <div class="mt-3 mb-3">
-            <chat :id="'om'+id" model_path="ombudsman-model" title="Acompanhamento da Ouvidoria" v-if="ombudsman.exist()" :can_write="permission != 'COMPANION'"/>
-        </div>
+        <section class="mt-3 mb-3">
+            <chat :id="'om'+id" model_path="ombudsman-model" title="Acompanhamento da Ouvidoria" v-if="ombudsman.exist()" :can_write="permission != 'COMPANION'" :closed="ombudsman.closed"/>
+        </section>
+
+        <section id="closing-area">
+            <closing v-model="ombudsman.responseToUser" :ombudsmanClosingName="ombudsman.ombudsmanToResponse.name" :gotAdminPermission="gotAdminPermission"/>
+        </section>
         
         <div id="buttons">
             <row>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending" v-if="ombudsman.status != 'finished' && ombudsman.id">
-                    Registrar Relato
-                </button>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria'}" tag="button" :disabled="sending">
-                    Voltar
-                </router-link>
+                <div class="buttons" v-if="gotAdminPermission">
+                    <button v-if="(ombudsman.status == 'waiting-manager' || ombudsman.status == 'registered')  && ombudsman.exist()" class="btn btn-outline-warning btn-lg" type="button" @click="closeChat()" :disabled="sending">
+                        Finalizar Mensagens
+                    </button>
+                    <button v-if="ombudsman.status == 'closed' && ombudsman.exist()" class="btn btn-outline-danger btn-lg" type="button" @click="finishOmbudsman()" :disabled="sending">
+                        Registrar Relato
+                    </button>
+                </div>
+                <div class="buttons">
+                    <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'ouvidoria'}" tag="button" :disabled="sending">
+                        Voltar
+                    </router-link>
+                </div>
             </row>
         </div>
     </div>
@@ -247,7 +251,6 @@ export default {
         return {
             id: this.$route.params.id,
             ombudsman: new Ombudsman(),
-            moment: require('moment'),
             sending: false,
             permission: 'undefined',
             values: {
@@ -258,10 +261,12 @@ export default {
         }
     }, 
     methods: {
-        
-        submit() {
+        closeChat() {
             this.sending = true
-            this.$refs.closing.submit().then(res => this.$router.push({ name: 'ouvidoria'}), err => {
+            model.closeChat(this.ombudsman).then(res => {
+                this.sending = false
+                this.ombudsman = Object.assign( this.ombudsman, res )
+            }).catch(err => {
                 this.sending = false
             })
         },
@@ -301,6 +306,15 @@ export default {
                 return this.permission
             }
         },
+        finishOmbudsman() {
+            this.sending = true
+            model.finishOmbudsman( this.ombudsman ).then(res => {
+                this.sending = false
+                this.$router.push({ name: 'ouvidoria'})
+            }).catch(err => {
+                this.sending = false
+            })
+        }
     },
     computed: {
         gotAdminPermission() {
@@ -318,10 +332,10 @@ export default {
         'row': FormRw,
         'rows': FormRws,
         'add-users': require('./AddUsers.vue').default,
-        'ombudsman-closing': require('./closing/Ombudsman.vue').default,
-        'manager-closing': require('./closing/Manager.vue').default,
+        'closing': require('./Closing.vue').default,
         'chat': require('@/components/shared/chat').default,
         'import-file': require('@/components/shared/VFile/V-file-pdf').default,
+        'signature': require('@/components/shared/Signature.vue').default,
     },
     mounted() {
         this.getPermission()
@@ -335,12 +349,8 @@ export default {
         color: red;
     }
 
-    #sugestion {
-        margin-left: 10%;
+    .buttons {
+        display: inline;
     }
 
-    .signature {
-        text-align: right;
-        margin-right: 20px;
-    }
 </style>

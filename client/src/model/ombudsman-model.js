@@ -17,9 +17,9 @@ const getters = {
 
 const model = {
     isEdit: (id) => id ? true : false,
-    doUpdate: (demand) => service.update(demand.id, demand),
+    doUpdate: (ombudsman) => service.update(ombudsman.id, ombudsman),
 
-    doDelete: (demandId) => service.delete(demandId),
+    doDelete: (ombudsmanId) => service.delete(ombudsmanId),
     gotPermission: (ombudsmanId = null) => service.getPermission({ 'id': ombudsmanId, 'user_id': window.$session.get('user').id }),
     setManagerResponse: (id, response) => service.setManagerResponse(id, { 
                                                                     'id': id,
@@ -34,6 +34,8 @@ const model = {
     addManager: (ombudsmanId, user, type) => service.addManager(ombudsmanId, user, type),
     removeManager: (ombudsmanId, user, type) => service.removeManager(ombudsmanId, user, type),
     uploadFile: (file, fileName) => service.uploadFile(file, fileName),
+    closeChat: (ombudsman) => service.closeChat(ombudsman.id, ombudsman),
+    finishOmbudsman: (ombudsman) => service.finishOmbudsman(ombudsman.id, ombudsman),
 }
 
 const DemandsModel = {
