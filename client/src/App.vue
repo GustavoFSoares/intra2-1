@@ -139,6 +139,10 @@ export default {
         font-weight: bold;
     }
 
+    .btn-outline-warning:hover:not(:disabled)  {
+        color: #ffffff;
+    }
+
     div {
         /* outline: 1px dotted gray; */
     }

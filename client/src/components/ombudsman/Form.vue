@@ -244,12 +244,8 @@
                                 </row>                        
                                 
                             </div>
-                        
-                            <blockquote class="blockquote pull-right" id="ombudsman-logged">
-                                <footer class="blockquote-footer">Você está logado como
-                                    <cite title="Source Title"><b> {{ ombudsman.ombudsman.name }} </b></cite>
-                                </footer>
-                            </blockquote>
+                            
+                            <signature label="Você está logado como" :username="ombudsman.ombudsman.name"/>
                         </div>
 
                         <div class="row mt-3">
@@ -383,8 +379,8 @@ export default {
             
             model.doUpdate(this.ombudsman).then(res => { 
                 this.sending = false
-                this.$router.go('-1') 
-            }, err => {
+                this.$router.push({ name: "ouvidoria" })
+            }).catch(err => {
                 this.sending = false
             }) 
         },
@@ -421,6 +417,7 @@ export default {
         'v-select': VueSelect,
         'require-text': Require,
         'import-file': VFile,
+        'signature': require('@/components/shared/Signature.vue').default,
     },
 }
 </script>
@@ -458,7 +455,7 @@ export default {
 
     @media (max-width: 1300px) and (min-width: 1000px) {
         .type {
-            min-width: 250px;
+            min-width: 200px;
         }
 
         #navigation div {
