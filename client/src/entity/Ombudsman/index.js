@@ -18,7 +18,7 @@ export default class Ombudsman {
         this.bed = ombudsman.bed
         this.group = ombudsman.group
         
-        this.ombudsmanToResponse = ombudsman.ombudsmanToResponse
+        this.ombudsmanToResponse = ombudsman.ombudsmanToResponse ? ombudsman.ombudsmanToResponse : window.$session.get('user')
         this.responseToUser = ombudsman.responseToUser
         this.registerTime = ombudsman.registerTime ? ombudsman.registerTime : new Date()
         this.reported = ombudsman.reported ? true : false

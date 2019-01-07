@@ -35,6 +35,7 @@ const model = {
     removeManager: (ombudsmanId, user, type) => service.removeManager(ombudsmanId, user, type),
     uploadFile: (file, fileName) => service.uploadFile(file, fileName),
     closeChat: (ombudsman) => service.closeChat(ombudsman.id, ombudsman),
+    finishOmbudsman: (ombudsman) => service.finishOmbudsman(ombudsman.id, ombudsman),
 }
 
 const DemandsModel = {

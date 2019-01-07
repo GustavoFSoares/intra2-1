@@ -138,12 +138,7 @@
                             {{ ombudsman.ombudsmanDescription }}
                         </p>
                     </div>
-                    
-                    <blockquote class="blockquote pull-right signature">
-                        <footer class="blockquote-footer">Ouvidor que relatou: 
-                            <cite title="Source Title"><b> {{ ombudsman.ombudsman.name }} </b></cite>
-                        </footer>
-                    </blockquote>
+                    <signature label="Ouvidor que relatou" :username="ombudsman.ombudsman.name"/>
                 </div>
             </div>
         </row>
@@ -155,8 +150,6 @@
             <div class="card border-secondary">
                 <div class="card-body">
                     <add-users :manager_list="ombudsman.managerList" :tranmission_list="ombudsman.transmissionList" v-if="gotAdminPermission" @sendUser="addUser" />
-                    <!-- <ombudsman-closing v-if="gotAdminPermission" :ombudsman="ombudsman" ref="closing"/> -->
-                    <!-- <manager-closing v-else :ombudsman="ombudsman" ref="closing"/>  -->
 
                     <div class='row'>
                         <rows>
@@ -219,9 +212,13 @@
             </div>
         </section>
 
-        <div class="mt-3 mb-3">
+        <section class="mt-3 mb-3">
             <chat :id="'om'+id" model_path="ombudsman-model" title="Acompanhamento da Ouvidoria" v-if="ombudsman.exist()" :can_write="permission != 'COMPANION'" :closed="ombudsman.closed"/>
-        </div>
+        </section>
+
+        <section id="closing-area">
+            <closing v-model="ombudsman.responseToUser" :ombudsmanClosingName="ombudsman.ombudsmanToResponse.name" :gotAdminPermission="gotAdminPermission"/>
+        </section>
         
         <div id="buttons">
             <row>
@@ -229,7 +226,7 @@
                     <button v-if="(ombudsman.status == 'waiting-manager' || ombudsman.status == 'registered')  && ombudsman.exist()" class="btn btn-outline-warning btn-lg" type="button" @click="closeChat()" :disabled="sending">
                         Finalizar Mensagens
                     </button>
-                    <button v-if="ombudsman.status == 'closed' && ombudsman.exist()" class="btn btn-outline-danger btn-lg" type="button" @click="submit()" :disabled="sending">
+                    <button v-if="ombudsman.status == 'closed' && ombudsman.exist()" class="btn btn-outline-danger btn-lg" type="button" @click="finishOmbudsman()" :disabled="sending">
                         Registrar Relato
                     </button>
                 </div>
@@ -264,20 +261,14 @@ export default {
         }
     }, 
     methods: {
-        
         closeChat() {
             this.sending = true
             model.closeChat(this.ombudsman).then(res => {
                 this.sending = false
                 this.ombudsman = Object.assign( this.ombudsman, res )
-                console.log(this.ombudsman);
-                
             }).catch(err => {
                 this.sending = false
             })
-            // this.$refs.closing.submit().then(res => this.$router.push({ name: 'ouvidoria'}), err => {
-            //     this.sending = false
-            // })
         },
         addUser(user, type) {
             switch (type) {
@@ -315,6 +306,15 @@ export default {
                 return this.permission
             }
         },
+        finishOmbudsman() {
+            this.sending = true
+            model.finishOmbudsman( this.ombudsman ).then(res => {
+                this.sending = false
+                this.$router.push({ name: 'ouvidoria'})
+            }).catch(err => {
+                this.sending = false
+            })
+        }
     },
     computed: {
         gotAdminPermission() {
@@ -332,10 +332,10 @@ export default {
         'row': FormRw,
         'rows': FormRws,
         'add-users': require('./AddUsers.vue').default,
-        'ombudsman-closing': require('./closing/Ombudsman.vue').default,
-        'manager-closing': require('./closing/Manager.vue').default,
+        'closing': require('./Closing.vue').default,
         'chat': require('@/components/shared/chat').default,
         'import-file': require('@/components/shared/VFile/V-file-pdf').default,
+        'signature': require('@/components/shared/Signature.vue').default,
     },
     mounted() {
         this.getPermission()
@@ -347,11 +347,6 @@ export default {
 <style>
     .closed {
         color: red;
-    }
-
-    .signature {
-        text-align: right;
-        margin-right: 20px;
     }
 
     .buttons {

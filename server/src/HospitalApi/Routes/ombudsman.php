@@ -40,6 +40,7 @@ $app->group('/ombudsman', function() {
         $this->put('/add-manager/{id}/{type}', "HospitalApi\Controller\OmbudsmanController:addManagerAction", function(Request $req, Response $res, array $args) { });
         $this->put('/remove-manager/{id}/{type}', "HospitalApi\Controller\OmbudsmanController:removeManagerAction", function(Request $req, Response $res, array $args) { });
         $this->put('/close-chat/{id}', "HospitalApi\Controller\OmbudsmanController:closeChatAction", function(Request $req, Response $res, array $args) { });
+        $this->put('/finish/{id}', "HospitalApi\Controller\OmbudsmanController:finishAction", function(Request $req, Response $res, array $args) { });
         
         $this->delete('/{id}', "HospitalApi\Controller\OmbudsmanController:delete", function(Request $req, Response $res, array $args) { });
 }); 

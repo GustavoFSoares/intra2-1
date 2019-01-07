@@ -45,6 +45,9 @@ export default  {
     closeChat: (id, ombudsman) => {
         window.httpMessage = { success: `Ouvidoria <b>${id} Fechada</b>`, error: "Ouvidoria <b>Não Fechada</b>", show: true }
         return http.put(`/ombudsman/close-chat/${id}`, ombudsman ).then(res => res.data )},
+    finishOmbudsman: (id, ombudsman) => {
+        window.httpMessage = { success: `Ouvidoria <b>${id} Finalizada</b>`, error: "Ouvidoria <b>Não Finalizada</b>", show: true }
+        return http.put(`/ombudsman/finish/${id}`, ombudsman ).then(res => res.data )},
 
     delete: (id) => {
         window.httpMessage = { success: `Ouvidoria <b>#${id}</b> Excluído`, error: "Ouvidoria <b>não Excluída</b>", show: true }

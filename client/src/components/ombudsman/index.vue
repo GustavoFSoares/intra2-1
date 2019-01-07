@@ -26,11 +26,9 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <!-- <th scope="col">Origem</th> -->
                     <th scope="col">Tipo</th>
                     <th scope="col">Local</th>
                     <th scope="col">Ouvidor</th>
-                    <!-- <th scope="col">Paciente</th> -->
                     <th scope="col">Demandas</th>
                     <th scope="col">Relevância</th>
                     <th scope="col">Relatado por:</th>
@@ -41,7 +39,6 @@
             <tbody>
                 <tr v-for="(ombudsman, index) of searchList" :key="index" v-bind:class="getClassTable(ombudsman.status)">
                     <th scope="row">{{ ombudsman.id }}</th>
-                    <!-- <td>{{ ombudsman.origin.id }}</td> -->
                     <td>{{ ombudsman.type }}</td>
                     <td v-if="ombudsman.origin.id == 'AMB'">
                         {{ ombudsman.group.name }}
@@ -50,7 +47,6 @@
                         {{ ombudsman.bed }}
                     </td>
                     <td>{{ ombudsman.ombudsman.name.substr(0, 15) }}...</td>
-                    <!-- <td>{{ ombudsman.ombudsmanUser.patientName.toUpperCase().substr(0, 15) }}</td> -->
                     <td>
                         <div v-for="demand in ombudsman.demands" :key="demand.id">
                             <div class="demands"><icon icon="angle-double-right"/><i>{{ demand.name }}</i></div>
@@ -125,6 +121,10 @@ export default {
                     return 'table-warning'
                     break;
             
+                case 'closed':
+                    return 'table-danger'
+                    break;
+
                 case 'finished':
                     return 'table-disabled'     
                     break;

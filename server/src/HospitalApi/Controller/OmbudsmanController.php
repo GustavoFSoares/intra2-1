@@ -143,5 +143,11 @@ class OmbudsmanController extends ControllerAbstractLongEntity
         return $res->withJson($return);
     }
 
+    public function finishAction($req, $res, $args) {
+        $values = $req->getParsedBody();
+        $return = $this->getModel()->finishOmbudsman($values);
+
+        return $res->withJson($return);
+    }
     
 }
