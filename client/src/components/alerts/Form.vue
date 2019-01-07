@@ -8,7 +8,7 @@
         </row>
 
         <row id="content" label="">
-            <textarea data-vv-as="Descrição" v-validate data-vv-rules="required|max:115" class="form-control" name="alert-description" cols="30" rows="4" placeholder="Descrição do Alerta: " v-model="alert.description"/>
+            <textarea data-vv-as="Descrição" v-validate data-vv-rules="required|max:250" class="form-control" name="alert-description" cols="30" rows="4" placeholder="Descrição do Alerta: " v-model="alert.description"/>
             <require-text :error="errors.has('alert-description')" :text="errors.first('alert-description')" :show="true" :attribute="alert.text"/>
         </row>
 
@@ -52,7 +52,7 @@
 <script>
 import Alert, { alertEntity } from "@/entity/alert";
 import model from "@/model/alert";
-import { FormRw, FormRws, Require, VueSelect, TopAlert, DatePicker } from "@/components/shared/Form";
+import { VueSelect, TopAlert, DatePicker } from "@/components/shared/Form";
 export default {
     data(){
         return {
@@ -92,9 +92,6 @@ export default {
         }
     },
     components: {
-        'row': FormRw,
-        'rows': FormRws,
-        'require-text': Require,
         'v-select': VueSelect, 
         'top-alert': TopAlert,
         'date-picker': DatePicker,

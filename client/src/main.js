@@ -25,9 +25,13 @@ import '@/../static/directives-styles/VTooltip.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(fas)
+import { FormRw, FormRws, Require } from "@/components/shared/Form";
 
+library.add(fas)
 Vue.component('icon', FontAwesomeIcon)
+Vue.component('row', FormRw)
+Vue.component('rows', FormRws)
+Vue.component('require-text', Require)
 
 Vue.config.productionTip = false
 

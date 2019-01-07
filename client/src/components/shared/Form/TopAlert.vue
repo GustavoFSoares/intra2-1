@@ -6,7 +6,7 @@
                     <h5 :class='`card-title text-${this.$props.type}`'>
                         {{ title.toUpperCase() }}
                     </h5>
-                    <p class="card-text">{{ description }}</p>
+                    <p class="card-text" v-html="description"></p>
                 </div>
             </div>
         </div>

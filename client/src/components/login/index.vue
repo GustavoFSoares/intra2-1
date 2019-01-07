@@ -7,7 +7,7 @@
                 <div class="col-md-6 mb-6 order-md-2">
                     <div id="alert-message">
                         <row v-show="email">
-                            <alert-message :text="email.text" :type="email.type"/>
+                            <alert-message ref="AlertMessage" :text="email.text" :type="email.type"/>
                         </row>
                     </div>
 
@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { FormRw, FormRws, Require } from '@/components/shared/Form';
 import Mail, { LoginStatus } from "@/entity/AlertMessage";
 import AlertMessage from "@/components/shared/AlertMessage";
 import model from '@/model/login-model';
@@ -90,14 +89,12 @@ export default {
                     this.email.type = LoginStatus.failed.type
                     this.email.text = res.message
                 }
+                this.$refs.AlertMessage.show()
 
             })
         }
     },
     components: {
-        'row': FormRw,
-        'rows': FormRws,
-        'require-text': Require,
         'alert-message': AlertMessage,
     }, 
     mounted() { }
