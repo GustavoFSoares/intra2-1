@@ -24,14 +24,14 @@
                     <td>{{ alert.title }}</td>
                     <td>{{ alert.description }}</td>
                     <td :class='`text-${alert.type}`'>{{ alert.type.toUpperCase() }}</td>
-                    <td>{{ moment(alert.beginTime.date).format('DD/MM/YYYY HH:mm') }}</td>
-                    <td>{{ moment(alert.endTime.date).format('DD/MM/YYYY HH:mm') }}</td>
+                    <td>{{ alert.beginTime.date | humanizeDate }}</td>
+                    <td>{{ alert.endTime.date | humanizeDate }}</td>
                     <td>
                         <router-link :to='`/usuario/alertas/edit/${alert.id}`'>
-                            <i class="fa fa-edit"></i>
+                            <icon icon="edit"/>
                         </router-link>
                         <router-link @click.native="remove(alert.id, index)" to="">
-                            <i class="text-danger fa fa-trash"></i>
+                            <icon icon="trash-alt" class="text-danger"/>
                         </router-link>
                     </td>
                 </tr>

@@ -37,8 +37,6 @@ export default {
             this.$emit('close')
         },
         show() {
-            console.log('show');
-            
             $("#alert").fadeIn()
         }
     },

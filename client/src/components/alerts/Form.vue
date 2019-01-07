@@ -8,7 +8,7 @@
         </row>
 
         <row id="content" label="">
-            <textarea data-vv-as="Descrição" v-validate data-vv-rules="required|max:115" class="form-control" name="alert-description" cols="30" rows="4" placeholder="Descrição do Alerta: " v-model="alert.description"/>
+            <textarea data-vv-as="Descrição" v-validate data-vv-rules="required|max:250" class="form-control" name="alert-description" cols="30" rows="4" placeholder="Descrição do Alerta: " v-model="alert.description"/>
             <require-text :error="errors.has('alert-description')" :text="errors.first('alert-description')" :show="true" :attribute="alert.text"/>
         </row>
 
