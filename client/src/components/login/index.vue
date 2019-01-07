@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { FormRw, FormRws, Require } from '@/components/shared/Form';
 import Mail, { LoginStatus } from "@/entity/AlertMessage";
 import AlertMessage from "@/components/shared/AlertMessage";
 import model from '@/model/login-model';
@@ -96,9 +95,6 @@ export default {
         }
     },
     components: {
-        'row': FormRw,
-        'rows': FormRws,
-        'require-text': Require,
         'alert-message': AlertMessage,
     }, 
     mounted() { }

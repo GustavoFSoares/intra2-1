@@ -52,7 +52,7 @@
 <script>
 import Alert, { alertEntity } from "@/entity/alert";
 import model from "@/model/alert";
-import { FormRw, FormRws, Require, VueSelect, TopAlert, DatePicker } from "@/components/shared/Form";
+import { VueSelect, TopAlert, DatePicker } from "@/components/shared/Form";
 export default {
     data(){
         return {
@@ -92,9 +92,6 @@ export default {
         }
     },
     components: {
-        'row': FormRw,
-        'rows': FormRws,
-        'require-text': Require,
         'v-select': VueSelect, 
         'top-alert': TopAlert,
         'date-picker': DatePicker,
