@@ -23,7 +23,7 @@ class EletronicDocumentType extends SoftdeleteAbstract
     protected $name;
 
     /**
-     * @var String @Column(name="codigo", type="integer", length=255)
+     * @var String @Column(name="codigo", type="string", length=255)
      */
     protected $code;
 

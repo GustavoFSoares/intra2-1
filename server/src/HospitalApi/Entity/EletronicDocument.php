@@ -40,7 +40,7 @@ class EletronicDocument extends SoftdeleteAbstract
     protected $status;
     
     /**
-     * @var Boolean @Column(name="rascunho", type="boolean", options: { default: false })
+     * @var Boolean @Column(name="rascunho", type="boolean", options={ "default": false })
      */
     protected $draft;
 
