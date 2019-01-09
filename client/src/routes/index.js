@@ -12,6 +12,7 @@ import alertsRoutes from './alerts-routes'
 import collaboratorsRoutes from './collaborators-routes'
 import covenantRoutes from './covenants-routes'
 import duplicatedUsersRoutes from './duplicated-users-routes'
+import eletronicDocumentsRoutes, { eletronicDocumentsStatusRoutes, eletronicDocumentsTypesRoutes } from './eletronic-documents-routes'
 import homeUserRoutes from './home-user-routes'
 import incidentReportingRoutes from './incident-reporting-routes'
 import loginRoutes from './login-routes'
@@ -56,6 +57,9 @@ Routes.addRoutes(alertsRoutes)
 Routes.addRoutes(collaboratorsRoutes)
 Routes.addRoutes(covenantRoutes)
 Routes.addRoutes(duplicatedUsersRoutes)
+Routes.addRoutes(eletronicDocumentsRoutes)
+Routes.addRoutes(eletronicDocumentsStatusRoutes)
+Routes.addRoutes(eletronicDocumentsTypesRoutes)
 Routes.addRoutes(homeUserRoutes)
 Routes.addRoutes(incidentReportingRoutes)
 Routes.addRoutes(loginRoutes)
