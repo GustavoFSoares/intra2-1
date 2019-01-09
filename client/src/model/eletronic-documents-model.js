@@ -6,8 +6,8 @@ export const getter = {
     getEletronicDocuments: () => service.getEletronicDocuments({}),
     getEletronicDocumentById: (id) => service.getEletronicDocuments({ 'id': id, 'user_id': window.$session.get('user').id }),
 
-    getStatus: () => Statuservice.getStatus(),
-    getStatusById: (id) => statusService.getStatus({ 'id': id }),
+    getStatus: () => StatusService.getStatus(),
+    getStatusById: (id) => StatusService.getStatus({ 'id': id }),
 
     getTypes: () => TypeService.getTypes(),
     getTypeById: (id) => TypeService.getTypes({ 'id': id }),
