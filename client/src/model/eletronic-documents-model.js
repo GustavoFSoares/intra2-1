@@ -1,8 +1,8 @@
 import service from "@/services/eletronic-documents"
 import StatusService from "@/services/eletronic-documents/status"
-import TypeService from "@/services/eletronic-documents/types"
+import TypeService from "@/services/eletronic-documents/type"
 
-export const getters = {
+export const getter = {
     getEletronicDocuments: () => service.getEletronicDocuments({}),
     getEletronicDocumentById: (id) => service.getEletronicDocuments({ 'id': id, 'user_id': window.$session.get('user').id }),
 
@@ -31,7 +31,7 @@ export const StatusModel = {
     doDeleteStatus: (id) => StatusService.delete(id),
 }
 
-export const TypesModel = {
+export const TypeModel = {
     doInsertType: (type) => TypeService.insert(type),
     doUpdateType: (type) => TypeService.update(type.id, type),
     doDeleteType: (id) => TypeService.delete(id),
