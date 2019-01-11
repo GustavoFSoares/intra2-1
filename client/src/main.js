@@ -25,13 +25,14 @@ import '@/../static/directives-styles/VTooltip.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { FormRw, FormRws, Require } from "@/components/shared/Form";
+import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
 
 library.add(fas)
 Vue.component('icon', FontAwesomeIcon)
 Vue.component('row', FormRw)
 Vue.component('rows', FormRws)
 Vue.component('require-text', Require)
+Vue.component('v-select', VueSelect)
 
 Vue.config.productionTip = false
 
@@ -44,6 +45,11 @@ Vue.use(VueTheMask)
 Vue.use(Tooltip);
 Vue.use(VeeValidate);
 
+window.globals = {
+    API_SERVER = `${window.location.protocol}//${window.location.host}:3001`,
+    SOCKET_SERVER = `${window.location.protocol}//${window.location.host}:3000`,
+}
+Vue.prototype.$globals = window.globals
 
 new Vue({
   el: '#app',
