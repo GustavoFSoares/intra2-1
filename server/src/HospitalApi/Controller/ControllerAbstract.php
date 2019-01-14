@@ -113,16 +113,29 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 
 	public function uploadFileAction($req, $res, $args) {
 		$files = $req->getUploadedFiles();
+		$prefix = $req->getParam('prefix');
+		$name = $req->getParam('name');
 
 		if(array_key_exists('file', $files)) {
 			$file = $files['file'];
 			
-			$destiny = FILES."{$this->_model->entity->getClassShortName()}";
+			$destiny = FILES."{$this->_model->entity->getClassShortName()}/";
 			if( !is_dir($destiny) ) {
 				mkdir($destiny);
 			}
-			$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
-			$destiny = "$destiny/{$req->getParam('name')}.$extension";
+
+			if($prefix) {
+				$destiny .= "$prefix-";
+			}
+
+			preg_match_all('/(\.\w{3})$/m', $req->getParam('name'), $matches, PREG_SET_ORDER, 0);
+			if( isset($matches[0]) ) {
+				$destiny .= $name;
+			} else {
+				$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);				
+				$name = $name ? $name : $file->getClientFilename();
+				$destiny .= "$name.$extension";
+			}
 
 			$file->moveTo($destiny);
 			$response = $destiny;
@@ -134,6 +147,16 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 
 		return $res->withJson($response);
 	}
+
+	public function getFileByPrefixAction($req, $res, $args) {
+        $id = $req->getParam('id');
+        $prefix = $req->getParam('prefix');
+		
+		$model = new \HospitalApi\Model\FileModel();
+        $files = $model->getFilesBy($id, $prefix, $this->_model->entity->getClassShortName());
+        
+        return $res->withJson($files);
+    }
 
 	/**
 	 * @method translateCollection()
