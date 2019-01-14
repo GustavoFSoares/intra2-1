@@ -1,5 +1,6 @@
 <?php
 namespace Helper;
+use UnexpectedValueException;
 
 class DirectoryHelper {
 
@@ -10,7 +11,12 @@ class DirectoryHelper {
     public static function getFilesArray($path, $fileToIgnore = null, $fileinfo = null) {
         $father = $fileinfo ? $fileinfo->getBasename() : 'root';
 
-        $dir = new \DirectoryIterator($path);
+        try {
+            $dir = new \DirectoryIterator($path);
+        }catch(UnexpectedValueException $e) {
+            return ['error' => true, 'message' => 'Directory not found!'];
+        }
+        $folder = null;
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
                 if($fileinfo->isDir()) {
