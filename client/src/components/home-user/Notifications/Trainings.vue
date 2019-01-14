@@ -116,6 +116,15 @@ export default {
 </script>
 
 <style scoped>
+    .card-header {
+        border: solid 1px grey;
+        box-shadow: 5px 5px 10px grey;
+   }
+
+   div :not(#trainings) .card-header {
+       margin-top: 5px;
+   }
+
     #module-contents {
         margin-right: 7px;
     }

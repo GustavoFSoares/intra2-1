@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
    .card-header {
         border: solid 1px grey;
         box-shadow: 5px 5px 10px grey;
