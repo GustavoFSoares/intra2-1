@@ -60,4 +60,8 @@ export default {
     #box {
         max-width: 650px;
     }
+
+    div .ql-editor {
+        min-height: 400px;
+    }
 </style>

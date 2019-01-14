@@ -28,7 +28,7 @@
                             @input-filter="inputFilter"
                             :custom-action="submitFile"
                             :chunk-enabled="true"
-                            :multiple="false"
+                            :multiple="true"
                             ref="upload" 
                             accept="application/pdf" 
                             v-model="files"> 
@@ -56,37 +56,41 @@
                         <span class="text-danger"> Aguardando ID </span>
                     </div>
                 </row>
-            </rows>
+            </rows> 
 
-            <rows>
-                <a class="text-default" v-if="filePath && loadingFile == false" :href="`${$globals.API_SERVER}/file/?filePath=${filePath}&onScreen=1`" target="_blank" @click="showExemple(filePath)">
-                    <icon class="text-danger" icon="file-pdf" size="2x"/> {{ fileName }}
-                </a>
-                <div v-if="loadingFile">
-                    <icon icon="spinner" size="2x" spin/>
-                    <div class="text-disabled">Procurando Documento...</div>
+             <rows>
+                <div v-for="(fp, index) in filesPath" :key="index">
+                    <a class="text-default" v-if="fp" :href="`${$globals.API_SERVER}/file/?filePath=${fp}&onScreen=1`" target="_blank" @click="showExemple(fp)">
+                        <icon class="text-danger" icon="file-pdf" size="2x"/> {{ files[index].name }}
+                    </a>
+                    <!--<a class="text-default" v-if="filePath && loadingFile == false" :href="`http://10.100.200.100:3001/file/?filePath=${filePath}&onScreen=1`" target="_blank" @click="showExemple(filePath)">
+                        <icon class="text-danger" icon="file-pdf" size="2x"/> {{ fileName }}
+                    </a>
+                    <div v-if="loadingFile">
+                        <icon icon="spinner" size="2x" spin/>
+                        <div class="text-disabled">Procurando Documento...</div>
+                    </div> -->
                 </div>
             </rows>
         </div>
-  </div>
+    </div>
 </template>
 
 <script>
 import service from '@/services/file'
-import { FormRw, FormRws } from "@/components/shared/Form";
 
 export default {
     data() {
         return {
             files: [],
-            filePath: false,
+            filesPath: [],
+            filePath: '',
             sending: false,
             loadingFile: false,
         }
     },
     props: {
         id: { default: false },
-        file_name: { default: false },
         post_function: '',
         only_exibition: { default: false },
     },
@@ -99,10 +103,10 @@ export default {
             this.post_function(formData, this.fileName).then(res => {
                 this.sending = false
                 
-                this.filePath = res
-                this.showExemple(this.filePath)
+                this.filesPath.push(res)
+                // this.showExemple(this.filePath)
             }).catch(err => {
-                this.$refs.upload.update(this.files[0], {error: 'Não Salvo!'})
+                this.$refs.upload.update(file, {error: 'Não Salvo!'})
                 this.sending = false
             }) 
         },
@@ -135,19 +139,7 @@ export default {
             }
         },
     },
-    computed: { 
-        fileName() {
-            if(this.file_name) {
-                return this.file_name
-            } else if(this.$route.params.id) {
-                return this.$route.params.id
-            } else if(this.files[0].name) {
-                return this.files[0].name
-            } else {
-                return 'File'
-            }
-        }
-    },
+    computed: { },
     watch: {
         id() {
             (this.id) ? this.id+".pdf":false
@@ -156,8 +148,6 @@ export default {
     },
     components: {
         'upload-component': require('vue-upload-component'),
-        'row': FormRw,
-        'rows': FormRws,
     },
 }
 </script>

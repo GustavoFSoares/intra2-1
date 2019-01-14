@@ -26,13 +26,17 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
+import InfoIcon from "@/components/shared/InfoIcon.vue";
+import Box from "@/components/shared/Box.vue";
 
 library.add(fas)
 Vue.component('icon', FontAwesomeIcon)
+Vue.component('info-icon', InfoIcon)
 Vue.component('row', FormRw)
 Vue.component('rows', FormRws)
 Vue.component('require-text', Require)
 Vue.component('v-select', VueSelect)
+Vue.component('box', Box)
 
 Vue.config.productionTip = false
 
@@ -46,8 +50,8 @@ Vue.use(Tooltip);
 Vue.use(VeeValidate);
 
 window.globals = {
-    API_SERVER = `${window.location.protocol}//${window.location.host}:3001`,
-    SOCKET_SERVER = `${window.location.protocol}//${window.location.host}:3000`,
+    API_SERVER: `${window.location.protocol}//${window.location.host}:3001`,
+    SOCKET_SERVER: `${window.location.protocol}//${window.location.host}:3000`,
 }
 Vue.prototype.$globals = window.globals
 
