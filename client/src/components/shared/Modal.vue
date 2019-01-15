@@ -16,7 +16,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" @click="send">{{submitlabel}}</button>
+                        <button type="button" class="btn btn-primary" :disabled="disabled" @click="send">{{submitlabel}}</button>
                     </div>
                 </div>
             </div>
@@ -30,6 +30,7 @@ export default {
     props: {
         title: String,
         submitlabel: {type: String, default: 'Ok'},
+        disabled: {type: Boolean, default: false},
     },
     data() {
         return {
