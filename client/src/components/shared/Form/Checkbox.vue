@@ -1,10 +1,8 @@
 <template>
-    <div>
         <label class="switch">
-            <input :id="id" @click="change()" type="checkbox" v-model="value">
+            <input :id="id" @click="change()" type="checkbox" v-model="value" :disabled="disabled">
             <span class="slider round"></span>
         </label>
-    </div>
 </template>
 
 <script>
@@ -16,7 +14,8 @@ export default {
     },
     props: {
         checked: Boolean,
-        id: ''
+        id: '',
+        disabled: { default: false },
     },
     methods: {
         change(){
@@ -35,7 +34,7 @@ export default {
     position: relative;
     display: inline-block;
     width: 60px;
-    height: 34px;
+    height: 30px;
     }
 
     .switch input {display:none;}
@@ -55,7 +54,7 @@ export default {
     .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
+    height: 23px;
     width: 26px;
     left: 4px;
     bottom: 4px;
@@ -66,6 +65,14 @@ export default {
 
     input:checked + .slider {
     background-color: #2196F3;
+    }
+    
+    input:checked:disabled + .slider {
+    background-color: rgb(170, 216, 253);
+    }
+
+    input:disabled + .slider {
+        background-color: #bfbfbf61;
     }
 
     input:focus + .slider {
@@ -85,6 +92,11 @@ export default {
 
     .slider.round:before {
     border-radius: 50%;
+    }
+
+    label {
+        display: inline-block;
+        margin-bottom: 0;
     }
 
 
