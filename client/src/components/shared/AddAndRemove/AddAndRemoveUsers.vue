@@ -67,13 +67,19 @@ export default {
         finding: false,
         componentKey: '',
     }),
-    props: { 
+    props: {
+        value: '',
         title: { default: 'Adicionar Usuários' }
     },
     watch: {
         usersSelected() {
             this.$emit('input', this.usersSelected)
-       }
+        },
+        value() {
+            if( !this.usersSelected ) {
+                this.usersSelected = this.value
+            }
+        }
     },
     methods: {
         findUserByName() {
@@ -119,7 +125,8 @@ export default {
         },
     },
     mounted() {
-        this.componentKey = "c_key"+this._uid      
+        this.componentKey = "c_key"+this._uid
+        this.usersSelected = this.value
     }
 }
 </script>

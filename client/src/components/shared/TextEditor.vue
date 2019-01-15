@@ -1,6 +1,6 @@
 <template>
     <div id="box">
-        <div id="text-js-editor" ref="textEditor"> </div>
+        <div id="text-js-editor"> </div>
     </div>
 </template>
 
@@ -15,6 +15,13 @@ export default {
     data: () => ({
         quill: {}
     }),
+    watch: {
+        value() {
+            if( this.quill.root.innerHTML == "<p><br></p>" ) {
+                this.quill.root.innerHTML = this.value
+            }
+        }
+    },
     methods: {
         updateDate() {
             this.$emit('input', this.quill.root.innerHTML )
