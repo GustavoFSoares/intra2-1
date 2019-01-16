@@ -62,6 +62,11 @@ export default {
     extends: AddAndRemoveUsers,
     methods: {
         addUser() {
+            if( this.userSelected.id == this.$session.get('user').id ) {
+                this.$alert.danger("Não é permitido adicionar o <b>Criador Documento</b>!")
+                return ;
+            }
+
             if(this.userSelected) {
                 if(!this.checkIfExistOnList(this.userSelected)) {
                     this.usersSelected.push(new EletronicDocumentSignature({ user: this.userSelected }) )
