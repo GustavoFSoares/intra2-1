@@ -10,6 +10,10 @@ export default {
         window.httpMessage = { show: true, success: `Documento <b>Inserido</b>`, error: "Documento <b>não Inserido</b>" }
         return http.post(`/eletronic-documents/`, data).then(res => res.data)
     },
+    uploadFile: (file, fileName, prefix) => {
+        window.httpMessage = { show: true, success: `Arquivo <b>Adicionado</b>`, error: "Arquivo <b>não Adicionado</b>" }
+        return http.post('/eletronic-documents/file/', file, { params: { 'name': fileName, 'prefix': prefix } }).then(res => res.data)
+    },
 
     update: (id, data) => {
         window.httpMessage = { show: true, success: `Documento <b>#${id}</b> Atualizado`, error: "Documento <b>não Atualizado</b>" }

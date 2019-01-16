@@ -24,7 +24,7 @@
                 <row>
                     <div>
                         <upload-component id="upload-component" class="btn btn-outline-primary" 
-                            v-bind:class="{'disabled': !this.id || sending}"
+                            v-bind:class="{'disabled': !this.id || sending }"
                             @input-filter="inputFilter"
                             :custom-action="submitFile"
                             :chunk-enabled="true"
@@ -41,7 +41,7 @@
                             @click.prevent="$refs.upload.active = true" 
                             :disabled="sending"
                             type="button">
-                            <icon icon="upload"/> Enviar 
+                            <icon icon="upload"/> Enviar
                         </button>
                         <button  class="btn btn-outline-danger disable-pointer"
                             v-bind:class="{'disabled': !this.id}"
@@ -100,7 +100,7 @@ export default {
             let formData = new FormData()
             formData.append('file', file.file);
             
-            this.post_function(formData, this.fileName).then(res => {
+            this.post_function(formData, this.fileName, this.id).then(res => {
                 this.sending = false
                 
                 this.filesPath.push(res)
@@ -153,6 +153,10 @@ export default {
 </script>
 
 <style scoped>
+    .disabled {
+        pointer-events: none;
+    }
+
     .disable-pointer:hover {
         cursor: context-menu;
     }

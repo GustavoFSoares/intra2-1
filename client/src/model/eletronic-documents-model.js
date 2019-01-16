@@ -20,7 +20,7 @@ const model = {
     doDelete: (eletronicDocumentId) => service.delete(eletronicDocumentId),
     // addManager: (ombudsmanId, user, type) => service.addManager(ombudsmanId, user, type),
     // removeManager: (ombudsmanId, user, type) => service.removeManager(ombudsmanId, user, type),
-    // uploadFile: (file, fileName) => service.uploadFile(file, fileName),
+    doUploadFile: (file, fileName, prefix) => service.uploadFile(file, fileName, prefix),
     // closeChat: (ombudsman) => service.closeChat(ombudsman.id, ombudsman),
     // finishOmbudsman: (ombudsman) => service.finishOmbudsman(ombudsman.id, ombudsman),
 }
