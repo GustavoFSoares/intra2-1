@@ -5,7 +5,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">{{title}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -15,7 +15,7 @@
                         </slot>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button @click="close()" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" class="btn btn-primary" :disabled="disabled" @click="send">{{submitlabel}}</button>
                     </div>
                 </div>
@@ -44,6 +44,10 @@ export default {
         },
         show() {
             $(`#${this.id}`).modal('show')
+        },
+        close() {
+            $(`#${this.id}`).modal('hide')
+            this.$emit('close')
         }
     },
     created() {
