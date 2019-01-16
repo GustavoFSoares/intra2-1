@@ -1,7 +1,7 @@
 <template>
     <div>
-        <icon id="info-icon" icon="info-circle" class="float-right text-disabled" v-tooltip.top="{ 'html': 'tooltip-message' }"/>
-        <div id="tooltip-message" v-html="message"> </div>
+        <icon id="info-icon" icon="info-circle" class="float-right text-disabled" v-tooltip.top="{ 'html': tooltipId }"/>
+        <div :id="tooltipId" v-html="message"> </div>
     </div>
 </template>
 
@@ -9,6 +9,11 @@
 export default {
     props: {
         message: { default: 'Mensagem' }
+    },
+    computed: {
+        tooltipId() {
+            return this._uid+"tooltip-message"
+        }
     }
 }
 </script>
