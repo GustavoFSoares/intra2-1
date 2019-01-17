@@ -41,6 +41,17 @@ abstract class EntityAbstract extends BasicApplicationAbstract
     {
         return get_class_vars($this->getClassName());
     }
+   
+    public function getPublicVars()
+    {
+        $vars = [];
+        foreach ($this->getClassVars() as $key => $value) {
+            if($key[0] != '_') {
+                $vars[$key] = $value;
+            }
+        }
+        return $vars;
+    }
 
     /**
      * @method toString()
@@ -133,6 +144,14 @@ abstract class EntityAbstract extends BasicApplicationAbstract
         } else {
             return null;
         }
+    }
+
+    public function construct($data) {
+        foreach ($data as $key => $value) {
+            $method = "set$key";
+            $this->$method($value);
+        }
+        return $this;
     }
 
 }

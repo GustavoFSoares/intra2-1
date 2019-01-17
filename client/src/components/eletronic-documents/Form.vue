@@ -62,13 +62,13 @@
 
         <div id="buttons">
             <row>
-                <button v-if="!document.draft" class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()">
+                <button v-if="!document.draft" class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending">
                     Registrar Documento
                 </button>
-                <button v-else class="btn btn-outline-warning btn-lg" id="submit-button" type="button" @click="saveDraft()">
+                <button v-else class="btn btn-outline-warning btn-lg" id="submit-button" type="button" @click="saveDraft()" :disabled="sending">
                     Salvar Rascunho
                 </button>
-                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos'}" tag="button">
+                <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
             </row>
@@ -99,6 +99,7 @@ export default {
             userAndGroup: "Mensagem para usuario e grupo<br><ul><li>Usuario</li><li>grupo</li></ul>"  
         },
         document: new EletronicDocument(),
+        sending: false
     }),
     methods: {
         sendFile: (file, fileName, prefix) => model.doUploadFile(file, fileName, prefix),
@@ -106,7 +107,12 @@ export default {
             this.$refs.sign_document.show()
         },
         saveDraft() {
-            alert('save draft')
+            this.sending = true
+            model.doInsert(this.document).then(res => {
+                this.sending = false
+            }).catch(err => {
+                this.sending = false
+            })
         },
     },
     mounted() { 
