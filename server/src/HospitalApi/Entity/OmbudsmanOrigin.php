@@ -21,7 +21,7 @@ class OmbudsmanOrigin extends SoftdeleteAbstract
      */
     protected $name;
     
-    public function __contruct() {
+    public function __construct() {
         parent::__construct();
         $this->id = 0;
         $this->name = '';

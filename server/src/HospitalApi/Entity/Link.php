@@ -39,7 +39,7 @@ class Link extends SoftdeleteAbstract
      */
     protected $externalLink;
 
-    public function __contruct($url = '', $title = '', $icon = '', $externalLink = false) {
+    public function __construct($url = '', $title = '', $icon = '', $externalLink = false) {
         parent::__construct();
         $this->id = 0;
         $this->url = $url;

@@ -47,7 +47,7 @@ class OmbudsmanUser extends SoftdeleteAbstract
      */
     protected $address;
 
-    public function __contruct() {
+    public function __construct() {
         parent::__construct();
         $this->id = 0;
         $this->patientName = '';

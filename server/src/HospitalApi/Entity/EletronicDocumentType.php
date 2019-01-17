@@ -27,7 +27,7 @@ class EletronicDocumentType extends SoftdeleteAbstract
      */
     protected $code;
 
-    public function __contruct() {
+    public function __construct() {
         parent::__construct();
         $this->id = 0;
         $this->name = null;
