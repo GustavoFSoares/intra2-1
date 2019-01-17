@@ -190,7 +190,10 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 */
 	public function _mountEntity($values){
 		if(isset($values['id']) && $values['id']) {
-			$this->_model->entity = $this->_model->getRepository()->find($values['id']);
+			$repository = $this->_model->getRepository()->find($values['id']);
+			if($repository) {
+				$this->_model->entity = $repository;
+			}
 		}
 
 		if( method_exists($this->_model, 'mount') ){

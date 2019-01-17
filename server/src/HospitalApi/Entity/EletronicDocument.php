@@ -1,6 +1,7 @@
 <?php
 namespace HospitalApi\Entity;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity
@@ -18,9 +19,10 @@ class EletronicDocument extends SoftdeleteAbstract
     protected $id;
 
     /**
-     * @var String @Column(name="assunto", type="string", length=255)
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="usuario_id", referencedColumnName="id" )
      */
-    protected $subject;
+    protected $user;
 
     /**
      * @ManyToOne(targetEntity="EletronicDocumentType")
@@ -28,35 +30,65 @@ class EletronicDocument extends SoftdeleteAbstract
      */
     protected $type;
 
+    // /**
+    //  * @ManyToMany(targetEntity="EletronicDocumentSignature", inversedBy="id", cascade={"persist", "remove"})
+    //  * @JoinTable(name="Documento_Eletronico_Documento_Eletronico_Assinatura",
+    //  *      joinColumns={
+    //  *          @JoinColumn(name="documento_id", referencedColumnName="id", onDelete="CASCADE")
+    //  *      },
+    //  *      inverseJoinColumns={
+    //  *          @JoinColumn(name="assinatura_id", referencedColumnName="id", onDelete="CASCADE")
+    //  *      }
+    //  * )
+    //  */
     /**
-     * @OneToOne(targetEntity="EletronicDocumentOriginDestination", mappedBy="eletronicDocument", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="EletronicDocumentSignature", mappedBy="document", cascade={"persist", "remove"})
      */
-    protected $originDestination;
+    protected $userList;
 
     /**
      * @ManyToOne(targetEntity="EletronicDocumentStatus")
-     * @JoinColumn(name="status_id", referencedColumnName="id")
+     * @JoinColumn(name="status_id", referencedColumnName="id", nullable=true)
      */
     protected $status;
     
     /**
-     * @var Boolean @Column(name="rascunho", type="boolean", options={ "default": false })
+     * @var String @Column(name="assunto", type="string", length=255)
      */
-    protected $draft;
+    protected $subject;
+    
+    /**
+     * @var String @Column(name="conteudo", type="text", length=255)
+     */
+    protected $content;
 
     /**
-     * @var Datetime @Column(type="datetime", options={"default":"CURRENT_TIMESTAMP"})
+     * @var Boolean @Column(name="rascunho", type="boolean", options={ "default": true })
      */
-    protected $createdDate;
+    protected $draft;
+    
+    /**
+     * @var Boolean @Column(name="assinado", type="boolean", options={ "default": false })
+     */
+    protected $signed;
 
-    public function __contruct() {
-        parent::__construct();
+    /**
+     * @var Datetime @Column(name="data_criacao", type="datetime", options={"default":"CURRENT_TIMESTAMP"})
+     */
+    protected $createdAt;
+
+    public function __construct() {
         $this->id = 0;
-        $this->subject = null;
+        $this->user = '';
         $this->type = '';
-        $this->status = '';
-        $this->draft = null;
-        $this->createdDate = new DateTime();
+        $this->status = null;
+        $this->userList = new ArrayCollection();
+        $this->draft = true;
+        $this->signed = false;
+        $this->subject = null;
+        $this->content = '';
+        $this->createdAt = new \DateTime();
+        parent::__construct();
     }
 
     public function getId() {
@@ -68,46 +100,104 @@ class EletronicDocument extends SoftdeleteAbstract
         return $this;
     }
     
-    public function getsubject() {
+    public function getUser() {
+        return $this->user;
+    }
+    public function setUser($user) {
+        $this->user = $this->getRepositoryOf('User', $user);
+        
+        return $this;
+    }
+
+    public function getType() {
+        return $this->type;
+    }
+    public function setType($type) {
+        $this->type = $this->getRepositoryOf('EletronicDocumentType', $type);
+        
+        return $this;
+    }
+
+    public function getStatus() {
+        return $this->status;
+    }
+    public function setStatus($status) {
+        $this->status = $this->getRepositoryOf('EletronicDocumentStatus', $status);
+        
+        return $this;
+    }
+
+    public function getUserList() {
+        return $this->userList;
+    }
+    public function addUserOnList($user) {
+        $this->userList->add($user);
+
+        return $this;
+    }
+    public function removeUserOnList($user) {
+        $this->userList->removeElement($userserList);
+        
+        return $this;
+    }
+    public function setUserList($userList) {
+        $this->userList = new ArrayCollection($userList);
+
+        return $this;
+    }
+    
+    public function setGroupList($userList) {
+        // $this->userList = new ArrayCollection($userList);
+
+        return $this;
+    }
+
+    public function getDraft() {
+        return $this->draft;
+    }
+    public function isDraft() {
+        return $this->getDraft();
+    }
+    public function setDraft($draft) {
+        $this->draft = $draft ? true : false;
+        
+        return $this;
+    }
+
+    public function getSigned() {
+        return $this->signed;
+    }
+    public function isSigned() {
+        return $this->getSigned();
+    }
+    public function setSigned($signed) {
+        $this->signed = $signed ? true : false;
+        
+        return $this;
+    }
+
+    public function getSubject() {
         return $this->subject;
     }
-    public function setsubject($subject) {
+    public function setSubject($subject) {
         $this->subject = $subject;
         
         return $this;
     }
-
-    public function gettype() {
-        return $this->type;
+   
+    public function getContent() {
+        return $this->content;
     }
-    public function settype($type) {
-        $this->type = $type;
+    public function setContent($content) {
+        $this->content = $content;
         
         return $this;
     }
 
-    public function getstatus() {
-        return $this->status;
-    }
-    public function setstatus($status) {
-        $this->status = $status;
-        
-        return $this;
-    }
-
-    public function getdraft() {
-        return $this->draft;
-    }
-    public function setdraft($draft) {
-        $this->draft = $draft;
-        
-        return $this;
-    }
-
-    public function getcreatedDate() {
+    public function getCreatedDate() {
         return $this->createdDate;
     }
-    public function setcreatedDate($createdDate) {
+    public function setCreatedDate($createdDate) {
         $this->createdDate = $this->_formatDate($createdDate);
         
         return $this;
