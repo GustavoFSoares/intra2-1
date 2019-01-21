@@ -34,18 +34,18 @@ class EletronicDocumentSignature extends EntityAbstract
     protected $signed;
 
     /**
-     * @ManyToOne(targetEntity="EletronicDocument", inversedBy="userList")
-     * @JoinColumn(name="documento_id", referencedColumnName="id")
+     * @ManyToOne(targetEntity="EletronicDocument", inversedBy="userList", cascade={"persist", "remove"})
+     * @JoinColumn(name="documento_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $document;
+    private $_document;
 
-    public function __construct($id = 0, $user = null, $bc = false, $signed = false, $document = null) {
+    public function __construct($id = 0, $user = null, $bc = false, $signed = false, $_document = null) {
         parent::__construct();
         $this->id = $id;
         $this->user = $this->setUser($user);
         $this->bc = $bc;
         $this->signed = $signed;
-        $this->document = $document;
+        $this->_document = $_document;
     }
 
     public function getId() {
@@ -91,10 +91,10 @@ class EletronicDocumentSignature extends EntityAbstract
     }
     
     public function getDocument() {
-        return $this->document;
+        return $this->_document;
     }
     public function setDocument($document) {
-        $this->document = $this->getRepositoryOf('EletronicDocument', $document);
+        $this->_document = $this->getRepositoryOf('EletronicDocument', $document);
         
         return $this;
     }

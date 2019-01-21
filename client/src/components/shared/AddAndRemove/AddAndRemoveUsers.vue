@@ -76,7 +76,7 @@ export default {
             this.$emit('input', this.usersSelected)
         },
         value() {
-            if( !this.usersSelected ) {
+            if( this.usersSelected.length == 0 ) {
                 this.usersSelected = this.value
             }
         }

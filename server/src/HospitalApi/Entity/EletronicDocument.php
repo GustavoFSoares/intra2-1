@@ -30,19 +30,9 @@ class EletronicDocument extends SoftdeleteAbstract
      */
     protected $type;
 
-    // /**
-    //  * @ManyToMany(targetEntity="EletronicDocumentSignature", inversedBy="id", cascade={"persist", "remove"})
-    //  * @JoinTable(name="Documento_Eletronico_Documento_Eletronico_Assinatura",
-    //  *      joinColumns={
-    //  *          @JoinColumn(name="documento_id", referencedColumnName="id", onDelete="CASCADE")
-    //  *      },
-    //  *      inverseJoinColumns={
-    //  *          @JoinColumn(name="assinatura_id", referencedColumnName="id", onDelete="CASCADE")
-    //  *      }
-    //  * )
-    //  */
     /**
-     * @OneToMany(targetEntity="EletronicDocumentSignature", mappedBy="document", cascade={"persist", "remove"})
+     * @OrderBy({ "user" = "ASC" })
+     * @OneToMany(targetEntity="EletronicDocumentSignature", mappedBy="_document", cascade={"persist", "remove"})
      */
     protected $userList;
 

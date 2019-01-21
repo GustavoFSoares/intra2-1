@@ -73,8 +73,8 @@
                 </router-link>
             </row>
         </div>
-
-        <sign-document v-model="document" title="Assinar Documento" ref="sign_document"/>
+        
+        <sign-document :id="id" v-model="document" title="Assinar Documento" ref="sign_document"/>
     </div>
 </template>
 
@@ -89,35 +89,56 @@ import AddAndRemoveGroups from '@/components/shared/AddAndRemove/AddAndRemoveGro
 import EletronicDocument from "@/entity/EletronicDocuments";
 import model, { getter } from "@/model/eletronic-documents-model"
 export default {
-    data: () => ({
-        title: "Cadastro de Documento",
-        showSignature: false,
-        values: {
-            types: [],
-        },
-        tooltipMessage: {
-            userAndGroup: "Mensagem para usuario e grupo<br><ul><li>Usuario</li><li>grupo</li></ul>"  
-        },
-        document: new EletronicDocument(),
-        sending: false
-    }),
+    data() {
+        return {
+            id: this.$route.params.id,
+            title: "Cadastro de Documento",
+            showSignature: false,
+            values: {
+                types: [],
+            },
+            tooltipMessage: {
+                userAndGroup: "Mensagem para usuario e grupo<br><ul><li>Usuario</li><li>grupo</li></ul>"  
+            },
+            document: new EletronicDocument(),
+            sending: false
+        }
+    },
     methods: {
+        loadValues() {
+            getter.getTypes().then(res => { this.values.types = res; })
+            if(this.id) {
+                getter.getEletronicDocumentById(this.id).then( res => { this.document = new EletronicDocument(res); })
+            }
+        },
         sendFile: (file, fileName, prefix) => model.doUploadFile(file, fileName, prefix),
         submit() {
             this.$refs.sign_document.show()
         },
         saveDraft() {
             this.sending = true
-            model.doInsert(this.document).then(res => {
-                this.sending = false
-            }).catch(err => {
-                this.sending = false
-            })
+            if(this.isEdit()) {
+                model.doUpdate(this.document).then(res => {
+                    this.sending = false
+                    this.$router.push({ name: 'documentos-eletronicos' })
+                }).catch(err => {
+                    this.sending = false
+                })
+            } else {
+                model.doInsert(this.document).then(res => {
+                    this.sending = false
+                    this.$router.push({ name: 'documentos-eletronicos' })
+                }).catch(err => {
+                    this.sending = false
+                })
+            }
         },
+        isEdit() {
+            return model.isEdit(this.id)
+        }
     },
-    mounted() { 
-        getter.getTypes().then(res => { this.values.types = res; })
-        
+    mounted() {
+        this.loadValues()
     },
     components: {
         'text-editor': TextEditor,

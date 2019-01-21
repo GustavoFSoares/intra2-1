@@ -1,5 +1,5 @@
 <template>
-    <modal ref="modal" :disabled="!anyOneBeCare" :title="title" submitlabel="Enviar">
+    <modal ref="modal" :disabled="!anyOneBeCare || sending" :submit_method="submit" :title="title" submitlabel="Enviar" @return="$router.push({ name: 'documentos-eletronicos' })">
         <div v-if="constructModal">
             <row>
                 
@@ -17,7 +17,7 @@
                 
             <row>
                 
-                <h3>Assinaturas de Responsável</h3>
+                <h3>Assinaturas dos Responsáveis</h3>
                 <div class="row">
 
                     <div class="col-md">
@@ -32,7 +32,6 @@
                             
                             <tbody>
                                 <tr v-for="(signature, index) in document.userList" :key="index">
-                                    
                                     <td> {{ signature.user.name }} </td>
                                     <td>
                                         <input type="checkbox" v-model="signature.bc">
@@ -58,6 +57,7 @@ import { Checkbox } from "@/components/shared/Form"
 import LoginModel from "@/model/login-model"
 import Modal from "@/components/shared/Modal"
 
+import model from "@/model/eletronic-documents-model";
 import SignatureForm from './SignatureForm.vue'
 import EletronicDocument from "@/entity/EletronicDocuments";
 export default {
@@ -65,8 +65,10 @@ export default {
         user: $session.get('user'),
         document: new EletronicDocument(),
         constructModal: false,
+        sending: false,
     }),
     props: {
+        id: { default: false },
         title: '',
         value: '',
     },
@@ -84,6 +86,25 @@ export default {
                 }
             })
         },
+        submit() {
+            this.sending = true
+            if(this.isEdit()) {
+                return model.doUpdate(this.document).then(res => {
+                    this.sending = false
+                }).catch(err => {
+                    this.sending = false
+                })
+            } else {
+                return model.doInsert(this.document).then(res => {
+                    this.sending = false
+                }).catch(err => {
+                    this.sending = false
+                })
+            }
+        },
+        isEdit() {
+            return model.isEdit(this.id)
+        }
     },
     computed: {
         anyOneBeCare() {

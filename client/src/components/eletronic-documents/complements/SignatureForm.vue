@@ -31,7 +31,7 @@ export default {
         loading: false,
     }),
     props: {
-        signed: { default: false, type: Boolean },
+        signed: '',
         user_id: { type: String },
     },
     methods: {
