@@ -37,7 +37,7 @@
                                         <input type="checkbox" v-model="signature.bc">
                                     </td>
                                     <td>
-                                        <signature-form :user_id="signature.user.id" :signed="signature.signed" @signed="doLoginCompation"/>
+                                        <signature-form :user_id="signature.user.id" :signed="signature.signed" @signed="hasLoginCompation"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -79,7 +79,7 @@ export default {
             this.constructModal = true
         },
         writerSigned(signed) { this.document.signed = signed.status },
-        doLoginCompation(signed) {
+        hasLoginCompation(signed) {
             this.document.userList.find(el => {
                 if(el.user.id == signed.id) {
                     el.signed = signed.status

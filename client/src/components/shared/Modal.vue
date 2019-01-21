@@ -31,6 +31,7 @@ export default {
         title: String,
         submitlabel: {type: String, default: 'Ok'},
         disabled: {type: Boolean, default: false},
+        submit_method: {type: Function}
     },
     data() {
         return {
@@ -39,8 +40,10 @@ export default {
     },
     methods: {
         send() {
-            this.$emit('return')
-            $(`#${this.id}`).modal('hide')
+            this.submit_method().then(res => {
+                $(`#${this.id}`).modal('hide')
+                this.$emit('return')
+            })
         },
         show() {
             $(`#${this.id}`).modal('show')
@@ -57,7 +60,6 @@ export default {
         } else {
             this.id = 'modal'
         }
-        
     }
 }
 </script>
