@@ -1,7 +1,7 @@
 <template>
     <div class="list-center mb-3 mt-3">
         <div v-for="s in status" :key="s.id" class="list bold">
-            <span class="text" v-bind:class="{ 'text-disabled' : actualStatus.id != s.id }"> 
+            <span class="text" v-bind:class="{ 'text-disabled' : actualStatusId != s.id }"> 
                 {{ s.name }}
             </span> <span class="bar text-disabled">/</span>
         </div>
@@ -17,14 +17,12 @@ export default {
         }
     },
     props: {
-        actualStatus: ''
+        actualStatusId: { default: '' }
     },
     mounted() {
         getter.getStatus().then(res => {
             this.status = res
         })
-        console.log(this.actualStatus);
-        
     }
 }
 </script>

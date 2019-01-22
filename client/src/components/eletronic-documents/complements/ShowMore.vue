@@ -1,7 +1,7 @@
 <template>
     <div v-if="document">
         
-        <actual-status :actualStatus="document.status"/>
+        <actual-status :actualStatusId="document.status.id"/>
         <row>
             <h3>{{ document.subject }}</h3>
         </row>
@@ -57,11 +57,6 @@ export default {
     },
     props: {
         document: false,
-    },
-    watch: {
-        document() {
-            console.log(this.document);
-        }
     },
     components: {
         'actual-status': ActualStatus,
