@@ -4,7 +4,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{title}}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle" v-html="title"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -40,10 +40,14 @@ export default {
     },
     methods: {
         send() {
-            this.submit_method().then(res => {
-                $(`#${this.id}`).modal('hide')
-                this.$emit('return')
-            })
+            if( this.submit_method ) {
+                this.submit_method().then(res => {
+                    $(`#${this.id}`).modal('hide')
+                    this.$emit('return')
+                })
+            } else {
+                this.close()
+            }
         },
         show() {
             $(`#${this.id}`).modal('show')
@@ -54,12 +58,7 @@ export default {
         }
     },
     created() {
-        let space = /\s/g;
-        if(this.title) {
-            this.id=this.title.replace(space, "")
-        } else {
-            this.id = 'modal'
-        }
+        this.id = this._uid
     }
 }
 </script>

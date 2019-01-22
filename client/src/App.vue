@@ -130,13 +130,16 @@ export default {
         margin-top: 10px;
     }
 
+    .bold {
+        font-weight: bold;
+    }
+
     .text-default {
         color: #2c3e50;
     }
 
     .text-disabled {
         color: rgba(105, 105, 105, 0.548);
-        font-weight: bold;
     }
 
     .btn-outline-warning:hover:not(:disabled)  {

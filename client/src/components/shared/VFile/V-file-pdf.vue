@@ -64,7 +64,7 @@
                 </a>
                 <div v-if="loadingFile">
                     <icon icon="spinner" size="2x" spin/>
-                    <div class="text-disabled">Procurando Documento...</div>
+                    <div class="text-disabled bold">Procurando Documento...</div>
                 </div>
             </rows>
         </div>

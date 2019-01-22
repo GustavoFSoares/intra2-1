@@ -1,6 +1,6 @@
 <template>
     <div>
-        <icon id="info-icon" icon="info-circle" class="float-right text-disabled" v-tooltip.top="{ 'html': tooltipId }"/>
+        <icon id="info-icon" icon="info-circle" class="float-right text-disabled bold" v-tooltip.top="{ 'html': tooltipId }"/>
         <div :id="tooltipId" v-html="message"> </div>
     </div>
 </template>

@@ -50,8 +50,8 @@ Vue.use(Tooltip);
 Vue.use(VeeValidate);
 
 window.globals = {
-    API_SERVER: `${window.location.protocol}//${window.location.host}:3001`,
-    SOCKET_SERVER: `${window.location.protocol}//${window.location.host}:3000`,
+    API_SERVER: `${window.location.protocol}//${window.location.hostname}:3001`,
+    SOCKET_SERVER: `${window.location.protocol}//${window.location.hostname}:3000`,
 }
 Vue.prototype.$globals = window.globals
 
