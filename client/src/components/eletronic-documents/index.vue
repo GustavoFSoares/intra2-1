@@ -11,7 +11,7 @@
             <input type="search" class="filter form-control" :disabled="!documents" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
         </div>
 
-        <big-table length="1180">
+        <big-table length="1180" class="table-hover">
 
             <thead>
                 <tr>
@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(document, index) in searchList" :key="document.id">
+                <tr @click="showMore(document)" v-for="(document, index) in searchList" :key="document.id" class="row-list">
                     <th>{{ document.id }}</th>
                     <td>{{ document.subject }}</td>
                     <td>{{ document.type.code }}</td>
@@ -46,12 +46,15 @@
                     </td>
                     <td>{{ document.c_modified.date | humanizeDate }}</td>
                     <td>
-                        <router-link :to='`documentos-eletronicos/edit/${document.id}`'>
+                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/detalhe/${document.id}`)">
+                            <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
+                        </a>
+                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/edit/${document.id}`)">
                             <icon icon="edit"/>
-                        </router-link>
-                        <router-link @click.native="remove(document.id, index)" to=''>
+                        </a>
+                        <a @click.stop.prevent="remove(document.id, index)" to=''>
                             <icon class="text-danger" icon="trash-alt"/>
-                        </router-link>
+                        </a>
                     </td>
 
                 </tr>
@@ -59,19 +62,31 @@
 
         </big-table>
         
+        <modal ref="modal" :title="`<b>Protocolo:</b> ${documentSelected.id}`">
+            <show-more :document="documentSelected"/>
+        </modal>
     </div>
 </template>
 
 <script>
 import BigTable from "@/components/shared/BigTable";
+import Modal from "@/components/shared/Modal";
+import ShowMore from "./complements/ShowMore";
 import { getter } from "@/model/eletronic-documents-model";
 
 export default {
     data: () => ({
         title: "Documentos Eletrônicos",
         documents: [],
-        filter: ''
+        documentSelected: false,
+        filter: '',
     }),
+    methods: {
+        showMore(document) {
+            this.documentSelected = document
+            this.$refs.modal.show()
+        }
+    },
     computed: {
         searchList() {
             if(this.filter) {
@@ -106,10 +121,14 @@ export default {
     },
     components: {
         'big-table': BigTable,
+        'modal': Modal,
+        'show-more': ShowMore,
     }
 }
 </script>
 
 <style scoped>
-
+    .row-list:hover {
+        cursor: pointer;
+    }
 </style>
