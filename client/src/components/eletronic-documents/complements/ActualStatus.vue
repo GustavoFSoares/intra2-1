@@ -1,7 +1,7 @@
 <template>
     <div class="list-center mb-3 mt-3">
         <div v-for="s in status" :key="s.id" class="list bold">
-            <span class="text" v-bind:class="{ 'text-disabled' : actualStatusId != s.id }"> 
+            <span class="text" v-bind:class="{ 'text-disabled' : id != s.id }"> 
                 {{ s.name }}
             </span> <span class="bar text-disabled">/</span>
         </div>
@@ -14,12 +14,29 @@ export default {
     data() {
         return {
             status: '',
+            id: '',
         }
     },
     props: {
         actualStatusId: { default: '' }
     },
+    watch: {
+        actualStatusId() {
+            return this.getId()
+        }
+    },
+    methods: {
+        getId() {
+            if(typeof this.actualStatusId == 'object') {
+                this.id = this.actualStatusId.id
+            } else {
+                this.id = this.actualStatusId
+            }
+            return this.id
+        }
+    },
     mounted() {
+        this.getId()
         getter.getStatus().then(res => {
             this.status = res
         })
