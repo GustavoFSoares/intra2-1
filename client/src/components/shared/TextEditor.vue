@@ -18,14 +18,20 @@ export default {
     watch: {
         value() {
             if( this.quill.root.innerHTML == "<p><br></p>" ) {
-                this.quill.root.innerHTML = this.value
+                this.quill.root.innerHTML = this.remove(this.value)
             }
         }
     },
     methods: {
         updateDate() {
-            this.$emit('input', this.quill.root.innerHTML )
+            this.$emit('input', this.add(this.quill.root.innerHTML) )
         },
+        add(txt) {
+            return "<span class='text-editor'>"+txt+"</span>"
+        },
+        remove(txt) {
+            return txt.replace("<span class='text-editor'>", "").replace("</span>", "")
+        }
     },
     mounted() {
         this.quill = new Quill('#text-js-editor', {
