@@ -30,5 +30,16 @@ export default {
                 result => { resolve(result) }
             )
         })
+    },
+    TextArea: (title = "TextArea") => {
+        return new Promise((resolve) => {
+            bootbox.prompt({
+                title: title,
+                inputType: 'textarea',
+                callback: result => {
+                    resolve(result)
+                }
+            });
+        })
     }
 }
