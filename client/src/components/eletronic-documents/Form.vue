@@ -48,40 +48,45 @@
                 </div>
             </rows>
             <rows >
-                <div id="editor-space">
-                    <box>
+                <box>
+                    <div id="editor-space">
                         <text-editor v-model="document.content" ref="txt"/>
-                    </box>
-                </div>
-            </rows>
-        </section>
+                    </div>
+                </box>
 
-        <section>
-            <v-multifile-pdf :id="document.id" :post_function="sendFile"/>
+                <box>
+                    <section>
+                        <v-multifile-pdf :id="document.id" :post_function="sendFile"/>
+                    </section>
+                </box>
+            </rows>
         </section>
 
         <div id="buttons">
             <row>
-                <button v-if="!document.draft" class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="submit()" :disabled="sending">
-                    Registrar Documento
-                </button>
-                <button v-else class="btn btn-outline-warning btn-lg" id="submit-button" type="button" @click="saveDraft()" :disabled="sending">
-                    Salvar Rascunho
-                </button>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
+                <button class="btn btn-outline-warning btn-lg" id="submit-button" type="button" @click="saveDraft()" :disabled="sending">
+                    Salvar Rascunho
+                </button>
+                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="openModal()" :disabled="sending">
+                    Salvar e Enviar
+                </button>
             </row>
         </div>
         
-        <sign-document :id="id" v-model="document" title="Assinar Documento" ref="sign_document"/>
+        <modal ref="modal" :disabled="sending || !anyOneBeCare" :submit_method="submit" title="Assinatura de Documento" submitlabel="Enviar" @return="$router.push({ name: 'documentos-eletronicos' })">
+            <sign-document :id="id" v-model="document" title="Assinar Documento" ref="sign_document" :show="constructModal" @anyOneBeCare="hasAnyOneBeCare"/>
+        </modal>
     </div>
 </template>
 
 <script>
+import Modal from "@/components/shared/Modal"
 import UserVisitCard from "@/components/shared/UserVisitcard.vue"
 import TextEditor from '@/components/shared/TextEditor.vue'
-import Vmfilefdf from '@/components/shared/VFile/V-multifile-pdf.vue'
+import VmfilePdf from '@/components/shared/VFile/V-multifile-pdf.vue'
 import AddAndRemoveUsers from './complements/AddAndRemoveUsers.vue'
 import SignDocument from './complements/SignDocument.vue'
 import AddAndRemoveGroups from '@/components/shared/AddAndRemove/AddAndRemoveGroups.vue'
@@ -101,7 +106,9 @@ export default {
                 userAndGroup: "Mensagem para usuario e grupo<br><ul><li>Usuario</li><li>grupo</li></ul>"  
             },
             document: new EletronicDocument(),
-            sending: false
+            sending: false,
+            constructModal: false,
+            anyOneBeCare: false,
         }
     },
     methods: {
@@ -112,29 +119,36 @@ export default {
             }
         },
         sendFile: (file, fileName, prefix) => model.doUploadFile(file, fileName, prefix),
-        submit() {
-            this.$refs.sign_document.show()
+        openModal() {
+            this.document.draft = false
+            this.constructModal = true
+            this.$refs.modal.show()
         },
-        saveDraft() {
+        submit() {
             this.sending = true
             if(this.isEdit()) {
-                model.doUpdate(this.document).then(res => {
+                return model.doUpdate(this.document).then(res => {
                     this.sending = false
-                    this.$router.push({ name: 'documentos-eletronicos' })
                 }).catch(err => {
                     this.sending = false
                 })
             } else {
-                model.doInsert(this.document).then(res => {
+                return model.doInsert(this.document).then(res => {
                     this.sending = false
-                    this.$router.push({ name: 'documentos-eletronicos' })
                 }).catch(err => {
                     this.sending = false
                 })
             }
         },
+        saveDraft() {
+            this.document.draft = true
+            this.submit()
+        },
         isEdit() {
             return model.isEdit(this.id)
+        },
+        hasAnyOneBeCare(val) {
+            this.anyOneBeCare = val
         }
     },
     mounted() {
@@ -142,11 +156,12 @@ export default {
     },
     components: {
         'text-editor': TextEditor,
-        'v-multifile-pdf': Vmfilefdf,
+        'v-multifile-pdf': VmfilePdf,
         'visit-card': UserVisitCard,
         'add-and-remove-users': AddAndRemoveUsers,
         'add-and-remove-groups': AddAndRemoveGroups,
         'sign-document': SignDocument,
+        'modal': Modal,
     }
 }
 </script>
