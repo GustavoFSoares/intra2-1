@@ -21,6 +21,7 @@ import 'bootstrap/dist/js/bootstrap.js'
 import 'font-awesome/css/font-awesome.css'
 import 'vue-directive-tooltip/css/index.css';
 import '@/../static/directives-styles/VTooltip.css';
+import '@/../static/default-styles/TextEditor.styl'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
