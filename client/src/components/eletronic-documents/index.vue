@@ -46,13 +46,13 @@
                     </td>
                     <td>{{ document.c_modified.date | humanizeDate }}</td>
                     <td>
-                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/detalhe/${document.id}`)">
+                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/detalhe/${document.id}`)" v-if="document.status.level >= 1">
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
                         </a>
-                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/edit/${document.id}`)">
+                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/edit/${document.id}`)" v-if="document.status.level == 0">
                             <icon icon="edit"/>
                         </a>
-                        <a @click.stop.prevent="remove(document.id, index)" to=''>
+                        <a @click.stop.prevent="remove(document.id, index)" to='' v-if="document.status.level == 0">
                             <icon class="text-danger" icon="trash-alt"/>
                         </a>
                     </td>

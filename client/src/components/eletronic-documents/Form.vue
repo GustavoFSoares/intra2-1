@@ -20,7 +20,7 @@
                                 <input class="form-control" v-model="document.subject" type="text">
                             </row>
 
-                            <row label='Tipo' class="col-md-9">
+                            <row label='Tipo'>
                                 <v-select label="name" v-model="document.type" :options="values.types"></v-select>
                             </row>
 
@@ -53,7 +53,7 @@
             </rows>
         </section>
 
-        <div id="buttons">
+        <div id="buttons" v-if="!block">
             <row>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos'}" tag="button" :disabled="sending">
                     Voltar
@@ -67,7 +67,7 @@
             </row>
         </div>
         
-        <modal ref="modal" :disabled="sending || !anyOneBeCare" :submit_method="submit" title="Assinatura de Documento" submitlabel="Enviar" @return="$router.push({ name: 'documentos-eletronicos' })">
+        <modal ref="modal" :disabled="sending || !anyOneBeCare" :submit_method="submit" title="Assinatura de Documento" submitlabel="Enviar" >
             <sign-document :id="id" v-model="document" title="Assinar Documento" ref="sign_document" :show="constructModal" @anyOneBeCare="hasAnyOneBeCare"/>
         </modal>
     </div>
@@ -100,13 +100,20 @@ export default {
             sending: false,
             constructModal: false,
             anyOneBeCare: false,
+            block: false,
         }
     },
     methods: {
         loadValues() {
             getter.getTypes().then(res => { this.values.types = res; })
             if(this.id) {
-                getter.getEletronicDocumentById(this.id).then( res => { this.document = new EletronicDocument(res); })
+                getter.getEletronicDocumentById(this.id).then( res => { 
+                    if(res.status.level <= 1) {
+                        this.document = new EletronicDocument(res); 
+                    } else {
+                        this.block = true
+                    }
+                })
             }
         },
         sendFile: (file, fileName, prefix) => model.doUploadFile(file, fileName, prefix),
@@ -120,12 +127,15 @@ export default {
             if(this.isEdit()) {
                 return model.doUpdate(this.document).then(res => {
                     this.sending = false
+                    this.$refs.modal.close()
+                    this.$router.push({ name: 'documentos-eletronicos' })
                 }).catch(err => {
                     this.sending = false
                 })
             } else {
                 return model.doInsert(this.document).then(res => {
                     this.sending = false
+                    this.$router.push({ name: 'documentos-eletronicos' })
                 }).catch(err => {
                     this.sending = false
                 })

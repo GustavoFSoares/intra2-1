@@ -46,7 +46,7 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         
         $this->makeLog($values['document_id'], $values['agree'], $values['message']);
 
-        return $res->withJson($entity);
+        return $res->withJson(true);
     }
 
     public function makeLog($id, $agree, $message) {

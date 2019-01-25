@@ -73,7 +73,6 @@ export default {
                     this.document = new EletronicDocument(res); 
                     this.title += " - " + this.document.type.name
                     this.canShowSignature = true
-                    console.log(res);
                 })
             }
         },
