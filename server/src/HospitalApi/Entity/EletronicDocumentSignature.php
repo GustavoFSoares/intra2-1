@@ -32,6 +32,11 @@ class EletronicDocumentSignature extends EntityAbstract
      * @var Boolean @Column(name="assinatura", type="boolean", options={ "default": false })
      */
     protected $signed;
+    
+    /**
+     * @var Boolean @Column(name="concordar", type="boolean", nullable=true, options={ "default": null })
+     */
+    protected $agree;
 
     /**
      * @ManyToOne(targetEntity="EletronicDocument", inversedBy="userList", cascade={"persist", "remove"})
@@ -39,12 +44,13 @@ class EletronicDocumentSignature extends EntityAbstract
      */
     private $_document;
 
-    public function __construct($id = 0, $user = null, $bc = false, $signed = false, $_document = null) {
+    public function __construct($id = 0, $user = null, $bc = false, $signed = false, $agree = null,$_document = null) {
         parent::__construct();
         $this->id = $id;
         $this->user = $this->setUser($user);
         $this->bc = $bc;
         $this->signed = $signed;
+        $this->agree = $agree;
         $this->_document = $_document;
     }
 
@@ -70,7 +76,7 @@ class EletronicDocumentSignature extends EntityAbstract
         return $this->bc;
     }
     public function isBc() {
-        $this->getBc();
+        return $this->getBc();
     }
     public function setBc($bc) {
         $this->bc =  $bc ? true : false;
@@ -82,10 +88,22 @@ class EletronicDocumentSignature extends EntityAbstract
         return $this->signed;
     }
     public function isSigned() {
-        $this->getSigned();
+        return $this->getSigned();
     }
     public function setSigned($signed) {
         $this->signed =  $signed ? true : false;
+        
+        return $this;
+    }
+    
+    public function getAgree() {
+        return $this->agree;
+    }
+    public function isAgree() {
+        return $this->getAgree();
+    }
+    public function setAgree($agree) {
+        $this->agree =  $agree ? true : false;
         
         return $this;
     }

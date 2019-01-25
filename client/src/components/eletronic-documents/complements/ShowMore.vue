@@ -19,7 +19,7 @@
                         <th> Assinado </th>
                     </thead>
                     <tbody>
-                        <tr v-for="signature in document.userList" :key="signature.id">
+                        <tr v-for="signature in document.signatureList" :key="signature.id">
                             <td>{{ signature.user.name }}</td>
                             <td>
                                 <span v-if="signature.bc" class="text-success bold"> SIM </span>

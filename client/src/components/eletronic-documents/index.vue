@@ -35,7 +35,7 @@
                     <td>{{ document.user.name.substr(0, 10) }}...</td>
                     <td>{{ document.status.name }}</td>
                     <td>
-                        <div v-for="signature in document.userList" :key="signature.id" v-if="signature.bc">
+                        <div v-for="signature in document.signatureList" :key="signature.id" v-if="signature.bc">
                             <div class="text-left"><icon icon="angle-double-right"/>
                                 <i>{{ signature.user.name.substr(0, 10) }}...</i> - <b>A/C</b>
                             </div>

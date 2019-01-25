@@ -20,25 +20,16 @@
                                 <input class="form-control" v-model="document.subject" type="text">
                             </row>
 
-                            <div class='row'>
-                                <rows label='Tipo' class="col-md-9">
-                                    <v-select label="name" v-model="document.type" :options="values.types"></v-select>
-                                </rows>
-                                <rows>
-                                    <label></label>
-                                    <div class="form-check">
-                                        <input type="checkbox" v-model="document.draft" class="form-check-input" id="rascunho">
-                                        <label class="form-check-label" for="rascunho">Rascunho</label>
-                                    </div>
-                                </rows>
-                            </div>
+                            <row label='Tipo' class="col-md-9">
+                                <v-select label="name" v-model="document.type" :options="values.types"></v-select>
+                            </row>
 
                         </box>
 
                         <row>
                             <box>
                                 <info-icon :message="tooltipMessage.userAndGroup"/>
-                                <add-and-remove-users v-model="document.userList"/>
+                                <add-and-remove-users v-model="document.signatureList"/>
                                 <hr>
                                 <add-and-remove-groups v-model="document.groupList"/>
                             </box>

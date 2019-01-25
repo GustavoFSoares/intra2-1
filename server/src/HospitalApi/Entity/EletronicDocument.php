@@ -34,7 +34,7 @@ class EletronicDocument extends SoftdeleteAbstract
      * @OrderBy({ "user" = "ASC" })
      * @OneToMany(targetEntity="EletronicDocumentSignature", mappedBy="_document", cascade={"persist", "remove"})
      */
-    protected $userList;
+    protected $signatureList;
 
     /**
      * @ManyToOne(targetEntity="EletronicDocumentStatus")
@@ -48,7 +48,7 @@ class EletronicDocument extends SoftdeleteAbstract
     protected $subject;
     
     /**
-     * @var String @Column(name="conteudo", type="text", length=255)
+     * @var @Column(name="conteudo", type="text", length=65532)
      */
     protected $content;
 
@@ -56,6 +56,11 @@ class EletronicDocument extends SoftdeleteAbstract
      * @var Boolean @Column(name="rascunho", type="boolean", options={ "default": true })
      */
     protected $draft;
+    
+    /**
+     * @var Boolean @Column(name="arquivado", type="boolean", options={ "default": false })
+     */
+    protected $archived;
     
     /**
      * @var Boolean @Column(name="assinado", type="boolean", options={ "default": false })
@@ -72,8 +77,9 @@ class EletronicDocument extends SoftdeleteAbstract
         $this->user = '';
         $this->type = '';
         $this->status = null;
-        $this->userList = new ArrayCollection();
+        $this->signatureList = new ArrayCollection();
         $this->draft = true;
+        $this->archived = false;
         $this->signed = false;
         $this->subject = null;
         $this->content = '';
@@ -117,27 +123,27 @@ class EletronicDocument extends SoftdeleteAbstract
         return $this;
     }
 
-    public function getUserList() {
-        return $this->userList;
+    public function getSignatureList() {
+        return $this->signatureList;
     }
-    public function addUserOnList($user) {
-        $this->userList->add($user);
+    public function addSignatureOnList($signature) {
+        $this->signatureList->add($signature);
 
         return $this;
     }
-    public function removeUserOnList($user) {
-        $this->userList->removeElement($userserList);
+    public function removeSignatureOnList($signature) {
+        $this->signatureList->removeElement($signature);
         
         return $this;
     }
-    public function setUserList($userList) {
-        $this->userList = new ArrayCollection($userList);
+    public function setSignatureList($signatureList) {
+        $this->signatureList = new ArrayCollection($signatureList);
 
         return $this;
     }
     
-    public function setGroupList($userList) {
-        // $this->userList = new ArrayCollection($userList);
+    public function setGroupList($signatureList) {
+        // $this->signatureList = new ArrayCollection($signatureList);
 
         return $this;
     }
@@ -150,6 +156,18 @@ class EletronicDocument extends SoftdeleteAbstract
     }
     public function setDraft($draft) {
         $this->draft = $draft ? true : false;
+        
+        return $this;
+    }
+    
+    public function getArchived() {
+        return $this->archived;
+    }
+    public function isArchived() {
+        return $this->getArchived();
+    }
+    public function setArchived($archived) {
+        $this->archived = $archived ? true : false;
         
         return $this;
     }

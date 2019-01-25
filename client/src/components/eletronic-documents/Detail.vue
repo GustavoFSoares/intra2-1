@@ -78,7 +78,7 @@ export default {
             }
         },
         updateSignature(data) {
-            let signature = this.document.userList.find(signature => {
+            let signature = this.document.signatureList.find(signature => {
                 return signature.user.id == data.id
             })
             signature.signed = data.signed;
