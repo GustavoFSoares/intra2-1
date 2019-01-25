@@ -19,6 +19,10 @@ export default {
         window.httpMessage = { show: true, success: `Documento <b>#${id}</b> Atualizado`, error: "Documento <b>não Atualizado</b>" }
         return http.put(`/eletronic-documents/${id}`, data).then(res => res.data)
     },
+    signDocument: (id, type, data) => {
+        window.httpMessage = { show: true, success: `Documento <b>#${id}</b> Assinado`, error: "Documento <b>não Assinado</b>" }
+        return http.put(`/eletronic-documents/sign/${type}/${id}`, data).then(res => res.data)
+    },
 
     delete: (id) => {
         window.httpMessage = { show: true, success: `Documento <b>#${id}</b> Excluída`, error: "Documento <b>não Excluída</b>" }

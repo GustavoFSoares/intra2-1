@@ -30,16 +30,16 @@
         <row>
             <h3>Assinar Documento:</h3>
             
-            <table v-if="document.userList" class="table table-striped">
+            <table v-if="document.signatureList" class="table table-striped">
                 <thead>
                     <th>Nome</th>
                     <th>A/C</th>
                     <th>Assinatura Eletrônica</th>
-                    <th>Situação</th>
+                    <th class="text-center">Situação</th>
                 </thead>
                         
                 <tbody>
-                    <tr v-for="(signature, index) in document.userList" :key="index">
+                    <tr v-for="(signature, index) in document.signatureList" :key="index">
                         <td> {{ signature.user.name }} </td>
                         <td>
                             <input type="checkbox" v-model="signature.bc" :disabled="user.id != document.user.id" @change="anyOneBeCare">
@@ -47,10 +47,10 @@
                         <td>
                             <signature-form :user_id="signature.user.id" :signed="signature.signed" @signed="updateSignatureForUserList"/>
                         </td>
-                        <td>
+                        <td class="text-center">
                             <span class="text-success bold" v-if="signature.agree"> OK </span>
-                            <span class="text-danger bold" v-else-if="signature.agree == false"> NEGADO </span>
-                            <span class="ml-3" v-else > - </span>
+                            <span class="ml-3" v-else-if="signature.agree === ''" > - </span>
+                            <span class="text-danger bold" v-else> NEGADO </span>
                         </td>
                     </tr>
                 </tbody>
@@ -88,11 +88,21 @@ export default {
     },
     methods: {
         updateSignatureForDocument(signed) { 
+            model.signDocumentLikeCreator(this.id, { 
+                'user_id': this.document.user.id, 'document_id': this.id, 'agree': signed, 
+            }).catch(err => {
+                setTimeout(() => { this.$router.go() }, 2000);
+            })
+            
             this.document.signed = signed
-            console.log('make log - CHEFE');
         },
         updateSignatureForUserList(signature) { 
-            return this.document.userList.find(el => {
+            Object.assign(signature, { 'document_id': this.id })
+            model.signDocumentLikeUser(this.id, signature).catch(err => {
+                setTimeout(() => { this.$router.go() }, 2000);
+            })
+
+            return this.document.signatureList.find(el => {
                 if(el.user.id == signature.user_id) {
                     Object.assign(el, signature)
                 }
@@ -116,7 +126,7 @@ export default {
             })
         },
         anyOneBeCare() {
-            let exist = this.document.userList.find(el => {
+            let exist = this.document.signatureList.find(el => {
                 if(el.bc) {
                     return true
                 }

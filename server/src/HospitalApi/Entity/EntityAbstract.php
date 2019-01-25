@@ -75,9 +75,9 @@ abstract class EntityAbstract extends BasicApplicationAbstract
      */
     public function toArray() {
         $obj;
-        foreach ($this->getClassVars() as $var => $value) {
-            if($var != 'lazyPropertiesDefaults')
-                $obj[$var] = $this->$var ? $this->$var : "";
+        foreach ($this->getPublicVars() as $var => $value) {
+            if($var != 'lazyPropertiesDefaults') 
+                $obj[$var] = $this->$var || $this->$var === false ? $this->$var : "";
         }
         return $obj;
     }

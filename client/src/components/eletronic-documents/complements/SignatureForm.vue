@@ -62,8 +62,8 @@ export default {
             this.show.button = false
             this.show.password = true
         },
-        makeReturn(agree) {
-            this.$emit('signed', { user_id: this.user.id, signed: true , agree: agree})
+        makeReturn(agree, message = '') {
+            this.$emit('signed', { user_id: this.user.id, signed: true , agree: agree, message: message })
         },
         doLogin() {
             this.loading = true
@@ -71,16 +71,13 @@ export default {
                 if(res.status) {
                     
                     if(this.agree) {
-                        console.log('make log - SIM');
                         this.makeReturn(this.agree)
                     } else {
                         Alert.TextArea("Motivo de não concordar").then( res => {
                             if(res == null || res == 'undefined') {
                                 this.showButton()
                             } else {
-                                alert(res)
-                                this.makeReturn(this.agree)
-                                console.log('make log - NAO');
+                                this.makeReturn(this.agree, res)
                             }
                         })
                     }

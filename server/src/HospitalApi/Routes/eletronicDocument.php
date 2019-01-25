@@ -23,11 +23,14 @@ $app->group('/eletronic-documents/type', function() {
 });
 
 $app->group('/eletronic-documents', function() {
+        $this->get('/file/[{id}/{prefix}]', "HospitalApi\Controller\EletronicDocumentController:getFileByPrefixAction", function(Request $req, Response $res, array $args) { });
         $this->get('[/{params:.*}]', "HospitalApi\Controller\EletronicDocumentController:get", function(Request $req, Response $res, array $args) { });
         
         $this->post('/', "HospitalApi\Controller\EletronicDocumentController:insert", function(Request $req, Response $res, array $args) { });
-
+        $this->post('/file/[{prefix}/{name}]', "HospitalApi\Controller\EletronicDocumentController:uploadFileAction", function (Request $req, Response $res, array $args) { });
+        
         $this->put('/{id}', "HospitalApi\Controller\EletronicDocumentController:update", function(Request $req, Response $res, array $args) { });
+        $this->put('/sign/{type}/{id}', "HospitalApi\Controller\EletronicDocumentController:signDocumentAction", function(Request $req, Response $res, array $args) { });
         
         $this->delete('/{id}', "HospitalApi\Controller\EletronicDocumentController:delete", function(Request $req, Response $res, array $args) { });
 }); 
