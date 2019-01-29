@@ -1,6 +1,6 @@
 <template>
     <div v-if="show">
-        <row>
+        <row v-if="$route.params.id">
             <div class='row' v-if="document.user.id == user.id || document.signed" >
                 <rows class="col-md">
                     {{ document.user.name }}
@@ -48,9 +48,9 @@
                             <signature-form :user_id="signature.user.id" :signed="signature.signed" @signed="updateSignatureForUserList"/>
                         </td>
                         <td class="text-center">
-                            <span class="text-success bold" v-if="signature.agree"> OK </span>
-                            <span class="ml-3" v-else-if="signature.agree === ''" > - </span>
-                            <span class="text-danger bold" v-else> NEGADO </span>
+                            <span class="text-success bold" v-if="signature.agree === true"> OK </span>
+                            <span class="ml-3" v-else-if="signature.agree == null || signature.agree == ''"> - </span>
+                            <span class="text-danger bold" v-else-if="signature.agree === false"> NEGADO </span>
                         </td>
                     </tr>
                 </tbody>

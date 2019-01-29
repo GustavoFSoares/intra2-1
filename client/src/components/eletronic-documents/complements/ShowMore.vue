@@ -26,11 +26,9 @@
                             </td>
                             <td>
                                 <div v-if="signature.signed" class="row bold">
-                                    <icon icon="check" class="text-success col-md-2"/>
                                     <span class="text-success col-md"> ASSINADO </span>
                                 </div>
                                 <div v-else class="row bold">
-                                    <icon icon="times" class="text-danger col-md-2"/>
                                     <span class="text-danger col-md"> AGUARDANDO </span>
                                 </div>
                             </td>
