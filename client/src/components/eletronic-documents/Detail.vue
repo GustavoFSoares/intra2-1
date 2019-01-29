@@ -71,7 +71,7 @@ export default {
             if(this.id) {
                 getter.getEletronicDocumentById(this.id).then( res => { 
                     this.document = new EletronicDocument(res); 
-                    this.title += " - " + this.document.type.name
+                    this.title = this.document.type.name
                     this.canShowSignature = true
                 })
             }

@@ -5,6 +5,7 @@ export default class EletronicDocumentSignature {
         this.user = eletronicDocumentSignature.user ? eletronicDocumentSignature.user : new User()
         this.signed = eletronicDocumentSignature.signed ? true : false
         this.agree = eletronicDocumentSignature.agree
+        this.order = eletronicDocumentSignature.order
         this.bc = eletronicDocumentSignature.bc ? true : false
     }
 }
