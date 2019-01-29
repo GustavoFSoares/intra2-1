@@ -34,23 +34,24 @@ class EletronicDocumentSignature extends EntityAbstract
     protected $signed;
     
     /**
-     * @var Boolean @Column(name="concordar", type="boolean", nullable=true, options={ "default": null })
+     * @var Boolean @Column(name="posicao", type="integer", nullable=true, options={ "default": null })
      */
-    protected $agree;
+    protected $order;
 
     /**
-     * @ManyToOne(targetEntity="EletronicDocument", inversedBy="userList", cascade={"persist", "remove"})
-     * @JoinColumn(name="documento_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ManyToOne(targetEntity="EletronicDocument", inversedBy="signatureList", cascade={ "persist" })
+     * @JoinColumn(name="documento_id", referencedColumnName="id")
      */
     private $_document;
 
-    public function __construct($id = 0, $user = null, $bc = false, $signed = false, $agree = null,$_document = null) {
+    public function __construct($id = 0, $user = null, $bc = false, $signed = false, $agree = null,$_document = null, $order = null) {
         parent::__construct();
         $this->id = $id;
         $this->user = $this->setUser($user);
         $this->bc = $bc;
         $this->signed = $signed;
         $this->agree = $agree;
+        $this->order = $order;
         $this->_document = $_document;
     }
 
@@ -104,6 +105,15 @@ class EletronicDocumentSignature extends EntityAbstract
     }
     public function setAgree($agree) {
         $this->agree =  $agree ? true : false;
+        
+        return $this;
+    }
+    
+    public function getOrder() {
+        return $this->order;
+    }
+    public function setOrder($order) {
+        $this->order =  (int)$order;
         
         return $this;
     }

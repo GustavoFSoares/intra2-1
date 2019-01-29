@@ -92,6 +92,45 @@ abstract class EntityAbstract extends BasicApplicationAbstract
         return $date;
     }
 
+    public function buildList($entityList, $values) {
+		if( empty($values) ) {
+			$dataReturn = $entityList->clear();
+		} else if($entityList->isEmpty()) {
+			$dataReturn = new \Doctrine\Common\Collections\ArrayCollection($values);
+		} else {
+            $collection = new \Doctrine\Common\Collections\ArrayCollection($entityList->toArray());
+            $values = new \Doctrine\Common\Collections\ArrayCollection($values);
+            foreach ($values as $row) {
+                foreach ($collection as $key => $collectionRow) {
+                    if($collectionRow->getId() == $row->getId()) {
+                        $collection->remove($key);
+                        $exist[] = $row->getId();
+                    }
+                }
+            }
+
+            // Remove not in list
+            $entityList->map(function(&$entry) use ($exist, $entityList, $row)  {
+                if( !in_array($entry->getId(), $exist) ) {
+                    $entityList->removeElement($entry);
+                } else {
+                    $entry = $row;
+                }
+            });
+            
+            // Add for in list
+            $values->map(function($entry) use ($exist, $entityList)  {
+                if( !in_array($entry->getId(), $exist) ) {
+                    $entityList->add($entry);
+                }
+            });
+            
+            return $entityList;
+        }
+
+		return $dataReturn;
+	}
+
     /**
      * @method _formatDate()
      * Recebe data no formato d/m/Y H:m:s e

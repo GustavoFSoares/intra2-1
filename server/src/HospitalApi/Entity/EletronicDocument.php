@@ -31,8 +31,8 @@ class EletronicDocument extends SoftdeleteAbstract
     protected $type;
 
     /**
-     * @OrderBy({ "user" = "ASC" })
-     * @OneToMany(targetEntity="EletronicDocumentSignature", mappedBy="_document", cascade={"persist", "remove"})
+     * @OrderBy({ "order" = "ASC" })
+     * @OneToMany(targetEntity="EletronicDocumentSignature", mappedBy="_document", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $signatureList;
 
@@ -137,7 +137,12 @@ class EletronicDocument extends SoftdeleteAbstract
         return $this;
     }
     public function setSignatureList($signatureList) {
-        $this->signatureList = new ArrayCollection($signatureList);
+        $this->signatureList = $this->buildList($this->getSignatureList(), $signatureList);
+
+        return $this;
+    }
+    public function clearSignatureList() {
+        $this->signatureList->clear();
 
         return $this;
     }
