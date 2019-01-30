@@ -1,4 +1,5 @@
 import service from "@/services/eletronic-documents"
+import SignatureService from "@/services/eletronic-documents/signature"
 import StatusService from "@/services/eletronic-documents/status"
 import TypeService from "@/services/eletronic-documents/type"
 
@@ -11,6 +12,8 @@ export const getter = {
 
     getTypes: () => TypeService.getTypes(),
     getTypeById: (id) => TypeService.getTypes({ 'id': id }),
+
+    getUsersForDocumentId: (id) => SignatureService.getUsersForDocument(id),
 }
 
 const model = {

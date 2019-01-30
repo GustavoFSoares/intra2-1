@@ -22,6 +22,16 @@ $app->group('/eletronic-documents/type', function() {
         $this->delete('/{id}', "HospitalApi\Controller\EletronicDocumentTypeController:delete", function(Request $req, Response $res, array $args) { });
 });
 
+$app->group('/eletronic-documents/signature', function() {
+        $this->get('/users-of-document/{document-id}', "HospitalApi\Controller\EletronicDocumentSignatureController:getUserForDocumentAction", function(Request $req, Response $res, array $args) { });
+        
+        // $this->post('/', "HospitalApi\Controller\EletronicDocumentSignatureController:insert", function(Request $req, Response $res, array $args) { });
+        
+        // $this->put('/{id}', "HospitalApi\Controller\EletronicDocumentSignatureController:update", function(Request $req, Response $res, array $args) { });
+        
+        // $this->delete('/{id}', "HospitalApi\Controller\EletronicDocumentSignatureController:delete", function(Request $req, Response $res, array $args) { });
+});
+
 $app->group('/eletronic-documents', function() {
         $this->get('/file/[{id}/{prefix}]', "HospitalApi\Controller\EletronicDocumentController:getFileByPrefixAction", function(Request $req, Response $res, array $args) { });
         $this->get('[/{params:.*}]', "HospitalApi\Controller\EletronicDocumentController:get", function(Request $req, Response $res, array $args) { });
