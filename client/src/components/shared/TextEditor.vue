@@ -16,9 +16,11 @@ export default {
         quill: {}
     }),
     watch: {
-        value() {
+        value(val) {
             if( this.quill.root.innerHTML == "<p><br></p>" ) {
                 this.quill.root.innerHTML = this.remove(this.value)
+            } else if(val == "<p></p>") {
+                this.quill.root.innerHTML = this.value
             }
         }
     },
@@ -61,7 +63,7 @@ export default {
                 ],
             },
         });
-        this.quill.root.innerHTML =this.value
+        this.quill.root.innerHTML = this.value
         this.quill.on('text-change', () => {
             this.updateDate()
         });

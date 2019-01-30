@@ -82,7 +82,6 @@ export default {
             })
             signature.signed = data.signed;
             signature.status = data.status;
-            
         }
     },
     components: {
