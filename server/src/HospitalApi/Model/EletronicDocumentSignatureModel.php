@@ -40,4 +40,17 @@ class EletronicDocumentSignatureModel extends ModelAbstract
         return $signatures;
     }
 
+    public function getNextUserToSign($documentId) {
+        $select = $this->em->createQueryBuilder();
+        $select->select('u')
+            ->from($this->getEntityPath(), 's')
+            ->innerJoin('HospitalApi\Entity\User', 'u', 'WITH', 's.user = u')
+            ->where('s._document = :documentId')
+            ->setParameter('documentId', $documentId)
+            ->andWhere('s.signed = 0')
+            ->setMaxResults('1')
+            ->orderBy('s.order', 'ASC');
+        return $select->getQuery()->getOneOrNullResult();
+    }
+
 }

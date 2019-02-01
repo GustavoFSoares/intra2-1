@@ -24,6 +24,7 @@ $app->group('/eletronic-documents/type', function() {
 
 $app->group('/eletronic-documents/signature', function() {
         $this->get('/users-of-document/{document-id}', "HospitalApi\Controller\EletronicDocumentSignatureController:getUserForDocumentAction", function(Request $req, Response $res, array $args) { });
+        $this->get('/next-signature/{document-id}', "HospitalApi\Controller\EletronicDocumentSignatureController:getNextUserToSignAction", function(Request $req, Response $res, array $args) { });
         
         // $this->post('/', "HospitalApi\Controller\EletronicDocumentSignatureController:insert", function(Request $req, Response $res, array $args) { });
         

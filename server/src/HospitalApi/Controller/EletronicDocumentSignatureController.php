@@ -20,4 +20,12 @@ class EletronicDocumentSignatureController extends ControllerAbstractLongEntity
         
         return $res->withJson( $data );
     }
+
+    public function getNextUserToSignAction($req, $res, $args) {
+        $userCollection = $this->getModel()->getNextUserToSign($args['document-id']);
+        
+        $user = $this->translateCollection($userCollection);
+        return $res->withJson($user);
+    }
+
 }
