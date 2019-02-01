@@ -41,6 +41,8 @@ $app->group('/eletronic-documents', function() {
         
         $this->put('/{id}', "HospitalApi\Controller\EletronicDocumentController:update", function(Request $req, Response $res, array $args) { });
         $this->put('/sign/{type}/{id}', "HospitalApi\Controller\EletronicDocumentController:signDocumentAction", function(Request $req, Response $res, array $args) { });
+        $this->put('/amendment-update/{id}', "HospitalApi\Controller\EletronicDocumentController:updateAmendmentAction", function(Request $req, Response $res, array $args) { });
+        
         
         $this->delete('/{id}', "HospitalApi\Controller\EletronicDocumentController:delete", function(Request $req, Response $res, array $args) { });
 }); 

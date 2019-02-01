@@ -35,6 +35,11 @@ class EletronicDocument extends SoftdeleteAbstract
      * @OneToMany(targetEntity="EletronicDocumentSignature", mappedBy="_document", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $signatureList;
+   
+    /**
+     * @OneToMany(targetEntity="EletronicDocumentAmendment", mappedBy="_document", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $amendmentList;
 
     /**
      * @ManyToOne(targetEntity="EletronicDocumentStatus")
@@ -78,6 +83,7 @@ class EletronicDocument extends SoftdeleteAbstract
         $this->type = '';
         $this->status = null;
         $this->signatureList = new ArrayCollection();
+        $this->amendmentList = new ArrayCollection();
         $this->draft = true;
         $this->archived = false;
         $this->signed = false;
@@ -123,6 +129,30 @@ class EletronicDocument extends SoftdeleteAbstract
         return $this;
     }
 
+    public function getAmendmentList() {
+        return $this->amendmentList;
+    }
+    public function addAmendmentOnList($amendment) {
+        $this->amendmentList->add($amendment);
+
+        return $this;
+    }
+    public function removeAmendmentListOnList($amendmentList) {
+        $this->amendmentList->removeElement($amendmentList);
+        
+        return $this;
+    }
+    public function setAmendmentList($amendmentList) {
+        $this->amendmentList = $this->buildList($this->getAmendmentList(), $amendmentList);
+
+        return $this;
+    }
+    public function clearAmendmentList() {
+        $this->amendmentList->clear();
+
+        return $this;
+    }
+    
     public function getSignatureList() {
         return $this->signatureList;
     }

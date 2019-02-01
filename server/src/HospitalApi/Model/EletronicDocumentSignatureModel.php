@@ -27,4 +27,17 @@ class EletronicDocumentSignatureModel extends ModelAbstract
         return $select->getQuery()->getResult();
     }
 
+    public function getSignaturesByDocumentIdAndUsersId($documentId, Array $users) {
+        $search = '';
+        foreach ($users as $user) {
+            $search[] = $user['id'];
+        }
+
+        $signatures = $this->getRepository()->findBy(['_document' => $documentId, 'user' => $search]);
+        foreach ($signatures as &$signature) {
+            $signature = $this->getRepository()->find( $signature->getId() );
+        }
+        return $signatures;
+    }
+
 }

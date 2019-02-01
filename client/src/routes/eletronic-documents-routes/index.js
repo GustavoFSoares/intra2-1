@@ -1,7 +1,7 @@
 import index from '@/components/eletronic-documents';
 import Form from '@/components/eletronic-documents/Form.vue';
 import Detail from '@/components/eletronic-documents/Detail.vue';
-import CreateSeam from '@/components/eletronic-documents/CreateSeam.vue';
+import CreateAmendment from '@/components/eletronic-documents/CreateAmendment.vue';
 
 export default [
     {
@@ -31,7 +31,7 @@ export default [
     {
         path: '/usuario/documentos-eletronicos/criar-emenda/:id',
         name: 'documentos-eletronicos/criar-emenda',
-        component: CreateSeam,
+        component: CreateAmendment,
         meta: { requiresAuth: true, adminAuth: true }
     },
 ]

@@ -12,7 +12,6 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         parent::__construct(new EletronicDocumentModel());
     }
 
-
     public function signDocumentAction($req, $res, $args) {
         $values = $req->getParsedBody();
         $this->storeUser($values);
@@ -46,6 +45,41 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         
         $this->makeLog($values['document_id'], $values['agree'], $values['message']);
 
+        return $res->withJson(true);
+    }
+
+    public function updateAmendmentAction($req, $res, $args) {
+        $values = $req->getParsedBody();
+        $this->loadEntity($values);
+
+        $SignatureModel = new \HospitalApi\Model\EletronicDocumentSignatureModel();
+        $AmendmentModel = new \HospitalApi\Model\EletronicDocumentAmendmentModel();
+
+        foreach ($values['amendmentList'] as $key => &$amendment) {
+            // Se documento já foi cadastrado
+            if( !isset($amendment['id']) || $amendment['id'] == false ) {
+
+                // Obtem um objeto de Repository com assinaturas anexadas a Emenda
+                $amendment['signatureList'] = $SignatureModel->getSignaturesByDocumentIdAndUsersId($values['id'], $amendment['signatureUsers']);
+                foreach ($amendment['signatureList'] as $signature) {
+                    echo "";
+                    // Apaga a Assinatura do Responsável e às Reordena
+                    // $SignatureModel->clearSignature();
+                }
+                $amendment['document'] = $this->getModel()->entity;
+                unset($amendment['signatureUsers']);
+
+                // Monta objeto de Emenda
+                $amendment = $AmendmentModel->entity->construct($amendment);
+            } else {
+
+                // Carrega Emendas já cadastradas
+                $amendment = $AmendmentModel->getRepository()->find($amendment['id']);
+            }
+        }
+        $entity = $this->_mountEntity($values);
+        
+        $this->getModel()->doUpdate($entity);
         return $res->withJson(true);
     }
 

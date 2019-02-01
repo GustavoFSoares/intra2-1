@@ -189,12 +189,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return void
 	 */
 	public function _mountEntity($values){
-		if(isset($values['id']) && $values['id']) {
-			$repository = $this->_model->getRepository()->find($values['id']);
-			if($repository) {
-				$this->_model->entity = $repository;
-			}
-		}
+		$this->loadEntity($values);
 
 		if( method_exists($this->_model, 'mount') ){
 			$values = $this->_model->mount($values);
@@ -208,6 +203,15 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 				->$method($value);
 		}
 		return $this->_model->entity;
+	}
+
+	public function loadEntity($values) {
+		if(isset($values['id']) && $values['id']) {
+			$repository = $this->_model->getRepository()->find($values['id']);
+			if($repository) {
+				$this->_model->entity = $repository;
+			}
+		}
 	}
 
 	public function changeStatusAction($req, $res, $args) {

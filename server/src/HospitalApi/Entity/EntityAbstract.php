@@ -100,6 +100,7 @@ abstract class EntityAbstract extends BasicApplicationAbstract
 		} else {
             $collection = new \Doctrine\Common\Collections\ArrayCollection($entityList->toArray());
             $values = new \Doctrine\Common\Collections\ArrayCollection($values);
+            $exist = [];
             foreach ($values as $row) {
                 foreach ($collection as $key => $collectionRow) {
                     if($collectionRow->getId() == $row->getId()) {

@@ -10,6 +10,7 @@ export default class EletronicDocument {
         this.archived = eletronicDocument.archived ? true : false
         this.signed = eletronicDocument.signed ? true : false
         this.signatureList = eletronicDocument.signatureList ? eletronicDocument.signatureList : []
+        this.amendmentList = eletronicDocument.amendmentList ? eletronicDocument.amendmentList : []
         this.groupList = eletronicDocument.groupList ? eletronicDocument.groupList : []
         this.draft = eletronicDocument.draft ? true : false
         this.content = eletronicDocument.content
