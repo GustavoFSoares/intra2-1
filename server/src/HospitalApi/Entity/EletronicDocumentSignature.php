@@ -34,6 +34,11 @@ class EletronicDocumentSignature extends EntityAbstract
     protected $signed;
     
     /**
+     * @var Boolean @Column(name="concordado", type="boolean", nullable=true, options={ "default": null })
+     */
+    protected $agree;
+    
+    /**
      * @var Boolean @Column(name="posicao", type="integer", nullable=true, options={ "default": null })
      */
     protected $order;
@@ -104,7 +109,11 @@ class EletronicDocumentSignature extends EntityAbstract
         return $this->getAgree();
     }
     public function setAgree($agree) {
-        $this->agree =  $agree ? true : false;
+        if($agree === null || $agree === '') {
+            $this->agree = null;
+        } else {
+            $this->agree = $agree ? true : false;
+        }
         
         return $this;
     }

@@ -59,12 +59,18 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
             // Se documento já foi cadastrado
             if( !isset($amendment['id']) || $amendment['id'] == false ) {
 
-                // Obtem um objeto de Repository com assinaturas anexadas a Emenda
                 $amendment['signatureList'] = $SignatureModel->getSignaturesByDocumentIdAndUsersId($values['id'], $amendment['signatureUsers']);
-                foreach ($amendment['signatureList'] as $signature) {
-                    echo "";
+                // Obtem um objeto de Repository com assinaturas anexadas a Emenda
+                foreach ($amendment['signatureList'] as &$signature) {
+                    
                     // Apaga a Assinatura do Responsável e às Reordena
-                    // $SignatureModel->clearSignature();
+                    $signature = $SignatureModel->undoSignature($signature);
+                    array_filter($values['signatureList'], function(&$entry) use ($signature) {
+                        if($signature->getId() == $entry['id']) {
+                            $entry = $signature;
+                            return;
+                        }
+                    });
                 }
                 $amendment['document'] = $this->getModel()->entity;
                 unset($amendment['signatureUsers']);
@@ -77,6 +83,7 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
                 $amendment = $AmendmentModel->getRepository()->find($amendment['id']);
             }
         }
+
         $entity = $this->_mountEntity($values);
         
         $this->getModel()->doUpdate($entity);

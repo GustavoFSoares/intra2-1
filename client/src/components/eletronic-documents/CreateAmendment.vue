@@ -97,6 +97,9 @@ export default {
                         this.sending = false
                     }).catch(err => {
                         this.sending = false
+                        setTimeout(() => {
+                            this.$route.go()
+                        }, 2000);
                     })
                 }
             })

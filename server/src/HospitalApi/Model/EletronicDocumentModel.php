@@ -22,7 +22,9 @@ class EletronicDocumentModel extends SoftdeleteModel
         $values = (object)$values;
         
         foreach ($values->signatureList as &$user) {
-            if( isset($user['id']) && $user['id']) {
+            if($user instanceof \HospitalApi\Entity\EntityAbstract) {
+                continue;
+            } else if( isset($user['id']) && $user['id']) {
                 $User = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentSignature')->findOneById($user['id']);
             } else {
                 $User = new EletronicDocumentSignature();

@@ -53,4 +53,13 @@ class EletronicDocumentSignatureModel extends ModelAbstract
         return $select->getQuery()->getOneOrNullResult();
     }
 
+    public function undoSignature(EletronicDocumentSignature $signature) {
+        $signature
+            ->setSigned(false)
+            ->setAgree(null);
+        $this->doUpdate($signature);
+
+        return $signature;
+    }
+
 }

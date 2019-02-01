@@ -99,7 +99,9 @@ abstract class EntityAbstract extends BasicApplicationAbstract
 			$dataReturn = new \Doctrine\Common\Collections\ArrayCollection($values);
 		} else {
             $collection = new \Doctrine\Common\Collections\ArrayCollection($entityList->toArray());
-            $values = new \Doctrine\Common\Collections\ArrayCollection($values);
+            if(!$values instanceof \Doctrine\Common\Collections\ArrayCollection) {
+                $values = new \Doctrine\Common\Collections\ArrayCollection($values);
+            }
             $exist = [];
             foreach ($values as $row) {
                 foreach ($collection as $key => $collectionRow) {

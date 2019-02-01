@@ -49,7 +49,7 @@
                         </td>
                         <td class="text-center">
                             <span class="text-success bold" v-if="signature.agree === true"> OK </span>
-                            <span class="ml-3" v-else-if="signature.agree == null || signature.agree == ''"> - </span>
+                            <span class="ml-3" v-else-if="signature.agree == null || signature.agree === ''"> - </span>
                             <span class="text-danger bold" v-else-if="signature.agree === false"> NEGADO </span>
                         </td>
                     </tr>
