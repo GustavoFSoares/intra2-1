@@ -5,30 +5,7 @@
 
         <actual-status :actualStatusId="document.status"/>
         <section>
-            <row label=''>
-                <h4>
-                    <span class="bold"> Protocolo: </span> {{ document.id }}
-                </h4>
-            </row>
-
-            <box class="border-secondary" v-if="document.content">
-                <row>
-                    <h1>{{ document.subject }}</h1>
-                </row>
-
-                <hr>
-                <row>
-                    <div id="content">
-                        <p>Prezados: </p>
-                        
-                        <div>
-                            <div v-html="document.content"></div>
-                        </div>
-                    </div>
-                    <signature :username="`${document.user.name} - ${document.user.code}`"/>
-                    <p class="date">{{ document.createdAt | humanizeDate }}</p> 
-                </row>
-            </box>
+            <text-exibitor :document="document"/>            
         </section>
 
         <section>
@@ -53,7 +30,7 @@ import ActualStatus from "./complements/ActualStatus"
 import SignDocument from './complements/SignDocument.vue'
 import SignatureForm from './complements/SignatureForm.vue'
 import VmfilePdf from '@/components/shared/VFile/V-multifile-pdf.vue'
-import Signature from "@/components/shared/Signature";
+import TextExibitor from "./complements/TextExibitor";
 
 import EletronicDocument from "@/entity/EletronicDocuments";
 import model, { getter } from "@/model/eletronic-documents-model"
@@ -89,7 +66,7 @@ export default {
         'signature-form': SignatureForm,
         'sign-document': SignDocument,
         'actual-status': ActualStatus,
-        'signature': Signature,
+        'text-exibitor': TextExibitor,
     },
     mounted() {
         this.loadValues()

@@ -1,9 +1,18 @@
 <template>
     <div class="list-center mb-3 mt-3">
         <div v-for="s in status" :key="s.id" class="list bold">
-            <span class="text" v-bind:class="{ 'text-disabled' : id != s.id }"> 
+            <span v-if="id == s.id" class="text" @mouseover="showThisGuy = true" @mouseout="showThisGuy = false"> 
                 {{ s.name }}
-            </span> <span class="bar text-disabled">/</span>
+            </span> 
+            <span v-else class="text text-disabled"> 
+                {{ s.name }}
+            </span> 
+            <span class="bar text-disabled">/</span>
+        </div>
+        <div> 
+            <span v-if="showThisGuy" class="text-disabled">
+                * Gustavo Soares 
+            </span>
         </div>
     </div>
 </template>
@@ -15,6 +24,7 @@ export default {
         return {
             status: '',
             id: '',
+            showThisGuy: false,
         }
     },
     props: {
