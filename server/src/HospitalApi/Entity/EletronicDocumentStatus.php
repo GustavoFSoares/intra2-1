@@ -11,9 +11,8 @@ class EletronicDocumentStatus extends SoftdeleteAbstract
 {
     
     /**
-     * @var integer @Id
-     *     @Column(name="id", type="integer")
-     *     @GeneratedValue(strategy="AUTO")
+     * @var String @Id
+     *     @Column(name="id", type="string")
      */
     protected $id;
 
@@ -23,15 +22,15 @@ class EletronicDocumentStatus extends SoftdeleteAbstract
     protected $name;
 
     /**
-     * @var Integer @Column(name="nivel", type="integer", length=255)
+     * @var Integer @Column(name="ordem", type="integer", length=255)
      */
-    protected $level;
+    protected $order;
 
     public function __construct() {
         parent::__construct();
         $this->id = 0;
         $this->name = null;
-        $this->level = 0;
+        $this->order = 0;
     }
 
     public function getId() {
@@ -52,11 +51,11 @@ class EletronicDocumentStatus extends SoftdeleteAbstract
         return $this;
     }
 
-    public function getLevel() {
-        return $this->level;
+    public function getOrder() {
+        return $this->order;
     }
-    public function setLevel($level) {
-        $this->level = $level;
+    public function setOrder($order) {
+        $this->order = $order;
         
         return $this;
     }

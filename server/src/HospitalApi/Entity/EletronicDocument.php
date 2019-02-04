@@ -43,7 +43,7 @@ class EletronicDocument extends SoftdeleteAbstract
 
     /**
      * @ManyToOne(targetEntity="EletronicDocumentStatus")
-     * @JoinColumn(name="status_id", referencedColumnName="id", nullable=true)
+     * @JoinColumn(name="status_id", referencedColumnName="id")
      */
     protected $status;
     

@@ -7,19 +7,22 @@ $model = new eletronicDocumentStatusModel();
 
 if(!$model->findBy()){
     $eletronicDocumentStatus = [
-        [ 'name' => 'Cadastrado', 'level' => 1 ],
-        [ 'name' => 'Enviado', 'level' => 2 ],
-        [ 'name' => 'Rascunho', 'level' => 0 ],
-        [ 'name' => 'Análise', 'level' => 3 ],
-        [ 'name' => 'Aguardando Validação', 'level' => 4 ],
-        [ 'name' => 'Finalizado', 'level' => 5 ],
+        [ 'id' => 'calceled',           'order' => 0, 'name' => 'Cancelado'],
+        [ 'id' => 'draft',              'order' => 1, 'name' => 'Rascunho'],
+        [ 'id' => 'send',               'order' => 2, 'name' => 'Enviado'],
+        [ 'id' => 'waiting-signature',  'order' => 3, 'name' => 'Aguardado Validação'],
+        [ 'id' => 'waiting-correction', 'order' => 4, 'name' => 'Aguardado Retificação'],
+        [ 'id' => 'Revoked',            'order' => 5, 'name' => 'Revogado'],
+        [ 'id' => 'finished',           'order' => 6, 'name' => 'Finalizado'],
+        [ 'id' => 'filed',              'order' => 7, 'name' => 'Arquivado' ]
      ];
     
     foreach ($eletronicDocumentStatus as $status) {
         $EletronicDocumentStatus = new EletronicDocumentStatus();
         $EletronicDocumentStatus
+            ->setId($status['id'])
             ->setName($status['name'])
-            ->setLevel($status['level']);
+            ->setOrder($status['order']);
         $model->doInsert($EletronicDocumentStatus);
     }
     echo "eletronicDocumentStatus Inserted\n";

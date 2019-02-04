@@ -11,7 +11,7 @@ class EletronicDocumentStatusModel extends SoftdeleteModel
 {
 
     public $entity;
-    public $_ORDERS = ['level' => 'ASC'];
+    public $_ORDERS = ['order' => 'ASC'];
 
     public function __construct() {
         $this->entity = new EletronicDocumentStatus;
