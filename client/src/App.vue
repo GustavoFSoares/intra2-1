@@ -142,6 +142,12 @@ export default {
         color: rgba(105, 105, 105, 0.548);
     }
 
+    .table-disabled {
+        cursor: default;
+        text-decoration: none;
+        color: #8a8a8a9c;
+    }
+
     .btn-outline-warning:hover:not(:disabled)  {
         color: #ffffff;
     }

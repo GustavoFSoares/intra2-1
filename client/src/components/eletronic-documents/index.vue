@@ -21,14 +21,12 @@
                     <th scope="col">Criador</th>
                     <th scope="col">Status</th>
                     <th scope="col">Acompanhando</th>
-                    <th scope="col">Rascunho</th>
-                    <th scope="col">Última Atualização</th>
                     <th scope="col"></th>
 
                 </tr>
             </thead>
             <tbody>
-                <tr @click="showMore(document)" v-for="(document, index) in searchList" :key="document.id" class="row-list">
+                <tr @click="showMore(document)" v-for="(document, index) in searchList" :key="document.id" class="row-list" :class="getColorStatus(document.status.id)">
                     <th>{{ document.id }}</th>
                     <td>{{ document.subject }}</td>
                     <td>{{ document.type.code }}</td>
@@ -42,18 +40,17 @@
                         </div>
                     </td>
                     <td>
-                        <input type="checkbox" v-model="document.draft" disabled>
-                    </td>
-                    <td>{{ document.c_modified.date | humanizeDate }}</td>
-                    <td>
-                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/detalhe/${document.id}`)" v-if="document.status.level >= 1">
+                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/edit/${document.id}`)" v-if="showEditButton(document.status, document.user)">
+                            <icon v-tooltip.top="'Editar'" icon="edit"/>
+                        </a>
+                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/detalhe/${document.id}`)" v-else>
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
                         </a>
-                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/edit/${document.id}`)" v-if="document.status.level == 0">
-                            <icon icon="edit"/>
+                        <a @click.stop.prevent="remove(document.id, index)" to='' v-if="showDeleteButton(document.status, document.user)">
+                            <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </a>
-                        <a @click.stop.prevent="remove(document.id, index)" to='' v-if="document.status.level == 0">
-                            <icon class="text-danger" icon="trash-alt"/>
+                        <a @click.stop.prevent="archive(document.id, index)" to='' v-if="showArchiveButton(document.status, document.user)">
+                            <icon v-tooltip.top="'Arquivar'" class="text-secondary" icon="archive"/>
                         </a>
                     </td>
 
@@ -80,11 +77,69 @@ export default {
         documents: [],
         documentSelected: false,
         filter: '',
+        user: $session.get('user')
     }),
     methods: {
         showMore(document) {
             this.documentSelected = document
             this.$refs.modal.show()
+        },
+        getColorStatus(statusId) {
+            let colorClass = ''
+            
+            switch (statusId) {
+                case 'draft':
+                    colorClass = 'table-primary'
+                    break;
+
+                case 'finished':
+                    colorClass = 'table-success'
+                    break;
+            
+                case 'revoked': 
+                    colorClass = 'table-danger'
+                    break;
+
+                case 'filed':
+                    colorClass = 'table-disabled'
+                    break;
+                    
+                default:
+                    break;
+            }
+
+            return colorClass
+        },
+        showEditButton(status, user) {
+            if(user.id != this.user.id) {
+                return false
+            } else if(status.id == 'draft' || status == '') {
+                return true
+            } else {
+                return false
+            }
+        },
+        showDeleteButton(status, user) {
+            if(user.id != this.user.id) {
+                return false
+            } else if(status.id == 'draft' || status == '') {
+                return true
+            } else {
+                return false
+            }
+        },
+        showArchiveButton(status, user) {
+            if(user.id != this.user.id) {
+                return false
+            } else if(status.id == 'finished' 
+                        || status.id == 'canceled'  
+                        || status.id == 'Revoked'
+                    ) {
+                return true
+            } else {
+                return false
+            }
+             
         }
     },
     computed: {
