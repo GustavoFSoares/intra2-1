@@ -45,11 +45,11 @@
                     </div>
                 </box>
 
-                <box>
+                <!-- <box>
                     <section>
                         <v-multifile-pdf :id="document.id" :post_function="sendFile"/>
                     </section>
-                </box>
+                </box> -->
             </rows>
         </section>
 

@@ -115,4 +115,62 @@ class EletronicDocumentModel extends SoftdeleteModel
         return $this->entity->getStatus();
     }
 
+    public function findBy($params) {
+        $select = $this->showForJustWhoCanSee();
+        $data = $select->getQuery()->getResult();
+        
+        return $data;
+    }
+
+    public function findById($id) {
+        // $subquery = $this->em->createQueryBuilder();
+        // $subquery->select('userSignature')
+        //     ->from('HospitalApi\Entity\EletronicDocumentSignature', 'signature')
+        //     ->innerJoin('HospitalApi\Entity\User', 'userSignature', 'WITH', 'userSignature = signature.user')
+        //     ->where('signature.signed = 0')
+        //     ->groupBy('signature._document')
+        //     ->orderBy('signature.order', 'ASC');
+        
+        // $select = $this->em->createQueryBuilder();
+        // $select->select('ed')
+        //     ->from($this->getEntityPath(), 'ed')
+        //     ->innerJoin("HospitalApi\Entity\User", "u", "with", "ed.user = u")
+        //     ->innerJoin("HospitalApi\Entity\EletronicDocumentSignature", 'eds', 'WITH', ':id = ed')
+        //     ->innerJoin("eds.user", 'us', 'WITH', 'u = :user OR us = :user')
+        //     ->where( $select->expr()->eq( 'us', $select->expr()->any( $subquery->getDQL() )) )
+        //     ->andwhere('eds.signed = 0')
+        //     ->orwhere('u = :user')
+        //     ->setParameter('user', $this->getSession() )
+        //     ->setParameter('id', $id );
+        $select = $this->showForJustWhoCanSee();
+        $select
+            ->andWhere('ed.id = :id')
+            ->setParameter('id', $id);
+        $data = $select->getQuery()->getOneOrNullResult();
+        
+        return $data;
+    }
+
+    public function showForJustWhoCanSee() {
+        $subquery = $this->em->createQueryBuilder();
+        $subquery->select('userSignature')
+            ->from('HospitalApi\Entity\EletronicDocumentSignature', 'signature')
+            ->innerJoin('HospitalApi\Entity\User', 'userSignature', 'WITH', 'userSignature = signature.user')
+            ->where('signature.signed = 0')
+            ->groupBy('signature._document')
+            ->orderBy('signature.order', 'ASC');
+        
+        $select = $this->em->createQueryBuilder();
+        $select->select('ed')
+            ->from($this->getEntityPath(), 'ed')
+            ->innerJoin("HospitalApi\Entity\User", "u", "with", "ed.user = u")
+            ->innerJoin("HospitalApi\Entity\EletronicDocumentSignature", 'eds', 'WITH', 'eds._document = ed')
+            ->innerJoin("eds.user", 'us', 'WITH', 'u = :user OR us = :user')
+            ->where( $select->expr()->eq( 'us', $select->expr()->any( $subquery->getDQL() )) )
+            ->andwhere('eds.signed = 0')
+            ->orwhere('u = :user')
+            ->setParameter('user', $this->getSession() );
+        return $select;
+    }
+
 }

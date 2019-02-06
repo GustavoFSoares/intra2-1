@@ -1,7 +1,7 @@
 <template>
     <div v-if="document">
         
-        <actual-status :actualStatusId="document.status.id"/>
+        <actual-status :actualStatusId="document.status.id" :documentId="document.id"/>
         <row>
             <h3>{{ document.subject }}</h3>
         </row>

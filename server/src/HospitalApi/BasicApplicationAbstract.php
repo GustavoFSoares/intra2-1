@@ -46,6 +46,10 @@ class BasicApplicationAbstract
     public function getEntityManager() {
         return self::$_app->getContainer()['em'];
     }
+    
+    public function getSession() {
+        return self::$_app->getContainer()['session']->get();
+    }
 
     public function getSpecialDataPermissions() {
        

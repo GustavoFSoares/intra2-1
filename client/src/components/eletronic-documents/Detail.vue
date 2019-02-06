@@ -53,13 +53,19 @@ export default {
         loadValues() {
             if(this.id) {
                 getter.getEletronicDocumentById(this.id).then( res => { 
-                    this.document = new EletronicDocument(res); 
-                    this.title = this.document.type.name
-                    this.canShowSignature = true
-
-                    if(this.document.status.id == 'sending') {
-                        this.setLikeWaitingSignature()
+                    
+                    if(res == null) {
+                        this.$alert.info("Você não ter permissão para ver este documento ou ele não existe")
+                    } else {
+                        this.document = new EletronicDocument(res); 
+                        this.title = this.document.type.name
+                        this.canShowSignature = true
+    
+                        if(this.document.status.id == 'sending') {
+                            this.setLikeWaitingSignature()
+                        }
                     }
+                    
                 })
             }
         },
