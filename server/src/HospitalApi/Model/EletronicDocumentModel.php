@@ -34,8 +34,14 @@ class EletronicDocumentModel extends SoftdeleteModel
             
             $user = $User;
         }
-        $statusLevel = $values->draft ? 0 : 1;
-        $values->status = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentStatus')->findOneByLevel($statusLevel);
+        
+        if ($values->draft) {
+            $values->status = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentStatus')->findOneById('draft');
+        } else {
+            if( !isset($values->status) || !$values->status instanceof \HospitalApi\Entity\EntityAbstract) {
+                $values->status = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentStatus')->findOneById('sending');
+            } 
+        }
 
         return $values;
     }
@@ -74,13 +80,15 @@ class EletronicDocumentModel extends SoftdeleteModel
         $StatusRepository = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentStatus');
         switch ($levelName) {
             case 'waiting':
-                // Level 2 is decime WaitingLevel
-                $status = $StatusRepository->findOneByLevel(2);
+                $status = $StatusRepository->findOneById('sending');
+                break;
+            
+            case 'correction':
+                $status = $StatusRepository->findOneById('waiting-correction');
                 break;
             
             case 'finished':
-                // Level 3 is decime FinishLevel
-                $status = $StatusRepository->findOneByLevel(3);
+                $status = $StatusRepository->findOneById('finished');
                 break;
             
             default:
@@ -93,6 +101,15 @@ class EletronicDocumentModel extends SoftdeleteModel
         $this->doUpdate($this->entity);
 
         return $this->entity;
+    }
+
+    public function setDocumentLikeWaitingSignature($documentId) {
+        $this->entity = $this->getRepository()->find($documentId);
+        
+        $waitingSignatureStatus = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentStatus')->findOneById('waiting-signature');
+        $this->entity->setStatus($waitingSignatureStatus);
+        
+        return $this->entity->getStatus();
     }
 
 }

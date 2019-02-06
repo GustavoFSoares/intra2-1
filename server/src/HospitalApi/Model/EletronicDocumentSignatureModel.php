@@ -17,11 +17,12 @@ class EletronicDocumentSignatureModel extends ModelAbstract
         parent::__construct();
     }
 
-    public function getUsersForDocument($id) {
+    public function getUserSigned($id) {
         $select = $this->em->createQueryBuilder();
         $select->select('u')
             ->from($this->getEntityPath(), 'eds')
-            ->innerJoin('HospitalApi\Entity\User', 'u', 'WITH', 'eds.user = u')
+            ->innerJoin('HospitalApi\Entity\EletronicDocument', 'ed', 'WITH', 'eds._document = ed ')
+            ->innerJoin('HospitalApi\Entity\User', 'u', 'WITH', '(eds.user = u AND eds.signed = 1) OR ed.user = u')
             ->where('eds._document = :documentId')
             ->setParameter('documentId', $id);
         return $select->getQuery()->getResult();

@@ -31,11 +31,13 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
                 break;
         }
 
+        // Conta Quantidade de Assinaturas
         $signatureList = $entity->getSignatureList();     
         $signaturesSigned = $signatureList->filter(function($entry) {
             return $entry->isSigned() == true;
         });
         
+        //Se Quantidade de Assinaturas == Total Assinaturas --> Status Finalizado
         if($signatureList->count() == $signaturesSigned->count()) {
             $this->getModel()->setLike('finished', $entity->getId());
         } else {
@@ -44,7 +46,6 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
 
         
         $this->makeLog($values['document_id'], $values['agree'], $values['message']);
-
         return $res->withJson(true);
     }
 
@@ -60,6 +61,9 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
             if( !isset($amendment['id']) || $amendment['id'] == false ) {
 
                 $amendment['signatureList'] = $SignatureModel->getSignaturesByDocumentIdAndUsersId($values['id'], $amendment['signatureUsers']);
+                // `----------> Se signatureList == null |- Apagar todas assinaturas e enviar email para criador do documento
+
+
                 // Obtem um objeto de Repository com assinaturas anexadas a Emenda
                 foreach ($amendment['signatureList'] as &$signature) {
                     
@@ -83,10 +87,10 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
                 $amendment = $AmendmentModel->getRepository()->find($amendment['id']);
             }
         }
-
         $entity = $this->_mountEntity($values);
-        
         $this->getModel()->doUpdate($entity);
+        $this->getModel()->setLike('correction', $entity->getId());
+
         return $res->withJson(true);
     }
 
@@ -99,6 +103,13 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         }
 
         \Helper\LoggerHelper::writeFile($message, true);
+    }
+
+    public function setLikeWaitingSignatureAction($req, $res, $args) {
+        $status = $this->getModel()->setDocumentLikeWaitingSignature($args['document-id']);
+        $data = $this->translateCollection($status);
+
+        return $res->withJson($data);
     }
 
 }

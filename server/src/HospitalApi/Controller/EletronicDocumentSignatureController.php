@@ -12,10 +12,10 @@ class EletronicDocumentSignatureController extends ControllerAbstractLongEntity
         parent::__construct(new EletronicDocumentSignatureModel());
     }
 
-    public function getUserForDocumentAction($req, $res, $args) {
+    public function getUserSignedAction($req, $res, $args) {
         $documentId = $args['document-id'];
         
-        $collection = $this->getModel()->getUsersForDocument($documentId);
+        $collection = $this->getModel()->getUserSigned($documentId);
         $data = $this->translateCollection($collection);
         
         return $res->withJson( $data );

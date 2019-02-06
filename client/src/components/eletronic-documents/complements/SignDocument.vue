@@ -1,6 +1,6 @@
 <template>
     <div v-if="show">
-        <row v-if="$route.params.id">
+        <row>
             <div class='row' v-if="document.user.id == user.id || document.signed" >
                 <rows class="col-md">
                     {{ document.user.name }}
@@ -115,7 +115,11 @@ export default {
             
             LoginModel.doAuth({ 'id': this.user.id, 'password': this.password }).then( res => {
                 if(res.status) {
-                    this.updateSignatureForDocument(true)
+                    if(this.id) {
+                        this.updateSignatureForDocument(true)
+                    }
+                    this.document.signed = true
+                    this.emit('input', this.document)
                 } else {
                     Alert.Confirm(res.message)
                     this.loading = false
