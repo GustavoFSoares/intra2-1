@@ -12,7 +12,7 @@ if(!$model->findBy()){
         [ 'id' => 'send',               'order' => 2, 'name' => 'Enviado'],
         [ 'id' => 'waiting-signature',  'order' => 3, 'name' => 'Aguardado Validação'],
         [ 'id' => 'waiting-correction', 'order' => 4, 'name' => 'Aguardado Retificação'],
-        [ 'id' => 'Revoked',            'order' => 5, 'name' => 'Revogado'],
+        [ 'id' => 'revoked',            'order' => 5, 'name' => 'Revogado'],
         [ 'id' => 'finished',           'order' => 6, 'name' => 'Finalizado'],
         [ 'id' => 'filed',              'order' => 7, 'name' => 'Arquivado' ]
      ];

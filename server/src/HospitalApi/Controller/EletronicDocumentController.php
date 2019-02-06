@@ -31,22 +31,29 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
                 break;
         }
 
-        // Conta Quantidade de Assinaturas
-        $signatureList = $entity->getSignatureList();     
-        $signaturesSigned = $signatureList->filter(function($entry) {
-            return $entry->isSigned() == true;
-        });
-        
-        //Se Quantidade de Assinaturas == Total Assinaturas --> Status Finalizado
-        if($signatureList->count() == $signaturesSigned->count()) {
-            $this->getModel()->setLike('finished', $entity->getId());
+        if($values['agree']) {
+            
+            // Conta Quantidade de Assinaturas
+            $signatureList = $entity->getSignatureList();     
+            $signaturesSigned = $signatureList->filter(function($entry) {
+                return $entry->isSigned() == true;
+            });
+            
+            //Se Quantidade de Assinaturas == Total Assinaturas --> Status Finalizado
+            if($signatureList->count() == $signaturesSigned->count()) {
+                $this->getModel()->setLike('finished', $entity->getId());
+            } else {
+                $this->getModel()->setLike('waiting', $entity->getId());
+            }
+
         } else {
-            $this->getModel()->setLike('waiting', $entity->getId());
+            $this->getModel()->setLike('revoked', $entity->getId());
         }
 
-        
         $this->makeLog($values['document_id'], $values['agree'], $values['message']);
-        return $res->withJson(true);
+
+        $data = $this->translateCollection( $entity->getStatus() );
+        return $res->withJson($data);
     }
 
     public function updateAmendmentAction($req, $res, $args) {

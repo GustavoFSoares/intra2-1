@@ -133,7 +133,7 @@ export default {
                 return false
             } else if(status.id == 'finished' 
                         || status.id == 'canceled'  
-                        || status.id == 'Revoked'
+                        || status.id == 'revoked'
                     ) {
                 return true
             } else {

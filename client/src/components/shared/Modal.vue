@@ -31,11 +31,19 @@ export default {
         title: String,
         submitlabel: {type: String, default: 'Ok'},
         disabled: {type: Boolean, default: false},
-        submit_method: {type: Function}
+        submit_method: {type: Function},
+        value: ''
     },
     data() {
         return {
             id: '',
+        }
+    },
+    watch: {
+        value(val) {
+            if(val) {
+                this.show()
+            }
         }
     },
     methods: {
@@ -55,10 +63,23 @@ export default {
         close() {
             $(`#${this.id}`).modal('hide')
             this.$emit('close')
+            this.$emit('input', false)
+        },
+        destroy() {
+            $(`#${this.id}`).remove()
+            $('.modal-backdrop').remove()
         }
     },
     created() {
         this.id = this._uid
-    }
+    },
+    mounted() {
+        if(this.value) {
+            this.show()
+        }
+    },
+    beforeDestroy() {
+        this.destroy()
+    },
 }
 </script>

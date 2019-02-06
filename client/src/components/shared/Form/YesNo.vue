@@ -1,9 +1,9 @@
 <template>
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-outline-success" v-bind:class="{ 'active' : data == true }" @click="data = true">
+        <label class="btn btn-outline-success" v-bind:class="{ 'active' : data == true, 'disabled': disabled }" @click="data = true">
             <input type="radio" name="options"> Sim
         </label>
-        <label class="btn btn-outline-danger" v-bind:class="{ 'active' : data == false }" @click="data = false">
+        <label class="btn btn-outline-danger" v-bind:class="{ 'active' : data == false, 'disabled': disabled }" @click="data = false">
             <input type="radio" name="options"> Não
         </label>
     </div>
@@ -16,7 +16,10 @@ export default {
             data: null
         }
     },
-    props: ['value'],
+    props: {
+        value: '',
+        disabled: { default: false }
+    },
     watch: {
         value() {
             this.data = this.value

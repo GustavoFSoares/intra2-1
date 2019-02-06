@@ -1,5 +1,5 @@
 <template>
-    <div v-if="show">
+    <div v-if="show" v-bind:class="{'disabled': disabled}">
         <row>
             <div class='row' v-if="document.user.id == user.id || document.signed" >
                 <rows class="col-md">
@@ -45,7 +45,7 @@
                             <input type="checkbox" v-model="signature.bc" :disabled="user.id != document.user.id" @change="anyOneBeCare">
                         </td>
                         <td>
-                            <signature-form :user_id="signature.user.id" :signed="signature.signed" @signed="updateSignatureForUserList"/>
+                            <signature-form :id="id" :disabled="disabled" :user_id="signature.user.id" :signed="signature.signed" @signed="updateSignatureForUserList"/>
                         </td>
                         <td class="text-center">
                             <span class="text-success bold" v-if="signature.agree === true"> OK </span>
@@ -77,6 +77,7 @@ export default {
         title: '',
         value: '',
         show: false,
+        disabled: { default: false }
     },
     watch: {
         show(value) {

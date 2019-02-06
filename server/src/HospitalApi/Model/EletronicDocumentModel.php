@@ -91,9 +91,12 @@ class EletronicDocumentModel extends SoftdeleteModel
                 $status = $StatusRepository->findOneById('finished');
                 break;
             
+            case 'revoked':
+                $status = $StatusRepository->findOneById('revoked');
+                break;
+            
             default:
-                // Level 0 is decime DraftLevel
-                $status = $StatusRepository->findOneByLevel(0);
+                $status = $StatusRepository->findOneById('draft');
                 break;
         }
         

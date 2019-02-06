@@ -5,8 +5,7 @@
             <p class="text-success col-md"> ASSINADO </p>
         </div>
         <div v-else-if="user.id == user_id && signed == false" class="row">
-            
-            <yes-no v-model="agree" v-if="show.button" @click="showPassword()"/>
+            <yes-no v-model="agree" :disabled="disabled" v-if="show.button" @click="showPassword()"/>
             <div v-if="show.password" class="row">
                 <div class="col-md-1 mt-2">
                     <router-link to="" @click.native="showButton()" v-if="!loading">
@@ -22,6 +21,24 @@
                     </button>
                 </div>
             </div>
+            
+            <section id="modal-revoket" >
+                <modal v-model="showModal" title="Discordar do Documento" ref="modal">
+                    <row>
+                        <textarea class="form-control" v-model="modal.motivo" placeholder="Motivo:"></textarea>
+                    </row>
+
+                    <div class='row text-center'>
+                        <rows>
+                            <button @click="revokeDocument()" class="btn btn-outline-danger">Negar Documento</button>
+                        </rows>
+                        
+                        <rows>
+                            <router-link :to="`/usuario/documentos-eletronicos/criar-emenda/${id}`" class="btn btn-outline-warning">Emenda para Correção</router-link>
+                        </rows>
+                    </div>
+                </modal>
+            </section>
 
         </div>
         <div v-else class="row bold">
@@ -36,6 +53,7 @@
 import LoginModel from "@/model/login-model"
 import YesNo from "@/components/shared/Form/YesNo"
 import Alert from "@/components/shared/Alert"
+import Modal from '@/components/shared/Modal.vue'
 
 export default {
     data: () => ({
@@ -43,16 +61,19 @@ export default {
         password: '',
         loading: false,
         agree: null,
-        show: { password: false, button: true, }
+        show: { password: false, button: true, },
+        showModal: false,
+        modal: {
+            motivo: ''
+        }
     }),
     props: {
         signed: '',
+        id: '',
         user_id: { type: String },
+        disabled: { default: false },
     },
     methods: {
-        alert() {
-            this.showPassword()
-        },
         showButton() {
             this.agree = null
             this.show.button = true
@@ -73,13 +94,7 @@ export default {
                     if(this.agree) {
                         this.makeReturn(this.agree)
                     } else {
-                        Alert.TextArea("Motivo de não concordar").then( res => {
-                            if(res == null || res == 'undefined') {
-                                this.showButton()
-                            } else {
-                                this.makeReturn(this.agree, res)
-                            }
-                        })
+                        this.showModal = true
                     }
                     
                 } else {
@@ -89,10 +104,23 @@ export default {
             }).catch( err => {
                 this.loading = false
             })
+        },
+        revokeDocument() {
+            this.$refs.modal.close()
+
+            Alert.YesNo("Tem certeza que deseja negar o documento?", 
+                "Ao realizar essa ação o Documento será Arquivado e Invalidado").then( res => {
+                if(res) {
+                    this.makeReturn(false, this.modal.motivo)
+                } else {
+                    this.showButton()
+                }
+            })
         }
     },
     components: {
         'yes-no': YesNo,
+        'modal': Modal,
     }
 }
 </script>

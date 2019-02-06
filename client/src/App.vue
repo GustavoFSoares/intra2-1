@@ -138,6 +138,11 @@ export default {
         color: #2c3e50;
     }
 
+    .disabled {
+        pointer-events: none;
+        cursor: none;
+    }
+
     .text-disabled {
         color: rgba(105, 105, 105, 0.548);
     }
