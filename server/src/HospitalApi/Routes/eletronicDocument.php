@@ -23,7 +23,7 @@ $app->group('/eletronic-documents/type', function() {
 });
 
 $app->group('/eletronic-documents/signature', function() {
-        $this->get('/users-of-document/{document-id}', "HospitalApi\Controller\EletronicDocumentSignatureController:getUserForDocumentAction", function(Request $req, Response $res, array $args) { });
+        $this->get('/users-signed/{document-id}', "HospitalApi\Controller\EletronicDocumentSignatureController:getUserSignedAction", function(Request $req, Response $res, array $args) { });
         $this->get('/next-signature/{document-id}', "HospitalApi\Controller\EletronicDocumentSignatureController:getNextUserToSignAction", function(Request $req, Response $res, array $args) { });
         
         // $this->post('/', "HospitalApi\Controller\EletronicDocumentSignatureController:insert", function(Request $req, Response $res, array $args) { });
@@ -41,6 +41,7 @@ $app->group('/eletronic-documents', function() {
         $this->post('/file/[{prefix}/{name}]', "HospitalApi\Controller\EletronicDocumentController:uploadFileAction", function (Request $req, Response $res, array $args) { });
         
         $this->put('/{id}', "HospitalApi\Controller\EletronicDocumentController:update", function(Request $req, Response $res, array $args) { });
+        $this->put('/set-like-waiting/{document-id}', "HospitalApi\Controller\EletronicDocumentController:setLikeWaitingSignatureAction", function(Request $req, Response $res, array $args) { });
         $this->put('/sign/{type}/{id}', "HospitalApi\Controller\EletronicDocumentController:signDocumentAction", function(Request $req, Response $res, array $args) { });
         $this->put('/amendment-update/{id}', "HospitalApi\Controller\EletronicDocumentController:updateAmendmentAction", function(Request $req, Response $res, array $args) { });
         

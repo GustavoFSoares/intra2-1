@@ -53,15 +53,15 @@
             </rows>
         </section>
 
-        <div id="buttons" v-if="!block">
+        <div id="buttons">
             <row>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
-                <button class="btn btn-outline-warning btn-lg" id="submit-button" type="button" @click="saveDraft()" :disabled="sending">
+                <button class="btn btn-outline-warning btn-lg" id="submit-button" type="button" @click="saveDraft()" :disabled="sending" v-if="!block">
                     Salvar Rascunho
                 </button>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="openModal()" :disabled="sending">
+                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="openModal()" :disabled="sending" v-if="!block">
                     Salvar e Enviar
                 </button>
             </row>
@@ -107,11 +107,13 @@ export default {
         loadValues() {
             getter.getTypes().then(res => { this.values.types = res; })
             if(this.id) {
+                this.block = true
                 getter.getEletronicDocumentById(this.id).then( res => { 
-                    if(res.status.level <= 1) {
+                    if(res.status.id == 'draft' || res.status.id == 'canceled' || res.status == "") {
                         this.document = new EletronicDocument(res); 
+                        this.block = false
                     } else {
-                        this.block = true
+                        this.$alert.danger('Documento Bloqueado para Edição')
                     }
                 })
             }
@@ -128,14 +130,18 @@ export default {
                 return model.doUpdate(this.document).then(res => {
                     this.sending = false
                     this.$refs.modal.close()
-                    this.$router.push({ name: 'documentos-eletronicos' })
+                    setTimeout(() => {
+                        this.$router.push({ name: 'documentos-eletronicos' })
+                    }, 1000);
                 }).catch(err => {
                     this.sending = false
                 })
             } else {
                 return model.doInsert(this.document).then(res => {
                     this.sending = false
-                    this.$router.push({ name: 'documentos-eletronicos' })
+                    setTimeout(() => {
+                        this.$router.push({ name: 'documentos-eletronicos' })
+                    }, 1000);
                 }).catch(err => {
                     this.sending = false
                 })

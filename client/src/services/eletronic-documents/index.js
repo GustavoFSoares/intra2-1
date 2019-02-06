@@ -27,6 +27,10 @@ export default {
         window.httpMessage = { show: true, success: `Emendas <b>Adicionadas</b>`, error: "Emendas <b>não Adicionadas</b>" }
         return http.put(`/eletronic-documents/amendment-update/${id}`, data).then(res => res.data)
     },
+    setDocumentLikeWaitingSignature: (id) => {
+        window.httpMessage = { show: true, error: "Erro ao Registrar Acesso" }
+        return http.put(`/eletronic-documents/set-like-waiting/${id}`).then(res => res.data)
+    },
 
     delete: (id) => {
         window.httpMessage = { show: true, success: `Documento <b>#${id}</b> Excluída`, error: "Documento <b>não Excluída</b>" }

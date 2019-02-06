@@ -3,7 +3,7 @@
 
         <h1>{{ title }}</h1>
 
-        <actual-status :actualStatusId="document.status"/>
+        <actual-status :actualStatusId="document.status" :documentId="id"/>
         <section>
             <text-exibitor :document="document"/>            
         </section>
@@ -70,6 +70,18 @@ export default {
     },
     mounted() {
         this.loadValues()
+        
+        //Se próximo Usuário == Usuário da Sessão
+        getter.getNextUserToSign(this.id).then(res => {
+            if( res != null && res.id == this.$session.get('user').id) {
+                //Setar Documento como "Aguardando Assinatura"
+                model.setLikeWaitingSignature(this.id).then(res => {
+                    this.document.status = res
+                })
+            }
+            
+        })
+        
     },
 }
 </script>

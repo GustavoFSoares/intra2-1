@@ -63,11 +63,7 @@ export default {
             id: this.$route.params.id,
             document: new EletronicDocument(),
             usersForSignature: [],
-            amendment: new EletronicDocumentAmendment({
-                title: 'Acredito que medidas devam ser tomadas',
-                text: 'Essa bagaça ta tudo errada. Nao pode!',
-                user: $session.get('user'),
-            }),
+            amendment: new EletronicDocumentAmendment(),
             sending: false
         }
     },
@@ -77,7 +73,7 @@ export default {
                 getter.getEletronicDocumentById(this.id).then( res => { 
                     this.document = new EletronicDocument(res);
                 })
-                getter.getUsersForDocumentId(this.id).then(res => {
+                getter.getUsersSigned(this.id).then(res => {
                     this.usersForSignature = res
                 })
             }

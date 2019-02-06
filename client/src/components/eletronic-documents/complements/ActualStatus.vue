@@ -11,7 +11,7 @@
         </div>
         <div> 
             <span v-if="showThisGuy" class="text-disabled">
-                * Gustavo Soares 
+                Próximo à Assinar: {{ user.name }}
             </span>
         </div>
     </div>
@@ -19,20 +19,26 @@
 
 <script>
 import { getter } from "@/model/eletronic-documents-model";
+import User from "@/entity/User";
 export default {
     data() {
         return {
             status: '',
             id: '',
             showThisGuy: false,
+            user: new User(),
         }
     },
     props: {
-        actualStatusId: { default: '' }
+        actualStatusId: { default: '' },
+        documentId: '',
     },
     watch: {
         actualStatusId() {
             return this.getId()
+        },
+        documentId() {
+            this.getNextUser()
         }
     },
     methods: {
@@ -43,6 +49,13 @@ export default {
                 this.id = this.actualStatusId
             }
             return this.id
+        },
+        getNextUser() {
+            if(this.documentId) {
+                getter.getNextUserToSign(this.documentId).then(res => {
+                    this.user = new User(res)
+                })
+            }
         }
     },
     mounted() {
@@ -50,7 +63,8 @@ export default {
         getter.getStatus().then(res => {
             this.status = res
         })
-    }
+        this.getNextUser()
+    }, 
 }
 </script>
 

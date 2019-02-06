@@ -13,7 +13,8 @@ export const getter = {
     getTypes: () => TypeService.getTypes(),
     getTypeById: (id) => TypeService.getTypes({ 'id': id }),
 
-    getUsersForDocumentId: (id) => SignatureService.getUsersForDocument(id),
+    getUsersSigned: (id) => SignatureService.getUsersSignedByDocumentId(id),
+    getNextUserToSign: (id) => SignatureService.getNextUserToSignByDocumentId(id),
 }
 
 const model = {
@@ -21,10 +22,10 @@ const model = {
     doUpdate: (eletronicDocument) => service.update(eletronicDocument.id, eletronicDocument),
     doInsert: (eletronicDocument) => service.insert(eletronicDocument),
     doDelete: (eletronicDocumentId) => service.delete(eletronicDocumentId),
+    setLikeWaitingSignature: (id) => service.setDocumentLikeWaitingSignature(id),    
     signDocumentLikeCreator: (id, data) => service.signDocument(id, 'creator', data),
     signDocumentLikeUser: (id, data) => service.signDocument(id, 'user-of-list', data),
     updateAmendment: (eletronicDocument) => service.updateAmendment(eletronicDocument.id, eletronicDocument),
-    // removeManager: (ombudsmanId, user, type) => service.removeManager(ombudsmanId, user, type),
     doUploadFile: (file, fileName, prefix) => service.uploadFile(file, fileName, prefix),
     // closeChat: (ombudsman) => service.closeChat(ombudsman.id, ombudsman),
     // finishOmbudsman: (ombudsman) => service.finishOmbudsman(ombudsman.id, ombudsman),
