@@ -15,11 +15,11 @@ import Tooltip from 'vue-directive-tooltip';
 import locale from 'uiv/src/locale/lang/pt-BR'
 import translate from 'vee-validate/dist/locale/pt_BR';
 
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import 'glyphicons-only-bootstrap/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.js'
-import 'font-awesome/css/font-awesome.css'
-import 'vue-directive-tooltip/css/index.css';
+import 'bootstrap/dist/js/bootstrap.min.js'
+import 'font-awesome/css/font-awesome.min.css'
+import 'vue-directive-tooltip/css/index.min.css';
 import '@/../static/directives-styles/VTooltip.css';
 import '@/../static/default-styles/TextEditor.styl'
 
