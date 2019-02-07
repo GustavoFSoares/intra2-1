@@ -111,7 +111,8 @@ class EletronicDocumentModel extends SoftdeleteModel
         
         $waitingSignatureStatus = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentStatus')->findOneById('waiting-signature');
         $this->entity->setStatus($waitingSignatureStatus);
-        
+        $this->doUpdate($this->entity);
+
         return $this->entity->getStatus();
     }
 

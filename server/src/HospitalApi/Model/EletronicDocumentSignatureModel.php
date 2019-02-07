@@ -34,7 +34,7 @@ class EletronicDocumentSignatureModel extends ModelAbstract
             $search[] = $user['id'];
         }
 
-        $signatures = $this->getRepository()->findBy(['_document' => $documentId, 'user' => $search]);
+        $signatures = $this->getRepository()->findBy(['_document' => $documentId, 'user' => $search], ['order' => 'ASC']);
         foreach ($signatures as &$signature) {
             $signature = $this->getRepository()->find( $signature->getId() );
         }
@@ -61,6 +61,31 @@ class EletronicDocumentSignatureModel extends ModelAbstract
         $this->doUpdate($signature);
 
         return $signature;
+    }
+
+    public function clearSignatures($documentId) {
+        $update = $this->em->createQueryBuilder();
+        $update->update($this->getEntityPath(), 'eds')
+            ->set('eds.signed', 0)
+            ->set('eds.agree', ':null')
+            ->where('eds._document = :documentId')
+            ->setParameter('documentId', $documentId)
+            ->setParameter('null', null);
+        $update->getQuery()->execute();
+            
+        $update = $this->em->createQueryBuilder();
+        $update->update('HospitalApi\Entity\EletronicDocument', 'ed')
+            ->set('ed.signed', 0)
+            ->where('ed.id = :documentId')
+            ->setParameter('documentId', $documentId);
+        $update->getQuery()->execute();
+
+        $select = $this->em->createQueryBuilder();
+        $select->select('s')
+            ->from($this->getEntityPath(), 's')
+            ->where('s._document = :documentId')
+            ->setParameter('documentId', $documentId);
+        return $select->getQuery()->getResult();
     }
 
 }

@@ -2,6 +2,10 @@
 namespace HospitalApi\Controller;
 
 use HospitalApi\Model\EletronicDocumentModel;
+use HospitalApi\Model\EletronicDocumentSignatureModel;
+use HospitalApi\Entity\User;
+use HospitalApi\Entity\EletronicDocument;
+use HospitalApi\Entity\EletronicDocumentAmendment;
 
 /**
  * <b>EletronicDocumentController</b>
@@ -44,10 +48,15 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
                 $this->getModel()->setLike('finished', $entity->getId());
             } else {
                 $this->getModel()->setLike('waiting', $entity->getId());
+                $this->sendEmailToNextUser($entity);
             }
 
         } else {
             $this->getModel()->setLike('revoked', $entity->getId());
+
+            $rason = $values['message'];
+
+            $this->sendEmailRevoked($entity, $this->getSession(), $rason );
         }
 
         $this->makeLog($values['document_id'], $values['agree'], $values['message']);
@@ -60,20 +69,19 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         $values = $req->getParsedBody();
         $this->loadEntity($values);
 
-        $SignatureModel = new \HospitalApi\Model\EletronicDocumentSignatureModel();
+        $SignatureModel = new EletronicDocumentSignatureModel();
         $AmendmentModel = new \HospitalApi\Model\EletronicDocumentAmendmentModel();
 
         foreach ($values['amendmentList'] as $key => &$amendment) {
             // Se documento já foi cadastrado
             if( !isset($amendment['id']) || $amendment['id'] == false ) {
+                $key = true;
 
                 $amendment['signatureList'] = $SignatureModel->getSignaturesByDocumentIdAndUsersId($values['id'], $amendment['signatureUsers']);
-                // `----------> Se signatureList == null |- Apagar todas assinaturas e enviar email para criador do documento
-
 
                 // Obtem um objeto de Repository com assinaturas anexadas a Emenda
-                foreach ($amendment['signatureList'] as &$signature) {
-                    
+                foreach ($amendment['signatureList'] as $key => &$signature) {
+
                     // Apaga a Assinatura do Responsável e às Reordena
                     $signature = $SignatureModel->undoSignature($signature);
                     array_filter($values['signatureList'], function(&$entry) use ($signature) {
@@ -88,6 +96,17 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
 
                 // Monta objeto de Emenda
                 $amendment = $AmendmentModel->entity->construct($amendment);
+
+                if($key === true) {
+                    if( $amendment->getSignatureList() == null ) {
+                        $values['signatureList'] = $SignatureModel->clearSignatures( $amendment->getDocument()->getId() );
+                        $user = $amendment->getDocument()->getUser();
+                    } else {
+                        $user = $amendment->getSignatureList()[0]->getUser();
+                    }
+
+                    $this->sendEmailForResign( $amendment, $user );
+                }
             } else {
 
                 // Carrega Emendas já cadastradas
@@ -117,6 +136,43 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         $data = $this->translateCollection($status);
 
         return $res->withJson($data);
+    }
+
+    public function sendEmailToNextUser(EletronicDocument $eletronicDocument) {
+        $SignatureModel = new EletronicDocumentSignatureModel();
+                
+        $signatureTemplate = new \HospitalApi\Template\EletronicDocumentSignatureEmailTemplate($eletronicDocument, $SignatureModel->getNextUserToSign( $eletronicDocument->getId() ));
+        return EmailController::sendEmailAction($signatureTemplate);
+    }
+    
+    public function sendEmailForResign(EletronicDocumentAmendment $amendment, User $userToResign) {
+        $amendmentTemplate = new \HospitalApi\Template\EletronicDocumentSignatureToAmendmentEmailTemplate(
+                $amendment, 
+                $userToResign
+            );
+        return EmailController::sendEmailAction($amendmentTemplate);
+    }
+    
+    public function sendEmailRevoked(EletronicDocument $eletronicDocument, User $userToResign, $rason) {
+        $revokedTemplate = new \HospitalApi\Template\EletronicDocumentSignatureRevokedEmailTemplate(
+                $eletronicDocument, 
+                $userToResign, 
+                $rason
+            );
+        return EmailController::sendEmailAction($revokedTemplate);
+    }
+
+    public function insert($req, $res, $args) { 
+        $response = parent::insert($req, $res, $args);
+        $this->sendEmailToNextUser($this->getModel()->entity);
+
+        return $response;
+    }
+    public function update($req, $res, $args) { 
+        $response = parent::update($req, $res, $args);
+        $this->sendEmailToNextUser($this->getModel()->entity);
+
+        return $response;
     }
 
 }
