@@ -68,6 +68,7 @@ export default {
         destroy() {
             $(`#${this.id}`).remove()
             $('.modal-backdrop').remove()
+            $('.modal-open').css('padding-right', 0).removeClass()
         }
     },
     created() {

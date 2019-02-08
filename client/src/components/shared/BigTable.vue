@@ -24,27 +24,24 @@ export default {
             var $table = $('.table')
             
             if( $table.has('td').length == 1 ) {
-                this.hide = $('#app').width() > this.length ? true : false
+                this.hide = $('#app').width() > $('.table:not(.new-table)').width() ? true : false
                 
                 var $fixedColumn = $table.clone()
                 $fixedColumn.insertBefore($table).addClass('fixed-column new-table')
-                $fixedColumn.find('th:not(:last-child),td:not(:last-child)').remove();
+                $fixedColumn.find('th:not(:first-child),td:not(:first-child)').remove();
                 
-                let length = $fixedColumn.width()+5
-
+                let length = Number(this.field_length)+30
                 $("#big-table").css("--length", length+"px")
 
                 $fixedColumn.find('tr').each(function (i, elem) {
-                    $(this).height($table.find('tr:eq(' + i + ')').height());
+                    $(this).height( $table.find('tr:eq(' + i + ')').height() );
                 });
             }
            
         }
     },
-    props: [ 'length' ],
-    mounted() {
-        this.init()
-    },
+    props: [ 'field_length' ],
+    mounted() { },
     updated() {
         this.init()
     },
@@ -77,14 +74,14 @@ export default {
     }
 
     .new-table {
-        right: 0;
+        left: 0;
     }
 
     .hide .new-table {
         display: none;
     }
 
-    .table tr th:last-child, td:last-child {
+    .table tr th:first-child, td:first-child {
         min-width: var(--length);
     } 
 </style>

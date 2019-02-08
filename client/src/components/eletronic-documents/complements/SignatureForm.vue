@@ -5,7 +5,7 @@
             <p class="text-success col-md"> ASSINADO </p>
         </div>
         <div v-else-if="user.id == user_id && signed == false" class="row">
-            <yes-no v-model="agree" :disabled="disabled" v-if="show.button" @click="showPassword()"/>
+            <yes-no v-model="agree" yes="Concordar" no="Revogar" :disabled="disabled" v-if="show.button" @click="showPassword()"/>
             <div v-if="show.password" class="row">
                 <div class="col-md-1 mt-2">
                     <router-link to="" @click.native="showButton()" v-if="!loading">

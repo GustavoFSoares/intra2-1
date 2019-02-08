@@ -11,7 +11,7 @@
             <input type="search" class="filter form-control" :disabled="!documents" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
         </div>
 
-        <big-table length="1180" class="table-hover">
+        <big-table field_length="180" class="table-hover">
 
             <thead>
                 <tr>
@@ -49,7 +49,7 @@
                         <a @click.stop.prevent="remove(document.id, index)" to='' v-if="showDeleteButton(document.status, document.user)">
                             <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </a>
-                        <a @click.stop.prevent="archive(document.id, index)" to='' v-if="showArchiveButton(document.status, document.user)">
+                        <a @click.stop.prevent="archive(document.id, index)" to='' v-if="showArchiveButton(document.status, document.user) && 1 == 2">
                             <icon v-tooltip.top="'Arquivar'" class="text-secondary" icon="archive"/>
                         </a>
                     </td>

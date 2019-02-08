@@ -75,7 +75,7 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         foreach ($values['amendmentList'] as $key => &$amendment) {
             // Se documento já foi cadastrado
             if( !isset($amendment['id']) || $amendment['id'] == false ) {
-                $key = true;
+                $isNewAmendment = true;
 
                 $amendment['signatureList'] = $SignatureModel->getSignaturesByDocumentIdAndUsersId($values['id'], $amendment['signatureUsers']);
 
@@ -97,7 +97,7 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
                 // Monta objeto de Emenda
                 $amendment = $AmendmentModel->entity->construct($amendment);
 
-                if($key === true) {
+                if($isNewAmendment === true) {
                     if( $amendment->getSignatureList() == null ) {
                         $values['signatureList'] = $SignatureModel->clearSignatures( $amendment->getDocument()->getId() );
                         $user = $amendment->getDocument()->getUser();
@@ -164,13 +164,17 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
 
     public function insert($req, $res, $args) { 
         $response = parent::insert($req, $res, $args);
-        $this->sendEmailToNextUser($this->getModel()->entity);
+        if($this->getModel()->entity->getStatus()->getId() != 'draft') {
+            $this->sendEmailToNextUser($this->getModel()->entity);
+        }
 
         return $response;
     }
     public function update($req, $res, $args) { 
         $response = parent::update($req, $res, $args);
-        $this->sendEmailToNextUser($this->getModel()->entity);
+        if($this->getModel()->entity->getStatus()->getId() != 'draft') {
+            $this->sendEmailToNextUser($this->getModel()->entity);
+        }
 
         return $response;
     }

@@ -23,7 +23,7 @@
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos'}" tag="button">
                     Voltar
                 </router-link>
-                <button class="btn btn-outline-danger btn-lg" id="submit-button" type="button" :disabled="true">
+                <button class="btn btn-outline-danger btn-lg" id="submit-button" type="button" :disabled="true" v-if="false">
                     Arquivar Documento
                 </button>
             </row>
