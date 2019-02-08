@@ -21,7 +21,7 @@
                             </row>
 
                             <row label='Tipo'>
-                                <v-select label="name" v-model="document.type" :options="values.types"></v-select>
+                                <v-select :disabled="true" label="name" v-model="document.type" :options="values.types"></v-select>
                             </row>
 
                         </box>

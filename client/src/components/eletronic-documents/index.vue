@@ -2,10 +2,21 @@
     <div class="container-fluid">
         <h1>{{ title }}</h1>
 
-        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'documentos-eletronicos/add'}" tag="button">
-            Criar Documento
-        </router-link>
+        <div class='row'>
+            <rows label=''>
+                <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': showFiled }" @click="showFiled = !showFiled">
+                    Mosrtar Arquivados
+                </button>                
+            </rows>
+            
+            <rows label=''>
+                <router-link class="button btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos/add'}" tag="button">
+                    Criar Documento
+                </router-link>                
+            </rows>
 
+            <rows label=''> </rows>
+        </div>
         
         <div class="form-group form-row col mt-3">
             <input type="search" class="filter form-control" :disabled="!documents" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
@@ -22,7 +33,6 @@
                     <th scope="col">Status</th>
                     <th scope="col">Acompanhando</th>
                     <th scope="col"></th>
-
                 </tr>
             </thead>
             <tbody>
@@ -77,7 +87,8 @@ export default {
         documents: [],
         documentSelected: false,
         filter: '',
-        user: $session.get('user')
+        user: $session.get('user'),
+        showFiled: false,
     }),
     methods: {
         showMore(document) {
@@ -139,11 +150,21 @@ export default {
             } else {
                 return false
             }
-             
+        },
+        showDocumentIfFiled(document) {
+            if( this.showFiled ) {
+                if( document.status.id == 'filed' ) {
+                    return document
+                }
+            } else {
+                if( document.status.id != 'filed') {
+                    return document
+                }
+            }
         }
     },
     computed: {
-        searchList() {
+        secondFilter() {
             if(this.filter) {
                 let exp = new RegExp(this.filter.trim(), 'i')
                 
@@ -157,17 +178,19 @@ export default {
                         return exp
                     } else if( exp.test(document.user.name)) {
                         return exp
-                    } else if( exp.test(document.satus.code)) {
-                        return exp
-                    } else if( exp.test(document.type.code)) {
-                        return exp
-                    } else if( exp.test( this.$options.filters.humanizeDate(document.c_modifiec.date) ) ) {
-                        return exp
+                    } else if( exp.test(document.status.name)) {
+                        return exp  
                     }
+                    
                 })
             } else {
                 return this.documents
             }
+        },
+        searchList() {
+            return this.secondFilter.filter(document => {
+                return this.showDocumentIfFiled(document)
+            })
         },
     },
     mounted() {

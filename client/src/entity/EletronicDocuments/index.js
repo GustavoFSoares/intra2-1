@@ -1,6 +1,6 @@
 export default class EletronicDocument {
     constructor(eletronicDocument = { 
-        user: window.$session.get('user'), draft: true, signatureList: [ ], groupList: [ ], type: { name: ' '},
+        user: window.$session.get('user'), draft: true, signatureList: [ ], groupList: [ ], type: { id:1, name: "Memorando"},
      }) {
         this.id = eletronicDocument.id ? eletronicDocument.id : this.getId()
         this.subject = eletronicDocument.subject
