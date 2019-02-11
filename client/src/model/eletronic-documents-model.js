@@ -27,8 +27,12 @@ const model = {
     signDocumentLikeUser: (id, data) => service.signDocument(id, 'user-of-list', data),
     updateAmendment: (eletronicDocument) => service.updateAmendment(eletronicDocument.id, eletronicDocument),
     doUploadFile: (file, fileName, prefix) => service.uploadFile(file, fileName, prefix),
-    cancelDocument: (id) => service.setLikeCanceled(id),
-    // finishOmbudsman: (ombudsman) => service.finishOmbudsman(ombudsman.id, ombudsman),
+    setLikeCanceld: (id) => service.setDocumentLikeCanceled(id),
+    setLikeFiled: (eletronicDocument) => {
+        eletronicDocument.status.id = 'filed'
+        
+        return service.setDocumentLikeFiled(eletronicDocument.id, eletronicDocument)   
+    },
 }
 
 export const StatusModel = {

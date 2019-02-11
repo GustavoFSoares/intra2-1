@@ -110,7 +110,7 @@ export default {
                 if(res) {
             
                     this.loading.cancelingDocument = true
-                    model.cancelDocument(this.document.id).then(res => {
+                    model.setLikeCanceled(this.document.id).then(res => {
                         this.document.status = res
                         this.loading.cancelingDocument = false
                     }).catch(err => {

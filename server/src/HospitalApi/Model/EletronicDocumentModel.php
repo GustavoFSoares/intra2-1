@@ -110,6 +110,10 @@ class EletronicDocumentModel extends SoftdeleteModel
                 $status = $StatusRepository->findOneById('canceled');
                 break;
             
+            case 'filed':
+                $status = $StatusRepository->findOneById('filed');
+                break;
+            
             default:
                 $status = $StatusRepository->findOneById('draft');
                 break;

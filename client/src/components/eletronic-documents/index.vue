@@ -59,7 +59,7 @@
                         <a @click.stop.prevent="remove(document.id, index)" to='' v-if="showDeleteButton(document.status, document.user)">
                             <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </a>
-                        <a @click.stop.prevent="archive(document.id, index)" to='' v-if="showArchiveButton(document.status, document.user) && 1 == 2">
+                        <a @click.stop.prevent="archive(document, index)" to='' v-if="showArchiveButton(document.status, document.user)">
                             <icon v-tooltip.top="'Arquivar'" class="text-secondary" icon="archive"/>
                         </a>
                     </td>
@@ -79,7 +79,7 @@
 import BigTable from "@/components/shared/BigTable";
 import Modal from "@/components/shared/Modal";
 import ShowMore from "./complements/ShowMore";
-import { getter } from "@/model/eletronic-documents-model";
+import model, { getter } from "@/model/eletronic-documents-model";
 
 export default {
     data: () => ({
@@ -162,6 +162,13 @@ export default {
                     return document
                 }
             }
+        },
+        archive(document, index) {
+            model.setLikeFiled(document).catch(err => {
+                setTimeout(() => {
+                    this.$router.go()
+                }, 5000);
+            })
         }
     },
     computed: {

@@ -132,15 +132,22 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         \Helper\LoggerHelper::writeFile($message, true);
     }
 
-    public function setLikeWaitingSignatureAction($req, $res, $args) {
-        $status = $this->changeStatusTo('waiting-signature', $args['document-id']);
+    public function setLikeCanceledAction($req, $res, $args) {
+        $status = $this->changeStatusTo('canceled', $args['document-id']);
+        $data = $this->translateCollection($status);
+
+        return $res->withJson($data);
+    }
+
+    public function setLikeFiledAction($req, $res, $args) {
+        $status = $this->changeStatusTo('filed', $args['document-id']);
         $data = $this->translateCollection($status);
 
         return $res->withJson($data);
     }
     
-    public function setLikeCanceledAction($req, $res, $args) {
-        $status = $this->changeStatusTo('canceled', $args['document-id']);
+    public function setLikeWaitingSignatureAction($req, $res, $args) {
+        $status = $this->changeStatusTo('waiting-signature', $args['document-id']);
         $data = $this->translateCollection($status);
 
         return $res->withJson($data);
