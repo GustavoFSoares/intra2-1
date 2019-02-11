@@ -27,17 +27,20 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
-import InfoIcon from "@/components/shared/InfoIcon.vue";
+
 import Box from "@/components/shared/Box.vue";
+import InfoIcon from "@/components/shared/InfoIcon.vue";
+import SendingIcon from "@/components/shared/SendingIcon.vue";
 
 library.add(fas)
+Vue.component('box', Box)
 Vue.component('icon', FontAwesomeIcon)
 Vue.component('info-icon', InfoIcon)
+Vue.component('sending-icon', SendingIcon)
 Vue.component('row', FormRw)
 Vue.component('rows', FormRws)
 Vue.component('require-text', Require)
 Vue.component('v-select', VueSelect)
-Vue.component('box', Box)
 
 Vue.config.productionTip = false
 
