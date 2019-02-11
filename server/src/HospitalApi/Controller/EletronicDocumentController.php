@@ -139,8 +139,8 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         return $res->withJson($data);
     }
 
-    public function setLikeFiledAction($req, $res, $args) {
-        $status = $this->changeStatusTo('filed', $args['document-id']);
+    public function setLikeArchivedAction($req, $res, $args) {
+        $status = $this->changeStatusTo('archived', $args['document-id']);
         $data = $this->translateCollection($status);
 
         return $res->withJson($data);
@@ -199,8 +199,10 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
             $this->getModel()->entity = $this->getModel()->getRepository()->find($documentId);
         }
 
-        if( in_array( $this->getModel()->entity->getStatus()->getId(), $this->getModel()->getBlockedStatus() ) ) {
-            if($newStatus !== 'filed') {
+        if( in_array( $this->getModel()->entity->getStatus()->getId(), $this->getModel()->getBlockedStatus() ) 
+            || $this->getModel()->entity->isCanceled() 
+            || $this->getModel()->entity->isFinished() ) {
+            if($newStatus !== 'archived') {
                 throw new Exception("Invalid Movimentation", 500);
             }
         }

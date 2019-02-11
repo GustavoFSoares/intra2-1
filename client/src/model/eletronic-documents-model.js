@@ -28,10 +28,10 @@ const model = {
     updateAmendment: (eletronicDocument) => service.updateAmendment(eletronicDocument.id, eletronicDocument),
     doUploadFile: (file, fileName, prefix) => service.uploadFile(file, fileName, prefix),
     setLikeCanceld: (id) => service.setDocumentLikeCanceled(id),
-    setLikeFiled: (eletronicDocument) => {
-        eletronicDocument.status.id = 'filed'
+    setLikeArchived: (eletronicDocument) => {
+        eletronicDocument.archived = true
         
-        return service.setDocumentLikeFiled(eletronicDocument.id, eletronicDocument)   
+        return service.setDocumentLikeArchived(eletronicDocument.id, eletronicDocument)   
     },
 }
 

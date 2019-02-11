@@ -4,7 +4,7 @@
 
         <div class='row'>
             <rows label=''>
-                <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': showFiled }" @click="showFiled = !showFiled">
+                <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': showArchived }" @click="showArchived = !showArchived">
                     Mosrtar Arquivados
                 </button>                
             </rows>
@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr @click="showMore(document)" v-for="(document, index) in searchList" :key="document.id" class="row-list" :class="getColorStatus(document.status.id)">
+                <tr @click="showMore(document)" v-for="(document, index) in searchList" :key="document.id" class="row-list" :class="getColorStatus(document)">
                     <th>{{ document.id }}</th>
                     <td>{{ document.subject }}</td>
                     <td>{{ document.type.code }}</td>
@@ -59,7 +59,7 @@
                         <a @click.stop.prevent="remove(document.id, index)" to='' v-if="showDeleteButton(document.status, document.user)">
                             <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </a>
-                        <a @click.stop.prevent="archive(document, index)" to='' v-if="showArchiveButton(document.status, document.user)">
+                        <a @click.stop.prevent="archive(document, index)" to='' v-if="showArchiveButton(document)">
                             <icon v-tooltip.top="'Arquivar'" class="text-secondary" icon="archive"/>
                         </a>
                     </td>
@@ -88,17 +88,21 @@ export default {
         documentSelected: false,
         filter: '',
         user: $session.get('user'),
-        showFiled: false,
+        showArchived: false,
     }),
     methods: {
         showMore(document) {
             this.documentSelected = document
             this.$refs.modal.show()
         },
-        getColorStatus(statusId) {
+        getColorStatus(document) {
             let colorClass = ''
             
-            switch (statusId) {
+            if(document.archived == true) {
+                return 'table-disabled'
+            }
+
+            switch (document.status.id) {
                 case 'draft':
                     colorClass = 'table-primary'
                     break;
@@ -112,10 +116,6 @@ export default {
                     colorClass = 'table-danger'
                     break;
 
-                case 'filed':
-                    colorClass = 'table-disabled'
-                    break;
-                    
                 default:
                     break;
             }
@@ -140,31 +140,31 @@ export default {
                 return false
             }
         },
-        showArchiveButton(status, user) {
-            if(user.id != this.user.id) {
+        showArchiveButton(document) {
+            if(document.user.id != this.user.id || document.archived) {
                 return false
-            } else if(status.id == 'finished' 
-                        || status.id == 'canceled'  
-                        || status.id == 'revoked'
+            } else if(document.status.id == 'finished' 
+                        || document.status.id == 'canceled'  
+                        || document.status.id == 'revoked'
                     ) {
                 return true
             } else {
                 return false
             }
         },
-        showDocumentIfFiled(document) {
-            if( this.showFiled ) {
-                if( document.status.id == 'filed' ) {
+        showDocumentIfArchived(document) {
+            if( this.showArchived ) {
+                if( document.archived == true ) {
                     return document
                 }
             } else {
-                if( document.status.id != 'filed') {
+                if( document.archived == false ) {
                     return document
                 }
             }
         },
         archive(document, index) {
-            model.setLikeFiled(document).catch(err => {
+            model.setLikeArchived(document).catch(err => {
                 setTimeout(() => {
                     this.$router.go()
                 }, 5000);
@@ -197,13 +197,12 @@ export default {
         },
         searchList() {
             return this.secondFilter.filter(document => {
-                return this.showDocumentIfFiled(document)
+                return this.showDocumentIfArchived(document)
             })
         },
     },
     mounted() {
-        getter.getEletronicDocuments().then(res => { this.documents = res; console.log(res[0]);
-         })
+        getter.getEletronicDocuments().then(res => { this.documents = res; })
     },
     components: {
         'big-table': BigTable,

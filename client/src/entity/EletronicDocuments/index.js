@@ -8,6 +8,8 @@ export default class EletronicDocument {
         this.type = eletronicDocument.type
         this.status = eletronicDocument.status
         this.archived = eletronicDocument.archived ? true : false
+        this.canceled = eletronicDocument.canceled ? true : false
+        this.finished = eletronicDocument.finished ? true : false
         this.signed = eletronicDocument.signed ? true : false
         this.signatureList = eletronicDocument.signatureList ? eletronicDocument.signatureList : []
         this.amendmentList = eletronicDocument.amendmentList ? eletronicDocument.amendmentList : []
@@ -27,7 +29,7 @@ export default class EletronicDocument {
 
     isBlocked() {
         if(this.isLoaded()) {
-            return ['revoked', 'canceled'].includes(this.status.id)
+            return ['revoked', 'canceled'].includes(this.status.id) || this.canceled
         }
         return false
     }

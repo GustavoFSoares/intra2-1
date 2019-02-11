@@ -17,7 +17,7 @@ class EletronicDocumentModel extends SoftdeleteModel
     public function __construct() {
         $this->entity = new EletronicDocument;
         
-        $this->_blockedStatus = [ 'canceled', 'revoked', 'filed', 'finished', ];
+        $this->_blockedStatus = [ 'canceled', 'revoked', 'finished', ];
         parent::__construct();
     }
 
@@ -99,19 +99,22 @@ class EletronicDocumentModel extends SoftdeleteModel
                 break;
             
             case 'finished':
+                $this->entity->setFinished(true);
                 $status = $StatusRepository->findOneById('finished');
                 break;
             
             case 'revoked':
+                $this->entity->setCanceled(true);
                 $status = $StatusRepository->findOneById('revoked');
                 break;
             
             case 'canceled':
+                $this->entity->setCanceled(true);
                 $status = $StatusRepository->findOneById('canceled');
                 break;
             
-            case 'filed':
-                $status = $StatusRepository->findOneById('filed');
+            case 'arquived':
+                $this->entity->setArquived(true);
                 break;
             
             default:
@@ -119,7 +122,10 @@ class EletronicDocumentModel extends SoftdeleteModel
                 break;
         }
         
-        $this->entity->setStatus($status);
+        if($status) {
+            $this->entity->setStatus($status);
+        }
+
         $this->doUpdate($this->entity);
 
         return $this->entity->getStatus();

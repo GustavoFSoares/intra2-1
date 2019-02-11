@@ -35,9 +35,9 @@ export default {
         window.httpMessage = { show: true, success: "Documento Cancelado", error: "Erro ao Registrar Acesso" }
         return http.put(`/eletronic-documents/set-like-canceled/${id}`).then(res => res.data)
     },
-    setDocumentLikeFiled: (id) => {
+    setDocumentLikeArchived: (id) => {
         window.httpMessage = { show: true, success: `<b>#${id}</b> Arquivado`, error: "Erro ao Arquivar" }
-        return http.put(`/eletronic-documents/set-like-filed/${id}`).then(res => res.data)
+        return http.put(`/eletronic-documents/set-like-archived/${id}`).then(res => res.data)
     },
 
     delete: (id) => {

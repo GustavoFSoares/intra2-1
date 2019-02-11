@@ -68,6 +68,16 @@ class EletronicDocument extends SoftdeleteAbstract
     protected $archived;
     
     /**
+     * @var Boolean @Column(name="cancelado", type="boolean", options={ "default": false })
+     */
+    protected $canceled;
+    
+    /**
+     * @var Boolean @Column(name="finalizado", type="boolean", options={ "default": false })
+     */
+    protected $finished;
+    
+    /**
      * @var Boolean @Column(name="assinado", type="boolean", options={ "default": false })
      */
     protected $signed;
@@ -86,6 +96,8 @@ class EletronicDocument extends SoftdeleteAbstract
         $this->amendmentList = new ArrayCollection();
         $this->draft = true;
         $this->archived = false;
+        $this->canceled = false;
+        $this->finished = false;
         $this->signed = false;
         $this->subject = null;
         $this->content = '';
@@ -203,6 +215,30 @@ class EletronicDocument extends SoftdeleteAbstract
     }
     public function setArchived($archived) {
         $this->archived = $archived ? true : false;
+        
+        return $this;
+    }
+    
+    public function getCanceled() {
+        return $this->canceled;
+    }
+    public function iscanceled() {
+        return $this->getCanceled();
+    }
+    public function setCanceled($canceled) {
+        $this->canceled = $canceled ? true : false;
+        
+        return $this;
+    }
+
+    public function getFinished() {
+        return $this->finished;
+    }
+    public function isFinished() {
+        return $this->getFinished();
+    }
+    public function setFinished($finished) {
+        $this->finished = $finished ? true : false;
         
         return $this;
     }
