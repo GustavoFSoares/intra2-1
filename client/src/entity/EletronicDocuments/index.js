@@ -20,4 +20,22 @@ export default class EletronicDocument {
         let d = new Date()
         return `${d.getFullYear()}${(d.getMonth() + 1)}${d.getDate()}${d.getMinutes()}.${d.getSeconds()}${d.getMilliseconds()}`
     }
+
+    isLoaded() {
+        return this.status ? true : false
+    }
+
+    isBlocked() {
+        if(this.isLoaded()) {
+            return ['revoked', 'canceled'].includes(this.status.id)
+        }
+        return false
+    }
+
+    isInProssessing() {
+        if(this.isLoaded()) {
+            return ['sending', 'waiting-correction', 'waiting-signature'].includes(this.status.id)
+        }
+        return false
+    }
 }

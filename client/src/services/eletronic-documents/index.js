@@ -31,6 +31,10 @@ export default {
         window.httpMessage = { show: true, error: "Erro ao Registrar Acesso" }
         return http.put(`/eletronic-documents/set-like-waiting/${id}`).then(res => res.data)
     },
+    setLikeCanceled: (id) => {
+        window.httpMessage = { show: "Documento Cancelado", error: "Erro ao Registrar Acesso" }
+        return http.put(`/eletronic-documents/set-like-canceled/${id}`).then(res => res.data)
+    },
 
     delete: (id) => {
         window.httpMessage = { show: true, success: `Documento <b>#${id}</b> Excluída`, error: "Documento <b>não Excluída</b>" }

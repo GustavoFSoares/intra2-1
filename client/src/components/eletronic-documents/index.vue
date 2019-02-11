@@ -108,6 +108,7 @@ export default {
                     break;
             
                 case 'revoked': 
+                case 'canceled': 
                     colorClass = 'table-danger'
                     break;
 

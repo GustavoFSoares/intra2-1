@@ -12,10 +12,17 @@ class EletronicDocumentModel extends SoftdeleteModel
 
     public $entity;
     public $inverseOrder = true;
+    private $_blockedStatus = [];
 
     public function __construct() {
         $this->entity = new EletronicDocument;
+        
+        $this->_blockedStatus = [ 'canceled', 'revoked', 'filed', 'finished', ];
         parent::__construct();
+    }
+
+    public function getBlockedStatus() {
+        return $this->_blockedStatus;
     }
 
     public function mount($values) {
@@ -83,6 +90,10 @@ class EletronicDocumentModel extends SoftdeleteModel
                 $status = $StatusRepository->findOneById('sending');
                 break;
             
+            case 'waiting-signature':
+                $status = $StatusRepository->findOneById('waiting-signature');
+                break;
+            
             case 'correction':
                 $status = $StatusRepository->findOneById('waiting-correction');
                 break;
@@ -95,22 +106,16 @@ class EletronicDocumentModel extends SoftdeleteModel
                 $status = $StatusRepository->findOneById('revoked');
                 break;
             
+            case 'canceled':
+                $status = $StatusRepository->findOneById('canceled');
+                break;
+            
             default:
                 $status = $StatusRepository->findOneById('draft');
                 break;
         }
         
         $this->entity->setStatus($status);
-        $this->doUpdate($this->entity);
-
-        return $this->entity;
-    }
-
-    public function setDocumentLikeWaitingSignature($documentId) {
-        $this->entity = $this->getRepository()->find($documentId);
-        
-        $waitingSignatureStatus = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentStatus')->findOneById('waiting-signature');
-        $this->entity->setStatus($waitingSignatureStatus);
         $this->doUpdate($this->entity);
 
         return $this->entity->getStatus();

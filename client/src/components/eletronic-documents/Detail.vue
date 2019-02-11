@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid">
 
-        <div id="revoked" v-if="document.status && document.status.id == 'revoked'">
+        <div id="revoked" v-if="document.isLoaded() && this.document.isBlocked()">
             <hr>
-            <h1>Revogado</h1>
+            <h1>{{ document.status.name }}</h1>
             <hr>
         </div>
 
@@ -15,7 +15,19 @@
         </section>
 
         <section id="signature-area">
-            <sign-document :id="id" v-model="document" :disabled="!document.status || document.status.id == 'revoked'" title="Assinar Documento" ref="sign_document" :show="canShowSignature"/>
+            <sign-document :id="id" v-model="document" :disabled="!document.status || document.isBlocked()" title="Assinar Documento" ref="sign_document" :show="canShowSignature"/>
+        </section>
+
+        <section v-if="document.isLoaded() && document.user.id == $session.get('user').id && document.isInProssessing()">
+            <div class='text-right'>
+                <button class="btn btn-outline-danger btn-lg" @click="cancelDocument()" :disabled="loading.cancelingDocument">
+                    Cancelar Documento 
+                    <sending-icon v-model="loading.cancelingDocument"/>
+                </button>
+                <button class="btn btn-outline-warning btn-lg" id="submit-button" type="button" :disabled="true" v-if="false">
+                    Arquivar Documento
+                </button>
+            </div>
         </section>
 
         <section id="buttons">
@@ -23,9 +35,6 @@
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos'}" tag="button">
                     Voltar
                 </router-link>
-                <button class="btn btn-outline-danger btn-lg" id="submit-button" type="button" :disabled="true" v-if="false">
-                    Arquivar Documento
-                </button>
             </row>
         </section>
     </div>
@@ -35,8 +44,10 @@
 import ActualStatus from "./complements/ActualStatus"
 import SignDocument from './complements/SignDocument.vue'
 import SignatureForm from './complements/SignatureForm.vue'
-import VmfilePdf from '@/components/shared/VFile/V-multifile-pdf.vue'
 import TextExibitor from "./complements/TextExibitor";
+
+import Alert from "@/components/shared/Alert"
+import VmfilePdf from '@/components/shared/VFile/V-multifile-pdf.vue'
 
 import EletronicDocument from "@/entity/EletronicDocuments";
 import model, { getter } from "@/model/eletronic-documents-model"
@@ -47,6 +58,10 @@ export default {
             id: this.$route.params.id,
             document: new EletronicDocument(),
             canShowSignature: false,
+            loading: {
+                cancelingDocument: false,
+                filingDocument: false,
+            },
         }
     },
     methods: {
@@ -60,8 +75,10 @@ export default {
                         this.document = new EletronicDocument(res); 
                         this.title = this.document.type.name
                         this.canShowSignature = true
-    
+
+                        
                         if(this.document.status.id == 'sending') {
+                            console.log('mudando');
                             this.setLikeWaitingSignature()
                         }
                     }
@@ -86,6 +103,21 @@ export default {
                     })
                 }
                 
+            })
+        },
+        cancelDocument() {
+            Alert.YesNo("Tem certeza?", "Você está invalidando este documento e ele será bloqueado permanentemente!").then(res => {
+                if(res) {
+            
+                    this.loading.cancelingDocument = true
+                    model.cancelDocument(this.document.id).then(res => {
+                        this.document.status = res
+                        this.loading.cancelingDocument = false
+                    }).catch(err => {
+                        this.loading.cancelingDocument = false
+                    })
+
+                }
             })
         }
     },

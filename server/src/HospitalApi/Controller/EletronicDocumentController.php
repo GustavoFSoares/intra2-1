@@ -45,14 +45,14 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
             
             //Se Quantidade de Assinaturas == Total Assinaturas --> Status Finalizado
             if($signatureList->count() == $signaturesSigned->count()) {
-                $this->getModel()->setLike('finished', $entity->getId());
+                $this->changeStatusTo('finished', $entity->getId());
             } else {
-                $this->getModel()->setLike('waiting', $entity->getId());
+                $this->changeStatusTo('waiting', $entity->getId());
                 $this->sendEmailToNextUser($entity);
             }
 
         } else {
-            $this->getModel()->setLike('revoked', $entity->getId());
+            $this->changeStatusTo('revoked', $entity->getId());
 
             $rason = $values['message'];
 
@@ -68,6 +68,7 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
     public function updateAmendmentAction($req, $res, $args) {
         $values = $req->getParsedBody();
         $this->loadEntity($values);
+        $this->checkValidUpdation($values['id']);
 
         $SignatureModel = new EletronicDocumentSignatureModel();
         $AmendmentModel = new \HospitalApi\Model\EletronicDocumentAmendmentModel();
@@ -115,7 +116,7 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         }
         $entity = $this->_mountEntity($values);
         $this->getModel()->doUpdate($entity);
-        $this->getModel()->setLike('correction', $entity->getId());
+        $this->changeStatusTo('correction', $entity->getId());
 
         return $res->withJson(true);
     }
@@ -132,7 +133,14 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
     }
 
     public function setLikeWaitingSignatureAction($req, $res, $args) {
-        $status = $this->getModel()->setDocumentLikeWaitingSignature($args['document-id']);
+        $status = $this->changeStatusTo('waiting-signature', $args['document-id']);
+        $data = $this->translateCollection($status);
+
+        return $res->withJson($data);
+    }
+    
+    public function setLikeCanceledAction($req, $res, $args) {
+        $status = $this->changeStatusTo('canceled', $args['document-id']);
         $data = $this->translateCollection($status);
 
         return $res->withJson($data);
@@ -179,4 +187,21 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         return $response;
     }
 
+    public function checkValidUpdation($documentId, $newStatus = '') {
+        if(!$this->getModel()->entity->isLoaded() ) {
+            $this->getModel()->entity = $this->getModel()->getRepository()->find($documentId);
+        }
+
+        if( in_array( $this->getModel()->entity->getStatus()->getId(), $this->getModel()->getBlockedStatus() ) ) {
+            if($newStatus !== 'filed') {
+                throw new Exception("Invalid Movimentation", 500);
+            }
+        }
+    }
+
+    public function changeStatusTo($newStatus, $id) {
+        $this->checkValidUpdation($id, $newStatus);
+        
+        return $this->getModel()->setLike($newStatus, $id);
+    }
 }

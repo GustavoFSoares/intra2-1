@@ -196,4 +196,8 @@ abstract class EntityAbstract extends BasicApplicationAbstract
         return $this;
     }
 
+    public function isLoaded() {
+        return $this->getId() ? true : false;
+    }
+
 }
