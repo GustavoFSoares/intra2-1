@@ -7,6 +7,8 @@ use HospitalApi\Entity\User;
 use HospitalApi\Entity\EletronicDocument;
 use HospitalApi\Entity\EletronicDocumentAmendment;
 
+use HospitalApi\Template\Document\DocumentFactory;
+
 /**
  * <b>EletronicDocumentController</b>
  */
@@ -212,5 +214,21 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         $this->checkValidUpdation($id, $newStatus);
         
         return $this->getModel()->setLike($newStatus, $id);
+    }
+
+    public function printDocumentAction($req, $res, $args) {
+        $params = $args;
+        
+        $this->loadEntity($args);
+
+        $entity = $this->getModel()->entity;
+
+        if( !$entity->isFinished() ) {
+            return $res->write("Documento #{$entity->getId()} ainda não foi finalizado");
+        }
+        
+        new DocumentFactory('DocumentoEletronico', 1, $params);
+        
+        exit;
     }
 }

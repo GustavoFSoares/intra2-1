@@ -10,7 +10,7 @@
             <span class="bar text-disabled">/</span>
         </div>
         <div> 
-            <span v-if="showThisGuy" class="text-disabled">
+            <span v-if="showThisGuy && user.name" class="text-disabled">
                 Próximo à Assinar: {{ user.name }}
             </span>
         </div>

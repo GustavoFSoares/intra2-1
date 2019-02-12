@@ -33,6 +33,13 @@ const model = {
         
         return service.setDocumentLikeArchived(eletronicDocument.id, eletronicDocument)   
     },
+    printDocument: (id) => {
+        return new Promise(resolve => {
+            let route = window.globals.API_SERVER + "/eletronic-documents/print-document/" + id
+            window.open(route, '_blank');
+            resolve(true)
+        })
+    },
 }
 
 export const StatusModel = {

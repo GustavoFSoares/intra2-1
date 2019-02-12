@@ -274,10 +274,10 @@ class EletronicDocument extends SoftdeleteAbstract
     }
 
     public function getCreatedDate() {
-        return $this->createdDate;
+        return $this->createdAt;
     }
     public function setCreatedDate($createdDate) {
-        $this->createdDate = $this->_formatDate($createdDate);
+        $this->createdAt = $this->_formatDate($createdDate);
         
         return $this;
     }

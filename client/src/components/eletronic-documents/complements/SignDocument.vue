@@ -1,12 +1,12 @@
 <template>
     <div v-if="show" v-bind:class="{'disabled': disabled}">
         <row>
-            <div class='row' v-if="document.user.id == user.id || document.signed" >
+            <div class='row' v-if="document.user.id == user.id || document.signed || true" >
                 <rows class="col-md">
                     {{ document.user.name }}
                 </rows>
                 
-                <rows >
+                <!-- <rows >
                     <div v-if="document.signed" class="row bold">
                         <icon icon="check" class="text-success col-md-2"/>
                         <p class="text-success col-md"> ASSINADO </p>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                </rows>
+                </rows> -->
             </div>
         </row>
             

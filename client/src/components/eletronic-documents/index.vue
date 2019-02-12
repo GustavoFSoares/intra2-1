@@ -5,7 +5,7 @@
         <div class='row'>
             <rows label=''>
                 <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': showArchived }" @click="showArchived = !showArchived">
-                    Mosrtar Arquivados
+                    Mostrar Arquivados
                 </button>                
             </rows>
             

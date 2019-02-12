@@ -18,14 +18,16 @@
             <sign-document :id="id" v-model="document" :disabled="!document.status || document.isBlocked()" title="Assinar Documento" ref="sign_document" :show="canShowSignature"/>
         </section>
 
-        <section v-if="document.isLoaded() && document.user.id == $session.get('user').id && document.isInProssessing()">
+        <section v-if="document.isLoaded() && document.user.id == $session.get('user').id">
             <div class='text-right'>
-                <button class="btn btn-outline-danger btn-lg" @click="cancelDocument()" :disabled="loading.cancelingDocument">
+                <button class="btn btn-outline-danger btn-lg" @click="cancelDocument()" :disabled="loading.cancelingDocument" v-if="document.isInProssessing()">
                     Cancelar Documento 
                     <sending-icon v-model="loading.cancelingDocument"/>
                 </button>
-                <button class="btn btn-outline-warning btn-lg" id="submit-button" type="button" :disabled="true" v-if="false">
-                    Arquivar Documento
+                <button class="btn btn-outline-success btn-lg" id="submit-button" type="button" v-if="document.finished" @click="printDocument()">
+                    <icon icon="print"/>
+                    Imprimir Documento
+                    <sending-icon v-model="loading.printingDocument"/>
                 </button>
             </div>
         </section>
@@ -61,6 +63,7 @@ export default {
             loading: {
                 cancelingDocument: false,
                 filingDocument: false,
+                printingDocument: false
             },
         }
     },
@@ -75,10 +78,8 @@ export default {
                         this.document = new EletronicDocument(res); 
                         this.title = this.document.type.name
                         this.canShowSignature = true
-
                         
                         if(this.document.status.id == 'sending') {
-                            console.log('mudando');
                             this.setLikeWaitingSignature()
                         }
                     }
@@ -118,6 +119,14 @@ export default {
                     })
 
                 }
+            })
+        },
+        printDocument() {
+            model.printDocument(this.document.id).then(res => {
+                this.$alert.success('Imprimindo Documento...')
+                this.loading.printingDocument = false
+            }).catch(err => {
+                this.loading.printingDocument = false                
             })
         }
     },

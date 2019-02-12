@@ -13,11 +13,13 @@ class EletronicDocumentModel extends SoftdeleteModel
     public $entity;
     public $inverseOrder = true;
     private $_blockedStatus = [];
+    private $_alowedStatusToSign = [];
 
     public function __construct() {
         $this->entity = new EletronicDocument;
         
         $this->_blockedStatus = [ 'canceled', 'revoked', 'finished', ];
+        $this->_alowedStatusToSign = ['sending', 'waiting-signature', 'waiting-correction'];
         parent::__construct();
     }
 
@@ -113,8 +115,8 @@ class EletronicDocumentModel extends SoftdeleteModel
                 $status = $StatusRepository->findOneById('canceled');
                 break;
             
-            case 'arquived':
-                $this->entity->setArquived(true);
+            case 'archived':
+                $this->entity->setArchived(true);
                 break;
             
             default:
@@ -139,25 +141,6 @@ class EletronicDocumentModel extends SoftdeleteModel
     }
 
     public function findById($id) {
-        // $subquery = $this->em->createQueryBuilder();
-        // $subquery->select('userSignature')
-        //     ->from('HospitalApi\Entity\EletronicDocumentSignature', 'signature')
-        //     ->innerJoin('HospitalApi\Entity\User', 'userSignature', 'WITH', 'userSignature = signature.user')
-        //     ->where('signature.signed = 0')
-        //     ->groupBy('signature._document')
-        //     ->orderBy('signature.order', 'ASC');
-        
-        // $select = $this->em->createQueryBuilder();
-        // $select->select('ed')
-        //     ->from($this->getEntityPath(), 'ed')
-        //     ->innerJoin("HospitalApi\Entity\User", "u", "with", "ed.user = u")
-        //     ->innerJoin("HospitalApi\Entity\EletronicDocumentSignature", 'eds', 'WITH', ':id = ed')
-        //     ->innerJoin("eds.user", 'us', 'WITH', 'u = :user OR us = :user')
-        //     ->where( $select->expr()->eq( 'us', $select->expr()->any( $subquery->getDQL() )) )
-        //     ->andwhere('eds.signed = 0')
-        //     ->orwhere('u = :user')
-        //     ->setParameter('user', $this->getSession() )
-        //     ->setParameter('id', $id );
         $select = $this->showForJustWhoCanSee();
         $select
             ->andWhere('ed.id = :id')
@@ -184,6 +167,7 @@ class EletronicDocumentModel extends SoftdeleteModel
             ->leftJoin("eds.user", 'us', 'WITH', 'u = :user OR us = :user')
             ->where( $select->expr()->eq( 'us', $select->expr()->any( $subquery->getDQL() )) )
             ->andwhere('eds.signed = 0')
+            ->andwhere( $select->expr()->in('ed.status', $this->_alowedStatusToSign) )
             ->orwhere('u = :user')
             ->setParameter('user', $this->getSession() );
         return $select;

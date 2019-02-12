@@ -30,8 +30,8 @@
                             <box>
                                 <info-icon :message="tooltipMessage.userAndGroup"/>
                                 <add-and-remove-users v-model="document.signatureList"/>
-                                <hr>
-                                <add-and-remove-groups v-model="document.groupList"/>
+                                <!-- <hr>
+                                <add-and-remove-groups v-model="document.groupList"/> -->
                             </box>
                         </row>
 
@@ -94,7 +94,7 @@ export default {
                 types: [],
             },
             tooltipMessage: {
-                userAndGroup: "Mensagem para usuario e grupo<br><ul><li>Usuario</li><li>grupo</li></ul>"  
+                userAndGroup: "Adicionar usuário ao memorando:<br><ul><li>Estes usuários são responsáveis por <b>assinar</b> e <b>validar</b> o documento</li></ul>"  
             },
             document: new EletronicDocument(),
             sending: false,

@@ -35,6 +35,7 @@ $app->group('/eletronic-documents/signature', function() {
 
 $app->group('/eletronic-documents', function() {
         $this->get('/file/[{id}/{prefix}]', "HospitalApi\Controller\EletronicDocumentController:getFileByPrefixAction", function(Request $req, Response $res, array $args) { });
+        $this->get('/print-document/{id}', "HospitalApi\Controller\EletronicDocumentController:printDocumentAction", function(Request $req, Response $res, array $args) { });
         $this->get('[/{params:.*}]', "HospitalApi\Controller\EletronicDocumentController:get", function(Request $req, Response $res, array $args) { });
         
         $this->post('/', "HospitalApi\Controller\EletronicDocumentController:insert", function(Request $req, Response $res, array $args) { });
