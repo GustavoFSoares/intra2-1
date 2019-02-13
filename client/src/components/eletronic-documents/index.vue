@@ -65,6 +65,10 @@
                     </td>
 
                 </tr>
+                <tr class="row-list" v-if="searchList.length == 0 && loaded">
+                    <td class="bold text-disabled" colspan="50"> Nenhum registro encontrado associado a você </td>
+                </tr>
+                
             </tbody>
 
         </big-table>
@@ -89,6 +93,7 @@ export default {
         filter: '',
         user: $session.get('user'),
         showArchived: false,
+        loaded: false,
     }),
     methods: {
         showMore(document) {
@@ -202,7 +207,10 @@ export default {
         },
     },
     mounted() {
-        getter.getEletronicDocuments().then(res => { this.documents = res; })
+        getter.getEletronicDocuments().then(res => { 
+            this.loaded = true
+            this.documents = res
+        })
     },
     components: {
         'big-table': BigTable,
