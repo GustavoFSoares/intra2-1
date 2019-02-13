@@ -13,7 +13,7 @@
                     </router-link>
                 </div>
                 <div class="col-md-7">
-                    <input class="form-control" placeholder="Senha..." type="password" v-model="password" :disabled="loading">
+                    <input @keyup.enter="doLogin()" class="form-control" placeholder="Senha..." type="password" v-model="password" :disabled="loading">
                 </div>
                 <div class="col-md-4">
                     <button class="btn btn-primary signed-button" :disabled="loading || !password" @click="doLogin()">
