@@ -29,13 +29,17 @@ class DocumentFactory
         $this->doc->SetKeywords("TCPDF, PDF, application, pdf-generator, $DocumentEntity");
 
         $this->doc->SetFont('times', '', 12);
-        $this->doc->SetAutoPageBreak(true, 50);
-        
+        $this->doc->SetMargins(
+            $this->doc->mleft, 
+            $this->doc->mtop,
+            $this->doc->mright, true);
+
+        $this->doc->SetAutoPageBreak(true, (abs($this->doc->footer)+10) );
+
         // add a page
         for ($i=0; $i < $pages; $i++) {
             $this->doc->AddPage();
 
-            $this->doc->ln(12);
             $this->doc->writeHTML($this->doc->getContent(), true, false, true, false, '');
 
         }

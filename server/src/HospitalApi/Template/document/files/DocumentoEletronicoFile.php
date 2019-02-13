@@ -8,6 +8,13 @@ require_once(PATH.'/../vendor/tecnick.com/tcpdf/tcpdf.php');
 class DocumentoEletronicoFile extends \TCPDF {
 
     public $protocol;
+
+    public $mleft = 15;
+    public $mtop = 30;
+    public $mright = -1;
+    public $header = null;
+    public $footer = -10;
+
     private $_model;
     private $_EnablePageCounter = true;
 
@@ -25,52 +32,45 @@ class DocumentoEletronicoFile extends \TCPDF {
         if(isset($params['pageCount'])) {
             $this->_EnablePageCounter = true;
         }
+        
+        $signatureList = $this->_model->entity->getSignatureList();
+        $this->footer = !$signatureList->isEmpty() ? $signatureList->count() * $this->footer : $this->footer;
 
         parent::__construct();
     }
 
 	//Page header
 	public function Header() {
+        $this->SetY(10);
         $imageFile = FILES.'logo/';
         $this->Image($imageFile."logo-hu-04.jpg", 10, 10, 70, false, 'JPG', 'L', '', false, 300, '', false, false, 0, false, false, false);
-        
-        // $this->SetFont('helvetica', '', 15);
-        
-        // $this->ln(40);
-        // $this->MultiCell(0, 60, "Protocolo nº {$this->protocol} - {$entity->getSubject()}", 0, 'L', 0, 1, '', '', true);
-        // $this->ln(2);
-        // $this->MultiCell(0, 0, "Canoas, {$entity->getCreatedDate()->format('d/m/Y')}", 0, 'R', 0, 1, '', '', true);
-
-        // $this->Cell(0, 60, "Protocolo nº {$this->protocol} - {$entity->getSubject()}", 0, 0, 'L', 0, '', 0);
-        // $this->Cell(0, 100, "Canoas, {$entity->getCreatedDate()->format('d/m/Y')}", 0, 0, 'R', 0, '', 0);
-        
 	}
 
 	// Page footer
 	public function Footer() {
-		// Position at 15 mm from bottom
-		$this->SetY(-15);
-        
+        $this->SetY($this->footer);
         $this->SetFont('helvetica', 'I', 10);
         
-        if($this->_EnablePageCounter) {
-            if($this->_model->entity->getSignatureList()->isEmpty() == false) {
-                foreach ($this->_model->entity->getSignatureList()->toArray() as $signature) {
-                    $user = "{$signature->getUser()->getName()} ({$signature->getUser()->getCode()})";
-                    if( $signature->isSigned() && $signature->isAgree() ) {
-                        $user .= " - ASSINADO";
-                    }
-
-                    $this->MultiCell(0, 0, $user, 0, 'L', 0, 1, '', '', true);
-                    $this->ln(1);
-                }
-            } else {
-                $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        foreach ($this->_model->entity->getSignatureList()->toArray() as $signature) {
+            $user = "{$signature->getUser()->getName()} ({$signature->getUser()->getCode()})";
+            if( $signature->isSigned() && $signature->isAgree() ) {
+                $user .= " - ASSINADO ELETRONICAMENTE";
             }
-            
+
+            $this->MultiCell(0, 0, $user, 0, 'R', 0, 1, '', '', true);
+            $this->ln(1);
+        }
+
+        if($this->_EnablePageCounter) {
             $this->SetFont('helvetica', 'I', 8);
+            
             // Page number
-            $this->MultiCell(0, 0, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'C', 0, 0, '', '', true);
+            if( !$this->_model->entity->getSignatureList()->isEmpty() ) {
+                $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+            } else {
+                $this->MultiCell(0, 0, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 'R', 0, 0, '', '', true);
+            }
+
         }
     }
     
@@ -84,9 +84,10 @@ class DocumentoEletronicoFile extends \TCPDF {
                     text-align: right;
                 }
 
-                .test {
-                    list-style: none;
-                    width: 200px;
+                .signature {
+                    text-align: right;
+                    font-style: italic;
+
                 }
             </style>";
         $html .= "
@@ -99,9 +100,10 @@ class DocumentoEletronicoFile extends \TCPDF {
                 </span>
                 
                 <div class=".'"content"'.">
-                        <span>Prezados Senhores, </span>
-
+                        <span>Prezados Senhores, </span><br>
                         {$this->_model->entity->getContent()}
+
+                        <p class=".'"signature"'."> {$entity->getUser()->getName()} ({$entity->getUser()->getCode()}) </p>
                     
                         <ul class=".'"amendment-text"'.">";
                             if($entity->getAmendmentList()->isEmpty() == false) {
@@ -110,16 +112,14 @@ class DocumentoEletronicoFile extends \TCPDF {
                                 $html .= "
                                     <li class=".'" "'."><h4>§$id - {$amendment->getTitle()}</h4>
                                         {$amendment->getText()}<br>
+                                        <p class=".'"signature"'."> {$amendment->getUser()->getName()} ({$amendment->getUser()->getCode()}) </p>
                                     </li>";
                                 }
                             }
-            
-            $html .= "</ul>";
-
-      $html .= "</div>
+            $html .= "</ul>
+                </div>
             </body>";
         return $html;
-        // echo $html;die;
     }
 
 }
