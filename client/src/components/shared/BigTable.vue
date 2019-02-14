@@ -16,15 +16,16 @@ import $ from "jquery";
 export default {
     data() {
         return {
-            hide: false
+            hide: false,
+            i: 0
         }
     },
     methods: {
         init() {
-            var $table = $('.table')
-            
-            if( $table.has('td').length == 1 ) {
-                this.hide = $('#app').width() > $('.table:not(.new-table)').width() ? true : false
+            if( this.i == 0 && $('.table td').length != 0 ) {
+                this.i++
+                
+                var $table = $('.table')
                 
                 var $fixedColumn = $table.clone()
                 $fixedColumn.insertBefore($table).addClass('fixed-column new-table')
@@ -32,7 +33,7 @@ export default {
                 
                 let length = Number(this.field_length)+30
                 $("#big-table").css("--length", length+"px")
-
+                
                 $fixedColumn.find('tr').each(function (i, elem) {
                     $(this).height( $table.find('tr:eq(' + i + ')').height() );
                 });
@@ -43,6 +44,7 @@ export default {
     props: [ 'field_length' ],
     mounted() { },
     updated() {
+        this.hide = $('#app').width() > $('.table:not(.new-table) tbody tr').width() ? true : false
         this.init()
     },
 }

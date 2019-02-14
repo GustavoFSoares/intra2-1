@@ -44,9 +44,9 @@ $app->group('/eletronic-documents', function() {
         $this->put('/{id}', "HospitalApi\Controller\EletronicDocumentController:update", function(Request $req, Response $res, array $args) { });
         $this->put('/set-like-canceled/{document-id}', "HospitalApi\Controller\EletronicDocumentController:setLikeCanceledAction", function(Request $req, Response $res, array $args) { });
         $this->put('/set-like-archived/{document-id}', "HospitalApi\Controller\EletronicDocumentController:setLikeArchivedAction", function(Request $req, Response $res, array $args) { });
-        $this->put('/set-like-waiting/{document-id}', "HospitalApi\Controller\EletronicDocumentController:setLikeWaitingSignatureAction", function(Request $req, Response $res, array $args) { });
+        $this->put('/set-like-waiting/{document-id}/{user_id}', "HospitalApi\Controller\EletronicDocumentController:setLikeWaitingSignatureAction", function(Request $req, Response $res, array $args) { });
         $this->put('/sign/{type}/{id}', "HospitalApi\Controller\EletronicDocumentController:signDocumentAction", function(Request $req, Response $res, array $args) { });
-        $this->put('/amendment-update/{id}', "HospitalApi\Controller\EletronicDocumentController:updateAmendmentAction", function(Request $req, Response $res, array $args) { });
+        $this->put('/amendment-update/{id}/{user_id}', "HospitalApi\Controller\EletronicDocumentController:updateAmendmentAction", function(Request $req, Response $res, array $args) { });
         
         
         $this->delete('/{id}', "HospitalApi\Controller\EletronicDocumentController:delete", function(Request $req, Response $res, array $args) { });

@@ -27,7 +27,7 @@ const model = {
     signDocumentLikeUser: (id, data) => service.signDocument(id, 'user-of-list', data),
     updateAmendment: (eletronicDocument) => service.updateAmendment(eletronicDocument.id, eletronicDocument),
     doUploadFile: (file, fileName, prefix) => service.uploadFile(file, fileName, prefix),
-    setLikeCanceld: (id) => service.setDocumentLikeCanceled(id),
+    setLikeCanceled: (id) => service.setDocumentLikeCanceled(id),
     setLikeArchived: (eletronicDocument) => {
         eletronicDocument.archived = true
         

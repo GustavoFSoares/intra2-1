@@ -49,19 +49,17 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
             if($signatureList->count() == $signaturesSigned->count()) {
                 $this->changeStatusTo('finished', $entity->getId());
             } else {
-                $this->changeStatusTo('waiting', $entity->getId());
+                $this->changeStatusTo('sign', $entity->getId());
                 $this->sendEmailToNextUser($entity);
             }
 
         } else {
-            $this->changeStatusTo('revoked', $entity->getId());
-
             $rason = $values['message'];
-
+            $this->changeStatusTo('revoked', $entity->getId(), $rason );
             $this->sendEmailRevoked($entity, $this->getSession(), $rason );
         }
 
-        $this->makeLog($values['document_id'], $values['agree'], $values['message']);
+        // $this->makeLog($values['document_id'], $values['agree'], $values['message']);
 
         $data = $this->translateCollection( $entity->getStatus() );
         return $res->withJson($data);
@@ -69,6 +67,8 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
 
     public function updateAmendmentAction($req, $res, $args) {
         $values = $req->getParsedBody();
+        /** @see */
+        $this->storeUser($args);
         $this->loadEntity($values);
         $this->checkValidUpdation($values['id']);
 
@@ -123,17 +123,6 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         return $res->withJson(true);
     }
 
-    public function makeLog($id, $agree, $message) {
-        \Helper\LoggerHelper::initLogFile('eletronic-documents', null, $id);
-        if($agree) {
-            $message .= "{$this->getContainer()['session']->get()->getName()}: Concordou com documento";
-        } else {
-            $message = "{$this->getContainer()['session']->get()->getName()}: Negou o documento. Justificativa: - $message";
-        }
-
-        \Helper\LoggerHelper::writeFile($message, true);
-    }
-
     public function setLikeCanceledAction($req, $res, $args) {
         $status = $this->changeStatusTo('canceled', $args['document-id']);
         $data = $this->translateCollection($status);
@@ -149,6 +138,8 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
     }
     
     public function setLikeWaitingSignatureAction($req, $res, $args) {
+        /** @see */
+        $this->storeUser($args);
         $status = $this->changeStatusTo('waiting-signature', $args['document-id']);
         $data = $this->translateCollection($status);
 
@@ -210,10 +201,10 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         }
     }
 
-    public function changeStatusTo($newStatus, $id) {
+    public function changeStatusTo($newStatus, $id, $message = '') {
         $this->checkValidUpdation($id, $newStatus);
         
-        return $this->getModel()->setLike($newStatus, $id);
+        return $this->getModel()->setLike($newStatus, $id, $message);
     }
 
     public function printDocumentAction($req, $res, $args) {

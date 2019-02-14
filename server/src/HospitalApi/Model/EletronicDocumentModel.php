@@ -74,60 +74,73 @@ class EletronicDocumentModel extends SoftdeleteModel
     }
 
     public function findUserOnSignatureList($signatureList) {
-        $id = $this->getContainer()['session']->get()->getId();
+        $id = $this->getSession()->getId();
         $signatureList = $signatureList->filter(function($entry) use ($id)  {
             return $entry->getUser()->getId() == $id;
         });
         return $signatureList->first();
     }
 
-    public function setLike($levelName, $id) {
+    public function setLike($levelName, $id, $message = '') {
         if($this->entity->getId() == null) {
             $this->entity = $this->getRepository()->find($id);
         }
 
+        \Helper\LoggerHelper::initLogFile('eletronic-documents', null, $this->entity->getId() );
         $StatusRepository = $this->em->getRepository('HospitalApi\Entity\EletronicDocumentStatus');
         switch ($levelName) {
-            case 'waiting':
+            case 'sign':
+                $message = "{$this->getSession()->getName()}: Assinou documento";
                 $status = $StatusRepository->findOneById('sending');
                 break;
             
             case 'waiting-signature':
+                $message = "{$this->getSession()->getName()}: Visualizou documento";
                 $status = $StatusRepository->findOneById('waiting-signature');
                 break;
             
             case 'correction':
+                $message = "{$this->getSession()->getName()}: Criou emenda";
                 $status = $StatusRepository->findOneById('waiting-correction');
                 break;
             
             case 'finished':
+                $message = "{$this->getSession()->getName()}: Assinou documento";
+                \Helper\LoggerHelper::writeFile($message, true);
+                $message = "Documento Finalizado";
+
                 $this->entity->setFinished(true);
                 $status = $StatusRepository->findOneById('finished');
                 break;
             
             case 'revoked':
+                $message = "{$this->getSession()->getName()}: Documento Negado - $message";
                 $this->entity->setCanceled(true);
                 $status = $StatusRepository->findOneById('revoked');
                 break;
             
             case 'canceled':
+                $message = "Cancelado pelo Criador";
                 $this->entity->setCanceled(true);
                 $status = $StatusRepository->findOneById('canceled');
                 break;
             
             case 'archived':
                 $this->entity->setArchived(true);
+                $status = false;
                 break;
             
             default:
                 $status = $StatusRepository->findOneById('draft');
                 break;
         }
-        
+
         if($status) {
             $this->entity->setStatus($status);
         }
-
+        if($message) { 
+            \Helper\LoggerHelper::writeFile($message, true);
+        }
         $this->doUpdate($this->entity);
 
         return $this->entity->getStatus();

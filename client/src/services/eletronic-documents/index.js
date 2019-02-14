@@ -25,11 +25,11 @@ export default {
     },
     updateAmendment: (id, data) => {
         window.httpMessage = { show: true, success: `Emendas <b>Adicionadas</b>`, error: "Emendas <b>não Adicionadas</b>" }
-        return http.put(`/eletronic-documents/amendment-update/${id}`, data).then(res => res.data)
+        return http.put(`/eletronic-documents/amendment-update/${id}/${window.$session.get('user').id}`, data ).then(res => res.data)
     },
     setDocumentLikeWaitingSignature: (id) => {
         window.httpMessage = { show: true, error: "Erro ao Registrar Acesso" }
-        return http.put(`/eletronic-documents/set-like-waiting/${id}`).then(res => res.data)
+        return http.put(`/eletronic-documents/set-like-waiting/${id}/${window.$session.get('user').id}`).then(res => res.data)
     },
     setDocumentLikeCanceled: (id) => {
         window.httpMessage = { show: true, success: "Documento Cancelado", error: "Erro ao Registrar Acesso" }
