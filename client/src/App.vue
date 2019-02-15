@@ -1,7 +1,11 @@
 <template>
     <div id="app">
         <nav-bar/>
-            
+
+        <modal v-model="banner" ref="modal" @close="banner = false" title="Semana Sipat HPSC">
+            <img src="@/../static/img/sipat.jpg" alt="hpsc-sipat-image"/>
+        </modal>
+
         <div class="container-fluid">
             <div class="row">
                 <rows>
@@ -29,6 +33,8 @@
 import AlertGetters from '@/services/alerts/getters.js'
 import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
+import Modal from "@/components/shared/Modal";
+
 import { FormRws, TopAlert } from "@/components/shared/Form/index.js"
 import Vue from 'vue'
 
@@ -39,6 +45,16 @@ export default {
             alert: {
                 warning: '',
                 danger: '',
+            },
+            banner: false,
+        }
+    },
+    watch: {
+        banner(val) {
+            if(val) {
+                this.$refs.modal.show()
+            } else {
+                this.$refs.modal.close()
             }
         }
     },
@@ -47,6 +63,7 @@ export default {
         'footer-app': Footer,
         'rows': FormRws,
         'top-alert': TopAlert,
+        'modal': Modal,
     },
     methods: {
         getWarningAlert() {
@@ -108,6 +125,7 @@ export default {
         this.getDangerAlert()
     },
     created() {
+        this.banner = true
         this.mountPrototype()
         this.autoload()
     }
