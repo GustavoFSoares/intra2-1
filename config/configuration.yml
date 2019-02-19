@@ -90,7 +90,7 @@ HOMOLOG:
     AD_PASSWORD: 'hu@esc@gamp@web'
     AD_DOMAIN: '@hmd.local'
     
-    DEBUG_ACTIVE: true
+    DEBUG_ACTIVE: false
     DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
 
     EMAIL_DEFAULT_EMAIL: 'anonimo.gampcanoas@gmail.com'

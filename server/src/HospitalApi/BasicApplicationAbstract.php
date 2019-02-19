@@ -58,5 +58,5 @@ class BasicApplicationAbstract
         
         return $yaml;
     }
-        
+
 }
