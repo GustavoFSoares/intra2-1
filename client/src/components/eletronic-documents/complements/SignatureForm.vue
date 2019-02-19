@@ -25,7 +25,8 @@
             <section id="modal-revoket" >
                 <modal v-model="showModal" title="Discordar do Documento" ref="modal">
                     <row>
-                        <textarea class="form-control" v-model="modal.motivo" placeholder="Motivo:"></textarea>
+                        <textarea class="form-control" v-model="modal.reason" name="reason" data-vv-as="Motivo" v-validate data-vv-rules="required" placeholder="Motivo:"></textarea>
+                        <require-text :error="errors.has('reason')" :text="errors.first('reason')"/>
                     </row>
 
                     <div class='row text-center'>
@@ -64,7 +65,7 @@ export default {
         show: { password: false, button: true, },
         showModal: false,
         modal: {
-            motivo: ''
+            reason: ''
         }
     }),
     props: {
@@ -106,15 +107,21 @@ export default {
             })
         },
         revokeDocument() {
-            this.$refs.modal.close()
+            this.$validator.validateAll().then(success => {
+                
+                if(success) {
+                    this.$refs.modal.close()
 
-            Alert.YesNo("Tem certeza que deseja negar o documento?", 
-                "Ao realizar essa ação o Documento será Arquivado e Invalidado").then( res => {
-                if(res) {
-                    this.makeReturn(false, this.modal.motivo)
-                } else {
-                    this.showButton()
+                    Alert.YesNo("Tem certeza que deseja negar o documento?", 
+                        "Ao realizar essa ação o Documento será Arquivado e Invalidado").then( res => {
+                        if(res) {
+                            this.makeReturn(false, this.modal.reason)
+                        } else {
+                            this.showButton()
+                        }
+                    }) 
                 }
+            
             })
         }
     },

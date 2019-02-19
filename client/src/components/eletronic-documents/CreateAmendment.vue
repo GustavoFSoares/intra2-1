@@ -19,7 +19,8 @@
                     <box>
                         
                         <row label='Titulo'>
-                            <input class="form-control" type="text" v-model="amendment.title">
+                            <input class="form-control" v-model="amendment.title" name="Amendment-Subject" data-vv-as="Titulo" v-validate data-vv-rules="required" type="text">
+                            <require-text :error="errors.has('Amendment-Subject')" :text="errors.first('Amendment-Subject')"/>
                         </row>
 
                         <text-editor class="text-editor" v-model="amendment.text" ref="txt"/>
@@ -83,20 +84,26 @@ export default {
             this.amendment = new EletronicDocumentAmendment()
         },
         submit() {
-            Alert.YesNo('Cadastrando Emenda', 'Tem certeza que deseja salvar?').then( res => {
-                if(res) {
-                    this.sending = true
-                    
-                    this.addAmendment()
-                    model.updateAmendment(this.document).then(res => {
-                        this.$router.push({ name: 'documentos-eletronicos' })
-                        this.sending = false
-                    }).catch(err => {
-                        this.sending = false
-                        setTimeout(() => {
-                            this.$route.go()
-                        }, 2000);
+            this.$validator.validateAll().then(success => {
+                if(success) {
+
+                    Alert.YesNo('Cadastrando Emenda', 'Tem certeza que deseja salvar?').then( res => {
+                        if(res) {
+                            this.sending = true
+                            
+                            this.addAmendment()
+                            model.updateAmendment(this.document).then(res => {
+                                this.$router.push({ name: 'documentos-eletronicos' })
+                                this.sending = false
+                            }).catch(err => {
+                                this.sending = false
+                                setTimeout(() => {
+                                    this.$route.go()
+                                }, 2000);
+                            })
+                        }
                     })
+
                 }
             })
         }

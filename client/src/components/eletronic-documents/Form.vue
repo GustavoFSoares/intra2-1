@@ -17,7 +17,8 @@
                         <box>
                                 
                             <row label='Assunto'>
-                                <input class="form-control" v-model="document.subject" type="text">
+                                <input class="form-control" v-model="document.subject" name="EletronicDocument-Subject" data-vv-as="Assunto" v-validate data-vv-rules="required" type="text">
+                                <require-text :error="errors.has('EletronicDocument-Subject')" :text="errors.first('EletronicDocument-Subject')"/>
                             </row>
 
                             <row label='Tipo'>
