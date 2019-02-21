@@ -180,6 +180,9 @@ class User extends SoftdeleteAbstract
     public function getAdmin() {
         return $this->admin;
     }
+    public function isAdmin() {
+        return $this->getAdmin();
+    }
     public function setAdmin($admin) {
         $this->admin = $admin ? true : false;
 

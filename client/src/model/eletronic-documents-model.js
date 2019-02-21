@@ -4,7 +4,13 @@ import StatusService from "@/services/eletronic-documents/status"
 import TypeService from "@/services/eletronic-documents/type"
 
 export const getter = {
-    getEletronicDocuments: () => service.getEletronicDocuments({ 'user_id': window.$session.get('user').id }),
+    getEletronicDocuments: (type = '') => {
+        if(type == 'admin') {
+            return service.getEletronicDocumentsLikeAdmin({ 'user_id': window.$session.get('user').id })
+        } else {
+            return service.getEletronicDocuments({ 'user_id': window.$session.get('user').id })
+        }
+    },
     getEletronicDocumentById: (id) => service.getEletronicDocuments({ 'id': id, 'user_id': window.$session.get('user').id }),
 
     getStatus: () => StatusService.getStatus(),

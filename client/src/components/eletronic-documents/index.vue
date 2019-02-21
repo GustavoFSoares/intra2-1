@@ -1,10 +1,17 @@
 <template>
     <div class="container-fluid">
+        <div id="universal" v-bind:class="{ 'show':showUniversal && show.completList }">
+            <div class="universal-container">
+                <div class="img">
+                    <img src="https://pngimage.net/wp-content/uploads/2018/06/logo-da-iurd-png-5.png">
+                </div>
+            </div>
+        </div>
         <h1>{{ title }}</h1>
 
         <div class='row'>
             <rows label=''>
-                <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': showArchived }" @click="showArchived = !showArchived">
+                <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': show.archived }" @click="show.archived = !show.archived">
                     Mostrar Arquivados
                 </button>                
             </rows>
@@ -15,7 +22,11 @@
                 </router-link>                
             </rows>
 
-            <rows label=''> </rows>
+            <rows label=''>
+                <button class="button btn btn-outline-dark btn-lg" v-bind:class="{ 'active': show.completList }" @click="show.completList = !show.completList; showUniversal = true" v-if="user.admin">
+                    Lista Universal <icon icon="globe"/>
+                </button>                
+            </rows>
         </div>
         
         <div class="form-group form-row col mt-3">
@@ -32,6 +43,7 @@
                     <th scope="col">Criador</th>
                     <th scope="col">Status</th>
                     <th scope="col">Acompanhando</th>
+                    <th scope="col">Data Criação</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -49,6 +61,7 @@
                             </div>
                         </div>
                     </td>
+                    <td>{{ document.createdAt.date | humanizeDate }}</td>
                     <td>
                         <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/edit/${document.id}`)" v-if="showEditButton(document.status, document.user)">
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
@@ -89,10 +102,15 @@ export default {
     data: () => ({
         title: "Documentos Eletrônicos",
         documents: [],
+        documentsCompletList: [],
         documentSelected: false,
         filter: '',
         user: $session.get('user'),
-        showArchived: false,
+        show: {
+            archived: false,
+            completList: false,
+        },
+        showUniversal: false,
         loaded: false,
     }),
     methods: {
@@ -158,7 +176,7 @@ export default {
             }
         },
         showDocumentIfArchived(document) {
-            if( this.showArchived ) {
+            if( this.show.archived ) {
                 if( document.archived == true ) {
                     return document
                 }
@@ -178,11 +196,17 @@ export default {
     },
     computed: {
         secondFilter() {
+            let documents = []
+            if(this.show.completList) {
+                documents = this.documentsCompletList
+            } else {
+                documents = this.documents
+            }
+
             if(this.filter) {
                 let exp = new RegExp(this.filter.trim(), 'i')
                 
-                let list = ''
-                return this.documents.filter(document => {
+                return documents.filter(document => {
                     if( exp.test(document.subject)) {
                         return exp
                     } else if( exp.test(document.id)) {
@@ -197,7 +221,7 @@ export default {
                     
                 })
             } else {
-                return this.documents
+                return documents
             }
         },
         searchList() {
@@ -211,6 +235,20 @@ export default {
             this.loaded = true
             this.documents = res
         })
+
+        if(this.user.admin) {
+            getter.getEletronicDocuments('admin').then(res => { 
+                this.loaded = true
+                this.documentsCompletList = res
+            })
+        }
+    },
+    watch: {
+        showUniversal(val) {
+            setTimeout(() => {
+                this.showUniversal = false
+            }, 200);
+        }
     },
     components: {
         'big-table': BigTable,
@@ -224,4 +262,41 @@ export default {
     .row-list:hover {
         cursor: pointer;
     }
+    
+    #universal {
+        display: none;
+        transition: opacity 1s ease-out;
+        opacity: 0; 
+    }
+
+    #universal.show {
+        background-color: rgba(1,1,1, 0.020);
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1050;
+        outline: 0;
+        
+        transition: opacity 1s ease-out;
+        opacity: 1;
+        
+        display: block;
+        
+        animation: fadein 0.4s;
+        animation: fadeout 0.6s;
+
+        transition-delay: 0.6s 
+    }
+
+    #universal .universal-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-left: 20%;
+        margin-top: 25%;
+    }
+
 </style>

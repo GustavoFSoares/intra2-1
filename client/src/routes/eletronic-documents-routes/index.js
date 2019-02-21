@@ -20,19 +20,19 @@ export default [
         path: '/usuario/documentos-eletronicos/edit/:id',
         name: 'documentos-eletronicos/edit',
         component: Form,
-        meta: { requiresAuth: true, adminAuth: true }
+        meta: { requiresAuth: true }
     },
     {
         path: '/usuario/documentos-eletronicos/detalhe/:id',
         name: 'documentos-eletronicos/detalhe',
         component: Detail,
-        meta: { requiresAuth: true, adminAuth: true }
+        meta: { requiresAuth: true }
     },
     {
         path: '/usuario/documentos-eletronicos/criar-emenda/:id',
         name: 'documentos-eletronicos/criar-emenda',
         component: CreateAmendment,
-        meta: { requiresAuth: true, adminAuth: true }
+        meta: { requiresAuth: true }
     },
 ]
 

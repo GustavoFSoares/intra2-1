@@ -222,4 +222,14 @@ class EletronicDocumentController extends ControllerAbstractLongEntity
         
         exit;
     }
+
+    public function getEletronicDocuments($req, $res, $args) {
+        $values = $req->getParams();
+        $this->storeUser($values);
+
+        $collection = $this->getModel()->findEletronicDocuments($values);
+        $data = $this->translateCollection($collection);
+
+        return $res->withJson($data);
+    }
 }

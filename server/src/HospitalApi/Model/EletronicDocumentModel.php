@@ -146,7 +146,7 @@ class EletronicDocumentModel extends SoftdeleteModel
         return $this->entity->getStatus();
     }
 
-    public function findBy($params) {
+    public function findEletronicDocuments($params) {
         $select = $this->showForJustWhoCanSee();
         $data = $select->getQuery()->getResult();
         
@@ -154,11 +154,15 @@ class EletronicDocumentModel extends SoftdeleteModel
     }
 
     public function findById($id) {
-        $select = $this->showForJustWhoCanSee();
-        $select
-            ->andWhere('ed.id = :id')
-            ->setParameter('id', $id);
-        $data = $select->getQuery()->getOneOrNullResult();
+        if( $this->getSession()->isAdmin() ) {
+            $data = $this->getRepository()->findOneById($id);
+        } else {
+            $select = $this->showForJustWhoCanSee();
+            $select
+                ->andWhere('ed.id = :id')
+                ->setParameter('id', $id);
+            $data = $select->getQuery()->getOneOrNullResult();
+        }
         
         return $data;
     }
