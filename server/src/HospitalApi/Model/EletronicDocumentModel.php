@@ -155,7 +155,7 @@ class EletronicDocumentModel extends SoftdeleteModel
 
     public function findById($id) {
         if( $this->getSession()->isAdmin() ) {
-            $data = $this->getRepository()->findOneById($id);
+            $data = parent::findById($id);
         } else {
             $select = $this->showForJustWhoCanSee();
             $select
@@ -186,7 +186,8 @@ class EletronicDocumentModel extends SoftdeleteModel
             ->andwhere('eds.signed = 0')
             ->andwhere( $select->expr()->in('ed.status', $this->_alowedStatusToSign) )
             ->orwhere('u = :user')
-            ->setParameter('user', $this->getSession() );
+            ->setParameter('user', $this->getSession() )
+            ->andWhere('ed.c_removed = 0');
         return $select;
     }
 

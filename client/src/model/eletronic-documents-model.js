@@ -46,6 +46,15 @@ const model = {
             resolve(true)
         })
     },
+    indexOf: (documentId, eletronicDocuments) => {
+        let ok
+        eletronicDocuments.forEach((ed, index) => {
+            if (ed.id == documentId) {
+                ok = index
+            }
+        })
+        return ok
+    },
 }
 
 export const StatusModel = {

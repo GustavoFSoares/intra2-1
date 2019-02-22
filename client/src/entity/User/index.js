@@ -9,7 +9,7 @@ export default class User {
             this.email = user.email
             this.group = user.group
             this.level = user.level
-            this.admin = user.admin = user.admin ? true : false
+            this.admin = user.admin ? true : false
             this.ramal = user.ramal
             this.occupation = user.occupation
             this.active = user.active ? true : false

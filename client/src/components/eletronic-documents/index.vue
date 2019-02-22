@@ -9,7 +9,7 @@
         </div>
         <h1>{{ title }}</h1>
 
-        <div class='row'>
+        <div class='row' v-show="loaded">
             <rows label=''>
                 <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': show.archived }" @click="show.archived = !show.archived">
                     Mostrar Arquivados
@@ -22,7 +22,7 @@
                 </router-link>                
             </rows>
 
-            <rows label=''>
+            <rows label='' v-show="loaded">
                 <button class="button btn btn-outline-dark btn-lg" v-bind:class="{ 'active': show.completList }" @click="show.completList = !show.completList; showUniversal = true" v-if="user.admin">
                     Lista Universal <icon icon="globe"/>
                 </button>                
@@ -192,6 +192,10 @@ export default {
                     this.$router.go()
                 }, 5000);
             })
+        },
+        remove(id, index) {
+            this.documents.splice( model.indexOf(id, this.documents), 1 )
+            model.doDelete(id)
         }
     },
     computed: {
@@ -223,6 +227,7 @@ export default {
             } else {
                 return documents
             }
+            return []
         },
         searchList() {
             return this.secondFilter.filter(document => {

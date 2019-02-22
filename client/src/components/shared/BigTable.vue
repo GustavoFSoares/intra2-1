@@ -23,7 +23,7 @@ export default {
     },
     methods: {
         init() {
-            if( ( this.i == 0 && $('#big-table .table td').length != 0 ) && this.hide == false) {
+            if( this.i == 0 && $('#big-table .table td').length != 0 ) {
                 this.i++
                 
                 var $table = $('#big-table .table')
@@ -47,14 +47,17 @@ export default {
     props: [ 'field_length' ],
     mounted() { },
     updated() {
-        let actualLenth = $('#big-table .table:not(.new-table) tr').length
-        if( actualLenth != this.rows && actualLenth != 0) {
-            this.i = 0
-            $('#big-table .new-table').remove()
+        this.hide = $('#app').width() > $('#big-table .table:not(.new-table) tbody tr').width() ? true : false
+        if(this.hide) {
+            
+            let actualLenth = $('#big-table .table:not(.new-table) tr').length
+            if( actualLenth != this.rows && actualLenth != 0) {
+                this.i = 0
+                $('#big-table .new-table').remove()
+            }
+            this.init()
+
         }
-        
-        this.hide = $('#app').width() > $('#big-table .table:not(.new-table) .bt tbody tr').width() ? true : false
-        this.init()
     },
 }
 </script>
