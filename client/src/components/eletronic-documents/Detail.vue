@@ -15,7 +15,7 @@
         </section>
 
         <section id="signature-area">
-            <sign-document :id="id" v-model="document" :disabled="!document.status || document.isBlocked()" title="Assinar Documento" ref="sign_document" :show="canShowSignature"/>
+            <sign-document @signed="setNewStatus" :id="id" v-model="document" :disabled="!document.status || document.isBlocked()" title="Assinar Documento" ref="sign_document" :show="canShowSignature"/>
         </section>
 
         <section v-if="document.isLoaded() && document.user.id == $session.get('user').id">
@@ -100,7 +100,7 @@ export default {
                 if( res != null && res.id == this.$session.get('user').id) {
                     //Setar Documento como "Aguardando Assinatura"
                     model.setLikeWaitingSignature(this.id).then(res => {
-                        this.document.status = res
+                        this.setNewStatus(res)
                     })
                 }
                 
@@ -128,6 +128,9 @@ export default {
             }).catch(err => {
                 this.loading.printingDocument = false                
             })
+        },
+        setNewStatus(status) {
+            this.document.status = status
         }
     },
     components: {

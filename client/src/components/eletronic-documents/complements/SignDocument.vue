@@ -5,25 +5,6 @@
                 <rows class="col-md">
                     {{ document.user.name }}
                 </rows>
-                
-                <!-- <rows >
-                    <div v-if="document.signed" class="row bold">
-                        <icon icon="check" class="text-success col-md-2"/>
-                        <p class="text-success col-md"> ASSINADO </p>
-                    </div>
-
-                    <div v-else class="row">
-                        <div class="col-md-7">
-                            <input class="form-control" placeholder="Senha..." type="password" v-model="password" :disabled="loading">
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-primary signed-button" :disabled="loading || !password" @click="doLogin()">
-                                Assinar <icon icon="spinner" spin v-if="loading"/>
-                            </button>
-                        </div>
-                    </div>
-
-                </rows> -->
             </div>
         </row>
             
@@ -99,7 +80,9 @@ export default {
         },
         updateSignatureForUserList(signature) { 
             Object.assign(signature, { 'document_id': this.id })
-            model.signDocumentLikeUser(this.id, signature).catch(err => {
+            model.signDocumentLikeUser(this.id, signature).then(res => {
+                this.$emit('signed', res)
+            }).catch(err => {
                 setTimeout(() => { this.$router.go() }, 2000);
             })
 

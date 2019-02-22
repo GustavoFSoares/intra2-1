@@ -12,20 +12,20 @@
         <div class='row' v-show="loaded">
             <rows label=''>
                 <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': show.archived }" @click="show.archived = !show.archived">
-                    Mostrar Arquivados
-                </button>                
+                    Mostrar Arquivados <icon icon="file-archive"/>
+                </button>
             </rows>
             
             <rows label=''>
                 <router-link class="button btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos/add'}" tag="button">
                     Criar Documento
-                </router-link>                
+                </router-link>
             </rows>
 
             <rows label='' v-show="loaded">
                 <button class="button btn btn-outline-dark btn-lg" v-bind:class="{ 'active': show.completList }" @click="show.completList = !show.completList; showUniversal = true" v-if="user.admin">
                     Lista Universal <icon icon="globe"/>
-                </button>                
+                </button>
             </rows>
         </div>
         
@@ -93,6 +93,8 @@
 </template>
 
 <script>
+import Alert from "@/components/shared/Alert";
+
 import BigTable from "@/components/shared/BigTable";
 import Modal from "@/components/shared/Modal";
 import ShowMore from "./complements/ShowMore";
@@ -187,15 +189,27 @@ export default {
             }
         },
         archive(document, index) {
-            model.setLikeArchived(document).catch(err => {
-                setTimeout(() => {
-                    this.$router.go()
-                }, 5000);
+            Alert.YesNo(`O Documento ${document.id} será Arquivado`, 'Tem certeza que deseja arquivar?').then( res => {
+                if(res) {
+                    model.setLikeArchived(document).catch(err => {
+                        setTimeout(() => {
+                            this.$router.go()
+                        }, 5000);
+                    })
+                }
             })
         },
         remove(id, index) {
-            this.documents.splice( model.indexOf(id, this.documents), 1 )
-            model.doDelete(id)
+            Alert.YesNo(`O Documento ${id} será Excluído`, 'Tem certeza que deseja excluir?').then( res => {
+                if(res) {
+                    this.documents.splice( model.indexOf(id, this.documents), 1 )
+                    model.doDelete(id).catch(err => {
+                        setTimeout(() => {
+                            this.$router.go()
+                        }, 5000);
+                    })
+                }
+            })
         }
     },
     computed: {
