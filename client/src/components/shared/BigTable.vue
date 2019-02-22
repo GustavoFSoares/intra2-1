@@ -23,10 +23,10 @@ export default {
     },
     methods: {
         init() {
-            if( this.i == 0 && $('.table td').length != 0 ) {
+            if( ( this.i == 0 && $('#big-table .table td').length != 0 ) && this.hide == false) {
                 this.i++
                 
-                var $table = $('.table')
+                var $table = $('#big-table .table')
                 
                 var $fixedColumn = $table.clone()
                 $fixedColumn.insertBefore($table).addClass('fixed-column new-table')
@@ -47,16 +47,13 @@ export default {
     props: [ 'field_length' ],
     mounted() { },
     updated() {
-        let actualLenth = $('.table:not(new-table) tr').length
+        let actualLenth = $('#big-table .table:not(.new-table) tr').length
         if( actualLenth != this.rows && actualLenth != 0) {
-            let $newTable = $('.new-table tr')
-            if($newTable.length == this.rows) {
-                this.i = 0
-                $('.new-table').remove()
-            }
+            this.i = 0
+            $('#big-table .new-table').remove()
         }
         
-        this.hide = $('#app').width() > $('.table:not(.new-table) tbody tr').width() ? true : false
+        this.hide = $('#app').width() > $('#big-table .table:not(.new-table) .bt tbody tr').width() ? true : false
         this.init()
     },
 }
