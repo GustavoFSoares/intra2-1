@@ -3,11 +3,11 @@ import http from '../client'
 export default {
     getEletronicDocuments: (filter = {}) => {
         window.httpMessage = { show: true, error: "Erro ao buscar Documento" }
-        return http.get(`/eletronic-documents/get/`, { params: filter }).then(res => res.data)
-    },
-    getEletronicDocumentsLikeAdmin: (filter = {}) => {
-        window.httpMessage = { show: true, error: "Erro ao buscar Documento" }
         return http.get(`/eletronic-documents/`, { params: filter }).then(res => res.data)
+    },
+    getEletronicDocumentsNormaly: (filter = {}) => {
+        window.httpMessage = { show: true, error: "Erro ao buscar Documento" }
+        return http.get(`/eletronic-documents/get/`, { params: filter }).then(res => res.data)
     },
 
     insert: (data) => {

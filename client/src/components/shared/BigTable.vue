@@ -17,7 +17,8 @@ export default {
     data() {
         return {
             hide: false,
-            i: 0
+            i: 0,
+            rows: 0,
         }
     },
     methods: {
@@ -34,16 +35,27 @@ export default {
                 let length = Number(this.field_length)+30
                 $("#big-table").css("--length", length+"px")
                 
-                $fixedColumn.find('tr').each(function (i, elem) {
+                let $rows = $fixedColumn.find('tr')
+                this.rows = $rows.length
+
+                $rows.each(function (i, elem) {
                     $(this).height( $table.find('tr:eq(' + i + ')').height() );
                 });
             }
-           
-        }
+        },
     },
     props: [ 'field_length' ],
     mounted() { },
     updated() {
+        let actualLenth = $('.table:not(new-table) tr').length
+        if( actualLenth != this.rows && actualLenth != 0) {
+            let $newTable = $('.new-table tr')
+            if($newTable.length == this.rows) {
+                this.i = 0
+                $('.new-table').remove()
+            }
+        }
+        
         this.hide = $('#app').width() > $('.table:not(.new-table) tbody tr').width() ? true : false
         this.init()
     },

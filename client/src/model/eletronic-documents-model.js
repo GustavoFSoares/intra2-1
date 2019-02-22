@@ -5,14 +5,14 @@ import TypeService from "@/services/eletronic-documents/type"
 
 export const getter = {
     getEletronicDocuments: (type = '') => {
-        if(type == 'admin') {
-            return service.getEletronicDocumentsLikeAdmin({ 'user_id': window.$session.get('user').id })
+        if(!type) {
+            return service.getEletronicDocumentsNormaly({ 'user_id': window.$session.get('user').id })
         } else {
             return service.getEletronicDocuments({ 'user_id': window.$session.get('user').id })
         }
     },
     getEletronicDocumentById: (id) => service.getEletronicDocuments({ 'id': id, 'user_id': window.$session.get('user').id }),
-
+    
     getStatus: () => StatusService.getStatus(),
     getStatusById: (id) => StatusService.getStatus({ 'id': id }),
 
