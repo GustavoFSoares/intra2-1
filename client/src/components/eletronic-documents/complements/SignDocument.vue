@@ -3,7 +3,7 @@
         <row>
             <div class='row' v-if="document.user.id == user.id || document.signed || true" >
                 <rows class="col-md">
-                    {{ document.user.name }}
+                    <span class="bold">Criador do Documento: </span> {{ document.user.name }}
                 </rows>
             </div>
         </row>

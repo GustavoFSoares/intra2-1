@@ -29,11 +29,21 @@
 
                         <row>
                             <box>
-                                <info-icon id="info-icon">
-                                    Adicionar usuário ao memorando:
-                                    <ul>
+                                <info-icon id="info-icon" title="VAMOS COMEÇAR?" size="1">
+                                    Para criar sua lista de envio para os responsáveis que devem autorizar
+                                    o documento basta seguir o passo a passo:
+                                    <ul class="alert-list">
+                                        <li>Pesquiar na barra de pesquisa nome completo ou parcial do responsável;</li>
                                         <li>
-                                            Estes usuários são responsáveis por <b>assinar</b> e <b>validar</b> o documento
+                                            Após os resultados da pesquisa serem exibidos, selecione o responsável;
+                                            <fieldset>
+                                                <i>OBS: Lembre-se, a ordem de autorização é obedecida conforme as posições
+                                                    dos usuários na lista
+                                                </i>
+                                            </fieldset>
+                                        </li>
+                                        <li>
+                                            Voce pode alterar as posições de envio clicando e arrastando para cima ou para baixo;
                                         </li>
                                     </ul>
                                 </info-icon>
@@ -181,5 +191,18 @@ export default {
 </script>
 
 <style scoped>
+    .alert-list {
+        list-style: none;
+        counter-reset: li
+    }
 
+    .alert-list li {
+        counter-increment: li
+    }
+
+    .alert-list li::before {
+        margin-right: 4px;
+        content: counter(li);
+        font-weight: bold;
+    }
 </style>
