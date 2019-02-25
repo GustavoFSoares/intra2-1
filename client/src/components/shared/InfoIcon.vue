@@ -1,10 +1,10 @@
 <template>
     <div>
         <div @click="click()" id="info-icon-content">
-            <icon id="info-icon" icon="info-circle" class="text-disabled bold" v-tooltip.top="'Informações'"/>
+            <icon id="info-icon" icon="info-circle" class="text-disabled bold" v-tooltip.top="'Clique para Informações'"/>
             <div v-show="false" ref="content">
                 <slot >
-                
+                    Corpo da Mensagem
                 </slot>
             </div>
         </div>
@@ -15,7 +15,8 @@
 import Alert from "@/components/shared/Alert";
 export default {
     props: {
-        message: { default: 'Mensagem' }
+        title: { default: 'Informação!' },
+        size: '',
     },
     computed: {
         tooltipId() {
@@ -24,7 +25,25 @@ export default {
     },
     methods: {
         click() {
-            Alert.Confirm(this.$refs.content.innerHTML, 'Informação!')
+            let size
+            switch (this.size) {
+                case '-1':
+                    size = 'small'    
+                    break;
+                
+                case '0':
+                    size = ''    
+                    break;
+                
+                case '1':
+                    size = 'large'
+                    break;
+            
+                default:
+                    size = ''
+                    break;
+            }
+            Alert.Confirm(this.$refs.content.innerHTML, this.title, size)
         }
     },
 }

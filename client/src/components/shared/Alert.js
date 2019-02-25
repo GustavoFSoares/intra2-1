@@ -23,12 +23,12 @@ export default {
             })
         })
     },
-    Confirm: (message = "Message", title = "") => {
+    Confirm: (message = "Message", title = "", size) => {
         return new Promise((resolve) => {
             bootbox.dialog({
                 message: message,
                 title: title,
-                size: 'large',
+                size: size,
                 buttons: {
                     ok: {
                         label: "Ok",
