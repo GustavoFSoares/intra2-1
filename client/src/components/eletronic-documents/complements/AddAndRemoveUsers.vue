@@ -1,8 +1,10 @@
 <template>
-    <div @keyup.enter="findUserByName()">
+    <div @keyup.enter="findUserByName()" class="card">
         
-        <label>{{ title }}:</label>
-        <row>
+        <div class="card-header">
+            <span>{{ title.toUpperCase() }}:</span>
+        </div>
+        <row class="card-body">
             <div class='row'>
                 <rows label='' class='col-md-8'>
                     <input type="search" class="form-control" v-model="nameFinded"  placeholder="Nome Parcial:"/>    

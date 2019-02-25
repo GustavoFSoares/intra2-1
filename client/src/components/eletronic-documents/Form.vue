@@ -29,8 +29,17 @@
 
                         <row>
                             <box>
-                                <info-icon :message="tooltipMessage.userAndGroup"/>
-                                <add-and-remove-users v-model="document.signatureList"/>
+                                <info-icon id="info-icon">
+                                    Adicionar usuário ao memorando:
+                                    <ul>
+                                        <li>
+                                            Estes usuários são responsáveis por <b>assinar</b> e <b>validar</b> o documento
+                                        </li>
+                                    </ul>
+                                </info-icon>
+                                <row>
+                                    <add-and-remove-users v-model="document.signatureList" title="Lista de Responsáveis"/>
+                                </row>
                                 <!-- <hr>
                                 <add-and-remove-groups v-model="document.groupList"/> -->
                             </box>
@@ -93,9 +102,6 @@ export default {
             showSignature: false,
             values: {
                 types: [],
-            },
-            tooltipMessage: {
-                userAndGroup: "Adicionar usuário ao memorando:<br><ul><li>Estes usuários são responsáveis por <b>assinar</b> e <b>validar</b> o documento</li></ul>"  
             },
             document: new EletronicDocument(),
             sending: false,
@@ -175,5 +181,5 @@ export default {
 </script>
 
 <style scoped>
-    
+
 </style>
