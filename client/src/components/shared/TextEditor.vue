@@ -1,6 +1,8 @@
 <template>
-    <div id="box">
-        <div id="text-js-editor"> </div>
+    <div id="text-editor-component">
+        <div id="text-editor-box" :style="{ 'max-width': width, 'min-height': height }">
+            <div id="text-js-editor"> </div>
+        </div>
     </div>
 </template>
 
@@ -10,7 +12,9 @@ import 'quill/dist/quill.snow.css'
 
 export default {
     props: {
-        value: { default: '<p></p>'}
+        value: { default: '<p></p>'},
+        width: { default: '680px'},
+        height: { default: '450px'},
     },
     data: () => ({
         quill: {}
@@ -57,7 +61,7 @@ export default {
                         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
                         [{ 'font': [] }],
-                        [{ 'align': [] }],
+                        [{ 'align': ['center'] }],
 
                         ['clean']                                         // remove formatting button
                 ],
@@ -71,12 +75,18 @@ export default {
 }
 </script>
 
-<style>
-    #box {
-        max-width: 650px;
+<style scoped>
+    #text-editor-component {
+        display: flex;
+        justify-content: center;
     }
+    
+    #text-editor-box {
+        text-align: center;
+        /* width: 680px; */
+        /* min-height: 450px; */
 
-    div .ql-editor {
-        min-height: 400px;
+        display: flex;
+        flex-direction: column;
     }
 </style>
