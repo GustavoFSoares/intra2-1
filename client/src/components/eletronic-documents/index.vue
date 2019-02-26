@@ -9,19 +9,41 @@
         </div>
         <h1>{{ title }}</h1>
 
+        <row :text_left="false">
+            <router-link class="button btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos/add'}" tag="button">
+                Criar Documento
+            </router-link>            
+        </row>
+
         <div class='row' v-show="loaded">
             <rows label=''>
-                <button class="button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': show.archived }" @click="show.archived = !show.archived">
-                    Mostrar Arquivados <icon icon="file-archive"/>
-                </button>
+                <div class="buttons">
+
+                    <div class="status-buttons row mb-3">
+                        <button class="status-button button btn btn-outline-success btn-lg" v-bind:class="{ 'active': filter.status == 'finished' }" @click="filteringStatus('finished')">
+                            Finalizados <icon icon="file-archive"/>
+                        </button>
+                        <button class="status-button button btn btn-outline-danger btn-lg" v-bind:class="{ 'active': filter.status == 'canceled' }" @click="filteringStatus('canceled')">
+                            Revogados <icon icon="file-archive"/>
+                        </button>
+                        <button class="status-button button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': filter.status == 'archived' }" @click="filteringStatus('archived')">
+                            Arquivados <icon icon="file-archive"/>
+                        </button>
+                    </div>
+                        
+                    <hr>
+                    
+                    <div class="state-buttons row mb-3">
+                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.inbox }" @click="filter.inbox = true">
+                            Caixa de Entrada <icon icon="file-archive"/>
+                        </button>
+                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': !filter.inbox }" @click="filter.inbox = false">
+                            Enviados <icon icon="file-archive"/>
+                        </button>
+                    </div>
+                </div>
             </rows>
             
-            <rows label=''>
-                <router-link class="button btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos/add'}" tag="button">
-                    Criar Documento
-                </router-link>
-            </rows>
-
             <rows label='' v-show="loaded">
                 <button class="button btn btn-outline-dark btn-lg" v-bind:class="{ 'active': show.completList }" @click="show.completList = !show.completList; showUniversal = true" v-if="user.admin">
                     Lista Universal <icon icon="globe"/>
@@ -30,7 +52,7 @@
         </div>
         
         <div class="form-group form-row col mt-3">
-            <input type="search" class="filter form-control" :disabled="!documents" @input="filter = $event.target.value" placeholder="Pesquisa:"/>
+            <input type="search" class="filter form-control" :disabled="!documents" @input="filter.search = $event.target.value" placeholder="Pesquisa:"/>
         </div>
 
         <big-table field_length="180" class="table-hover">
@@ -106,7 +128,11 @@ export default {
         documents: [],
         documentsCompletList: [],
         documentSelected: false,
-        filter: '',
+        filter: {
+            search: '',
+            status: '',
+            inbox: true,
+        },
         user: $session.get('user'),
         show: {
             archived: false,
@@ -116,6 +142,13 @@ export default {
         loaded: false,
     }),
     methods: {
+        filteringStatus(status) {
+            if( this.filter.status == status ) {
+                this.filter.status = false
+            } else {
+                this.filter.status = status
+            }
+        },
         showMore(document) {
             this.documentSelected = document
             this.$refs.modal.show()
@@ -178,7 +211,7 @@ export default {
             }
         },
         showDocumentIfArchived(document) {
-            if( this.show.archived ) {
+            if( this.filter.status == 'archived' ) {
                 if( document.archived == true ) {
                     return document
                 }
@@ -221,8 +254,40 @@ export default {
                 documents = this.documents
             }
 
-            if(this.filter) {
-                let exp = new RegExp(this.filter.trim(), 'i')
+            documents = documents.filter(document => {
+                if( this.filter.inbox ) {
+                    // Se inbox = true | eu não sou criador
+                    if(document.user.id == this.user.id) {
+                        return document
+                    }
+                } else {
+                    // Se não, eu não sou criador
+                    if(document.user.id != this.user.id) {
+                        return document
+                    }
+                }
+            })
+
+            if( this.filter.status && this.filter.status != 'archived') {
+                documents = documents.filter(document => {
+                    switch (this.filter.status) {
+                        case 'finished':
+                            if(document.status.id == 'finished') {
+                                return document
+                            }
+                            break;
+
+                        case 'canceled':
+                            if(document.status.id == 'canceled' || document.status.id == 'revoked') {
+                                return document
+                            }
+                            break;
+                    }
+                })
+            }
+
+            if(this.filter.search) {
+                let exp = new RegExp(this.filter.search.trim(), 'i')
                 
                 return documents.filter(document => {
                     if( exp.test(document.subject)) {
@@ -236,7 +301,6 @@ export default {
                     } else if( exp.test(document.status.name)) {
                         return exp  
                     }
-                    
                 })
             } else {
                 return documents
@@ -281,7 +345,33 @@ export default {
     .row-list:hover {
         cursor: pointer;
     }
+
+    .status-buttons, .state-buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+    .status-buttons button, .state-buttons button {
+        margin-left: 10px;
+    }
     
+    .btn-outline-light, .btn-outline-light:hover {
+        color: black;
+    }
+
+    .btn-outline-clean {
+        color: var(--font-color);
+        background-color: transparent;
+        background-image: none;
+        border-color: var(--font-color);
+    }
+
+    .btn-outline-clean:hover, .btn-outline-clean.active {
+        color: #fff;
+        background-color: var(--font-color);
+        border-color: var(--font-color);
+    }
+
     #universal {
         display: none;
         transition: opacity 1s ease-out;
