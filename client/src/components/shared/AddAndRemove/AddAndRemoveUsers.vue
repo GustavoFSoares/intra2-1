@@ -66,6 +66,7 @@ export default {
         nameFinded: '',
         finding: false,
         componentKey: '',
+        noResult: false,
     }),
     props: {
         value: '',
@@ -84,8 +85,14 @@ export default {
     methods: {
         findUserByName() {
             if(this.canFind) {
+                
+                this.noResult = false
                 this.finding = true
                 getter.getUserByName(this.nameFinded).then(res => { 
+                    if(res.length === 0) {
+                        this.noResult = true
+                    }
+                    
                     this.users = res
                     this.nameFinded = ''
                     this.finding = false

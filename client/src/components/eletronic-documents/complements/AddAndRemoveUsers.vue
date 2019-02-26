@@ -18,7 +18,10 @@
             </div>
             <div class="container">
                 <row label='Selecione um usário' v-if="users.length">
-                    <v-select label="name" :options="(users)" v-model="userSelected" @input="addUser()"/>
+                    <v-select :placeholder="'Clique aqui para ver os resultados:'" label="name" :options="(users)" v-model="userSelected" @input="addUser()"/>
+                </row>
+                <row v-else-if="noResult">
+                    <div class="alert alert-secondary"> Sem resultados a exibir </div>
                 </row>
                 
                 <div :id="componentKey+'table'" class="list-group">
