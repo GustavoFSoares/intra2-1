@@ -316,14 +316,15 @@ export default {
         getter.getEletronicDocuments().then(res => { 
             this.loaded = true
             this.documents = res
+
+            if(this.user.admin) {
+                getter.getEletronicDocuments('admin').then(res => { 
+                    this.loaded = true
+                    this.documentsCompletList = res
+                })
+            }
         })
 
-        if(this.user.admin) {
-            getter.getEletronicDocuments('admin').then(res => { 
-                this.loaded = true
-                this.documentsCompletList = res
-            })
-        }
     },
     watch: {
         showUniversal(val) {
