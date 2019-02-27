@@ -18,27 +18,26 @@
         <div class='row' v-show="loaded">
             <rows label=''>
                 <div class="buttons">
-
-                    <div class="status-buttons row mb-3">
-                        <button class="status-button button btn btn-outline-success btn-lg" v-bind:class="{ 'active': filter.status == 'finished' }" @click="filteringStatus('finished')">
-                            Finalizados <icon icon="file-archive"/>
-                        </button>
-                        <button class="status-button button btn btn-outline-danger btn-lg" v-bind:class="{ 'active': filter.status == 'canceled' }" @click="filteringStatus('canceled')">
-                            Revogados <icon icon="file-archive"/>
-                        </button>
-                        <button class="status-button button btn btn-outline-secondary btn-lg" v-bind:class="{ 'active': filter.status == 'archived' }" @click="filteringStatus('archived')">
-                            Arquivados <icon icon="file-archive"/>
-                        </button>
-                    </div>
-                        
-                    <hr>
-                    
                     <div class="state-buttons row mb-3">
                         <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.inbox }" @click="filter.inbox = true">
                             Caixa de Entrada <icon icon="file-archive"/>
                         </button>
                         <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': !filter.inbox }" @click="filter.inbox = false">
                             Enviados <icon icon="file-archive"/>
+                        </button>
+                    </div>
+                        
+                    <hr>
+                    
+                    <div class="status-buttons row">
+                        <button class="status-button button btn btn-outline-success btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'finished' }" @click="filteringStatus('finished')">
+                            Finalizados <icon icon="file-archive"/>
+                        </button>
+                        <button class="status-button button btn btn-outline-danger btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'canceled' }" @click="filteringStatus('canceled')">
+                            Revogados <icon icon="file-archive"/>
+                        </button>
+                        <button class="status-button button btn btn-outline-secondary btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'archived' }" @click="filteringStatus('archived')">
+                            Arquivados <icon icon="file-archive"/>
                         </button>
                     </div>
                 </div>
@@ -257,12 +256,12 @@ export default {
             documents = documents.filter(document => {
                 if( this.filter.inbox ) {
                     // Se inbox = true | eu não sou criador
-                    if(document.user.id == this.user.id) {
+                    if(document.user.id != this.user.id) {
                         return document
                     }
                 } else {
                     // Se não, eu não sou criador
-                    if(document.user.id != this.user.id) {
+                    if(document.user.id == this.user.id) {
                         return document
                     }
                 }

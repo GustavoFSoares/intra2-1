@@ -1,14 +1,15 @@
 <template>
-    <div class="list-center mb-3 mt-3">
-        <div v-for="s in status" :key="s.id" class="list bold">
-            <span v-if="id == s.id" class="text" @mouseover="showThisGuy = true" @mouseout="showThisGuy = false"> 
-                {{ s.name }}
-            </span> 
-            <span v-else class="text text-disabled"> 
-                {{ s.name }}
-            </span> 
-            <span class="bar text-disabled">/</span>
-        </div>
+    <div id="actual-status-component" ref="actualStatusComponent" class="mb-3 mt-3">
+        
+        <ul class="list bold">
+                    
+            <li v-for="s in status" :key="s.id" @mouseover="showThisGuy = true" @mouseout="showThisGuy = false"> 
+                <span class="name text text-disabled" v-bind:class="{ 'text-danger': id == s.id }" >
+                    {{ s.name }}
+                </span>
+            </li>
+        
+        </ul>
         <div> 
             <span v-if="showThisGuy && user.name" class="text-disabled">
                 Próximo à Assinar: {{ user.name }}
@@ -64,30 +65,38 @@ export default {
             this.status = res
         })
         this.getNextUser()
-    }, 
+
+        if ( this.$refs.actualStatusComponent.clientWidth < 800 ) {
+            this.$refs.actualStatusComponent.setAttribute('size', 'small')
+        }
+    },
 }
 </script>
 
-<style scoped>
-    .list-center {
-        text-align: center;
-    }
-
-    .list {
-        display: inline;
-    }
-
-    .list .bar {
-        margin-left: 4px;
-        margin-right: 4px;
-        pointer-events: none;
-    }
-
-    .list:last-of-type .bar {
+<style>
+    #actual-status-component[size=small] li:nth-child(2) {
         display: none;
     }
 
-    .text:not(.text-disabled) {
-        color: var(--red)
+    ul {
+        padding: 0;
+    }
+
+    .list {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+    }
+
+    .list li:first-child::before {
+        display: none;
+    }
+
+    .list li::before {
+        content: '/';
+    }
+
+    .list .name {
+        padding: 5px;
     }
 </style>

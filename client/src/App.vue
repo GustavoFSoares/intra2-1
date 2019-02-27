@@ -118,6 +118,7 @@ export default {
 <style>
     :root {
         --font-color: #2c3e50;
+        --disabled: rgba(105, 105, 105, 0.548)
     }
 
     #app {
@@ -138,17 +139,16 @@ export default {
         font-weight: bold;
     }
 
-    .text-default {
-        color: #2c3e50;
-    }
-
     .disabled {
         pointer-events: none;
         cursor: none;
     }
-
+    
     .text-disabled {
-        color: rgba(105, 105, 105, 0.548);
+        color: var(--disabled);
+    }
+    .text-default {
+        color: var(--font-color);
     }
 
     .table-disabled {
