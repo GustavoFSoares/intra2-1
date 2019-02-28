@@ -341,21 +341,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .row-list:hover {
         cursor: pointer;
     }
 
     .status-buttons, .state-buttons {
+        button {
+            margin-left: 10px;
+        }
+
         display: flex;
         justify-content: center;
     }
 
-    .status-buttons button, .state-buttons button {
-        margin-left: 10px;
-    }
-    
-    .btn-outline-light, .btn-outline-light:hover {
+    .btn-outline-light {
         color: black;
     }
 
@@ -364,12 +364,12 @@ export default {
         background-color: transparent;
         background-image: none;
         border-color: var(--font-color);
-    }
 
-    .btn-outline-clean:hover, .btn-outline-clean.active {
-        color: #fff;
-        background-color: var(--font-color);
-        border-color: var(--font-color);
+        &.active, &:hover {
+            color: #fff;
+            background-color: var(--font-color);
+            border-color: var(--font-color);
+        }
     }
 
     #universal {

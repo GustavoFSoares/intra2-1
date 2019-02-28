@@ -73,7 +73,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
     #actual-status-component[size=small] li:nth-child(2) {
         display: none;
     }
@@ -86,17 +86,19 @@ export default {
         list-style: none;
         display: flex;
         justify-content: center;
-    }
 
-    .list li:first-child::before {
-        display: none;
-    }
+        li {
+            &:first-child::before {
+                display: none;
+            }
 
-    .list li::before {
-        content: '/';
-    }
+            &::before {
+                content: '/';
+            }
+        }
 
-    .list .name {
-        padding: 5px;
+        .name {
+            padding: 5px;
+        }
     }
 </style>

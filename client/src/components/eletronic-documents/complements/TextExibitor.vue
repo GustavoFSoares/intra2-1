@@ -49,7 +49,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .date {
         text-align: right;
         margin-right: 20px;

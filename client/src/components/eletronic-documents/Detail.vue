@@ -146,7 +146,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #content {
         margin-right: 3%;
         margin-left: 3%;
@@ -164,15 +164,15 @@ export default {
         color: var(--danger);
         transform: rotate(-45deg);
         width: 350px;
-        top: 150px;
-    }
+        top: 150px; 
+        
+        h1 {
+            font-size: 60px;
+        }
 
-    #revoked h1 {
-        font-size: 60px;
-    }
-    
-    #revoked hr {
-         border-top: 2px solid var(--danger);
+        hr {
+            border-top: 2px solid var(--danger);
+        }
     }
 </style>
 

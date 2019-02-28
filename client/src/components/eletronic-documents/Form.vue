@@ -190,19 +190,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .alert-list {
         list-style: none;
-        counter-reset: li
-    }
+        counter-reset: li;
 
-    .alert-list li {
-        counter-increment: li
-    }
+        li {
+            counter-increment: li;
 
-    .alert-list li::before {
-        margin-right: 4px;
-        content: counter(li);
-        font-weight: bold;
+            &::before {
+                margin-right: 4px;
+                content: counter(li);
+                font-weight: bold;
+            }
+        }        
     }
 </style>
