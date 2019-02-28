@@ -74,20 +74,26 @@
         </div>
 
         <div id="buttons">
-            <row>
+            <div>
                 <button v-if="!doNotPermission" class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm" :disabled="sending">
                     Editar
                 </button>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'usuarios/gerenciador'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
-            </row>
+            </div>
+            <div>
+                <button v-if="!doNotPermission" class="btn btn-outline-danger btn-lg" id="submit-button" type="button" @click="deleteUser()" :disabled="sending">
+                    Excluir Usuário
+                </button>
+            </div>
         </div>
 
     </div>
 </template>
 
 <script>
+import Alert from "@/components/shared/Alert";
 import User from "@/entity/User";
 import { Checkbox } from "@/components/shared/Form";
 import model, { getter } from "@/model/user-model";
@@ -122,12 +128,12 @@ export default {
         },
         loadValues() {
             getter.getUserById(this.id).then(res => {
-                if(this.userSession.id == res.id || this.userSession.admin) {
+                if(res && ( this.userSession.id == res.id || this.userSession.admin )) {
                     this.User = new User(res)
 
                     this.doNotPermission = false
                 } else {
-                    this.$alert.info('Você não tem permissão para editar esse usuário')
+                    this.$alert.info('Você não tem permissão para editar esse usuário ou ele não existe')
                 }
                 
             })
@@ -137,6 +143,21 @@ export default {
                 this.$session.set('user', user)
                 this.$emit('rootEvent', user)
             }
+        },
+        deleteUser() {
+            this.sending = true
+            Alert.YesNo('Tem Certeza que deseja prosseguir?', `Você está excluindo usuário <b>${this.User.id}</b> e ele ficará impossibilitado de acessar a plataforma.<br> Tem certeza que deseja excluir mesmo assim?`).then(res => {
+                if(res) {
+                    model.doDelete(this.User.id).then(res => {
+                        this.$router.push('/usuario/gerenciador')
+                        this.sending = false
+                    }).catch(err => {
+                        this.sending = false
+                    })
+                } else {
+                    this.sending = false
+                }
+            })
         }
     },
     components: {
@@ -148,7 +169,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
     #form-edit {
         height: 100%; 
         width: 100%;  
@@ -157,6 +178,9 @@ export default {
 
     #buttons {
         margin-top: 5%;
+
+        display: flex;
+        justify-content: space-between;
     }
 
     #icon {

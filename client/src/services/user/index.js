@@ -12,4 +12,9 @@ export default {
         http.put(`/user/`, data).then(res => res.data),
     editUser: (id, data) =>
         http.put(`/user/${id}`, data).then(res => res.data),
+
+    delete: (id) => {
+        window.httpMessage = { show: true, success: `Usuário <b>Excluído</b>`, error: "Usuário <b>não Excluído</b>" }        
+        return http.delete(`/user/${id}`).then(res => res.data)
+    }
 }
