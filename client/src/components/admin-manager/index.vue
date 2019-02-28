@@ -167,7 +167,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #table div {
         margin-top: 2px;
     }
