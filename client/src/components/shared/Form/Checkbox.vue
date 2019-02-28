@@ -1,6 +1,6 @@
 <template>
         <label class="switch">
-            <input :id="id" @click="change()" type="checkbox" v-model="value" :disabled="disabled">
+            <input :id="id" type="checkbox" v-model="data" :disabled="disabled">
             <span class="slider round"></span>
         </label>
 </template>
@@ -9,21 +9,25 @@
 export default {
     data() {
         return { 
-            value: ''
+            data: false,
         }
     },
     props: {
-        checked: Boolean,
+        value: '',
         id: '',
         disabled: { default: false },
     },
-    methods: {
-        change(){
-            this.$emit('changed')
+    watch: {
+        value(val) {
+            this.data = val
+            this.$emit('change', val)
+        },
+        data(val) {
+            this.$emit('input', val)
         }
     },
-    mounted(){
-        this.value = this.$props.checked
+    mounted() {
+        this.data = this.value
     }
 }
 </script>

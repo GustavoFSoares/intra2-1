@@ -39,7 +39,7 @@
                             
                             <div class='row'>
                                 <rows label='Gestor'>
-                                    <checkbox @changed="user.admin = !user.admin" id="admin" class="button" :checked="user.admin"/>    
+                                    <checkbox id="admin" class="button" v-model="user.admin"/>    
                                 </rows>
                                 <rows label="Email">
                                     <input data-vv-as="Email" v-validate data-vv-rules="required|email" type="text" class="form-control" name="User-email" v-model="user.email">
