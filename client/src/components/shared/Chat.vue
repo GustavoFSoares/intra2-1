@@ -145,7 +145,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #chatbox {
         width: 100%;
         height: 300px;
@@ -191,9 +191,9 @@ export default {
 
     .historic-body {
         font-size: 15px;
-    }
 
-    .historic-body .time {
-        color: rgb(8, 184, 8);
+        .time {
+            color: rgb(8, 184, 8);
+        }
     }
 </style>

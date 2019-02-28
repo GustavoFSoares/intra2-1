@@ -56,7 +56,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .filter {
         display: block;
         width: 100%
@@ -64,10 +64,10 @@ export default {
 
     .lista-links {
         list-style: none;
-    }
 
-    .lista-links .lista-links-item {
-        display: inline-block;
+        .lista-links-item {
+            display: inline-block;
+        }
     }
 
     img {

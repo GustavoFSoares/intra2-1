@@ -152,7 +152,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .disabled {
         pointer-events: none;
     }

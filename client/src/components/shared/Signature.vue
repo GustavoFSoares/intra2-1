@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .signature {
         text-align: right;
         margin-right: 20px;

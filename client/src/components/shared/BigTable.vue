@@ -59,7 +59,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #big-table {
         --length: 80px;
     }

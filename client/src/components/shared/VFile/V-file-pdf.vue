@@ -162,7 +162,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .disable-pointer:hover {
         cursor: context-menu;
     }
