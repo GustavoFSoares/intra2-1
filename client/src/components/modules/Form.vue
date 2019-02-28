@@ -201,7 +201,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #icon-module {
         font-size: 200%;
     }

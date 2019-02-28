@@ -96,7 +96,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #chatbox {
         width: 100%;
         height: 300px;

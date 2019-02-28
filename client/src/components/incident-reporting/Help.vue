@@ -172,7 +172,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #send {
         margin-left: 35px;
     }
@@ -180,11 +180,11 @@ export default {
     .button {
         display: block;
         position: fixed;
-    }
 
-    .button #next-button {
-        margin-top: 60%;
-        margin-left: 3%;
+        #next-button {
+            margin-top: 60%;
+            margin-left: 3%;
+        }
     }
 
     .text-purple {
