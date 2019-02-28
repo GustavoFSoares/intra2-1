@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <nav-bar/>
+        <nav-bar v-model="userUpdating" />
             
         <div class="container-fluid">
             <div class="row">
@@ -20,7 +20,7 @@
             </router-link>
         </div>
 
-        <router-view/>
+        <router-view @rootEvent="userUpdating++"/>
         <footer-app/>
     </div>
 </template>
@@ -39,7 +39,8 @@ export default {
             alert: {
                 warning: '',
                 danger: '',
-            }
+            },
+            userUpdating: 0,
         }
     },
     components: {

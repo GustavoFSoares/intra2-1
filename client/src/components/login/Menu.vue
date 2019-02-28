@@ -1,6 +1,9 @@
 <template>
     <div class="nav-item">
         <ul class="navbar-nav mr-auto">
+            <router-link @click.native="$router.push(`/usuario/gerenciador/edit/${user.id}`)" v-if="sessionExists && !user.email" to="" class="nav-link">
+                <icon v-tooltip.top="'Clique para Cadastrar seu Email!'" class="text-warning" icon="exclamation-triangle"/>
+            </router-link>
             <router-link :to="exibition.path" class="nav-link">
                     {{ exibition.name }}
                     <i class="fa fa-user" style="font-size:20px"></i>
@@ -28,6 +31,14 @@ export default {
             sessionExists: this.$session.exists()
         }
     },
+    props: {
+        value: { default: 0}
+    },
+    watch: {
+        value() {
+            this.forceUpdate()
+        }
+    },
     methods: {
         login() {
             this.$router.push('/login')
@@ -35,6 +46,10 @@ export default {
         logout() {
             model.doLogout()
         },
+        forceUpdate() {
+            this.user = this.$session.get('user')
+            this.exibition.name = this.user.name
+        }
     },
     mounted() {
         if(this.$session.exists()) {
