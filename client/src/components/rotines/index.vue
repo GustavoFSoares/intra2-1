@@ -106,7 +106,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #rotines-runner {
         margin-top: 10px;
     }
