@@ -314,7 +314,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .times {
         margin-left: 20%;
     }
@@ -330,32 +330,32 @@ export default {
     #users-filter {
         margin-left: 2%;
         margin-right: 2%;
+
+        .search-area {
+            margin-left: 3%;
+            margin-right: 3%;
+        }
+
+        #filter-button {
+            margin-left: 20px;
+            float: left
+        }
+
+        #icon {
+            font-size: 30px;
+            margin-top: 4px;
+            margin-left: 10px;
+            /* float:left; */
+        }
     }
     
-    #users-filter .search-area {
-        margin-left: 3%;
-        margin-right: 3%;
-    }
-
-    #users-filter #filter-button {
-        margin-left: 20px;
-        float: left
-    }
-    
-    #users-filter #icon {
-        font-size: 30px;
-        margin-top: 4px;
-        margin-left: 10px;
-        /* float:left; */
-    }
-
     #instructors-list {
         margin-left: 2%;
         margin-right: 2%;
-    }
 
-    #instructors-list .instructor {
-        text-align: center;
+         .instructor {
+            text-align: center;
+        }
     }
 
     #place-training {

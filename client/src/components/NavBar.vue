@@ -49,7 +49,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #navbar {
         width: 100%;
         height: 100%;
