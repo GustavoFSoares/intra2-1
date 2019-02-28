@@ -29,7 +29,7 @@
 
                         <row>
                             <box>
-                                <info-icon id="info-icon" title="VAMOS COMEÇAR?" size="1">
+                                <info-icon id="info-icon" title="VAMOS COMEÇAR?" size="1" ref="infoIcon">
                                     Para criar sua lista de envio para os responsáveis que devem autorizar
                                     o documento basta seguir o passo a passo:
                                     <ul class="alert-list">
@@ -137,9 +137,14 @@ export default {
         },
         sendFile: (file, fileName, prefix) => model.doUploadFile(file, fileName, prefix),
         openModal() {
-            this.document.draft = false
-            this.constructModal = true
-            this.$refs.modal.show()
+            if( this.document.signatureList.length != 0 ) {
+                this.document.draft = false
+                this.constructModal = true
+                this.$refs.modal.show()
+            } else {
+                this.$alert.danger("Você precisa adicionar um <i>Usuário Responsável</> para cadastrar o documento")
+                this.$refs.infoIcon.show()
+            }
         },
         submit() {
             this.sending = true
@@ -203,6 +208,6 @@ export default {
                 content: counter(li);
                 font-weight: bold;
             }
-        }        
+        }
     }
 </style>

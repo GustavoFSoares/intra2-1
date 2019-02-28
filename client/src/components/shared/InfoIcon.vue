@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div @click="click()" id="info-icon-content">
+        <div @click="show()" id="info-icon-content">
             <icon id="info-icon" icon="info-circle" class="text-disabled bold" v-tooltip.top="'Clique para Informações'"/>
             <div v-show="false" ref="content">
                 <slot >
@@ -24,7 +24,7 @@ export default {
         }
     },
     methods: {
-        click() {
+        show() {
             let size
             switch (this.size) {
                 case '-1':

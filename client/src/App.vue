@@ -116,7 +116,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
     :root {
         --font-color: #2c3e50;
         --disabled: rgba(105, 105, 105, 0.548)
@@ -164,5 +164,9 @@ export default {
 
     div {
         /* outline: 1px dotted gray; */
+    }
+
+    .fade.alert, .vue-tooltip {
+        z-index: 2000;
     }
 </style>
