@@ -76,14 +76,14 @@
         <div id="buttons">
             <div>
                 <button v-if="!doNotPermission" class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm" :disabled="sending">
-                    Editar
+                    Salvar
                 </button>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'usuarios/gerenciador'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
             </div>
             <div>
-                <button v-if="!doNotPermission" class="btn btn-outline-danger btn-lg" id="submit-button" type="button" @click="deleteUser()" :disabled="sending">
+                <button v-if="!doNotPermission && User.id != userSession.id " class="btn btn-outline-danger btn-lg" id="submit-button" type="button" @click="deleteUser()" :disabled="sending">
                     Excluir Usuário
                 </button>
             </div>
