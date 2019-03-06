@@ -65,11 +65,11 @@
                     </div>
                 </box>
 
-                <!-- <box>
+                <box>
                     <section>
-                        <v-multifile-pdf :id="document.id" :post_function="sendFile"/>
+                        <v-multifile-pdf :id="document.id" :post_function="sendFile" origin='eletronic-documents'/>
                     </section>
-                </box> -->
+                </box>
             </rows>
         </section>
 

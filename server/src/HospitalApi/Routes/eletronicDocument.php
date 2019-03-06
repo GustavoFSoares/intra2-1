@@ -37,6 +37,7 @@ $app->group('/eletronic-documents', function() {
         $this->get('/file/[{id}/{prefix}]', "HospitalApi\Controller\EletronicDocumentController:getFileByPrefixAction", function(Request $req, Response $res, array $args) { });
         $this->get('/print-document/{id}', "HospitalApi\Controller\EletronicDocumentController:printDocumentAction", function(Request $req, Response $res, array $args) { });
         $this->get('/get[/{params:.*}]', "HospitalApi\Controller\EletronicDocumentController:getEletronicDocuments", function(Request $req, Response $res, array $args) { });
+        $this->get('/folder/{folderId}', "HospitalApi\Controller\EletronicDocumentController:getFilesOfFolderAction", function(Request $req, Response $res, array $args) { });
         $this->get('[/{params:.*}]', "HospitalApi\Controller\EletronicDocumentController:get", function(Request $req, Response $res, array $args) { });
         
         $this->post('/', "HospitalApi\Controller\EletronicDocumentController:insert", function(Request $req, Response $res, array $args) { });
@@ -48,7 +49,7 @@ $app->group('/eletronic-documents', function() {
         $this->put('/set-like-waiting/{document-id}/{user_id}', "HospitalApi\Controller\EletronicDocumentController:setLikeWaitingSignatureAction", function(Request $req, Response $res, array $args) { });
         $this->put('/sign/{type}/{id}', "HospitalApi\Controller\EletronicDocumentController:signDocumentAction", function(Request $req, Response $res, array $args) { });
         $this->put('/amendment-update/{id}/{user_id}', "HospitalApi\Controller\EletronicDocumentController:updateAmendmentAction", function(Request $req, Response $res, array $args) { });
-        
+        $this->put('/folder/{folderId}', "HospitalApi\Controller\EletronicDocumentController:removeFileAction", function(Request $req, Response $res, array $args) { });
         
         $this->delete('/{id}', "HospitalApi\Controller\EletronicDocumentController:delete", function(Request $req, Response $res, array $args) { });
 }); 

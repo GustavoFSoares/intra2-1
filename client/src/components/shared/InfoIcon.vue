@@ -58,7 +58,6 @@ export default {
         display: flex;
         justify-content: flex-end;
         align-content: space-around;
-        margin-bottom: 10px;
-
+        align-self: flex-start;
     }
 </style>

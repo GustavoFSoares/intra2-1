@@ -12,6 +12,13 @@
         <actual-status :actualStatusId="document.status" :documentId="id"/>
         <section>
             <text-exibitor :document="document"/>            
+
+            <box class="border-secondary">
+                <div class="attachment">
+                    <h4 class="text">Documentos Anexos:</h4>
+                    <v-multifile-pdf class="file" :only_exibition="true" :id="document.id" origin='eletronic-documents'/>
+                </div>
+            </box>
         </section>
 
         <section id="signature-area">
@@ -173,6 +180,18 @@ export default {
         hr {
             border-top: 2px solid var(--danger);
         }
+
     }
+    
+    .attachment {
+        display: flex;
+        justify-content: space-between;
+
+        .file {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
 </style>
 

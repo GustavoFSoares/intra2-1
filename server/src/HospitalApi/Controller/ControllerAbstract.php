@@ -120,23 +120,28 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 			$file = $files['file'];
 			
 			$destiny = FILES."{$this->_model->entity->getClassShortName()}/";
+			if($prefix) {
+				$destiny .= "$prefix/";
+			}
+
 			if( !is_dir($destiny) ) {
 				mkdir($destiny);
 			}
-
-			if($prefix) {
-				$destiny .= "$prefix-";
-			}
-
-			preg_match_all('/(\.\w{3})$/m', $req->getParam('name'), $matches, PREG_SET_ORDER, 0);
+			
+			$name = $name ? $name : $file->getClientFilename();
+			preg_match_all('/(\.\w{3})$/m', $name, $matches, PREG_SET_ORDER, 0);
 			if( isset($matches[0]) ) {
-				$destiny .= $name;
+				$fileName = $name;
 			} else {
-				$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);				
-				$name = $name ? $name : $file->getClientFilename();
-				$destiny .= "$name.$extension";
+				$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+				$fileName = $name.$extension;			
 			}
-
+			$fileArray = explode('.', $fileName);
+			$name = \Helper\SlugHelper::get( $fileArray[0] );
+			$extension = $fileArray[1];
+			
+			$destiny .= "$name.$extension";
+			
 			$file->moveTo($destiny);
 			$response = $destiny;
 
@@ -156,7 +161,20 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
         $files = $model->getFilesBy($id, $prefix, $this->_model->entity->getClassShortName());
         
         return $res->withJson($files);
-    }
+	}
+	
+	public function getFilesOfFolderAction($req, $res, $args) {
+		$data = FileController::getFilesOfFolder($this->_model->entity->getClassShortName(), $args['folderId']);
+
+		return $res->withJson($data);
+	}
+
+	public function removeFileAction($req, $res, $args) {
+		$values = $req->getParsedBody();
+		$response = FileController::removeFile($this->_model->entity->getClassShortName(), $values);
+
+        return $res->withJson($response);
+	}
 
 	/**
 	 * @method translateCollection()
