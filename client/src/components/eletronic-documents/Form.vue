@@ -136,16 +136,6 @@ export default {
             }
         },
         sendFile: (file, fileName, prefix) => model.doUploadFile(file, fileName, prefix),
-        openModal() {
-            if( this.document.signatureList.length != 0 ) {
-                this.document.draft = false
-                this.constructModal = true
-                this.$refs.modal.show()
-            } else {
-                this.$alert.danger("Você precisa adicionar um <i>Usuário Responsável</> para cadastrar o documento")
-                this.$refs.infoIcon.show()
-            }
-        },
         submit() {
             this.sending = true
             if(this.isEdit()) {
@@ -169,9 +159,28 @@ export default {
                 })
             }
         },
+        openModal() {
+            this.isValidForm().then(() => {
+                if( this.document.signatureList.length != 0 ) {
+                    this.document.draft = false
+                    this.constructModal = true
+                    this.$refs.modal.show()
+                } else {
+                    this.$alert.danger("Você precisa adicionar um <i>Usuário Responsável</> para cadastrar o documento")
+                    this.$refs.infoIcon.show()
+                }
+            })
+        },
         saveDraft() {
-            this.document.draft = true
-            this.submit()
+            this.isValidForm().then(() => {
+                this.document.draft = true
+                this.submit()
+            })
+        },
+        isValidForm() {
+            return new Promise(resolve => {
+                this.$validator.validateAll().then(success => success ? resolve() : this.$alert.danger(`Erro no formulário. Favor verificar campo "${this.$validator.fields.items[0].alias}"`) )
+            })
         },
         isEdit() {
             return model.isEdit(this.id)
