@@ -3,6 +3,7 @@ INCIDENT-REPORTING:
         - 'tecnologia-da-informacao-hu'
     HU_DATA:
         - 'seger-hu'
+        - 'scih-hu'        
     HPSC_DATA:
         - 'seger-hpsc'
 
