@@ -169,12 +169,21 @@ export default {
         display: block;
         position: absolute;
         color: var(--danger);
-        transform: rotate(-45deg);
-        width: 350px;
-        top: 150px; 
+        transform: translate(-2em, 17.5251em) rotate(-45deg);
+        transform-origin: 0 0;
+        width: 30em;
+
+        line-height: 1;
+        padding: 1em 0;
+        z-index: -1;
+        
+        left: 0;
+        top: 0;
         
         h1 {
             font-size: 60px;
+            text-align: left;
+            margin-left: 1.0em;
         }
 
         hr {

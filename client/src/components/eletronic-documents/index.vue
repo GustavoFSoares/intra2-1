@@ -1,12 +1,12 @@
 <template>
     <div class="container-fluid">
-        <div id="universal" v-bind:class="{ 'show':showUniversal && show.completList }">
+        <!-- <div id="universal" v-bind:class="{ 'show':showUniversal && show.completList }">
             <div class="universal-container">
                 <div class="img">
                     <img src="https://pngimage.net/wp-content/uploads/2018/06/logo-da-iurd-png-5.png">
                 </div>
             </div>
-        </div>
+        </div> -->
         <h1>{{ title }}</h1>
 
         <row :text_left="false">
@@ -372,40 +372,40 @@ export default {
         }
     }
 
-    #universal {
-        display: none;
-        transition: opacity 1s ease-out;
-        opacity: 0; 
-    }
+    // #universal {
+    //     display: none;
+    //     transition: opacity 1s ease-out;
+    //     opacity: 0; 
+    // }
 
-    #universal.show {
-        background-color: rgba(1,1,1, 0.020);
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 1050;
-        outline: 0;
+    // #universal.show {
+    //     background-color: rgba(1,1,1, 0.020);
+    //     position: fixed;
+    //     top: 0;
+    //     right: 0;
+    //     bottom: 0;
+    //     left: 0;
+    //     z-index: 1050;
+    //     outline: 0;
         
-        transition: opacity 1s ease-out;
-        opacity: 1;
+    //     transition: opacity 1s ease-out;
+    //     opacity: 1;
         
-        display: block;
+    //     display: block;
         
-        animation: fadein 0.4s;
-        animation: fadeout 0.6s;
+    //     animation: fadein 0.4s;
+    //     animation: fadeout 0.6s;
 
-        transition-delay: 0.6s 
-    }
+    //     transition-delay: 0.6s 
+    // }
 
-    #universal .universal-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    // #universal .universal-container {
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: space-between;
 
-        margin-left: 20%;
-        margin-top: 25%;
-    }
+    //     margin-left: 20%;
+    //     margin-top: 25%;
+    // }
 
 </style>
