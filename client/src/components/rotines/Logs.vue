@@ -90,7 +90,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #title {
         margin-top: 2%;
         margin-left: 8%;
@@ -119,14 +119,14 @@ export default {
 
     .historic-body {
         font-size: 15px;
-    }
 
-    .historic-body .time {
-        color: rgb(8, 184, 8);
-    }
+        .time {
+            color: rgb(8, 184, 8);
+        }
 
-    .historic-body .line {
-        text-align: center;
+        .line {
+            text-align: center;
+        }
     }
 
     #logs hr {

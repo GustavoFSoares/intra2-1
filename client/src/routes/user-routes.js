@@ -12,6 +12,6 @@ export default [
         path: '/usuario/gerenciador/edit/:id',
         component: Form,
         name: 'usuarios/edit',
-        meta: { requiresAuth: true, adminAuth: true }
+        meta: { requiresAuth: true }
     },
 ]

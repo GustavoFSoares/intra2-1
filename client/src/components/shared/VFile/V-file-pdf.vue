@@ -59,12 +59,12 @@
             </rows>
 
             <rows>
-                <a class="text-default" v-if="filePath && loadingFile == false" :href="`http://10.100.200.100:3001/file/?filePath=${filePath}&onScreen=1`" target="_blank" @click="showExemple(filePath)">
+                <a class="text-default" v-if="filePath && loadingFile == false" :href="`${$globals.API_SERVER}/file/?filePath=${filePath}&onScreen=1`" target="_blank" @click="showExemple(filePath)">
                     <icon class="text-danger" icon="file-pdf" size="2x"/> {{ fileName }}
                 </a>
                 <div v-if="loadingFile">
                     <icon icon="spinner" size="2x" spin/>
-                    <div class="text-disabled">Procurando Documento...</div>
+                    <div class="text-disabled bold">Procurando Documento...</div>
                 </div>
             </rows>
         </div>
@@ -121,7 +121,7 @@ export default {
         },
         showExemple(path) {
             let route = this.$router.resolve({ path: '/file/', query: { onScreen: true, filePath: path }});
-            window.open(`http://localhost:3001/${route.href}`, '_blank')
+            window.open(`${this.$globals.API_SERVER}/${route.href}`, '_blank')
         },
         findFile(id) {
             if(id) {
@@ -137,7 +137,15 @@ export default {
     },
     computed: { 
         fileName() {
-            return this.file_name ? this.file_name : this.$route.params.id
+            if(this.file_name) {
+                return this.file_name
+            } else if(this.$route.params.id) {
+                return this.$route.params.id
+            } else if(this.files[0].name) {
+                return this.files[0].name
+            } else {
+                return 'File'
+            }
         }
     },
     watch: {
@@ -154,7 +162,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .disable-pointer:hover {
         cursor: context-menu;
     }

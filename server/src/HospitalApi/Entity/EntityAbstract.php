@@ -41,6 +41,17 @@ abstract class EntityAbstract extends BasicApplicationAbstract
     {
         return get_class_vars($this->getClassName());
     }
+   
+    public function getPublicVars()
+    {
+        $vars = [];
+        foreach ($this->getClassVars() as $key => $value) {
+            if($key[0] != '_') {
+                $vars[$key] = $value;
+            }
+        }
+        return $vars;
+    }
 
     /**
      * @method toString()
@@ -64,9 +75,9 @@ abstract class EntityAbstract extends BasicApplicationAbstract
      */
     public function toArray() {
         $obj;
-        foreach ($this->getClassVars() as $var => $value) {
-            if($var != 'lazyPropertiesDefaults')
-                $obj[$var] = $this->$var ? $this->$var : "";
+        foreach ($this->getPublicVars() as $var => $value) {
+            if($var != 'lazyPropertiesDefaults') 
+                $obj[$var] = $this->$var || $this->$var === false ? $this->$var : "";
         }
         return $obj;
     }
@@ -80,6 +91,48 @@ abstract class EntityAbstract extends BasicApplicationAbstract
         }
         return $date;
     }
+
+    public function buildList($entityList, $values) {
+		if( empty($values) ) {
+			$dataReturn = $entityList->clear();
+		} else if($entityList->isEmpty()) {
+			$dataReturn = new \Doctrine\Common\Collections\ArrayCollection($values);
+		} else {
+            $collection = new \Doctrine\Common\Collections\ArrayCollection($entityList->toArray());
+            if(!$values instanceof \Doctrine\Common\Collections\ArrayCollection) {
+                $values = new \Doctrine\Common\Collections\ArrayCollection($values);
+            }
+            $exist = [];
+            foreach ($values as $row) {
+                foreach ($collection as $key => $collectionRow) {
+                    if($collectionRow->getId() == $row->getId()) {
+                        $collection->remove($key);
+                        $exist[] = $row->getId();
+                    }
+                }
+            }
+
+            // Remove not in list
+            $entityList->map(function(&$entry) use ($exist, $entityList, $row)  {
+                if( !in_array($entry->getId(), $exist) ) {
+                    $entityList->removeElement($entry);
+                } else {
+                    $entry = $row;
+                }
+            });
+            
+            // Add for in list
+            $values->map(function($entry) use ($exist, $entityList)  {
+                if( !in_array($entry->getId(), $exist) ) {
+                    $entityList->add($entry);
+                }
+            });
+            
+            return $entityList;
+        }
+
+		return $dataReturn;
+	}
 
     /**
      * @method _formatDate()
@@ -133,6 +186,18 @@ abstract class EntityAbstract extends BasicApplicationAbstract
         } else {
             return null;
         }
+    }
+
+    public function construct($data) {
+        foreach ($data as $key => $value) {
+            $method = "set$key";
+            $this->$method($value);
+        }
+        return $this;
+    }
+
+    public function isLoaded() {
+        return $this->getId() ? true : false;
     }
 
 }

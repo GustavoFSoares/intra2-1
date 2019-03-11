@@ -17,7 +17,7 @@
                             <span class="">{{ module.name }}</span>
                         </td>
                         <td>
-                            <checkbox class="button" :checked="module.active" @changed="change(module)"/>
+                            <checkbox class="button" v-model="module.active" @change="change(module)"/>
                         </td>
                     </tr>
                 </tbody>
@@ -75,7 +75,7 @@ export default {
             if(exist){
                 this.toChange.splice(id, 1)
             } else {
-                this.toChange.push({ module: module.id, group: this.group.id, name: module.name, active: !module.active })
+                this.toChange.push({ module: module.id, group: this.group.id, name: module.name, active: module.active })
             }
         },
         submit() {
@@ -92,7 +92,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .space {
         margin-top: 3%;
     }

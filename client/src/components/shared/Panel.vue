@@ -26,9 +26,7 @@ export default {
 }
 </script>
 
-<style scoped>
-   /* estilo do panel */ 
-
+<style lang="scss" scoped>
     .panel {
         width: 200px;
         height: 100%;
@@ -39,17 +37,9 @@ export default {
         box-shadow: 5px 5px 10px grey;
         vertical-align: top;
         text-align: center;
+
+        .panel-title {
+            font-size: 18px;
+        }
     }
-
-    .panel .panel-title {
-        font-size: 18px;
-    }
-
-   /* .panel-fade-enter, .panel-fade-leave-active {
-       opacity: 0;
-   }
-
-    .panel-fade-enter-active, .panel-fade-leave-active {
-        transition: 1s;
-    } */
 </style>

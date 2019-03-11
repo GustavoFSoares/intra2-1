@@ -1,9 +1,12 @@
 <template>
-    <blockquote class="blockquote pull-right signature">
-        <footer class="blockquote-footer">{{ label }}: 
-            <cite title="Source Title"><b> {{ username }} </b></cite>
-        </footer>
-    </blockquote>
+    <div>
+        <blockquote class="blockquote signature">
+            <footer class="blockquote-footer">
+                <span v-if="label">{{ label }}: </span>
+                <cite title="Source Title"><b> {{ username }} </b></cite>
+            </footer>
+        </blockquote>
+    </div>
 </template>
 
 <script>
@@ -16,7 +19,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .signature {
         text-align: right;
         margin-right: 20px;

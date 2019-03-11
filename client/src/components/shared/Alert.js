@@ -23,12 +23,32 @@ export default {
             })
         })
     },
-    Confirm: (message = "Message") => {
+    Confirm: (message = "Message", title = "", size) => {
         return new Promise((resolve) => {
-            bootbox.confirm(
-                message,
-                result => { resolve(result) }
-            )
+            bootbox.dialog({
+                message: message,
+                title: title,
+                size: size,
+                buttons: {
+                    ok: {
+                        label: "Ok",
+                        className: 'btn-primary',
+                        callback: result => { resolve(result) }
+                    }
+                },
+                
+            })
+        })
+    },
+    TextArea: (title = "TextArea") => {
+        return new Promise((resolve) => {
+            bootbox.prompt({
+                title: title,
+                inputType: 'textarea',
+                callback: result => {
+                    resolve(result)
+                }
+            });
         })
     }
 }

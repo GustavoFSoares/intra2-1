@@ -1,11 +1,17 @@
 <template>
-    <div class="container" @keyup.enter="isValidForm">
+    <div id="form-edit" class="container" @keyup.enter="isValidForm">
         <h1>{{ title }}</h1>
 
-        <row id="name" label="Nome">
-            <input data-vv-as="Nome" v-validate data-vv-rules="required" type="text" class="form-control" name="User-title" v-model="User.name">
-            <require-text :error="errors.has('User-title')" :text="errors.first('User-title')" :show="true" :attribute="User.name"/>
-        </row>
+        <div class='row'>
+            <rows label='Nome' class="col-md-5">
+                <input data-vv-as="Nome" v-validate data-vv-rules="required" type="text" class="form-control" name="User-title" v-model="User.name">
+                <require-text :error="errors.has('User-title')" :text="errors.first('User-title')" :show="true" :attribute="User.name"/>
+            </rows>
+            <rows label='E-mail'>
+                <input data-vv-as="Email" v-validate data-vv-rules="email" type="text" class="form-control" name="User-email" v-model="User.email">
+                <require-text :error="errors.has('User-email')" :text="errors.first('User-email')" :show="true" :attribute="User.email"/>
+            </rows>
+        </div>
 
         <div class="row">
             <rows label="id" class="mb-3">
@@ -25,20 +31,20 @@
         </div>
        
         <div class="row mb-3">
-            <rows label="Usuário Removido">
+            <rows label="Usuário Ativo">
                 <br>
-                <checkbox @changed="User.active = !User.active" id="removed" class="button" :checked="User.active"/>
+                <checkbox id="removed" class="button" v-model="User.active"/>
             </rows>
 
             <rows label="Level">
-                <div>
-                    <router-link to="" id="icon" v-if="User.level < 3" @click.native="User.level++">
+                <div class="level">
+                    <router-link class="level-plus" to="" id="icon" v-if="User.level < 3" @click.native="User.level++" :disabled="!userSession.admin">
                         <icon icon="plus"/> 
                     </router-link>
                     
                     <span id="level">{{ User.level }}</span>
                     
-                    <router-link to="" id="icon" v-if="User.level > 1" @click.native="User.level--"> 
+                    <router-link class="level-minus" to="" id="icon" v-if="User.level > 1" @click.native="User.level--" :disabled="!userSession.admin"> 
                         <icon  icon="minus"/>
                     </router-link>
                 </div>
@@ -46,7 +52,7 @@
             
             <rows label="Administrador">
                 <br>
-                <checkbox @changed="User.admin = !User.admin" id="admin" class="button" :checked="User.admin"/>
+                <checkbox id="admin" class="button" v-model="User.admin" :disabled="!userSession.admin"/>
             </rows>
         </div>
 
@@ -68,24 +74,29 @@
         </div>
 
         <div id="buttons">
-            <row>
-                <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm" :disabled="sending">
-                    Editar
+            <div>
+                <button v-if="!doNotPermission" class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm" :disabled="sending">
+                    Salvar
                 </button>
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'usuarios/gerenciador'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
-            </row>
+            </div>
+            <div>
+                <button v-if="!doNotPermission && User.id != userSession.id " class="btn btn-outline-danger btn-lg" id="submit-button" type="button" @click="deleteUser()" :disabled="sending">
+                    Excluir Usuário
+                </button>
+            </div>
         </div>
 
     </div>
 </template>
 
 <script>
+import Alert from "@/components/shared/Alert";
 import User from "@/entity/User";
 import { Checkbox } from "@/components/shared/Form";
 import model, { getter } from "@/model/user-model";
-import { FormRw, FormRws, Require } from "@/components/shared/Form";
 
 export default {
     data(){
@@ -93,7 +104,9 @@ export default {
             id: this.$route.params.id,
             title: "Editar Usuário",
             User: new User(),
+            userSession: $session.get('user'),
             sending: false,
+            doNotPermission: true
         }
     },
     methods: {
@@ -106,7 +119,8 @@ export default {
                 this.sending = false
                 this.$alert.success('Usuario Editado')
 
-                this.$router.go('-1')
+                this.updatindUser(this.User)
+                this.$router.push('/usuario/gerenciador')
             }, err => {
                 this.sending = false
                 this.$alert.danger('Erro ao Atualizar')
@@ -114,17 +128,39 @@ export default {
         },
         loadValues() {
             getter.getUserById(this.id).then(res => {
-                this.User = new User(res)
+                if(res && ( this.userSession.id == res.id || this.userSession.admin )) {
+                    this.User = new User(res)
+
+                    this.doNotPermission = false
+                } else {
+                    this.$alert.info('Você não tem permissão para editar esse usuário ou ele não existe')
+                }
                 
-                document.getElementById('admin').checked = this.User.admin
-                document.getElementById('removed').checked = !this.User.active
             })
         },
+        updatindUser(user) {
+            if(this.userSession.id == user.id ) {
+                this.$session.set('user', user)
+                this.$emit('rootEvent', user)
+            }
+        },
+        deleteUser() {
+            this.sending = true
+            Alert.YesNo('Tem Certeza que deseja prosseguir?', `Você está excluindo usuário <b>${this.User.id}</b> e ele ficará impossibilitado de acessar a plataforma.<br> Tem certeza que deseja excluir mesmo assim?`).then(res => {
+                if(res) {
+                    model.doDelete(this.User.id).then(res => {
+                        this.$router.push('/usuario/gerenciador')
+                        this.sending = false
+                    }).catch(err => {
+                        this.sending = false
+                    })
+                } else {
+                    this.sending = false
+                }
+            })
+        }
     },
     components: {
-        'row': FormRw,
-        'rows': FormRws,
-        'require-text': Require,
         'checkbox': Checkbox,
     },
     mounted() {
@@ -133,14 +169,28 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+    #form-edit {
+        height: 100%; 
+        width: 100%;  
+        overflow-y: hidden;
+    }
+
     #buttons {
         margin-top: 5%;
+
+        display: flex;
+        justify-content: space-between;
     }
 
     #icon {
         margin-left: 10px;
         margin-right: 10px;
+    }
+
+    .level .level-plus[disabled], .level-minus[disabled] {
+        pointer-events: none;
+        color: #007bff7d;
     }
 
 </style>

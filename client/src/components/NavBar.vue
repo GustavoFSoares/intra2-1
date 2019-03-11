@@ -15,7 +15,7 @@
                 </ul>
 
                 <div class="navbar-nav">
-                    <menu-login/>
+                    <menu-login v-model="value"/>
                 </div>
                 
             </div>
@@ -41,6 +41,7 @@ export default {
             ],
         }
     },
+    props: { value: { default: 0} },
     methods: { },
     components: {
         'menu-login': MenuLogin
@@ -48,7 +49,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #navbar {
         width: 100%;
         height: 100%;

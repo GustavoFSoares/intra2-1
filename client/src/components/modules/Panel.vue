@@ -43,15 +43,15 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #icon {
         color: black;
         margin-left: 4px;
         transition: all 0.5s ease;
-    }
 
-    #icon.in {
-        transform: rotate(90deg);
+        &.in {
+            transform: rotate(90deg);
+        }
     }
 
     #module-contents {
@@ -67,10 +67,10 @@ export default {
         margin-left: 10px;
 
         max-width: 240px;
-    }
 
-    #module-contents.in {
-        width: 240px;
+        &.in {
+            width: 240px;
+        }
     }
 
     .chield-modules {
@@ -79,7 +79,6 @@ export default {
         vertical-align: middle;
         
         max-width: 170px;
-
     }
 
 </style>

@@ -253,7 +253,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
     #send {
         margin-left: 35px;
@@ -262,11 +262,11 @@ export default {
     .button {
         display: block;
         position: fixed;
-    }
 
-    .button #submit-button {
-        margin-top: 40%;
-        margin-left: 3%;
+        #submit-button {
+            margin-top: 40%;
+            margin-left: 3%;
+        }
     }
 
     #back-button {

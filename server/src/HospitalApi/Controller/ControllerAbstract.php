@@ -113,17 +113,35 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 
 	public function uploadFileAction($req, $res, $args) {
 		$files = $req->getUploadedFiles();
+		$prefix = $req->getParam('prefix');
+		$name = $req->getParam('name');
 
 		if(array_key_exists('file', $files)) {
 			$file = $files['file'];
 			
-			$destiny = FILES."{$this->_model->entity->getClassShortName()}";
+			$destiny = FILES."{$this->_model->entity->getClassShortName()}/";
+			if($prefix) {
+				$destiny .= "$prefix/";
+			}
+
 			if( !is_dir($destiny) ) {
 				mkdir($destiny);
 			}
-			$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
-			$destiny = "$destiny/{$req->getParam('name')}.$extension";
-
+			
+			$name = $name ? $name : $file->getClientFilename();
+			preg_match_all('/(\.\w{3})$/m', $name, $matches, PREG_SET_ORDER, 0);
+			if( isset($matches[0]) ) {
+				$fileName = $name;
+			} else {
+				$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+				$fileName = $name.$extension;			
+			}
+			$fileArray = explode('.', $fileName);
+			$name = \Helper\SlugHelper::get( $fileArray[0] );
+			$extension = $fileArray[1];
+			
+			$destiny .= "$name.$extension";
+			
 			$file->moveTo($destiny);
 			$response = $destiny;
 
@@ -133,6 +151,29 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 		}
 
 		return $res->withJson($response);
+	}
+
+	public function getFileByPrefixAction($req, $res, $args) {
+        $id = $req->getParam('id');
+        $prefix = $req->getParam('prefix');
+		
+		$model = new \HospitalApi\Model\FileModel();
+        $files = $model->getFilesBy($id, $prefix, $this->_model->entity->getClassShortName());
+        
+        return $res->withJson($files);
+	}
+	
+	public function getFilesOfFolderAction($req, $res, $args) {
+		$data = FileController::getFilesOfFolder($this->_model->entity->getClassShortName(), $args['folderId']);
+
+		return $res->withJson($data);
+	}
+
+	public function removeFileAction($req, $res, $args) {
+		$values = $req->getParsedBody();
+		$response = FileController::removeFile($this->_model->entity->getClassShortName(), $values);
+
+        return $res->withJson($response);
 	}
 
 	/**
@@ -166,9 +207,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 	 * @return void
 	 */
 	public function _mountEntity($values){
-		if(isset($values['id']) && $values['id']) {
-			$this->_model->entity = $this->_model->getRepository()->find($values['id']);
-		}
+		$this->loadEntity($values);
 
 		if( method_exists($this->_model, 'mount') ){
 			$values = $this->_model->mount($values);
@@ -182,6 +221,15 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 				->$method($value);
 		}
 		return $this->_model->entity;
+	}
+
+	public function loadEntity($values) {
+		if(isset($values['id']) && $values['id']) {
+			$repository = $this->_model->getRepository()->find($values['id']);
+			if($repository) {
+				$this->_model->entity = $repository;
+			}
+		}
 	}
 
 	public function changeStatusAction($req, $res, $args) {

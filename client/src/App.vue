@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-        <nav-bar/>
-
+        <nav-bar v-model="userUpdating" />
+            
         <div class="container-fluid">
             <div class="row">
                 <rows>
@@ -20,7 +20,7 @@
             </router-link>
         </div>
 
-        <router-view/>
+        <router-view @rootEvent="userUpdating++"/>
         <footer-app/>
     </div>
 </template>
@@ -42,6 +42,7 @@ export default {
                 warning: '',
                 danger: '',
             },
+            userUpdating: 0,
         }
     },
     components: {
@@ -118,13 +119,18 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+    :root {
+        --font-color: #2c3e50;
+        --disabled: rgba(105, 105, 105, 0.548)
+    }
+
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
-        color: #2c3e50;
+        color: var(--font-color);
         margin-bottom: 100px;
     }
 
@@ -133,13 +139,26 @@ export default {
         margin-top: 10px;
     }
 
-    .text-default {
-        color: #2c3e50;
+    .bold {
+        font-weight: bold;
     }
 
+    .disabled {
+        pointer-events: none;
+        cursor: none;
+    }
+    
     .text-disabled {
-        color: rgba(105, 105, 105, 0.548);
-        font-weight: bold;
+        color: var(--disabled);
+    }
+    .text-default {
+        color: var(--font-color);
+    }
+
+    .table-disabled {
+        cursor: default;
+        text-decoration: none;
+        color: #8a8a8a9c;
     }
 
     .btn-outline-warning:hover:not(:disabled)  {
@@ -148,5 +167,9 @@ export default {
 
     div {
         /* outline: 1px dotted gray; */
+    }
+
+    .fade.alert, .vue-tooltip {
+        z-index: 2000;
     }
 </style>

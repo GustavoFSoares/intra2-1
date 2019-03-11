@@ -45,9 +45,11 @@ class LoggerHelper implements LoggerHelperInterface {
         file_put_contents(self::$fileDir, "", FILE_APPEND);
     }
 
-    public static function writeFile($value) {
+    public static function writeFile($value, $date = null) {
         $value = str_replace("\n", "  ", $value);
-
+        if($date) {
+            $value = date('Y/m/d h:i:s')." ".$value;
+        }
         file_put_contents(self::$fileDir, "$value\n", FILE_APPEND);
         return $value."\n";
     }

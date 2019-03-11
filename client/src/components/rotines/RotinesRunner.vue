@@ -46,16 +46,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #play {
         margin-top: 8px;
-    }
 
-    #play[disabled="disabled"] {
-        pointer-events: none;
-    }
+        &[disabled="disabled"] {
+            pointer-events: none;
 
-    #play[disabled="disabled"] .play-icon {
-        color: rgba(1, 1, 212, 0.315);
+            .play-icon {
+                color: rgba(1, 1, 212, 0.315);
+            }
+        }
     }
 </style>

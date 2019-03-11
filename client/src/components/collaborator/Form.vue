@@ -153,7 +153,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #buttons {
         margin-top: 5%;
     }

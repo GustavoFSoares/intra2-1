@@ -4,8 +4,8 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{title}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <h5 class="modal-title" id="exampleModalLongTitle" v-html="title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -15,8 +15,8 @@
                         </slot>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" @click="send">{{submitlabel}}</button>
+                        <button @click="close()" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" :disabled="disabled" @click="send">{{submitlabel}}</button>
                     </div>
                 </div>
             </div>
@@ -30,29 +30,57 @@ export default {
     props: {
         title: String,
         submitlabel: {type: String, default: 'Ok'},
+        disabled: {type: Boolean, default: false},
+        submit_method: {type: Function},
+        value: ''
     },
     data() {
         return {
             id: '',
         }
     },
+    watch: {
+        value(val) {
+            if(val) {
+                this.show()
+            }
+        }
+    },
     methods: {
         send() {
-            this.$emit('return')
-            $(`#${this.id}`).modal('hide')
+            if( this.submit_method ) {
+                this.submit_method().then(res => {
+                    $(`#${this.id}`).modal('hide')
+                    this.$emit('return')
+                })
+            } else {
+                this.close()
+            }
         },
         show() {
             $(`#${this.id}`).modal('show')
+        },
+        close() {
+            $(`#${this.id}`).modal('hide')
+            this.$emit('close')
+            this.$emit('input', false)
+        },
+        destroy() {
+            $(`#${this.id}`).remove()
+            $('.modal-backdrop').remove()
+            $('.modal-open').css('padding-right', 0).removeClass()
         }
     },
     created() {
-        let space = /\s/g;
-        if(this.title) {
-            this.id=this.title.replace(space, "")
-        } else {
-            this.id = 'modal'
+        this.id = this._uid
+    },
+    mounted() {
+        if(this.value) {
+            this.show()
         }
-        
-    }
+    },
+    beforeDestroy() {
+        this.destroy()
+    },
 }
 </script>

@@ -24,7 +24,8 @@ const model = {
             })
             resolve(users)
         })
-    })
+    }),
+    doDelete: (userId) => service.delete(userId),
 }
 
 export default model
