@@ -29,6 +29,8 @@
 import AlertGetters from '@/services/alerts/getters.js'
 import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
+import Modal from "@/components/shared/Modal";
+
 import { FormRws, TopAlert } from "@/components/shared/Form/index.js"
 import Vue from 'vue'
 
@@ -48,6 +50,7 @@ export default {
         'footer-app': Footer,
         'rows': FormRws,
         'top-alert': TopAlert,
+        'modal': Modal,
     },
     methods: {
         getWarningAlert() {
