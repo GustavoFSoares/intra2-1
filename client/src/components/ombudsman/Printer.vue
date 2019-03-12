@@ -69,10 +69,10 @@ export default {
             }
         },
         doPrint() {
-            window.open(`${window.location.protocol}//${window.location.hostname}:3001/ombudsman/doc/reprint/?id=${this.ombudsman.id}&user_id=${this.$session.get('user').id}`, '_target')
+            window.open(`${window.globals.API_SERVER}/ombudsman/doc/reprint/?id=${this.ombudsman.id}&user_id=${this.$session.get('user').id}`, '_target')
         },
         exportFile() {
-            window.open(`${window.location.protocol}//${window.location.hostname}:3001/ombudsman/doc/?page=${this.doc.page}&origin=${this.doc.origin.id}`, '_target')
+            window.open(`${window.globals.API_SERVER}/ombudsman/doc/?page=${this.doc.page}&origin=${this.doc.origin.id}`, '_target')
         }
     },
     mounted() {
