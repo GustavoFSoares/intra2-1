@@ -110,11 +110,11 @@ class OmbudsmanModel extends SoftdeleteModel
             
             default: 
                 $select
-                    ->leftJoin('o.managerList', 'om', 'WITH', 'om = :user')
-                    ->leftJoin('o.transmissionList', 'ot', 'WITH', 'ot = :user')
-                    ->andWhere('om = :user')
-                    ->orWhere('ot = :user')
-                    ->setParameter('user', $this->getContainer()['session']->get()->getId());
+                    ->leftJoin('o.managerList', 'oml', 'WITH', 'oml = :user')
+                    ->leftJoin('o.transmissionList', 'otl', 'WITH', 'otl = :user')
+                    ->andWhere('oml = :user')
+                    ->orWhere('otl = :user')
+                    ->setParameter('user', $this->getSession()->getId());
                 break;
         }
        
@@ -198,7 +198,7 @@ class OmbudsmanModel extends SoftdeleteModel
 
         try {
             $this->doUpdate($this->entity);
-            return ['status' => true];
+            return ['status' => true, 'code' => 200 ];
         } catch(UniqueConstraintViolationException $e) {
             return ['status' => false, 'code' => 409,];
         }
@@ -306,5 +306,62 @@ class OmbudsmanModel extends SoftdeleteModel
         } else {
             return false;
         }
+    }
+
+    public function getTransmissionList($ombudsmanId, $userId) {
+        $list = [];
+        
+        for ($i=0; $i <= 1; $i++) { 
+            $select = $this->em->createQueryBuilder()
+                ->select('u')
+                ->from('HospitalApi\Entity\User', 'u')
+                ->innerJoin('HospitalApi\Entity\Ombudsman', 'o', 'WITH', 'o.id = :ombudsman');
+                
+            if($i === 0) {
+                $select->innerJoin('o.managerList', 'oml', 'WITH', 'oml = u');
+            } elseif($i === 1) {
+                $select->innerJoin('o.transmissionList', 'otl', 'WITH', 'otl = u');
+            }
+            
+            $select
+                ->where('u.admin = 1')
+                ->andWhere('o.id = :ombudsman')
+                ->andWhere('u.id != :user')
+                ->andWhere('u.c_removed = 0')
+                ->andWhere('u.email != :emailNull')
+                ->setParameter('emailNull', "")
+                ->setParameter('user', $userId)
+                ->setParameter('ombudsman', $ombudsmanId);
+            $list = array_merge($list, $select->getQuery()->getResult());
+        }
+
+        return $list;
+    }
+
+    public function updateTransmissionList($ombudsmanId, $user, $type) {
+        if(!$this->entity->getId()) {
+            $this->entity = $this->getRepository()->find($ombudsmanId);
+        }
+
+        if($user instanceOf \HospitalApi\Entity\User) {
+            $user = $this->em->getRepository('HospitalApi\Entity\User')->find($user->getId());
+        } else {
+            $user = $this->em->getRepository('HospitalApi\Entity\User')->find($user->id);
+        }
+
+        if($type == 'add') {
+            if(!$this->userInList($this->entity->getManagerList(), $user) ) {
+                $this->entity->addManagerOnList($user);
+                $this->doUpdate($this->entity);
+            }
+        } else if($type == 'remove') {
+            if($this->userInList($this->entity->getManagerList(), $user) ) {
+                $this->entity->removeManagerOnList($user);
+                $this->doUpdate($this->entity);
+            }
+        }
+
+
+        return true;
     }
 }

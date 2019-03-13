@@ -182,4 +182,21 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 		return isset($this->_ORDERS);
 	}
 
+	public function userInList($list, $user, $id = null) {
+        $entity = null;
+        if($this->entity->getId()) {
+            $entity = $this->entity;
+        } else if($id) {
+            $entity = $this->getRepository()->find($id);
+        }
+
+        if($entity) {
+            $res = $list->exists( function($key, $entry) use ($user) {
+                return ($entry->getId() == $user->getId());
+            });
+        } else {
+            $res = false;
+        }
+        return $res;
+    }
 }

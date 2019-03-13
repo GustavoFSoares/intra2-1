@@ -4,6 +4,7 @@ namespace HospitalApi\Controller;
 use HospitalApi\Model\OmbudsmanModel;
 use HospitalApi\Model\OmbudsmanMessagesModel;
 use HospitalApi\Template\Document\DocumentFactory;
+use HospitalApi\Template\OmbudsmanNoticicationEmailTemplate;
 
 /**
  * <b>OmbudsmanController</b>
@@ -83,16 +84,16 @@ class OmbudsmanController extends ControllerAbstractLongEntity
             
             \Helper\LoggerHelper::initLogFile('ombudsman-messages', "#".$ombudsman->getId(), 'ombudsman');
 
-        //     $transmissionList = $model->getTransmissionList($incident->getId(), $user->getId());
+            $transmissionList = $model->getTransmissionList($ombudsman->getId(), $user->getId());
             
-        //     $model->updateTransmissionList($incident->getId(), $user, 'add');
-        //     NotificationsIncidentReportingModel::deleteNotification($incident, $user);
-        //     foreach ($transmissionList as $userReceiver) {
-        //         NotificationsIncidentReportingModel::plusOne($incident, $userReceiver);
+            $model->updateTransmissionList($ombudsman->getId(), $user, 'add');
+            // OmbudsmanMessageModel::checkLikeReadNotification($ombudsman, $user);
+            foreach ($transmissionList as $userReceiver) {
+                // NotificationsIncidentReportingModel::plusOne($incident, $userReceiver);
 
-        //         $emailTemplate = new IncidentReportingNoticicationEmailTemplate($incident, $user, $userReceiver);
-        //         EmailController::sendEmailAction($emailTemplate);
-        //     }
+                $emailTemplate = new OmbudsmanNoticicationEmailTemplate($ombudsman, $user, $userReceiver);
+                EmailController::sendEmailAction($emailTemplate);
+            }
             $this->makeLog($messageEntity, $user);
 
         } catch(Exception $e) {
