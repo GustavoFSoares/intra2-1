@@ -175,7 +175,7 @@ export default {
         background-image: none;
         border-color: var(--font-color);
 
-        &.active, &:hover {
+        &.active, &:hover:not([disabled='disabled']) {
             color: #fff;
             background-color: var(--font-color);
             border-color: var(--font-color);

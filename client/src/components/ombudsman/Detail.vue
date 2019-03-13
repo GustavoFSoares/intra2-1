@@ -34,7 +34,7 @@
 
                         <row>
                             <div class='row'>
-                                <rows label='<b>Nome do Relatante</b>'>
+                                <rows label='<b>Nome do Relator</b>'>
                                     <span class="card-text"> {{ ombudsman.ombudsmanUser.declarantName }} </span>
                                 </rows>
                                 
@@ -227,7 +227,7 @@
                         Finalizar Mensagens
                     </button>
                     <button v-else-if="ombudsman.status == 'closed' && ombudsman.exist()" class="btn btn-outline-clean btn-lg" type="button" @click="finishOmbudsman()" :disabled="sending">
-                        Finalizar Ouvidoria
+                        Arquivar Ouvidoria
                     </button>
                 </div>
                 <div class="buttons">
