@@ -161,7 +161,7 @@ export default {
         },
         gotPermission() {
             if(this.permission == 'undefined') {
-                model.gotPermission().then(permission => { this.permission = permission; console.log(permission)} )
+                model.gotPermission().then(permission => { this.permission = permission; } )
             } else {
                 return (this.permission != 'USER' && this.permission) ? true : false
             }

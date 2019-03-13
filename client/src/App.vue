@@ -165,6 +165,23 @@ export default {
         color: #ffffff;
     }
 
+    .btn-outline-light {
+        color: black;
+    }
+
+    .btn-outline-clean {
+        color: var(--font-color);
+        background-color: transparent;
+        background-image: none;
+        border-color: var(--font-color);
+
+        &.active, &:hover {
+            color: #fff;
+            background-color: var(--font-color);
+            border-color: var(--font-color);
+        }
+    }
+
     div {
         /* outline: 1px dotted gray; */
     }

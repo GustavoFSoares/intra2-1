@@ -217,7 +217,7 @@
         </section>
 
         <section id="closing-area">
-            <closing v-model="ombudsman.responseToUser" :ombudsmanClosingName="ombudsman.ombudsmanToResponse.name" :gotAdminPermission="gotAdminPermission"/>
+            <closing v-model="ombudsman.responseToUser" :status="ombudsman.status" :ombudsmanClosingName="ombudsman.ombudsmanToResponse.name" :gotAdminPermission="gotAdminPermission"/>
         </section>
         
         <div id="buttons">
@@ -226,8 +226,8 @@
                     <button v-if="(ombudsman.status == 'waiting-manager' || ombudsman.status == 'registered')  && ombudsman.exist()" class="btn btn-outline-warning btn-lg" type="button" @click="closeChat()" :disabled="sending">
                         Finalizar Mensagens
                     </button>
-                    <button v-if="ombudsman.status == 'closed' && ombudsman.exist()" class="btn btn-outline-danger btn-lg" type="button" @click="finishOmbudsman()" :disabled="sending">
-                        Registrar Relato
+                    <button v-else-if="ombudsman.status == 'closed' && ombudsman.exist()" class="btn btn-outline-clean btn-lg" type="button" @click="finishOmbudsman()" :disabled="sending">
+                        Finalizar Ouvidoria
                     </button>
                 </div>
                 <div class="buttons">
@@ -270,6 +270,15 @@ export default {
                 this.sending = false
             })
         },
+        finishOmbudsman() {
+            this.sending = true
+            model.finishOmbudsman( this.ombudsman ).then(res => {
+                this.sending = false
+                this.$router.push({ name: 'ouvidoria'})
+            }).catch(err => {
+                this.sending = false
+            })
+        },
         addUser(user, type) {
             switch (type) {
                 case 'manager':
@@ -306,15 +315,6 @@ export default {
                 return this.permission
             }
         },
-        finishOmbudsman() {
-            this.sending = true
-            model.finishOmbudsman( this.ombudsman ).then(res => {
-                this.sending = false
-                this.$router.push({ name: 'ouvidoria'})
-            }).catch(err => {
-                this.sending = false
-            })
-        }
     },
     computed: {
         gotAdminPermission() {
