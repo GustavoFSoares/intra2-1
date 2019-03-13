@@ -280,7 +280,8 @@ class OmbudsmanModel extends SoftdeleteModel
             $this->entity = $this->getRepository()->find($values['id']);
             $this->entity
                 ->setClosed(true)
-                ->setStatus('closed');
+                ->setStatus('closed')
+                ->setResponseToUser($values['responseToUser']);
             $this->doUpdate($this->entity);
 
             return [
