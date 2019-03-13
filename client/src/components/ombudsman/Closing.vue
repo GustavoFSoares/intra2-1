@@ -3,7 +3,7 @@
         <row label='Fechamento do Ouvidor' v-if="(status == 'waiting-manager' || status == 'registered') && gotAdminPermission">
             <textarea v-model="text" ref="textarea" class="form-control" cols="30" rows="4" @input="uploadValue()"/>
         </row>
-        <row v-else>
+        <row v-else-if="value">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-subtitle mb-2 text-muted">Relato do Ouvidor:</h6>

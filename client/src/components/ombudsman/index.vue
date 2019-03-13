@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <div class="ombudsman-funcions row">
+        <div class="ombudsman-funcions row mt-3">
             
             <rows class="filters">
                 <div class="buttons">
@@ -59,7 +59,7 @@
             <input type="search" class="filter form-control" :disabled="!ombudsmans" @input="filter.text = $event.target.value" placeholder="Pesquisa:"/>
         </div>
 
-        <table class="table">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -167,7 +167,7 @@ export default {
                     tableColor = 'table-success'
                     break;
             
-                case 'baixa':
+                case 'BAIXA':
                     tableColor = 'table-info'
                     break;
 
