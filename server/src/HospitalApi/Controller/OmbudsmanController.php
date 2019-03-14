@@ -3,6 +3,7 @@ namespace HospitalApi\Controller;
 
 use HospitalApi\Model\OmbudsmanModel;
 use HospitalApi\Model\OmbudsmanMessagesModel;
+use HospitalApi\Model\OmbudsmanMessagesNotificationModel;
 use HospitalApi\Template\Document\DocumentFactory;
 use HospitalApi\Template\OmbudsmanNoticicationEmailTemplate;
 
@@ -87,9 +88,10 @@ class OmbudsmanController extends ControllerAbstractLongEntity
             $transmissionList = $model->getTransmissionList($ombudsman->getId(), $user->getId());
             
             $model->updateTransmissionList($ombudsman->getId(), $user, 'add');
-            // OmbudsmanMessageModel::checkLikeReadNotification($ombudsman, $user);
+            OmbudsmanMessagesNotificationModel::checkLikeReadNotificationForUser($ombudsman, $user);
+
             foreach ($transmissionList as $userReceiver) {
-                // NotificationsIncidentReportingModel::plusOne($incident, $userReceiver);
+                OmbudsmanMessagesNotificationModel::plusOne($ombudsman, $userReceiver);
 
                 $emailTemplate = new OmbudsmanNoticicationEmailTemplate($ombudsman, $user, $userReceiver);
                 EmailController::sendEmailAction($emailTemplate);
