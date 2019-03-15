@@ -61,8 +61,13 @@ class OmbudsmanModel extends SoftdeleteModel
 
      public function findBy($filter) {
         $select = $this->em->createQueryBuilder();
-        $select->select('o')
-            ->from($this->getEntityPath(), 'o');
+        $select->select([
+                'o as row',
+                'omn.count',
+            ])
+            ->from($this->getEntityPath(), 'o')
+            ->leftJoin('HospitalApi\Entity\OmbudsmanMessagesNotification', 'omn', 'WITH', 'omn.ombudsman = o AND omn.user = :user')
+            ->setParameter('user', $this->getSession() );
 
         $select = $this->showForJustWhoCanSee($select);
         

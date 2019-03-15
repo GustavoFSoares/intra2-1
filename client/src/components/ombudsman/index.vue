@@ -32,7 +32,7 @@
 
                     <hr>
                     <div class="state-buttons row mb-3">
-                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='REGISTERED' }" @click="filter.status = 'REGISTERED'">
+                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='REGISTERED' }" @click="filter.status = 'REGISTERED'" v-if="gotPermission">
                             Registrado <icon icon="file-archive"/>
                         </button>
                         <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='WAITING-MANAGER' }" @click="filter.status = 'WAITING-MANAGER'">
@@ -74,40 +74,40 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(ombudsman, index) of searchList" :key="index" v-bind:class="getClassTable(ombudsman.relevance, ombudsman.status)">
-                    <th scope="row">{{ ombudsman.id }}</th>
-                    <td>{{ ombudsman.type }}</td>
-                    <td v-if="ombudsman.origin.id == 'AMB'">
-                        {{ ombudsman.group.name }}
+                <tr v-for="(ombudsman, index) of searchList" :key="index" v-bind:class="getClassTable(ombudsman.row.relevance, ombudsman.row.status)">
+                    <th scope="row">{{ ombudsman.row.id }}</th>
+                    <td>{{ ombudsman.row.type }}</td>
+                    <td v-if="ombudsman.row.origin.id == 'AMB'">
+                        {{ ombudsman.row.group.name }}
                     </td>
-                    <td v-else-if="ombudsman.origin.id == 'INT'">
-                        Leito {{ ombudsman.bed }}
+                    <td v-else-if="ombudsman.row.origin.id == 'INT'">
+                        Leito {{ ombudsman.row.bed }}
                     </td>
-                    <td>{{ ombudsman.ombudsman.name.substr(0, 15) }}...</td>
+                    <td>{{ ombudsman.row.ombudsman.name.substr(0, 15) }}...</td>
                     <td>
-                        <div v-for="demand in ombudsman.demands" :key="demand.id">
+                        <div v-for="demand in ombudsman.row.demands" :key="demand.id">
                             <div class="demands"><icon icon="angle-double-right"/><i>{{ demand.name }}</i></div>
                         </div>
                     </td>
-                    <td>{{ ombudsman.reportedBy }}</td>                    
-                    <td>{{ ombudsman.relevance.toUpperCase() }}</td>                    
-                    <td>{{ ombudsman.registerTime.date | humanizeDate }}</td>
+                    <td>{{ ombudsman.row.reportedBy }}</td>                    
+                    <td>{{ ombudsman.row.relevance }}</td>                    
+                    <td>{{ ombudsman.row.registerTime.date | humanizeDate }}</td>
                     <td>
-                        <router-link :to='`ouvidoria/detalhe/${ombudsman.id}`'>
+                        <router-link :to='`ouvidoria/detalhe/${ombudsman.row.id}`'>
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
                         </router-link>
-                        <router-link :to='`ouvidoria/edit/${ombudsman.id}`' v-if="ombudsman.status=='registered' && gotPermission">
+                        <router-link :to='`ouvidoria/edit/${ombudsman.row.id}`' v-if="ombudsman.row.status=='registered' && gotPermission">
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
-                        <router-link @click.native="remove(ombudsman.id, index)" to=""  v-if="ombudsman.status=='registered' && gotPermission">
+                        <router-link @click.native="remove(ombudsman.row.id, index)" to=""  v-if="ombudsman.row.status=='registered' && gotPermission">
                             <icon v-tooltip.top="'Excluir'" class="text-danger" icon="trash-alt"/>
                         </router-link>
                     </td>
+                    <td> <span v-if="ombudsman.count" class="badge badge-danger"> {{ ombudsman.count }} </span> </td>
                 </tr>
                 <tr v-if="searchList.length == 0 && loaded">
                     <td class="bold text-disabled" colspan="50"> Nenhum registro encontrado </td>
                 </tr>
-
                 
             </tbody>
         </table>
@@ -119,11 +119,13 @@ import { FormRw, FormRws, VueSelect } from "@/components/shared/Form";
 import Alert from '@/components/shared/Alert'
 import model, { getter } from "@/model/ombudsman-model";
 import moment from 'moment'
+import Socket from "@/model/chat-model";
 
 export default {
     data() {
         return {
             title: "Ouvidorias",
+            socket: null,
             filter: {
                 text: '',
                 status: 'WAITING-MANAGER',
@@ -138,7 +140,7 @@ export default {
             permission: 'undefined',
         }
     },
-    methods: { 
+    methods: {
         remove(id, index){
             Alert.Confirm(this.alert.remove.message).then(res => {
                 if(res){
@@ -189,8 +191,31 @@ export default {
             }
         },
     },
+    created() {
+        this.socket = new Socket(`om`, this.user)
+    },
     mounted() {
-        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true })
+        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; })
+        // this.socket.listenMessages('om').then(res => {
+        //     this.ombudsmans.find(omb => {
+        //         if(omb.row.id == res.id) {
+        //             omb.count++
+        //             return omb   
+        //         }
+        //     })
+        // })
+        this.socket.io.on(`om`, (message) => {
+            message.id = message.id.substr(2)
+            
+            if( !this.socket.isYou(message.user) ) {
+                this.ombudsmans.find(omb => {
+                    if(omb.row.id == message.id) {
+                        omb.count++
+                        return omb   
+                    }
+                })
+            }
+        });
     },
     computed: {
         searchList() {
@@ -199,6 +224,7 @@ export default {
                 
                 let list = ''
                 return this.secondFiler.filter(ombudsman => {
+                    ombudsman = ombudsman.row
                     if( exp.test(ombudsman.id)) {
                         return exp
                     } else if( exp.test(ombudsman.ombudsman.name)) {
@@ -229,14 +255,14 @@ export default {
             let ombudsmans = this.ombudsmans
             if(this.filter.relevance) {
                 ombudsmans = ombudsmans.filter(omb => {
-                    if(omb.relevance.toUpperCase() == this.filter.relevance) {
+                    if(omb.row.relevance.toUpperCase() == this.filter.relevance) {
                         return omb
                     }
                 })
             }
             if(this.filter.status) {
                 ombudsmans = ombudsmans.filter(omb => {
-                    if(omb.status.toUpperCase() == this.filter.status) {
+                    if(omb.row.status.toUpperCase() == this.filter.status) {
                         return omb
                     }
                 })
