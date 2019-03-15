@@ -2,7 +2,7 @@
     <div class="form">
 
         <div class="form-group form-row col">
-            <input type="search" class="filter form-control" @input="filter = $event.target.value" placeholder="Nome:"/>
+            <input type="search" class="filter form-control" @input="filter = $event.target.value" placeholder="Filtro:"/>
         </div>
 
         <ul class="form-group lista-links">
@@ -25,7 +25,8 @@
 
 <script>
 import Panel from '@/components/shared/Panel.vue'
-import { getLinks } from '@/services/links'
+import { getter } from '@/model/link-model'
+
 export default {
 
     data() {
@@ -40,7 +41,7 @@ export default {
     },
     updated() { },
     beforeCreate() {        
-        getLinks().then(res => this.links = res );
+        getter.getLinks().then(res => this.links = res );
     },
     computed: {
         searchList() {

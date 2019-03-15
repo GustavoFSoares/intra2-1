@@ -16,6 +16,7 @@ import eletronicDocumentsRoutes, { eletronicDocumentsStatusRoutes, eletronicDocu
 import homeUserRoutes from './home-user-routes'
 import incidentReportingRoutes from './incident-reporting-routes'
 import loginRoutes from './login-routes'
+import linkRoutes from './link-routes'
 import modulesRoutes from './modules-routes'
 import ombudsmanRoutes, { ombudsmanDemandsRoutes, ombudsmanOriginsRoutes } from './ombudsman-routes/'
 import popsRoutes from './pops-routes'
@@ -63,6 +64,7 @@ Routes.addRoutes(eletronicDocumentsTypesRoutes)
 Routes.addRoutes(homeUserRoutes)
 Routes.addRoutes(incidentReportingRoutes)
 Routes.addRoutes(loginRoutes)
+Routes.addRoutes(linkRoutes)
 Routes.addRoutes(modulesRoutes)
 Routes.addRoutes(ombudsmanRoutes)
 Routes.addRoutes(ombudsmanDemandsRoutes)
