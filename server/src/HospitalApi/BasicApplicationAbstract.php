@@ -59,4 +59,14 @@ class BasicApplicationAbstract
         return $yaml;
     }
 
+    public function isProduction() {
+        $env = file_get_contents( getFileConfig()."/.env" );
+
+        if($env == 'prod' || $env == 'homo') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

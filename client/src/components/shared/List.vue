@@ -9,15 +9,14 @@
             <li class="lista-links-item" v-for="(link, index) in searchList" :key="index">
                 <a :href="link.url" v-if="link.externalLink">
                     <panel :titulo="link.title">
-                        <img class="img-thumbnail" :src="link.icon" :alt="link.title"/>
+                        <img class="img-thumbnail" :src="`${path}/${link.icon}`" :alt="link.title"/>
                     </panel>
                 </a>
                 <router-link :to="link.url" v-else>
                     <panel :titulo="link.title">
-                        <img class="img-thumbnail" :src="link.icon" :alt="link.title"/>
+                        <img class="img-thumbnail" :src="`${path}/${link.icon}`" :alt="link.title"/>
                     </panel>
                 </router-link>
-
             </li>
         </ul>
     </div>
@@ -34,6 +33,7 @@ export default {
             contacts: [ ],
             links: [ ],
             filter: '',
+            path: './static/img/links/',
         }
     },
     components: {
@@ -41,7 +41,7 @@ export default {
     },
     updated() { },
     beforeCreate() {        
-        getter.getLinks().then(res => this.links = res );
+        getter.getLinksActive().then(res => this.links = res );
     },
     computed: {
         searchList() {

@@ -15,7 +15,14 @@ abstract class SoftdeleteModel extends ModelAbstract
      */
     public function findBy($filters = [], $orders = []) {
         
-        $orders = $this->hadOrders() ? $this->_ORDERS : [];
+        if( $this->hadOrders() ) {
+            $orders = array_merge($this->_ORDERS, $orders);
+        }
+        
+        if( $this->hadFilters() ) {
+            $filters = array_merge($this->_FILTERS, $filters);
+        }
+
         if($this->isInverseOrder()) {
 			$orders['id'] = 'DESC';
 		}
