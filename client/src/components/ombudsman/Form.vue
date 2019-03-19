@@ -23,7 +23,7 @@
                     <section :id="sections.code.id">
                         <row :label="sections.code.label">
                             <div v-if="!id">
-                                <v-select v-model="ombudsmanId" name="Ombudsman-Id" :data-vv-as="sections.code.label" v-validate data-vv-rules="required" label="id" :options="values.ombudsmans" @input="loadOmbudsman()"/>
+                                <v-select v-model="ombudsmanId" name="Ombudsman-Id" :data-vv-as="sections.code.label" v-validate data-vv-rules="required" label="id" :options="values.ombudsmans" @input="loadOmbudsman()" :disabled="values.ombudsmans.length == 0"/>
                                 <require-text :error="errors.has('Ombudsman-Id')" :text="errors.first('Ombudsman-Id')"/>
                             </div>
                             <div v-else>
@@ -337,7 +337,14 @@ export default {
     },
     methods: {
         loadValues() {
-            getter.getOmbudsmansWaiting().then(res => { this.values.ombudsmans = res; })
+            getter.getOmbudsmansWaiting().then(res => {
+                if(res.length === 0) {
+                    this.$alert.danger('Você não tem ouvidorias cadastradas')
+                } else {
+                    this.values.ombudsmans = res;
+
+                }
+            })
             getter.getDemands().then(res => { this.values.demands = res; })
             GetterGroup.getGroups().then(res => { this.values.groups = res; })
             if(this.isEdit()) {

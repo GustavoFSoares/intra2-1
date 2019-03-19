@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="closing-ombudsman">
         <row label='Fechamento do Ouvidor' v-if="(status == 'waiting-manager' || status == 'registered') && gotAdminPermission">
             <textarea v-model="text" ref="textarea" class="form-control" cols="30" rows="4" @input="uploadValue()"/>
         </row>
@@ -42,7 +42,9 @@ export default {
     },
     methods: {
         uploadValue() {
-            this.$emit('input', this.text)
+            if(this.text) {
+                this.$emit('input', this.text)
+            }
         },
     },
     components: {
@@ -51,3 +53,10 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .closing-ombudsman {
+        position: relative;
+    }
+</style>
+

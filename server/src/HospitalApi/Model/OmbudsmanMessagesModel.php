@@ -71,7 +71,7 @@ class OmbudsmanMessagesModel extends ModelAbstract
             ->setParameter('ombudsmanId', $idOmbudsman);
         $query->getQuery()->execute();
 
-        $messagesNotificationModel = new messagesNotificationModel();
+        $messagesNotificationModel = new OmbudsmanMessagesNotificationModel();
         $messagesNotificationModel->deleteNotifications($idOmbudsman);
     }
 

@@ -4,7 +4,7 @@
         <h3 class="text-danger text-right" v-if="permission == 'COMPANION'">Você está acompanhando!</h3>
         <div class='row'>
             <rows class="col-md-9">
-                <h2> {{ombudsman.status}}
+                <h2>
                     #{{ombudsman.id}} - {{ ombudsman.type }} (<i>{{ ombudsman.origin.name }}</i>)
                     <span class="closed" v-if="ombudsman.answered">(Finalizado)</span>
                 </h2>    
@@ -217,17 +217,18 @@
         </section>
 
         <section id="closing-area">
-            <closing v-model="ombudsman.responseToUser" :status="ombudsman.status" :ombudsmanClosingName="ombudsman.ombudsmanToResponse.name" :gotAdminPermission="gotAdminPermission"/>
+            <closing v-model="ombudsman.responseToUser" name="Ombudsman-closing" v-validate data-vv-rules="required" data-vv-as="Fechamento do Ouvidor" :status="ombudsman.status" :ombudsmanClosingName="ombudsman.ombudsmanToResponse.name" :gotAdminPermission="gotAdminPermission"/>
+            <require-text class="validate-text" :attribute="ombudsman.responseToUser" :error="errors.has('Ombudsman-closing')" :text="errors.first('Ombudsman-closing')" :show="false"/>
         </section>
         
         <div id="buttons">
             <row>
                 <div class="buttons" v-if="gotAdminPermission">
                     <button v-if="(ombudsman.status == 'waiting-manager' || ombudsman.status == 'registered')  && ombudsman.exist()" class="btn btn-outline-warning btn-lg" type="button" @click="closeChat()" :disabled="sending">
-                        Finalizar Mensagens
+                        Finalizar Mensagens <icon icon="spinner" spin v-if="sending"/>
                     </button>
                     <button v-else-if="ombudsman.status == 'closed' && ombudsman.exist()" class="btn btn-outline-clean btn-lg" type="button" @click="finishOmbudsman()" :disabled="sending">
-                        Arquivar Ouvidoria
+                        Arquivar Ouvidoria <icon icon="spinner" spin v-if="sending"/>
                     </button>
                 </div>
                 <div class="buttons">
@@ -262,12 +263,18 @@ export default {
     }, 
     methods: {
         closeChat() {
-            this.sending = true
-            model.closeChat(this.ombudsman).then(res => {
-                this.sending = false
-                this.ombudsman = Object.assign( this.ombudsman, res )
-            }).catch(err => {
-                this.sending = false
+            this.$validator.validateAll().then(success => {
+                
+                if( success ) {
+                    this.sending = true
+                    model.closeChat(this.ombudsman).then(res => {
+                        this.sending = false
+                        this.ombudsman = Object.assign( this.ombudsman, res )
+                    }).catch(err => {
+                        this.sending = false
+                    })
+                }
+
             })
         },
         finishOmbudsman() {
@@ -353,4 +360,8 @@ export default {
         display: inline;
     }
 
+    #closing-area .validate-text {
+        position: absolute;
+        margin-top: -40px;
+    }
 </style>
