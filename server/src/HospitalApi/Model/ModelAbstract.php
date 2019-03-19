@@ -181,5 +181,9 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	public function hadOrders() {
 		return isset($this->_ORDERS);
 	}
+	
+	public function hadFilters() {
+		return isset($this->_FILTERS);
+	}
 
 }

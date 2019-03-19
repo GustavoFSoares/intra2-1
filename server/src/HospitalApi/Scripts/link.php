@@ -9,117 +9,117 @@ $model = new LinkModel();
         [
             "url" => "https://www.adpweb.com.br/rhweb/" ,
             "title" => "ADP Web" ,
-            "icon" => "/static/img/links/adp.jpg" ,
+            "icon" => "adp.jpg" ,
             "externalLink" => true
         ], [
             "url" => "https://sistemas.canoas.rs.gov.br/rdweb/Pages/en-US/login.aspx" ,
             "title" => "AGHOS" ,
-            "icon" => "/static/img/links/aghos.jpg" ,
+            "icon" => "aghos.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "http://gamp-web/glpi/" ,
             "title" => "Chamados TI" ,
-            "icon" => "/static/img/links/glpi.png" ,
+            "icon" => "glpi.png" ,
             "externalLink" =>  true
         ], [
             "url" => "http://www.datasus.gov.br/cid10/V2008/cid10.htm" ,
             "title" => "CID-10" ,
-            "icon" => "/static/img/links/cid.jpg" ,
+            "icon" => "cid.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "http://www.portalctn.com.br/novo/" ,
             "title" => "CTN" ,
-            "icon" => "/static/img/links/ctn.png" ,
+            "icon" => "ctn.png" ,
             "externalLink" =>  true
         ], [
             "url" => "https://cadastro.saude.gov.br/cadsusweb/login.jsp" ,
             "title" => "DATASUS" ,
-            "icon" => "/static/img/links/datasus.jpg" ,
+            "icon" => "datasus.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "https://dynamed.com",
             "title" => "DynaMed Plus",
-            "icon" => "/static/img/links/dynamed.jpg",
+            "icon" => "dynamed.jpg",
             "externalLink" => true
         ], [
             "url" => "https://portal.office.com/" ,
             "title" => "E-mail GAMP" ,
-            "icon" => "/static/img/links/outlook.png" ,
+            "icon" => "outlook.png" ,
             "externalLink" =>  true
         ], [
             "url" => "/notificacao-de-incidentes/" ,
             "title" => "Notificação de Incidente" ,
-            "icon" => "/static/img/links/qsp.jpg" ,
+            "icon" => "qsp.jpg" ,
             "externalLink" =>  false
         ], [
             "url" => "http://170.246.1.102/fast" ,
             "title" => "FAST" ,
-            "icon" => "/static/img/links/fast.jpg" ,
+            "icon" => "fast.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "https://gerint-hom.procempa.com.br" ,
             "title" => "Gerint" ,
-            "icon" => "/static/img/links/gerint.jpg" ,
+            "icon" => "gerint.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "https://www3.ghc.com.br/paciente/defaulthu.aspx" ,
             "title" => "GHC" ,
-            "icon" => "/static/img/links/ghc.jpg" ,
+            "icon" => "ghc.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "https://www.e-nfs.com.br/e-nfs_canoas/index.jsp" ,
             "title" => "NFE Canoas" ,
-            "icon" => "/static/img/links/nfe.gif" ,
+            "icon" => "nfe.gif" ,
             "externalLink" =>  true
         ], [
             "url" => "http://rlfisioterapia.com.br/" ,
             "title" => "RL FISIO" ,
-            "icon" => "/static/img/links/rlfisio.png" ,
+            "icon" => "rlfisio.png" ,
             "externalLink" =>  true
         ], [
             "url" => "http://sfar.org/" ,
             "title" => "SFAR" ,
-            "icon" => "/static/img/links/sfar.jpg" ,
+            "icon" => "sfar.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "http://sistemas.canoas.rs.gov.br/sigss/login" ,
             "title" => "SIGSS" ,
-            "icon" => "/static/img/links/sigss.jpg" ,
+            "icon" => "sigss.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "http://sigtap.datasus.gov.br/tabela-unificada/app/sec/inicio.jsp" ,
             "title" => "SIGTAP DATASUS" ,
-            "icon" => "/static/img/links/sigtap.jpg" ,
+            "icon" => "sigtap.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "https://sso.online.tableau.com",
             "title" => "Tableau Online",
-            "icon" => "/static/img/links/tableau.jpg",
+            "icon" => "tableau.jpg",
             "externalLink" => true
         ], [
             "url" => "https://examesonline.unimedpoa.com.br",
             "title" => "Unimed - Exames",
-            "icon" => "/static/img/links/unimed.jpg",
+            "icon" => "unimed.jpg",
             "externalLink" => true
         ], [
             "url" => "https://secweb.procergs.com.br/vgs/soe/PRSoeLogon.jsp" ,
             "title" => "VGS" ,
-            "icon" => "/static/img/links/vgs.jpg" ,
+            "icon" => "vgs.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => "http://optixserver1/pacs/DS/studies.html" ,
             "title" => "Optix - HU" ,
-            "icon" => "/static/img/links/optix.jpg" ,
+            "icon" => "optix.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => " http://optixserver2/pacs/DS/studies.html" ,
             "title" => "Optix - HPSC" ,
-            "icon" => "/static/img/links/optix.jpg" ,
+            "icon" => "optix.jpg" ,
             "externalLink" =>  true
         ], [
             "url" => " /usuario/documentos-eletronicos" ,
             "title" => "Documentos Eletrônicos" ,
-            "icon" => "/static/img/links/eletronic-documents.jpg" ,
+            "icon" => "eletronic-documents.jpg" ,
             "externalLink" =>  false
         ],
     ];

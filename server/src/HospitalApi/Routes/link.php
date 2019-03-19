@@ -19,6 +19,15 @@ $app->group('/link', function()
      * @param Optional $id
      * @return Json Rotas 
      */
+    $this->get('/all/[{id}]', "HospitalApi\Controller\LinkController:findAllAction", function(Request $req, Response $res, array $args) { });
     $this->get('/[{id}]', "HospitalApi\Controller\LinkController:get", function(Request $req, Response $res, array $args) { });
+    
+    $this->post('/', "HospitalApi\Controller\LinkController:insert", function(Request $req, Response $res, array $args) { });
+    $this->post('/save-image[/{params:.*}]', "HospitalApi\Controller\LinkController:uploadFileAction", function(Request $req, Response $res, array $args) { });
+    
+    $this->put('/{id}', "HospitalApi\Controller\LinkController:update", function(Request $req, Response $res, array $args) { });
+    $this->put('/change-status/{id}', "HospitalApi\Controller\LinkController:changeStatusAction", function (Request $req, Response $res, array $args) { });
+
+    $this->delete('/{id}', "HospitalApi\Controller\LinkController:delete", function(Request $req, Response $res, array $args) { });
     
 });
