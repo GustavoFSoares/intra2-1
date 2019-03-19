@@ -134,7 +134,7 @@ abstract class ControllerAbstract extends BasicApplicationAbstract
 				$fileName = $name;
 			} else {
 				$extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
-				$fileName = $name.$extension;			
+				$fileName = "$name.$extension";			
 			}
 			$fileArray = explode('.', $fileName);
 			$name = \Helper\SlugHelper::get( $fileArray[0] );

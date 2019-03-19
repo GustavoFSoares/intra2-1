@@ -39,6 +39,11 @@ class Link extends SoftdeleteAbstract
      */
     protected $externalLink;
 
+    /**
+     * @var Boolean @Column(name="ativo", type="boolean", nullable=true, options={"default":true})
+     */
+    protected $active;
+
     public function __construct($url = '', $title = '', $icon = '', $externalLink = false) {
         parent::__construct();
         $this->id = 0;
@@ -46,6 +51,7 @@ class Link extends SoftdeleteAbstract
         $this->title = $title;
         $this->icon = $icon;
         $this->externalLink = $externalLink;
+        $this->active = true;
     }
 
     public function getId() {
@@ -84,12 +90,27 @@ class Link extends SoftdeleteAbstract
         return $this;
     }
 
-    public function isExternalLink() {
+    public function getExternalLink() {
         return $this->externalLink;
+    }
+    public function isExternalLink() {
+        return $this->getExternalLink();
     }
     public function setExternalLink($externalLink) {
         $this->externalLink = $externalLink;
         
+        return $this;
+    }
+
+    public function getActive() {
+        return $this->active;
+    }
+    public function isActive() {
+        return $this->getActive();
+    }
+    public function setActive($active) {
+        $this->active = $active ? true : false;
+
         return $this;
     }
 

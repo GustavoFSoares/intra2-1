@@ -2,22 +2,21 @@
     <div class="form">
 
         <div class="form-group form-row col">
-            <input type="search" class="filter form-control" @input="filter = $event.target.value" placeholder="Nome:"/>
+            <input type="search" class="filter form-control" @input="filter = $event.target.value" placeholder="Filtro:"/>
         </div>
 
         <ul class="form-group lista-links">
             <li class="lista-links-item" v-for="(link, index) in searchList" :key="index">
                 <a :href="link.url" v-if="link.externalLink">
                     <panel :titulo="link.title">
-                        <img class="img-thumbnail" :src="link.icon" :alt="link.title"/>
+                        <img class="img-thumbnail" :src="`${path}/${link.icon}`" :alt="link.title"/>
                     </panel>
                 </a>
                 <router-link :to="link.url" v-else>
                     <panel :titulo="link.title">
-                        <img class="img-thumbnail" :src="link.icon" :alt="link.title"/>
+                        <img class="img-thumbnail" :src="`${path}/${link.icon}`" :alt="link.title"/>
                     </panel>
                 </router-link>
-
             </li>
         </ul>
     </div>
@@ -25,7 +24,8 @@
 
 <script>
 import Panel from '@/components/shared/Panel.vue'
-import { getLinks } from '@/services/links'
+import { getter } from '@/model/link-model'
+
 export default {
 
     data() {
@@ -33,6 +33,7 @@ export default {
             contacts: [ ],
             links: [ ],
             filter: '',
+            path: './static/img/links/',
         }
     },
     components: {
@@ -40,7 +41,7 @@ export default {
     },
     updated() { },
     beforeCreate() {        
-        getLinks().then(res => this.links = res );
+        getter.getLinksActive().then(res => this.links = res );
     },
     computed: {
         searchList() {

@@ -12,6 +12,7 @@ $model = new ModuleModel();
         [ 'name' => 'Rotinas',                  'routeName' => 'rotinas',                           'default' => false, 'icon' => 'hourglass-half', 'parent_route_name' => 'timanager',              ],
         [ 'name' => 'Usuários Duplicados',      'routeName' => 'usuarios-duplicados',               'default' => false, 'icon' => 'user-friends'  , 'parent_route_name' => 'timanager',              ],
         [ 'name' => 'Módulos',                  'routeName' => 'modulos',                           'default' => false, 'icon' => 'box'           , 'parent_route_name' => 'timanager',              ],
+        [ 'name' => 'Links',                    'routeName' => 'link',                              'default' => false, 'icon' => 'link'          , 'parent_route_name' => 'timanager',              ],
         [ 'name' => 'Convênios',                'routeName' => 'convenios',                         'default' => false, 'icon' => 'handshake'     , 'parent_route_name' => null,                     ],
         [ 'name' => 'Usuários',                 'routeName' => 'usuarios/gerenciador',              'default' => true,  'icon' => 'users'         , 'parent_route_name' => null,                     ],
         [ 'name' => 'Ensino e Pesquisa',        'routeName' => 'training',                          'default' => false, 'icon' => 'trophy'        , 'parent_route_name' => null,                     ],
