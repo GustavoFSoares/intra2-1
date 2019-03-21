@@ -1,12 +1,14 @@
 <template>
         <div class="container">
         
+        <div class="closed" v-if="ombudsman.closed">
+            <span>Finalizado</span>
+        </div>
         <h3 class="text-danger text-right" v-if="permission == 'COMPANION'">Você está acompanhando!</h3>
         <div class='row'>
             <rows class="col-md-9">
                 <h2>
                     #{{ombudsman.id}} - {{ ombudsman.type }} (<i>{{ ombudsman.origin.name }}</i>)
-                    <span class="closed" v-if="ombudsman.answered">(Finalizado)</span>
                 </h2>    
             </rows>
             <rows>
@@ -217,8 +219,8 @@
         </section>
 
         <section id="closing-area">
-            <closing v-model="ombudsman.responseToUser" name="Ombudsman-closing" v-validate data-vv-rules="required" data-vv-as="Fechamento do Ouvidor" :status="ombudsman.status" :ombudsmanClosingName="ombudsman.ombudsmanToResponse.name" :gotAdminPermission="gotAdminPermission"/>
-            <require-text class="validate-text" :attribute="ombudsman.responseToUser" :error="errors.has('Ombudsman-closing')" :text="errors.first('Ombudsman-closing')" :show="false"/>
+            <closing v-model="ombudsman.responseToUser" name="Ombudsman-closing" v-validate data-vv-rules="required" data-vv-as="Fechamento do Ouvidor" :status="ombudsman.status" :ombudsmanClosingName="ombudsman.ombudsmanToResponse.name" :gotAdminPermission="gotAdminPermission" @click.native="showThisGuy = true"/>
+            <require-text class="validate-text" :error="errors.has('Ombudsman-closing')" :text="errors.first('Ombudsman-closing')" v-if="showThisGuy"/>
         </section>
         
         <div id="buttons">
@@ -259,6 +261,7 @@ export default {
                 ombudsmans: [],
                 demands: [],
             },
+            showThisGuy: false,
         }
     }, 
     methods: {
@@ -266,24 +269,35 @@ export default {
             this.$validator.validateAll().then(success => {
                 
                 if( success ) {
-                    this.sending = true
-                    model.closeChat(this.ombudsman).then(res => {
-                        this.sending = false
-                        this.ombudsman = Object.assign( this.ombudsman, res )
-                    }).catch(err => {
-                        this.sending = false
-                    })
-                }
 
+                    Alert.YesNo('Você está <u>finalizando</u> esta ouvidoria', 'Tem certeza que podemos finalizar?').then(res => {
+                        if(res) {
+                            this.sending = true
+                            model.closeChat(this.ombudsman).then(res => {
+                                this.sending = false
+                                this.ombudsman = Object.assign( this.ombudsman, res )
+                            }).catch(err => {
+                                this.sending = false
+                            })
+                        }
+                    })
+                
+                }
             })
         },
         finishOmbudsman() {
-            this.sending = true
-            model.finishOmbudsman( this.ombudsman ).then(res => {
-                this.sending = false
-                this.$router.push({ name: 'ouvidoria'})
-            }).catch(err => {
-                this.sending = false
+            Alert.YesNo('Você está <u>arquivando</u> esta ouvidoria', 'Tem certeza que podemos arquivar?').then(res => {
+                if(res) {
+
+                    this.sending = true
+                    model.finishOmbudsman( this.ombudsman ).then(res => {
+                        this.sending = false
+                        this.$router.push({ name: 'ouvidoria'})
+                    }).catch(err => {
+                        this.sending = false
+                    })
+
+                }
             })
         },
         addUser(user, type) {
@@ -346,14 +360,20 @@ export default {
     },
     mounted() {
         this.getPermission()
-        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = res ? new Ombudsman(res) : new Ombudsman() })
+        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = res ? new Ombudsman(res) : new Ombudsman(); console.log(res) })
     }
 }
 </script>
 
 <style>
     .closed {
-        color: red;
+        color: var(--danger);
+        font-size: 15rem;
+        z-index: 1;
+        opacity: 0.3;
+        position: absolute;
+        transform: translate(0em, 1.5251em) rotate(-45deg);
+        pointer-events: none;
     }
 
     .buttons {

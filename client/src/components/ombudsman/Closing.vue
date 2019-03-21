@@ -23,15 +23,13 @@ import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
 export default {
     data() {
         return {
-            text: "",
+            text: null,
             ombudsman: this.$session.get('user')
         }
     },
     watch: {
         value(val) {
-            if(val) {
-                this.text = val
-            }
+            this.text = val
         }
     },
     props: {
@@ -42,9 +40,7 @@ export default {
     },
     methods: {
         uploadValue() {
-            if(this.text) {
-                this.$emit('input', this.text)
-            }
+            this.$emit('input', this.text)
         },
     },
     components: {

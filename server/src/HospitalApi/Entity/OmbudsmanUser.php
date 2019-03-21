@@ -71,7 +71,7 @@ class OmbudsmanUser extends SoftdeleteAbstract
         return $this->patientName;
     }
     public function setPatientName($patientName) {
-        $this->patientName = $patientName;
+        $this->patientName = strtoupper($patientName);
         
         return $this;
     }
@@ -80,7 +80,7 @@ class OmbudsmanUser extends SoftdeleteAbstract
         return $this->declarantName;
     }
     public function setDeclarantName($declarantName) {
-        $this->declarantName = $declarantName;
+        $this->declarantName = strtoupper($declarantName);
         
         return $this;
     }
@@ -116,7 +116,7 @@ class OmbudsmanUser extends SoftdeleteAbstract
         return $this->address;
     }
     public function setAddress($address) {
-        $this->address = $address;
+        $this->address = strtoupper($address);
         
         return $this;
     }

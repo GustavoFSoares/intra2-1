@@ -69,7 +69,7 @@
                                     </rows>
 
                                     <rows :label="subtitles.personData.reporterEmail">
-                                        <input type="text" name="Ombudsman-ombudsmanUser-reporterEmail" v-validate data-vv-rules="required|email" :data-vv-as="subtitles.personData.reporterEmail" class="form-control" v-model="ombudsman.ombudsmanUser.email">
+                                        <input type="text" name="Ombudsman-ombudsmanUser-reporterEmail" v-validate data-vv-rules="email" :data-vv-as="subtitles.personData.reporterEmail" class="form-control" v-model="ombudsman.ombudsmanUser.email">
                                         <require-text :error="errors.has('Ombudsman-ombudsmanUser-reporterEmail')" :text="errors.first('Ombudsman-ombudsmanUser-reporterEmail')"/>
                                     </rows>
                                 </div>
@@ -86,14 +86,9 @@
                                 <hr>
 
                                 <div class='row'>
-                                    <rows :label="subtitles.address.street" class="col-md-3">
-                                        <input type="text" name="Ombudsman-address-street" v-validate data-vv-rules="required" :data-vv-as="subtitles.address.street" class="form-control" v-model="address.street">
-                                        <require-text :error="errors.has('Ombudsman-address-street')" :text="errors.first('Ombudsman-address-street')"/>
-                                    </rows>
-                                    
-                                    <rows :label="subtitles.address.number" class="col-md-2">
-                                        <input type="text" name="Ombudsman-address-number" v-validate data-vv-rules="required|numeric" :data-vv-as="subtitles.address.number" class="form-control" v-model="address.number">
-                                        <require-text :error="errors.has('Ombudsman-address-number')" :text="errors.first('Ombudsman-address-number')"/>
+                                    <rows :label="subtitles.address.city" class="col-md-3">
+                                        <input type="text" name="Ombudsman-address-city" v-validate data-vv-rules="required" :data-vv-as="subtitles.address.city" class="form-control" v-model="address.city">
+                                        <require-text :error="errors.has('Ombudsman-address-city')" :text="errors.first('Ombudsman-address-city')"/>
                                     </rows>
 
                                     <rows :label="subtitles.address.neighborhood" class="col-md-3">
@@ -101,9 +96,14 @@
                                         <require-text :error="errors.has('Ombudsman-address-neighborhood')" :text="errors.first('Ombudsman-address-neighborhood')"/>
                                     </rows>
 
-                                    <rows :label="subtitles.address.city">
-                                        <input type="text" name="Ombudsman-address-city" v-validate data-vv-rules="required" :data-vv-as="subtitles.address.city" class="form-control" v-model="address.city">
-                                        <require-text :error="errors.has('Ombudsman-address-city')" :text="errors.first('Ombudsman-address-city')"/>
+
+                                    <rows :label="subtitles.address.street" class="col-md-2">
+                                        <input type="text" name="Ombudsman-address-street" class="form-control" v-model="address.street">
+                                    </rows>
+                                    
+                                    <rows :label="subtitles.address.number" class="col-md-2">
+                                        <input type="text" name="Ombudsman-address-number" v-validate data-vv-rules="numeric" :data-vv-as="subtitles.address.number" class="form-control" v-model="address.number">
+                                        <require-text :error="errors.has('Ombudsman-address-number')" :text="errors.first('Ombudsman-address-number')"/>
                                     </rows>
 
                                     <rows :label="subtitles.address.postCode">
@@ -383,7 +383,7 @@ export default {
         submit() {
             this.sending = true
             this.ombudsman.ombudsmanUser.address = this.userAddress
-            
+
             model.doUpdate(this.ombudsman).then(res => { 
                 this.sending = false
                 this.$router.push({ name: "ouvidoria" })
@@ -404,8 +404,18 @@ export default {
             return DemandModel.demandExist(this.ombudsman.demands, this.demandSelected)
         },
         userAddress() {
-            let postCode = this.address.postCode ? ` - CEP: ${this.address.postCode}`:""
-            return `${this.address.street}, Nº ${this.address.number} - ${this.address.neighborhood} - ${this.address.city} ${postCode}`
+            let address = `${this.address.city} - B. ${this.address.neighborhood}`
+            if(this.address.street) {
+                address += ` - ${this.address.street}`
+            }
+            if(this.address.number) {
+                address += `, Nº ${this.address.number}`
+            }
+            if(this.address.postCode) {
+                address += ` - CEP: ${this.address.postCode}`
+            }
+            
+            return address
         },
         filePlace() {
             let id = false
