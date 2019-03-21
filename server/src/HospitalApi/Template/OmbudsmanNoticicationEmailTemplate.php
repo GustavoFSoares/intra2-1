@@ -39,7 +39,7 @@ class OmbudsmanNoticicationEmailTemplate extends EmailTemplateAbstract
 
             <fieldset> 
                 <div style='text-align: center'>
-                    <a href=http://{$_SERVER['SERVER_NAME']}:8080/usuario/usuario/ouvidoria/detalhe/{$ombudsman->getId()}>
+                    <a href=http://{$_SERVER['SERVER_NAME']}:8080/usuario/ouvidoria/detalhe/{$ombudsman->getId()}>
                         #{$ombudsman->getId()} Ouvidoria - {$ombudsman->getType()}
                     </a><br>
                     ou acesse<br>
