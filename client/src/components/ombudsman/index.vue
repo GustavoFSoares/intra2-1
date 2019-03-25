@@ -196,14 +196,6 @@ export default {
     },
     mounted() {
         getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; })
-        // this.socket.listenMessages('om').then(res => {
-        //     this.ombudsmans.find(omb => {
-        //         if(omb.row.id == res.id) {
-        //             omb.count++
-        //             return omb   
-        //         }
-        //     })
-        // })
         this.socket.io.on(`om`, (message) => {
             message.id = message.id.substr(2)
             
