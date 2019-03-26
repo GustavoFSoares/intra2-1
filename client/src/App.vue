@@ -22,6 +22,7 @@
 
         <router-view @rootEvent="userUpdating++"/>
         <footer-app/>
+        
     </div>
 </template>
 
