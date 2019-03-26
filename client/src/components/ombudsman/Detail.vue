@@ -360,7 +360,7 @@ export default {
     },
     mounted() {
         this.getPermission()
-        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = res ? new Ombudsman(res) : new Ombudsman(); console.log(res) })
+        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = res ? new Ombudsman(res) : new Ombudsman(); })
     }
 }
 </script>
