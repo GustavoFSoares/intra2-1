@@ -144,8 +144,11 @@ export default {
     }
 
     .disabled {
-        pointer-events: none;
-        cursor: none;
+        .btn, button {
+            pointer-events: none;
+            cursor: none;
+            opacity: 0.4;
+        }
     }
     
     .text-disabled {

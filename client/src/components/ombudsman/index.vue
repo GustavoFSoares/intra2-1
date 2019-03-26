@@ -13,7 +13,7 @@
         <div class="ombudsman-funcions row mt-3">
             
             <rows class="filters">
-                <div class="buttons">
+                <div class="buttons" v-bind:class="{ 'disabled': loaded==false}">
 
                     <div class="status-buttons row">
                         <button class="status-button button btn btn-outline-danger btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='URGENTE' }" @click="filteringRelevance('URGENTE')">
@@ -74,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(ombudsman, index) of searchList" :key="index" v-bind:class="getClassTable(ombudsman.row.relevance, ombudsman.row.status)">
+                <tr v-for="(ombudsman, index) of searchList" :key="index" v-bind:class="getClassTable(ombudsman.row)">
                     <th scope="row">{{ ombudsman.row.id }}</th>
                     <td>{{ ombudsman.row.type }}</td>
                     <td v-if="ombudsman.row.origin.id == 'AMB'">
@@ -154,7 +154,15 @@ export default {
         openPrinter() {
             this.$refs.printer.openModal();
         },
-        getClassTable(relevance, status) {
+        getClassTable(ombudsman) {
+            let relevance = ''
+            let status = ''
+
+            if( ombudsman.id ) {
+                relevance = ombudsman.relevance
+                status = ombudsman.status
+            } 
+
             let tableColor = ''
             switch (relevance.toUpperCase()) {
                 case 'URGENTE':
@@ -195,15 +203,7 @@ export default {
         this.socket = new Socket(`om`, this.user)
     },
     mounted() {
-        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; })
-        // this.socket.listenMessages('om').then(res => {
-        //     this.ombudsmans.find(omb => {
-        //         if(omb.row.id == res.id) {
-        //             omb.count++
-        //             return omb   
-        //         }
-        //     })
-        // })
+        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; })        
         this.socket.io.on(`om`, (message) => {
             message.id = message.id.substr(2)
             
