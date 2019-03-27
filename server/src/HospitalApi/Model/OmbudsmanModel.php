@@ -35,13 +35,7 @@ class OmbudsmanModel extends SoftdeleteModel
                     $ombudsmanUser = new \HospitalApi\Entity\OmbudsmanUser();
                 }
             }
-            $ombudsmanUser
-                ->setPatientName($values->ombudsmanUser['patientName'])
-                ->setBirthday($values->ombudsmanUser['birthday'])
-                ->setEmail($values->ombudsmanUser['email'])
-                ->setDeclarantName($values->ombudsmanUser['declarantName'])
-                ->setPhoneNumber($values->ombudsmanUser['phoneNumber'])
-                ->setAddress($values->ombudsmanUser['address']);
+            $ombudsmanUser->setOmbudsmanUser($values->ombudsmanUser);
             $values->ombudsmanUser = $ombudsmanUser;
 
         }

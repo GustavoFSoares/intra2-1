@@ -58,6 +58,17 @@ class OmbudsmanUser extends SoftdeleteAbstract
         $this->address = '';
     }
 
+    public function setOmbudsmanUser($ombudsmanUser) {
+        $this
+            ->setPatientName($ombudsmanUser['patientName'])
+            ->setBirthday($ombudsmanUser['birthday'])
+            ->setEmail( (isset($ombudsmanUser['email']) && $ombudsmanUser['declarantName']) ? $ombudsmanUser['email'] : null )
+            ->setDeclarantName( (isset($ombudsmanUser['declarantName']) && $ombudsmanUser['declarantName']) ? $ombudsmanUser['declarantName'] : "PRÓPRIO PACIENTE")
+            ->setPhoneNumber($ombudsmanUser['phoneNumber'])
+            ->setAddress($ombudsmanUser['address']);
+        return $this;
+    }
+
     public function getId() {
         return $this->id;
     }

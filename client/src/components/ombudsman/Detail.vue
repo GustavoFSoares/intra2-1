@@ -44,7 +44,7 @@
                                     <a :href="'tel:'+ombudsman.ombudsmanUser.phoneNumber">{{ ombudsman.ombudsmanUser.phoneNumber }}</a>
                                 </rows>
                                 
-                                <rows label='<b>E-mail</b>'>
+                                <rows label='<b>E-mail</b>' v-if="ombudsman.ombudsmanUser.email">
                                     <span class="card-text"> {{ ombudsman.ombudsmanUser.email }} </span>
                                 </rows>
                             </div>
@@ -73,7 +73,7 @@
                 </div>
             </row>
             
-            <row>
+            <row v-if="ombudsman.ombudsmanUserSugestion">
                 <div id="sugestion" class="col">
                     <div class="card border-secondary">
                         <div class="card-body">

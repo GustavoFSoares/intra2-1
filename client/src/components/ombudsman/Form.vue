@@ -64,8 +64,7 @@
 
                                 <div class='row'>
                                     <rows :label="subtitles.personData.reporterName">
-                                        <input type="text" name="Ombudsman-ombudsmanUser-reporterName" v-validate data-vv-rules="required" :data-vv-as="subtitles.personData.reporterName" class="form-control" v-model="ombudsman.ombudsmanUser.declarantName">
-                                        <require-text :error="errors.has('Ombudsman-ombudsmanUser-reporterName')" :text="errors.first('Ombudsman-ombudsmanUser-reporterName')"/>
+                                        <input type="text" name="Ombudsman-ombudsmanUser-reporterName" :data-vv-as="subtitles.personData.reporterName" class="form-control" v-model="ombudsman.ombudsmanUser.declarantName">
                                     </rows>
 
                                     <rows :label="subtitles.personData.reporterEmail">
@@ -129,8 +128,8 @@
                         </div>
                         
                         <div id="user-informations-person" class="card border-secondary mb-2" >
-                            
-                            <div class="card-body" v-if="ombudsman.origin">
+                                
+                            <div class="card-body" v-if="JSON.stringify(ombudsman.origin) != '{}'">
                                 
                                 <row label='Leito' v-if="ombudsman.origin.id == 'INT'">
                                     <input type="text" name="Ombudsman-bed" v-validate data-vv-rules="required" data-vv-as="Leito" class="form-control" v-model="ombudsman.bed">
@@ -215,8 +214,7 @@
                                     <hr>
 
                                     <row>
-                                        <textarea name="Ombudsman-ombudsmanUser-sugestion" v-validate data-vv-rules="required" :data-vv-as="subtitles.description.sugestion" class="form-control" cols="30" rows="4" v-model="ombudsman.ombudsmanUserSugestion" placeholder="Sugestão: "></textarea>
-                                        <require-text :error="errors.has('Ombudsman-ombudsmanUser-sugestion')" :text="errors.first('Ombudsman-ombudsmanUser-sugestion')"/>
+                                        <textarea name="Ombudsman-ombudsmanUser-sugestion" class="form-control" cols="30" rows="4" v-model="ombudsman.ombudsmanUserSugestion" placeholder="Sugestão: "></textarea>
                                     </row>
 
                                 </div>

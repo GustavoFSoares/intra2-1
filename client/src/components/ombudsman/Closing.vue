@@ -2,6 +2,7 @@
     <div class="closing-ombudsman">
         <row label='Fechamento do Ouvidor' v-if="(status == 'waiting-manager' || status == 'registered') && gotAdminPermission">
             <textarea v-model="text" ref="textarea" class="form-control" cols="30" rows="4" @input="uploadValue()"/>
+            <signature label="Ouvidor assinando" :username="ombudsmanClosingName"/>
         </row>
         <row v-else-if="value">
             <div class="card">
@@ -12,8 +13,8 @@
                     </p>
                 </div>
             </div>
+            <signature label="Assinado por" :username="ombudsmanClosingName"/>
         </row>
-        <signature label="Você está logado como" :username="ombudsmanClosingName"/>
     </div>
 </template>
 
