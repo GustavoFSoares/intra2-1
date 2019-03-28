@@ -1,24 +1,28 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <h1>{{ title }}</h1>
 
-        <div class="row">
-            <div id="navigation" class="col-md-2 order-md-1 mb-4">
+        <div class="page-container">
+            <div class="navigation" >
                     
-                <div id="form">
-                    <h5>Navegação</h5>
-                    <ul class="list-group" v-scroll-spy-active="{class: 'watched'}" v-scroll-spy-link>
-                        <router-link class="list-group-item" to="" v-for="section in sections" :key="section.id">
-                            {{ section.label }}
-                        </router-link>
-                    </ul>
+                <div class="slider-menu">
+                    <div class="menu-content">
+                        <h5>Navegação</h5>
+                        <ul class="list-group" v-scroll-spy-active="{class: 'watched'}" v-scroll-spy-link>
+                            <router-link class="list-group-item" to="" v-for="section in sections" :key="section.id">
+                                {{ section.label }}
+                            </router-link>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
-            <div id="content" class="col-md order-md-2">
-                <import-file :id="filePlace" :file_name="ombudsman.id" :post_function="uploadFile"/>
+            <div class="content">
+                <div class="row">
+                    <import-file :id="filePlace" :file_name="ombudsman.id" :post_function="uploadFile"/>
+                </div>
 
-                <div data-target="#form" v-scroll-spy>
+                <div data-target=".slider-menu" v-scroll-spy>
                                     
                     <section :id="sections.code.id">
                         <row :label="sections.code.label">
@@ -260,7 +264,7 @@
 
         </div>
 
-        <div id="buttons">
+        <div class="navigation-bottom mt-3">
             <row>
                 <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="isValidForm" :disabled="sending" v-if="ombudsman.id">
                     Registrar Ouvidoria
@@ -315,7 +319,6 @@ export default {
                 code: { id: "code", label: "Código"},
                 userInformations: { id: "user-informations", label: "Dados do Relator"},
                 ombudsmanPlace: { id: "ombudsman-place", label: "Local da Ouvidoria"},
-                // type: { id: "ombudsman-type", label: "Tipos de Ouvidoria"},
                 demands: { id: "demands", label: "Demandas"},
                 report: { id: "report", label: "Relato"},
                 ombudsmanReport: { id: "ombudsman-report", label: "Ouvidor"},
@@ -437,24 +440,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .subtitle {
         text-align: left;
         font-size: 17px;
-    }
-
-    #ombudsman-logged {
-        text-align: right;
-        margin-right: 20px;
-    }
-
-    #navigation div {
-        display: block;
-        position: fixed;
-
-        margin-top: -1%;
-        max-width: 12%;
-        margin-left: -1%;
     }
 
     .watched {
@@ -462,31 +451,28 @@ export default {
         color:grey;
     }
 
-    @media (min-width: 1301px) {
-        #navigation div {
-            margin-top: -2%;
-        }
+    .navigation-bottom {
+        position: absolute;
     }
 
-    @media (max-width: 1300px) and (min-width: 1000px) {
-        .type {
-            min-width: 200px;
+    .page-container {
+        display: flex;
+        justify-content: center;
+
+        .navigation {
+            position: relative;
+            width: 22rem;
+
+            .slider-menu {
+                width: 18rem;
+                display: flex;
+                justify-content: center;
+
+                .menu-content {
+                    position: fixed;
+                }
+            }
         }
 
-        #navigation div {
-            margin-top: -6%;
-        }
     }
-
-    
-    @media (max-width: 900px) {
-        .type {
-            min-width: 250px;
-        }
-
-        #navigation div {
-            margin-top: -3%;
-        }
-    }
-
 </style>
