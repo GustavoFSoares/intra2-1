@@ -43,7 +43,7 @@
                         <router-link :to='`notificacao-de-incidentes/edit/${report.id}`' v-if="gotPermission && report.closed != true">
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
-                        <router-link :to='`notificacao-de-incidentes/detalhe/${report.id}`' v-if="report.closed || report.filtered">
+                        <router-link :to='`notificacao-de-incidentes/detalhe/${report.id}`' v-if="report.filtered || report.closed">
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
                         </router-link>
                     </td>
