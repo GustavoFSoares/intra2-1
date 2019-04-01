@@ -365,7 +365,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
     .closed {
         color: var(--danger);
         font-size: 15rem;
