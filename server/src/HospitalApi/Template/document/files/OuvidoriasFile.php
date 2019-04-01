@@ -138,19 +138,20 @@ class OuvidoriasFile extends \TCPDF {
                 for ($i=0; $i < 17; $i++) { 
                     $html .= "$line\n";
                 }
-    $html .= "  <br>
-                <div>
-                    <span><b>Sugestão / Solicitação:</b></span>
-                </div>";
-                for ($i=0; $i < 7; $i++) { 
-                    $html .= "$line\n";
-                }
-    
+
     $html .= "  <br>
                 <div>
                     <span><b>Assinatura:</b> __________________________________________________________________</span>
                 </div>
             </body>";
+
+    $html .= "  <br>
+                <div>
+                    <span><b>Área do Ouvidor:</b></span>
+                </div>";
+                for ($i=0; $i < 7; $i++) { 
+                    $html .= "$line\n";
+                }
 
         return $html;
     }

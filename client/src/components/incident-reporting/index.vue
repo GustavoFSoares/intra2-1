@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(report) of searchList" :key="report.id" v-bind:class="{'table-info': report.filtered == false, 'table-disabled': report.closed}">
+                <tr v-for="(report) of searchList" :key="report.id" v-bind:class="{'table-disabled': report.closed}">
                     <th>{{ report.id }}</th>
                     <td>{{ report.event.substr(0, 40) }}</td>
                     <td>{{ report.reportPlace }}</td>
