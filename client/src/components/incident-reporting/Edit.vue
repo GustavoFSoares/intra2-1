@@ -266,11 +266,12 @@ export default {
         },
         submit() {
             this.sending=true
-            this.report.filtered = true;
+            this.report.filtered = true;          
             
             model.doUpdate(this.id, this.report).then(res => {
-                this.$router.go('-1')
+                
                 this.$alert.success(`Incidente <b>#${this.id}</b> Filtrado`)
+                this.$router.push(`/usuario/notificacao-de-incidentes/detalhe/${this.id}`)
                 this.sending = false
             }, err => {
                 this.sending = false
