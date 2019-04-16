@@ -268,7 +268,7 @@ export default {
                     this.sending = true
                     model.closeReport(this.id).then(res => {
                         this.$alert.success(`Treinamento <b>#${this.id}</b> Finzalizado`)
-                        this.$router.go('-1')
+                        this.$router.push({ name: 'notificacao-de-incidentes'})
                         this.sending.false
                     }, err => {
                         this.$alert.danger(`Erro ao Finzalizar`)
