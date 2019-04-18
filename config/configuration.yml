@@ -110,7 +110,7 @@ HOMOLOG:
 #PRODUÇÃO ==================================================================
 PRODUCTION:
     HOST: '10.100.1.32'
-    IP_SERVER_IMAGE: '10.100.200.100'
+    IP_SERVER_IMAGE: '10.100.1.117'
     DOMAIN: prod
     
     DATABASE_NAME: 'intra2'
