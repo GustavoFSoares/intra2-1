@@ -385,6 +385,7 @@ export default {
             this.sending = true
             this.ombudsman.ombudsmanUser.address = this.userAddress
 
+            this.ombudsman.registerTime = null            
             model.doUpdate(this.ombudsman).then(res => { 
                 this.sending = false
                 this.$router.push({ name: "ouvidoria" })

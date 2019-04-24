@@ -152,5 +152,17 @@ class OmbudsmanController extends ControllerAbstractLongEntity
 
         return $res->withJson($return);
     }
+
+    public function cleanNotificationAction($req, $res, $args) {
+        $params = $req->getQueryParams();
+
+        $this->storeUser($params);
+        $ombudsman = $this->getModel()->findById( $params['ombudsman_id'] );
+        $user = $this->getSession();
+
+        OmbudsmanMessagesNotificationModel::checkLikeReadNotificationForUser($ombudsman, $user);
+
+        return $res->withJson(true);
+    }
     
 }
