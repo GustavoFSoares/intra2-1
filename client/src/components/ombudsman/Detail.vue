@@ -360,7 +360,10 @@ export default {
     },
     mounted() {
         this.getPermission()
-        getter.getOmbudsmanById(this.id).then(res => { this.ombudsman = res ? new Ombudsman(res) : new Ombudsman(); })
+        getter.getOmbudsmanById(this.id).then(res => {
+            this.ombudsman = res ? new Ombudsman(res) : new Ombudsman();            
+            model.cleanNotification(this.$session.get('user').id, this.id)
+        })
     }
 }
 </script>

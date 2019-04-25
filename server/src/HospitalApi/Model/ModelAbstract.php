@@ -100,7 +100,7 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 	 * Recebe um <i>Id</i> e realiza uma busca no banco e retorna
 	 * um Array contendo o correspondente.
 	 * @param Integer $id
-	 * @return Array
+	 * @return Object
 	 */
 	public function findById($id) {
 		return $this->em->find($this->entityPath, $id);

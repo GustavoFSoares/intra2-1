@@ -158,6 +158,8 @@ abstract class EntityAbstract extends BasicApplicationAbstract
                 $date = date("Y-m-d H:i:s", strtotime($date));
                 $date = DateTime::createFromFormat("Y-m-d H:i:s", $date);
             }
+        } else if($date == null) {
+            $date = new \DateTime();
         }
         return $date;
     }

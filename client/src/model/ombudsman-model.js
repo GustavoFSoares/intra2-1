@@ -36,6 +36,7 @@ const model = {
     uploadFile: (file, fileName) => service.uploadFile(file, fileName),
     closeChat: (ombudsman) => service.closeChat(ombudsman.id, ombudsman),
     finishOmbudsman: (ombudsman) => service.finishOmbudsman(ombudsman.id, ombudsman),
+    cleanNotification: (userId, ombudsmanId) => service.cleanNotification(userId, ombudsmanId),
 }
 
 const DemandsModel = {

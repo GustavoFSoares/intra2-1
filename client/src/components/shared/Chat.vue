@@ -11,7 +11,7 @@
                         <div class="card anotherchat" v-bind:class="{'youchat':chat.user==user}" @mouseover="chat.read = true">
                             <div class="card-body">
                                 <blockquote class="content-chat">
-                                    <h5 v-if="chat.user!=user" class="card-title">
+                                    <h5 v-if="chat.user!=user" class="card-title text-left">
                                         {{ chat.user }}
                                         <icon class="icon text-warning float-right" icon="exclamation-triangle" v-if="!chat.read"/>
                                     </h5>
