@@ -52,4 +52,7 @@ export default  {
     delete: (id) => {
         window.httpMessage = { success: `Ouvidoria <b>#${id}</b> Excluído`, error: "Ouvidoria <b>não Excluída</b>", show: true }
         return http.delete(`/ombudsman/${id}`).then(res => res.data) },
+    cleanNotification: (userId, ombudsmanId) => {
+        window.httpMessage = { error: "Erro ao ler mensagem", show: true }
+        return http.delete(`/ombudsman/messages/`, { params: { "user_id": userId, "ombudsman_id": ombudsmanId } }).then(res => res.data) },
 }

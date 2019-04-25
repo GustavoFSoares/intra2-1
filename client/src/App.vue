@@ -179,7 +179,7 @@ export default {
         color: #8a8a8a9c;
     }
 
-    .btn-outline-warning:hover:not(:disabled)  {
+    .btn-outline-warning:not(:disabled):not(.disabled).active, .btn-outline-warning:hover {
         color: #ffffff;
     }
 
