@@ -16,32 +16,32 @@
                 <div class="buttons" v-bind:class="{ 'disabled': loaded==false}">
 
                     <div class="status-buttons row">
-                        <button class="status-button button btn btn-outline-danger btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='URGENTE' }" @click="filteringRelevance('URGENTE')">
+                        <button class="status-button button btn btn-outline-danger btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='URGENTE' }" @click="filtering('URGENTE', 'relevance')">
                             Urgente <icon icon="angry"/>
                         </button>
-                        <button class="status-button button btn btn-outline-warning btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='ALTA' }" @click="filteringRelevance('ALTA')">
+                        <button class="status-button button btn btn-outline-warning btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='ALTA' }" @click="filtering('ALTA', 'relevance')">
                             Alta <icon icon="tired"/>
                         </button>
-                        <button class="status-button button btn btn-outline-success btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='MÉDIA' }" @click="filteringRelevance('MÉDIA')">
+                        <button class="status-button button btn btn-outline-success btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='MÉDIA' }" @click="filtering('MÉDIA', 'relevance')">
                             Média <icon icon="meh"/>
                         </button>
-                        <button class="status-button button btn btn-outline-info btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='BAIXA' }" @click="filteringRelevance('BAIXA')">
+                        <button class="status-button button btn btn-outline-info btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='BAIXA' }" @click="filtering('BAIXA', 'relevance')">
                             Baixa <icon icon="laugh"/>
                         </button>
                     </div>
 
                     <hr>
                     <div class="state-buttons row mb-3">
-                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='REGISTERED' }" @click="filter.status = 'REGISTERED'" v-if="gotPermission">
+                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='REGISTERED' }" @click="filtering('REGISTERED', 'status')" v-if="gotPermission">
                             Registrado <icon icon="file-archive"/>
                         </button>
-                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='WAITING-MANAGER' }" @click="filter.status = 'WAITING-MANAGER'">
+                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='WAITING-MANAGER' }" @click="filtering('WAITING-MANAGER', 'status')">
                             Enviado <icon icon="file-archive"/>
                         </button>
-                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='CLOSED' }" @click="filter.status = 'CLOSED'">
+                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='CLOSED' }" @click="filtering('CLOSED', 'status')">
                             Finalizado <icon icon="file-archive"/>
                         </button>
-                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='FINISHED' }" @click="filter.status = 'FINISHED'">
+                        <button class="state-button button btn btn-outline-clean btn-lg" v-bind:class="{ 'active': filter.status=='FINISHED' }" @click="filtering('FINISHED', 'status')">
                             Arquivado <icon icon="file-archive"/>
                         </button>
                     </div>
@@ -68,6 +68,7 @@
                     <th scope="col">Ouvidor</th>
                     <th scope="col">Demandas</th>
                     <th scope="col">Relatado por:</th>
+                    <th scope="col">Nome do Paciênte</th>
                     <th scope="col">Relevância:</th>
                     <th scope="col">Registrado em:</th>
                     <th scope="col"></th>
@@ -90,6 +91,7 @@
                         </div>
                     </td>
                     <td>{{ ombudsman.row.reportedBy }}</td>                    
+                    <td>{{ ombudsman.row.ombudsmanUser.patientName.substr(0, 15) }}</td>                    
                     <td>{{ ombudsman.row.relevance }}</td>                    
                     <td>{{ ombudsman.row.registerTime.date | humanizeDate }}</td>
                     <td>
@@ -131,7 +133,7 @@ export default {
                 status: 'WAITING-MANAGER',
                 relevance: '',
             },
-            ombudsmans: [],
+            ombudsmans: new Array(),
             moment: moment,
             alert: {
                 remove: { message: "Tem certeza que deseja Excluir?" }
@@ -191,11 +193,11 @@ export default {
             return tableColor
 
         },
-        filteringRelevance(relevance) {
-            if( this.filter.relevance == relevance ) {
-                this.filter.relevance = false
+        filtering(filter, type) {
+            if( this.filter[type] == filter ) {
+                this.filter[type] = false
             } else {
-                this.filter.relevance = relevance
+                this.filter[type] = filter
             }
         },
     },
@@ -203,7 +205,7 @@ export default {
         this.socket = new Socket(`om`, this.user)
     },
     mounted() {
-        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; })        
+        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; console.log(res) })        
         this.socket.io.on(`om`, (message) => {
             message.id = message.id.substr(2)
             
@@ -236,6 +238,8 @@ export default {
                     } else if( exp.test(ombudsman.relevance)) {
                         return exp
                     } else if( exp.test(ombudsman.reportedBy)) {
+                        return exp
+                    } else if( exp.test(ombudsman.ombudsmanUser.patientName)) {
                         return exp
                     } else if( exp.test(ombudsman.type)) {
                         return exp
