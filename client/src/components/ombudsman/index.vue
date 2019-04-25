@@ -205,7 +205,7 @@ export default {
         this.socket = new Socket(`om`, this.user)
     },
     mounted() {
-        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; console.log(res) })        
+        getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; })        
         this.socket.io.on(`om`, (message) => {
             message.id = message.id.substr(2)
             
