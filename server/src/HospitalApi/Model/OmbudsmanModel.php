@@ -40,7 +40,7 @@ class OmbudsmanModel extends SoftdeleteModel
 
         }
 
-        switch ($values->origin['origem_id']) {
+        switch ($values->origin['id']) {
             case 'INT':
                 $values->group = null;
                 break;
@@ -127,8 +127,7 @@ class OmbudsmanModel extends SoftdeleteModel
             ->from($this->entityPath, 'o')
             ->where("o.origin = :origin")
             ->setParameter('origin', $origin)
-            //originalmente orderBy('o.c_created', 'DESC')
-            ->orderBy('o.id', 'DESC')
+            ->orderBy('o.c_created', 'DESC')
             ->setMaxResults('1');
         return $select->getQuery()->getOneOrNullResult();
     }

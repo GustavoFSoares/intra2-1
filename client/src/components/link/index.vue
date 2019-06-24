@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <h1>{{ title }}</h1>
-        
+
         <div class="mb-4">
             <router-link class=" button btn btn-outline-secondary btn-lg" :to="{name: 'link/add'}" tag="button">
                 Cadastrar Link

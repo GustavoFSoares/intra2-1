@@ -2,7 +2,7 @@
 DEVELOPER:
     HOST: 'localhost'
     DOMAIN: dev
-    IP_SERVER_IMAGE: '10.100.200.235'
+    IP_SERVER_IMAGE: '10.100.200.100'
     
     DATABASE_NAME: 'hospital_api'
     
@@ -42,10 +42,10 @@ DEVELOPER:
 #DESENVOLVIMENTO - WINDOWS ==============================================
 DEVWIN:
     HOST: 'localhost'
-    IP_SERVER_IMAGE: 'localhost'
+    IP_SERVER_IMAGE: '10.100.200.100'
     DOMAIN: win
     
-    DATABASE_NAME: 'intra2_homo'
+    DATABASE_NAME: 'intra2_dev'
 
     DB_SYSTEM: 'mysql'
     
@@ -66,7 +66,7 @@ DEVWIN:
     AD_DOMAIN: '@hmd.local'
     
     DEBUG_ACTIVE: true
-    DEBUG_EMAIL: 'bruno.souza@gampcanoas.com.br'
+    DEBUG_EMAIL: 'gustavo.soares@gampcanoas.com.br'
     
     EMAIL_DEFAULT_EMAIL: 'anonimo.gampcanoas@gmail.com'
     EMAIL_DEFAULT_PASSWORD: 'g4mpcanoas'
@@ -75,8 +75,8 @@ DEVWIN:
 
 #HOMOLOGAÇÃO ===============================================================
 HOMOLOG:
-    HOST: '10.100.200.235'
-    IP_SERVER_IMAGE: '10.100.200.235'
+    HOST: '10.100.200.100'
+    IP_SERVER_IMAGE: '10.100.200.100'
     DOMAIN: homo
     
     DATABASE_NAME: 'intra2_homo'

@@ -19,7 +19,6 @@
         </div>
 
         <div>
-            
             <router-link to="/">
                 <img id="logo" class="rounded mx-auto" src="@/../static/img/logo-prefeitura.png">
             </router-link>

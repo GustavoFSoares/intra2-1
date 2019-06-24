@@ -182,7 +182,7 @@ export default {
         showEditButton(status, user) {
             if(user.id != this.user.id) {
                 return false
-            } else if(status.id == 'draft' || status.id == 'waiting-correction' || status == '') {
+            } else if(status.id == 'draft' || status == '') {
                 return true
             } else {
                 return false

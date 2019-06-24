@@ -159,7 +159,7 @@ abstract class ModelAbstract extends BasicApplicationAbstract
 
 	/**
 	 * @method isToday()
-	 * Verifica se a data comparada ($matchDate) foi criada
+	 * Verifica se a tada comparada ($matchDate) foi criada
 	 * nas ultimas 24 horas. E retorna TRUE se for $diffDays = 0,
 	 * Hoje e FALSE para $diffDays diferente de 0
 	 * @param Datetime $matchDate
