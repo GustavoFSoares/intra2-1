@@ -126,7 +126,7 @@ export default {
             if(this.id) {
                 this.block = true
                 getter.getEletronicDocumentById(this.id).then( res => { 
-                    if(res.status.id == 'draft' || res.status.id == 'canceled' || res.status == "") {
+                    if(res.status.id == 'draft' || res.status.id == 'waiting-correction' || res.status.id == 'canceled' || res.status == "") {
                         this.document = new EletronicDocument(res); 
                         this.block = false
                     } else {
