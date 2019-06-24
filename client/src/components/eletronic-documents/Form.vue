@@ -78,7 +78,7 @@
                 <router-link class="btn btn-outline-primary btn-lg" :to="{name: 'documentos-eletronicos'}" tag="button" :disabled="sending">
                     Voltar
                 </router-link>
-                <button class="btn btn-outline-warning btn-lg" id="submit-button" type="button" @click="saveDraft()" :disabled="sending" v-if="!block">
+                <button class="btn btn-outline-warning btn-lg" id="submit-button" disabled="disabled" type="button" @click="saveDraft()" :disabled="sending" v-if="!block">
                     Salvar Rascunho
                 </button>
                 <button class="btn btn-outline-secondary btn-lg" id="submit-button" type="button" @click="openModal()" :disabled="sending" v-if="!block">
@@ -126,7 +126,7 @@ export default {
             if(this.id) {
                 this.block = true
                 getter.getEletronicDocumentById(this.id).then( res => { 
-                    if(res.status.id == 'draft' || res.status.id == 'canceled' || res.status == "") {
+                    if(res.status.id == 'draft' || res.status.id == 'waiting-correction' || res.status.id == 'canceled' || res.status == "") {
                         this.document = new EletronicDocument(res); 
                         this.block = false
                     } else {

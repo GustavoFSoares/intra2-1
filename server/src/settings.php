@@ -5,7 +5,7 @@ date_default_timezone_set("America/Sao_Paulo");
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
-        'addContentLengthHeader' => false, // Allow the web server to send the content-length header
+        'addContentLengthHeader' => true, // Allow the web server to send the content-length header
 
         // Renderer settings
         'renderer' => [
