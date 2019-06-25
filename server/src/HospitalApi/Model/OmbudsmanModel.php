@@ -5,6 +5,7 @@ namespace HospitalApi\Model;
 use HospitalApi\Entity\Ombudsman;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\ORM\Query\ResultSetMapping;
 /**
  * <b>OmbudsmanModel</b>
  */
@@ -122,12 +123,19 @@ class OmbudsmanModel extends SoftdeleteModel
 
     public function getLastKeyOfOrigin($origin) {
         $data = $this->getRepository()->findOneBy(['origin'=>$origin->getId()]);
+        /**utilizando native query para consulta 
+        $rsm = new ResultSetMapping();
+        //rsm config
+
+        $sql = $this->em->createNativeQuery('SELECT * FROM ouvidoria WHERE ')
+        */
         $select = $this->em->createQueryBuilder();
         $select->select('o')
             ->from($this->entityPath, 'o')
             ->where("o.origin = :origin")
             ->setParameter('origin', $origin)
-            ->orderBy('o.c_created', 'DESC')
+            //->orderBy('CAST(RIGHT(o.id, LENGTH(o.id)-3) AS UNSIGNED)', 'DESC')
+            ->orderBy('o.id', 'DESC')
             ->setMaxResults('1');
         return $select->getQuery()->getOneOrNullResult();
     }

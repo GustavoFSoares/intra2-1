@@ -121,7 +121,7 @@ export default {
                 this.files.splice( this.indexOf(file), 1 )
                 this.filesPath.push(file)
             }).catch(err => {
-                this.$refs.upload.update(file, {error: 'Não Salvo!'})
+                this.$refs.upload.update(file, {error: 'Não Salvo!'+err})
                 this.sending = false
             }) 
         },

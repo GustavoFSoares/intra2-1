@@ -42,10 +42,10 @@ DEVELOPER:
 #DESENVOLVIMENTO - WINDOWS ==============================================
 DEVWIN:
     HOST: 'localhost'
-    IP_SERVER_IMAGE: '10.100.200.100'
+    IP_SERVER_IMAGE: '10.100.200.235'
     DOMAIN: win
     
-    DATABASE_NAME: 'intra2_dev'
+    DATABASE_NAME: 'intra2_homo'
 
     DB_SYSTEM: 'mysql'
     
