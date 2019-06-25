@@ -108,7 +108,7 @@ export default {
     data() {
         return {
             id: this.$route.params.id,
-            title: "Cadastro de Documento",
+            title: "Retificação de Documento",
             showSignature: false,
             values: {
                 types: [],

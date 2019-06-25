@@ -1,4 +1,5 @@
 import index from '@/components/eletronic-documents';
+import FormCorrection from '@/components/eletronic-documents/FormCorrection.vue';
 import Form from '@/components/eletronic-documents/Form.vue';
 import Detail from '@/components/eletronic-documents/Detail.vue';
 import CreateAmendment from '@/components/eletronic-documents/CreateAmendment.vue';
@@ -15,6 +16,12 @@ export default [
         name: 'documentos-eletronicos/add',
         component: Form,
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/usuario/documentos-eletronicos/correct/:id',
+        name: 'documentos-eletronicos/correct',
+        component: FormCorrection,
+        meta: {requiresAuth: true}
     },
     {
         path: '/usuario/documentos-eletronicos/edit/:id',
