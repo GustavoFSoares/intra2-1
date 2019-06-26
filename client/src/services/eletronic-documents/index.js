@@ -18,7 +18,7 @@ export default {
         window.httpMessage = { show: true, success: `Arquivo <b>Adicionado</b>`, error: "Arquivo <b>não Adicionado</b>" }
         return http.post('/eletronic-documents/file/', file, { params: { 'name': fileName, 'prefix': prefix } }).then(res => res.data)
     },
-
+    
     update: (id, data) => {
         window.httpMessage = { show: true, success: `Documento <b>#${id}</b> Atualizado`, error: "Documento <b>não Atualizado</b>" }
         return http.put(`/eletronic-documents/${id}`, data).then(res => res.data)

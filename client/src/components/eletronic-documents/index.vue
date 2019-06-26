@@ -84,6 +84,9 @@
                     </td>
                     <td>{{ document.createdAt.date | humanizeDate }}</td>
                     <td>
+                        <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/correct/${document.id}`)" v-if="showCorrectionButton(document.status, document.user)">
+                            <icon v-tooltip.top="'Corrigir'" icon="edit"/>
+                        </a>
                         <a href="" @click.stop.prevent="$router.push(`documentos-eletronicos/edit/${document.id}`)" v-if="showEditButton(document.status, document.user)">
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </a>
@@ -167,7 +170,11 @@ export default {
                 case 'finished':
                     colorClass = 'table-success'
                     break;
-            
+
+                case 'waiting-correction':
+                    colorClass = 'table-warning'
+                    break;
+                    
                 case 'revoked': 
                 case 'canceled': 
                     colorClass = 'table-danger'
@@ -179,10 +186,19 @@ export default {
 
             return colorClass
         },
+        showCorrectionButton(status, user) {
+            if(user.id != this.user.id) {
+                return false
+            } else if(status.id == 'waiting-correction' || status == '') {
+                return true
+            } else {
+                return false
+            }
+        },
         showEditButton(status, user) {
             if(user.id != this.user.id) {
                 return false
-            } else if(status.id == 'draft' || status == 'waiting-correction' || status == '') {
+            } else if(status.id == 'draft' || status == '') {
                 return true
             } else {
                 return false
