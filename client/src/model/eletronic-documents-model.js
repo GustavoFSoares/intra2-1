@@ -25,6 +25,7 @@ export const getter = {
 
 const model = {
     isEdit: (id) => id ? true : false,
+    doUpdateCorrection: (eletronicDocument) => service.updateCorrection(eletronicDocument),
     doUpdate: (eletronicDocument) => service.update(eletronicDocument.id, eletronicDocument),
     doInsert: (eletronicDocument) => service.insert(eletronicDocument),
     doDelete: (eletronicDocumentId) => service.delete(eletronicDocumentId),
