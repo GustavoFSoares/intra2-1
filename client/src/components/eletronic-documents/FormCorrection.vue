@@ -24,9 +24,7 @@
                             <row label='Tipo'>
                                 <v-select :disabled="true" label="name" v-model="document.type" :options="values.types"></v-select>
                             </row>
-
                         </box>
-
                         <row>
                             <box>
                                 <info-icon id="info-icon" title="VAMOS COMEÇAR?" size="1" ref="infoIcon">
@@ -54,7 +52,6 @@
                                 <add-and-remove-groups v-model="document.groupList"/> -->
                             </box>
                         </row>
-
                     </box>
                 </div>
             </rows>
@@ -124,7 +121,7 @@ export default {
                 this.block = true
                 getter.getEletronicDocumentById(this.id).then( res => { 
                     if(res.status.id == 'waiting-correction' || res.status.id == 'draft' || res.status.id == 'canceled' || res.status == "") {
-                        this.document = new EletronicDocument(res); 
+                        this.document = new EletronicDocument(res);
                         this.block = false
                     }else {
                         this.$alert.danger('Documento Bloqueado para Edição')
