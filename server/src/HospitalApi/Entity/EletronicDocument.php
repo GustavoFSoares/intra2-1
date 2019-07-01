@@ -140,10 +140,12 @@ class EletronicDocument extends SoftdeleteAbstract
         
         return $this;
     }
-
+    
     public function getAmendmentList() {
         return $this->amendmentList;
     }
+    
+    
     public function addAmendmentOnList($amendment) {
         $this->amendmentList->add($amendment);
 
@@ -164,7 +166,6 @@ class EletronicDocument extends SoftdeleteAbstract
 
         return $this;
     }
-    
     public function getSignatureList() {
         return $this->signatureList;
     }

@@ -41,7 +41,7 @@ import Signature from "@/components/shared/Signature";
 
 export default {
     props: {
-        document: ''
+        document: '',
     },
     components: {
         'signature': Signature,

@@ -11,7 +11,7 @@
 
         <actual-status :actualStatusId="document.status" :documentId="id"/>
         <section>
-            <text-exibitor :document="document"/>            
+            <text-exibitor :document="document"/>
 
             <box class="border-secondary">
                 <div class="attachment">
@@ -83,6 +83,7 @@ export default {
                         this.$alert.info("Você não ter permissão para ver este documento ou ele não existe")
                     } else {
                         this.document = new EletronicDocument(res); 
+                        
                         this.title = this.document.type.name
                         this.canShowSignature = true
                         

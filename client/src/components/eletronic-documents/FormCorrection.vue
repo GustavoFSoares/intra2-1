@@ -122,6 +122,7 @@ export default {
                 getter.getEletronicDocumentById(this.id).then( res => { 
                     if(res.status.id == 'waiting-correction' || res.status.id == 'draft' || res.status.id == 'canceled' || res.status == "") {
                         this.document = new EletronicDocument(res);
+                        delete(this.document.amendmentList);
                         this.block = false
                     }else {
                         this.$alert.danger('Documento Bloqueado para Edição')
@@ -133,6 +134,7 @@ export default {
         submit() {
             this.sending = true
             if(this.isEdit()) {
+                
                 return model.doUpdate(this.document).then(res => {
                     this.sending = false
                     this.$refs.modal.close()
