@@ -29,7 +29,7 @@ export default class EletronicDocument {
 
     isBlocked() {
         if(this.isLoaded()) {
-            return ['revoked', 'canceled'].includes(this.status.id) || this.canceled
+            return ['revoked', 'canceled', 'waiting-correction'].includes(this.status.id) || this.canceled
         }
         return false
     }

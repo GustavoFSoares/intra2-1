@@ -30,13 +30,13 @@
                     <hr>
                     
                     <div class="status-buttons row">
-                        <button class="status-button button btn btn-outline-success btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'finished' }" @click="filteringStatus('finished')">
+                        <button class="status-button button btn btn-outline-success btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'finished' || filter.status == ''}" @click="filteringStatus('finished')">
                             Finalizados <icon icon="file-archive"/>
                         </button>
-                        <button class="status-button button btn btn-outline-danger btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'canceled' }" @click="filteringStatus('canceled')">
+                        <button class="status-button button btn btn-outline-danger btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'canceled' || filter.status == ''}" @click="filteringStatus('canceled')">
                             Revogados <icon icon="file-archive"/>
                         </button>
-                        <button class="status-button button btn btn-outline-secondary btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'archived' }" @click="filteringStatus('archived')">
+                        <button class="status-button button btn btn-outline-secondary btn-lg mb-3" v-bind:class="{ 'active': filter.status == 'archived' || filter.status == ''}" @click="filteringStatus('archived')">
                             Arquivados <icon icon="file-archive"/>
                         </button>
                     </div>
@@ -146,9 +146,9 @@ export default {
     methods: {
         filteringStatus(status) {
             if( this.filter.status == status ) {
-                this.filter.status = false
+                this.filter.status = '';
             } else {
-                this.filter.status = status
+                this.filter.status = status;
             }
         },
         showMore(document) {
