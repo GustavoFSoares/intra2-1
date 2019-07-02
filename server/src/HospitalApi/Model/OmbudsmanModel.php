@@ -6,6 +6,7 @@ use HospitalApi\Entity\Ombudsman;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 /**
  * <b>OmbudsmanModel</b>
  */
@@ -131,6 +132,16 @@ class OmbudsmanModel extends SoftdeleteModel
             ->orderBy('o.id', 'DESC')
             ->setMaxResults('1');
         return $select->getQuery()->getOneOrNullResult();
+
+        /*
+        *Utilizando NativeQuery para pesquisa de id
+        *
+        $rsm = new ResultSetMappingBuilder($this->em);
+        $rsm->addRootEntityFromClassMetadata($this->entityPath, 'o');
+
+        $query = $this->em->createNativeQuery('SELECT * FROM ouvidoria WHERE id LIKE "AMB%" ORDER BY CAST(RIGHT(id, LENGTH(id)-3) AS UNSIGNED) DESC LIMIT 1', $rsm);
+        
+        return $query->getResult();*/
     }
 
     public function getOmbudsmansWaiting($params = []) {

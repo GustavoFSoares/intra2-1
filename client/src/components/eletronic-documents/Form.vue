@@ -66,6 +66,7 @@
                 </box>
 
                 <box>
+                    <h3>Anexar Documentos</h3>
                     <section>
                         <v-multifile-pdf :id="document.id" :post_function="sendFile" origin='eletronic-documents'/>
                     </section>
