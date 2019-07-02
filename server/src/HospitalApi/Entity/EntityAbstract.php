@@ -148,15 +148,15 @@ abstract class EntityAbstract extends BasicApplicationAbstract
                 $date = explode('T', $date);
                 $date[1] = substr($date[1], 0, -5);
 
-                $date = date("Y-m-d H:i:s", strtotime("{$date[0]} {$date[1]}"));
-                $date = DateTime::createFromFormat("Y-m-d H:i:s", $date);
+                $date = format("Y-m-d H:i:s.u", strtotime("{$date[0]} {$date[1]}"));
+                $date = DateTime::createFromFormat("Y-m-d H:i:s.u", $date);
             } else {
                 $search = [' ', '-', '/'];
                 $reclace = ['', ' ', '-'];
                 $date = str_replace($search, $reclace, $date);
                 
-                $date = date("Y-m-d H:i:s", strtotime($date));
-                $date = DateTime::createFromFormat("Y-m-d H:i:s", $date);
+                $date = format("Y-m-d H:i:s.u", strtotime($date));
+                $date = DateTime::createFromFormat("Y-m-d H:i:s.u", $date);
             }
         } else if($date == null) {
             $date = new \DateTime();

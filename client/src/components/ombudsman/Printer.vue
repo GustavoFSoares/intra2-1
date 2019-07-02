@@ -74,7 +74,11 @@ export default {
             window.open(`${window.globals.API_SERVER}/ombudsman/doc/reprint/?id=${this.ombudsman.id}&user_id=${this.$session.get('user').id}`, '_target')
         },
         exportFile() {
-            window.open(`${window.globals.API_SERVER}/ombudsman/doc/?page=${this.doc.page}&origin=${this.doc.origin.id}`, '_target')
+            if ( this.doc.origin.id != null ) {
+                window.open(`${window.globals.API_SERVER}/ombudsman/doc/?page=${this.doc.page}&origin=${this.doc.origin.id}`, '_target')
+            }else{
+                alert("Escolha uma origem!");
+            }
         }
     },
     mounted() {

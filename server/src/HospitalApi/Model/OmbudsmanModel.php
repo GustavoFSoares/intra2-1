@@ -129,19 +129,9 @@ class OmbudsmanModel extends SoftdeleteModel
             ->from($this->entityPath, 'o')
             ->where("o.origin = :origin")
             ->setParameter('origin', $origin)
-            ->orderBy('o.id', 'DESC')
+            ->OrderBy('o.sortID', 'DESC')
             ->setMaxResults('1');
         return $select->getQuery()->getOneOrNullResult();
-
-        /*
-        *Utilizando NativeQuery para pesquisa de id
-        *
-        $rsm = new ResultSetMappingBuilder($this->em);
-        $rsm->addRootEntityFromClassMetadata($this->entityPath, 'o');
-
-        $query = $this->em->createNativeQuery('SELECT * FROM ouvidoria WHERE id LIKE "AMB%" ORDER BY CAST(RIGHT(id, LENGTH(id)-3) AS UNSIGNED) DESC LIMIT 1', $rsm);
-        
-        return $query->getResult();*/
     }
 
     public function getOmbudsmansWaiting($params = []) {

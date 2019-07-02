@@ -22,6 +22,7 @@
         </section>
 
         <section id="signature-area">
+            <h1 :show="!canShowSignature">Aguardando assinaturas</h1>
             <sign-document @signed="setNewStatus" :id="id" v-model="document" :disabled="!document.status || document.isBlocked()" title="Assinar Documento" ref="sign_document" :show="canShowSignature"/>
         </section>
 
@@ -103,13 +104,17 @@ export default {
             signature.status = data.status;
         },
         setLikeWaitingSignature() {
-            //Se próximo Usuário == Usuário da Sessão
             getter.getNextUserToSign(this.id).then(res => {
+                //Se próximo Usuário == Usuário da Sessão
                 if( res != null && res.id == this.$session.get('user').id) {
                     //Setar Documento como "Aguardando Assinatura"
                     model.setLikeWaitingSignature(this.id).then(res => {
                         this.setNewStatus(res)
                     })
+                }else{
+                //Se próximo usuário != usuário da sessão
+                    this.canShowSignature = false;
+
                 }
                 
             })
