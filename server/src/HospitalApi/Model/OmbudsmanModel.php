@@ -5,8 +5,6 @@ namespace HospitalApi\Model;
 use HospitalApi\Entity\Ombudsman;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Doctrine\ORM\Query\ResultSetMapping;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 /**
  * <b>OmbudsmanModel</b>
  */

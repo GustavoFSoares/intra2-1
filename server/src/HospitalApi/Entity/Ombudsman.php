@@ -18,7 +18,7 @@ class Ombudsman extends SoftdeleteAbstract
     protected $id;
 
     /**
-     * @Column(name="sort_id", type="bigint", length=20)
+     * @Column(name="sort_id", type="bigint", length=20, nullable=false)
      */
     protected $sort_id;
 
@@ -142,7 +142,6 @@ class Ombudsman extends SoftdeleteAbstract
     public function __construct($id = '', $origin = null) {
         parent::__construct();
         $this->id = $id;
-        $this->sort_id = null;
         $this->ombudsmanUser = null;
         $this->ombudsmanUserDescription = null;
         $this->ombudsmanUserSugestion = null;
@@ -172,10 +171,6 @@ class Ombudsman extends SoftdeleteAbstract
         $this->id = $id;
         
         return $this;
-    }
-
-    public function getSortID() {
-        return $this->sort_id;
     }
     
     public function getOmbudsmanUser() {
