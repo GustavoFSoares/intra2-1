@@ -18,10 +18,10 @@ class Ombudsman extends SoftdeleteAbstract
     protected $id;
 
     /**
-     *@Column(name="sortID", type="bigint", nullable=false)
+     * @Column(name="sort_id", type="bigint", length=20)
      */
-    protected $sortID;
-    
+    protected $sort_id;
+
     /**
      * @ManyToOne(targetEntity="OmbudsmanUser", cascade={"persist"})
      * @JoinColumn(name="paciente_id", referencedColumnName="id", nullable=true)
@@ -142,7 +142,7 @@ class Ombudsman extends SoftdeleteAbstract
     public function __construct($id = '', $origin = null) {
         parent::__construct();
         $this->id = $id;
-        $this->sortID = null;
+        $this->sort_id = null;
         $this->ombudsmanUser = null;
         $this->ombudsmanUserDescription = null;
         $this->ombudsmanUserSugestion = null;
@@ -175,7 +175,7 @@ class Ombudsman extends SoftdeleteAbstract
     }
 
     public function getSortID() {
-        return $this->sortID;
+        return $this->sort_id;
     }
     
     public function getOmbudsmanUser() {

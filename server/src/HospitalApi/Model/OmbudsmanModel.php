@@ -129,7 +129,7 @@ class OmbudsmanModel extends SoftdeleteModel
             ->from($this->entityPath, 'o')
             ->where("o.origin = :origin")
             ->setParameter('origin', $origin)
-            ->OrderBy('o.sortID', 'DESC')
+            ->OrderBy('o.sort_id', 'DESC')
             ->setMaxResults('1');
         return $select->getQuery()->getOneOrNullResult();
     }
