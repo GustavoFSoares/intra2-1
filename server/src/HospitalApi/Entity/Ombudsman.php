@@ -139,10 +139,9 @@ class Ombudsman extends SoftdeleteAbstract
      */
     protected $reportedBy;
 
-    public function __construct($id = '', $sortId = '', $origin = null) {
+    public function __construct($id = '', $origin = null) {
         parent::__construct();
         $this->id = $id;
-        $this->sort_id = $sortId;
         $this->ombudsmanUser = null;
         $this->ombudsmanUserDescription = null;
         $this->ombudsmanUserSugestion = null;
@@ -171,15 +170,6 @@ class Ombudsman extends SoftdeleteAbstract
     public function setId($id) {
         $this->id = $id;
         
-        return $this;
-    }
-
-    public function getSortId() {
-        return $this->sort_id;
-    }
-    public function setSortId($sortId) {
-        $this->sort_id = $sortId;
-
         return $this;
     }
     
