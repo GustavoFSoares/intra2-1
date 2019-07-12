@@ -125,7 +125,7 @@ export default {
             
                     this.loading.cancelingDocument = true
                     model.setLikeCanceled(this.document.id).then(res => {
-                        this.document.status = res
+                        this.setNewStatus(res)
                         this.loading.cancelingDocument = false
                     }).catch(err => {
                         this.loading.cancelingDocument = false
@@ -155,7 +155,7 @@ export default {
     },
     mounted() {
         this.loadValues()
-    },
+    }
 }
 </script>
 

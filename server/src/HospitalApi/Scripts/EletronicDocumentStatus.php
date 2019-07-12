@@ -7,7 +7,7 @@ $model = new eletronicDocumentStatusModel();
 
 if(!$model->findBy()){
     $eletronicDocumentStatus = [
-        [ 'id' => 'calceled',           'order' => 0, 'name' => 'Cancelado'],
+        [ 'id' => 'canceled',           'order' => 0, 'name' => 'Cancelado'],
         [ 'id' => 'draft',              'order' => 1, 'name' => 'Rascunho'],
         [ 'id' => 'sending',               'order' => 2, 'name' => 'Enviado'],
         [ 'id' => 'waiting-signature',  'order' => 3, 'name' => 'Aguardado Validação'],
