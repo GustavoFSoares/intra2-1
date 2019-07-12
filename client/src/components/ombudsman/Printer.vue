@@ -65,7 +65,7 @@ export default {
     methods: {
         open(type) {
             if(type == 'newFolder') {
-                this.$refs.newFolder.show()
+                this.$refs.newFolder.show();
             } else {
                 this.$refs.olderOmbudsman.show()
             }
