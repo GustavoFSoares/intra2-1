@@ -71,7 +71,11 @@ export default {
             }
         },
         doPrint() {
-            window.open(`${window.globals.API_SERVER}/ombudsman/doc/reprint/?id=${this.ombudsman.id}&user_id=${this.$session.get('user').id}`, '_target')
+            if(this.ombudsman.id) {
+                window.open(`${window.globals.API_SERVER}/ombudsman/doc/reprint/?id=${this.ombudsman.id}&user_id=${this.$session.get('user').id}`, '_target')
+            }else{
+                alert("Escolha uma ouvidoria!")
+            }
         },
         exportFile() {
             if ( this.doc.origin.id != null ) {
