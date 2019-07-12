@@ -14,6 +14,7 @@ if(!$model->findBy()){
         [ 'id' => 'waiting-correction', 'order' => 4, 'name' => 'Aguardado Retificação'],
         [ 'id' => 'revoked',            'order' => 5, 'name' => 'Revogado'],
         [ 'id' => 'finished',           'order' => 6, 'name' => 'Finalizado'],
+        [ 'id' => 'archived',           'order' => 7, 'name' => 'Arquivado'],
      ];
     
     foreach ($eletronicDocumentStatus as $status) {
