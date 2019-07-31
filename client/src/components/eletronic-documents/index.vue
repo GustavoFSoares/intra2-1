@@ -272,8 +272,21 @@ export default {
             documents = documents.filter(document => {
                 if( this.filter.inbox ) {
                     // Se inbox = true | eu não sou criador
-                    if(document.user.id != this.user.id) {
-                        return document
+                    if(document.user.id !== this.user.id) {
+                        if(document.nextSignature == '' || document.nextSignature === this.user.id){
+                            //se todos já assinaram ou se é a vez do usuario da sessao assinar
+                            return document
+                        }else{
+                            //se usuário da sessão já assinou mas o documento ainda não está finalizado
+                            var i = 1;
+                            while(document.signatureList[i-1].user.id != this.user.id && document.signatureList[i-1]) {
+                                i++
+                            }
+                            if(document.signatureList[i-1].user.id == this.user.id && document.signatureList[i-1].signed == true) {
+                                return document
+                            }
+                            
+                        }
                     }
                 } else {
                     // Se não, eu não sou criador

@@ -168,11 +168,11 @@ class EletronicDocumentModel extends SoftdeleteModel
     }
 
     public function showForJustWhoCanSee() {
+        
         $subquery = $this->em->createQueryBuilder();
         $subquery->select('userSignature')
             ->from('HospitalApi\Entity\EletronicDocumentSignature', 'signature')
             ->innerJoin('HospitalApi\Entity\User', 'userSignature', 'WITH', 'userSignature = signature.user')
-            // ->where('signature.signed = 0')
             ->groupBy('signature._document')
             ->orderBy('signature.order', 'ASC');
         
@@ -183,11 +183,9 @@ class EletronicDocumentModel extends SoftdeleteModel
             ->leftJoin("HospitalApi\Entity\EletronicDocumentSignature", 'eds', 'WITH', 'eds._document = ed')
             ->leftJoin("eds.user", 'us', 'WITH', 'u = :user OR us = :user')
             ->where( $select->expr()->eq( 'us', $select->expr()->any( $subquery->getDQL() )) )
-            // ->andwhere('eds.signed = 0')
-            // ->andwhere( $select->expr()->in('ed.status', $this->_alowedStatusToSign) )
             ->orwhere('u = :user')
-            ->setParameter('user', $this->getSession() )
-            ->andWhere('ed.c_removed = 0');
+            ->andWhere('ed.c_removed = 0')
+            ->setParameter("user", $this->getSession());
         return $select;
     }
 

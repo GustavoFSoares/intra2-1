@@ -25,6 +25,11 @@ class EletronicDocument extends SoftdeleteAbstract
     protected $user;
 
     /**
+     * @Column(name="prox_assinatura", type="string")
+     */
+    protected $nextSignature;
+
+    /**
      * @ManyToOne(targetEntity="EletronicDocumentType")
      * @JoinColumn(name="tipo_id", referencedColumnName="id")
      */
@@ -90,6 +95,7 @@ class EletronicDocument extends SoftdeleteAbstract
     public function __construct() {
         $this->id = 0;
         $this->user = '';
+        $this->nextSignature = '';
         $this->type = '';
         $this->status = null;
         $this->signatureList = new ArrayCollection();
@@ -120,6 +126,15 @@ class EletronicDocument extends SoftdeleteAbstract
     public function setUser($user) {
         $this->user = $this->getRepositoryOf('User', $user);
         
+        return $this;
+    }
+
+    public function getNextSignature() {
+        return $this->nextSignature;
+    }
+    public function setNextSignature($nextSignature) {
+        $this->nextSignature = $nextSignature;
+
         return $this;
     }
 
@@ -191,7 +206,6 @@ class EletronicDocument extends SoftdeleteAbstract
     }
     
     public function setGroupList($signatureList) {
-        // $this->signatureList = new ArrayCollection($signatureList);
 
         return $this;
     }

@@ -5,6 +5,7 @@ export default class EletronicDocument {
         this.id = eletronicDocument.id ? eletronicDocument.id : this.getId()
         this.subject = eletronicDocument.subject
         this.user = eletronicDocument.user
+        this.nextSignature = eletronicDocument.nextSignature
         this.type = eletronicDocument.type
         this.status = eletronicDocument.status
         this.archived = eletronicDocument.archived ? true : false
