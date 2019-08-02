@@ -17,16 +17,16 @@
 
                     <div class="status-buttons row">
                         <button class="status-button button btn btn-outline-danger btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='URGENTE' }" @click="filtering('URGENTE', 'relevance')">
-                            Urgente <icon icon="angry"/>
+                            Urgente <icon icon="exclamation-triangle"/>
                         </button>
                         <button class="status-button button btn btn-outline-warning btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='ALTA' }" @click="filtering('ALTA', 'relevance')">
-                            Alta <icon icon="tired"/>
+                            Alta <icon icon="frown"/>
                         </button>
                         <button class="status-button button btn btn-outline-success btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='MÉDIA' }" @click="filtering('MÉDIA', 'relevance')">
                             Média <icon icon="meh"/>
                         </button>
                         <button class="status-button button btn btn-outline-info btn-lg mb-3" v-bind:class="{ 'active': filter.relevance=='BAIXA' }" @click="filtering('BAIXA', 'relevance')">
-                            Baixa <icon icon="laugh"/>
+                            Baixa <icon icon="smile"/>
                         </button>
                     </div>
 
@@ -68,7 +68,7 @@
                     <th scope="col">Ouvidor</th>
                     <th scope="col">Demandas</th>
                     <th scope="col">Relatado por:</th>
-                    <th scope="col">Nome do Paciênte</th>
+                    <th scope="col">Nome do Paciente</th>
                     <th scope="col">Relevância:</th>
                     <th scope="col">Registrado em:</th>
                     <th scope="col"></th>
@@ -221,7 +221,7 @@ export default {
     },
     computed: {
         searchList() {
-            if(this.filter.text) {
+            if(this.filter.text != '') {
                 let exp = new RegExp(this.filter.text.trim(), 'i')
                 
                 let list = ''
