@@ -50,8 +50,6 @@
                                 <row>
                                     <add-and-remove-users v-model="document.signatureList" title="Lista de Responsáveis"/>
                                 </row>
-                                <!-- <hr>
-                                <add-and-remove-groups v-model="document.groupList"/> -->
                             </box>
                         </row>
 

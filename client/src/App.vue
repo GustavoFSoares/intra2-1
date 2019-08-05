@@ -200,10 +200,6 @@ export default {
         }
     }
 
-    div {
-        /* outline: 1px dotted gray; */
-    }
-
     .fade.alert, .vue-tooltip {
         z-index: 2000;
     }
