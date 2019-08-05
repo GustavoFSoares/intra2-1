@@ -48,8 +48,6 @@
                                 <row>
                                     <add-and-remove-users v-model="document.signatureList" title="Lista de Responsáveis"/>
                                 </row>
-                                <!-- <hr>
-                                <add-and-remove-groups v-model="document.groupList"/> -->
                             </box>
                         </row>
                     </box>
@@ -85,6 +83,7 @@
         <modal ref="modal" :disabled="sending || !anyOneBeCare" :submit_method="submit" title="Assinatura de Documento" submitlabel="Enviar" >
             <sign-document :id="id" v-model="document" title="Assinar Documento" ref="sign_document" :show="constructModal" @anyOneBeCare="hasAnyOneBeCare"/>
         </modal>
+        
     </div>
 </template>
 

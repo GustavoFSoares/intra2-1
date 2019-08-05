@@ -25,12 +25,6 @@
 
                         <text-editor class="text-editor" v-model="amendment.text" ref="txt"/>
                     </box>
-
-                    <box>
-                        <row label='Usuário Responsável'>
-                            <v-select v-model="amendment.signatureUsers" :multiple="true" label="name" :options="usersForSignature"/>
-                        </row>
-                    </box>
                 </box>
 
             </rows>
