@@ -22,10 +22,11 @@
             </div>
         </div>
     </div>
-
 </template>
+
 <script>
 import $ from "jquery";
+
 export default {
     props: {
         title: String,
