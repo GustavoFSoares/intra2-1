@@ -1,7 +1,7 @@
 <template>
     <div id="text-editor-component">
         <div id="text-editor-box" :style="{ 'max-width': width, 'min-height': height }">
-            <div id="text-js-editor"> </div>
+            <div id="text-js-editor" :style="{ 'min-height': height }"> </div>
         </div>
     </div>
 </template>
@@ -83,9 +83,6 @@ export default {
     
     #text-editor-box {
         text-align: center;
-        /* width: 680px; */
-        /* min-height: 450px; */
-
         display: flex;
         flex-direction: column;
     }

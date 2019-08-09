@@ -21,9 +21,6 @@
                                 <require-text :error="errors.has('EletronicDocument-Subject')" :text="errors.first('EletronicDocument-Subject')"/>
                             </row>
 
-                            <row label='Tipo'>
-                                <v-select :disabled="true" label="name" v-model="document.type" :options="values.types"></v-select>
-                            </row>
                         </box>
                         <row>
                             <box>

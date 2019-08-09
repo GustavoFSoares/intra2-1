@@ -22,6 +22,9 @@
                             </row>
 
                             <row label='Tipo'>
+                                <box class="box-aviso" style="">
+                                    <icon icon="exclamation" /><p>Novo tipo de documento: Comunicação Interna.</p>
+                                </box>
                                 <v-select :disabled="false" label="name" v-model="document.type" :options="values.types"></v-select>
                             </row>
 
@@ -33,11 +36,11 @@
                                     Para criar sua lista de envio para os responsáveis que devem autorizar
                                     o documento basta seguir o passo a passo:
                                     <ul class="alert-list">
-                                        <li>Pesquiar na barra de pesquisa nome completo ou parcial do responsável;</li>
+                                        <li>Pesquisar na barra de pesquisa nome completo ou parcial do responsável;</li>
                                         <li>
                                             Após os resultados da pesquisa serem exibidos, selecione o responsável;
                                             <fieldset>
-                                                <i>OBS: Lembre-se, a ordem de autorização é obedecida conforme as posições
+                                                <i>OBS: Lembre-se, em documentos do tipo 'Memorando' a ordem de autorização é obedecida conforme as posições
                                                     dos usuários na lista
                                                 </i>
                                             </fieldset>
@@ -217,5 +220,14 @@ export default {
                 font-weight: bold;
             }
         }
+    }
+    .box-aviso {
+        width: fit-content;
+        background-color: #b3d9ff;
+    }
+    .box-aviso p {  
+        display: inline;
+        padding-left: 1em;
+        font-weight: bold;
     }
 </style>
