@@ -37,7 +37,6 @@ export default {
                 {name: "Ramais", link:"/ramais", externalLink: false },
                 {name: "Arquivos", link:"/archives", externalLink: false },
                 {name: "POPS", link:"/pops", externalLink: false },
-                {name: "Institucional", link:"http://gamp-web/?tela=institucional", externalLink: true },
                 {name: "Comissões", link:"/comissions", externalLink: false },
             ],
         }
