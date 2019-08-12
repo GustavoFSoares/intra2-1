@@ -24,10 +24,7 @@
                             <hr>
 
                             <row label='Tipo'>
-                                <v-select @change="setDescricao" :disabled="false" label="name" v-model="document.type" :options="values.types"></v-select>
-                                <ul style="margin-top: 1em;">
-                                    <li>{{ descricao }}</li>
-                                </ul>
+                                <v-select @change="setDescricao" :disabled="true" label="name" v-model="document.type" :options="values.types"></v-select>
                             </row>
 
                             <hr>
@@ -121,7 +118,7 @@ export default {
             constructModal: false,
             anyOneBeCare: false,
             block: false,
-            descricao: '',
+            /*descricao: '',*/
         }
     },
     methods: {
@@ -192,6 +189,8 @@ export default {
         hasAnyOneBeCare(val) {
             this.anyOneBeCare = val
         },
+        /*
+        SET DESCRIÇÃO DO TIPO
         setDescricao(tipo) {
             switch(tipo.code){
                 case "COMU":
@@ -201,7 +200,7 @@ export default {
                     this.descricao = "Documento é enviado conforme ordem das assinaturas."
                     break;
             }
-        }
+        }*/
     },
     mounted() {
         this.loadValues()
