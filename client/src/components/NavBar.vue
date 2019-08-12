@@ -35,7 +35,7 @@ export default {
             "screens": [
                 {name: "Convênios", link:"/convenios", externalLink: false },
                 {name: "Ramais", link:"/ramais", externalLink: false },
-                {name: "Arquivos", link:"http://gamp-web/?tela=arquivos", externalLink: true },
+                {name: "Arquivos", link:"/archives", externalLink: true },
                 {name: "POPS", link:"/pops", externalLink: false },
                 {name: "Institucional", link:"http://gamp-web/?tela=institucional", externalLink: true },
                 {name: "Comissões", link:"http://gamp-web/?tela=comissoes", externalLink: true },

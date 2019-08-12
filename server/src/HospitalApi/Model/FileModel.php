@@ -18,8 +18,11 @@ class FileModel extends BasicApplicationAbstract
     public $pops = DOCS."pots";
     public $ombudsman = DOCS."ouvidoria";
 
-    public function getFile($type, $fileName) {
-        
+    public function getFile() {
+        //FUNÇÃO RECEBIA $TYPE E $FILENAME
+        return \Helper\DirectoryHelper::getFilesArray($this->archives);
+
+        /*
         switch ($type) {
             case 'disease-notification':
                 $folder = "$this->archives/fichasDoencasNotificacaoCompulsoria/";
@@ -52,7 +55,8 @@ class FileModel extends BasicApplicationAbstract
         }
         $file = \Helper\DirectoryHelper::getFileInFolder($fileName, $folder);
         
-        return $file; 
+        return $file;
+        */
     }
     
     public function getPops() {

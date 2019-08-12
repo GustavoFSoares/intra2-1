@@ -20,6 +20,7 @@ import linkRoutes from './link-routes'
 import modulesRoutes from './modules-routes'
 import ombudsmanRoutes, { ombudsmanDemandsRoutes, ombudsmanOriginsRoutes } from './ombudsman-routes/'
 import popsRoutes from './pops-routes'
+import archivesRoutes from './archives-routes'
 import ramalsRoutes from './ramals-routes'
 import roomTrainingRoutes from './room-training-routes'
 import rotinesRoutes from './rotines-routes'
@@ -70,6 +71,7 @@ Routes.addRoutes(ombudsmanRoutes)
 Routes.addRoutes(ombudsmanDemandsRoutes)
 Routes.addRoutes(ombudsmanOriginsRoutes)
 Routes.addRoutes(popsRoutes)
+Routes.addRoutes(archivesRoutes)
 Routes.addRoutes(ramalsRoutes)
 Routes.addRoutes(roomTrainingRoutes)
 Routes.addRoutes(rotinesRoutes)

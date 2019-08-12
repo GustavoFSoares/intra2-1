@@ -47,6 +47,12 @@ class FileController extends ControllerAbstractLongEntity
         return $res->withJson($files);
     }
 
+    public function getArchivesAction($req, $res, $args) {
+        $files = $this->_getModel()->getFile();
+
+        return $res->withJson($files);
+    }
+
     public function checkFileExistAction($req, $res, $args) {
         $file = FILES.$req->getParam('partialPath');
         if( file_exists($file) ) {
