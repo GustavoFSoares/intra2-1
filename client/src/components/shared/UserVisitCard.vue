@@ -10,7 +10,7 @@
             </span>
             <div class="card-body">
                 <div class="row">
-                    <span class="col text-left" v-if="user.code">Matricula: {{ user.code }}</span>
+                    <span class="col text-left" v-if="user.code">{{ user.code }}</span>
                     <span class="col text-right" v-if="user.turn">Turno: {{ user.turn }}</span>
                 </div>
                 <div class="row">

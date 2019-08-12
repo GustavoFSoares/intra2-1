@@ -13,39 +13,38 @@
                         <row>
                             <visit-card :user="document.user"/>
                         </row>
-
-                        <box>
-                                
-                            <row label='Assunto'>
-                                <input class="form-control" v-model="document.subject" name="EletronicDocument-Subject" data-vv-as="Assunto" v-validate data-vv-rules="required" type="text">
-                                <require-text :error="errors.has('EletronicDocument-Subject')" :text="errors.first('EletronicDocument-Subject')"/>
-                            </row>
-
-                        </box>
+                        <hr>
+                        <row label='Assunto'>
+                            <input class="form-control" v-model="document.subject" name="EletronicDocument-Subject" data-vv-as="Assunto" v-validate data-vv-rules="required" type="text">
+                            <require-text :error="errors.has('EletronicDocument-Subject')" :text="errors.first('EletronicDocument-Subject')"/>
+                        </row>
+                        <hr>
+                        <row label='Tipo'>
+                            <v-select @change="setDescricao" :disabled="true" label="name" v-model="document.type" :options="values.types"></v-select>
+                        </row>
+                        <hr>
                         <row>
-                            <box>
-                                <info-icon id="info-icon" title="VAMOS COMEÇAR?" size="1" ref="infoIcon">
-                                    Para criar sua lista de envio para os responsáveis que devem autorizar
-                                    o documento basta seguir o passo a passo:
-                                    <ul class="alert-list">
-                                        <li>Pesquiar na barra de pesquisa nome completo ou parcial do responsável;</li>
-                                        <li>
-                                            Após os resultados da pesquisa serem exibidos, selecione o responsável;
-                                            <fieldset>
-                                                <i>OBS: Lembre-se, a ordem de autorização é obedecida conforme as posições
-                                                    dos usuários na lista
-                                                </i>
-                                            </fieldset>
-                                        </li>
-                                        <li>
-                                            Voce pode alterar as posições de envio clicando e arrastando para cima ou para baixo;
-                                        </li>
-                                    </ul>
-                                </info-icon>
-                                <row>
-                                    <add-and-remove-users v-model="document.signatureList" title="Lista de Responsáveis"/>
-                                </row>
-                            </box>
+                            <info-icon id="info-icon" title="VAMOS COMEÇAR?" size="1" ref="infoIcon">
+                                Para criar sua lista de envio para os responsáveis que devem autorizar
+                                o documento basta seguir o passo a passo:
+                                <ul class="alert-list">
+                                    <li>Pesquisar na barra de pesquisa nome completo ou parcial do responsável;</li>
+                                    <li>
+                                        Após os resultados da pesquisa serem exibidos, selecione o responsável;
+                                        <fieldset>
+                                            <i>OBS: Lembre-se, a ordem de autorização é obedecida conforme as posições
+                                                dos usuários na lista
+                                            </i>
+                                        </fieldset>
+                                    </li>
+                                    <li>
+                                        Voce pode alterar as posições de envio clicando e arrastando para cima ou para baixo;
+                                    </li>
+                                </ul>
+                            </info-icon>
+                            <row>
+                                <add-and-remove-users v-model="document.signatureList" title="Lista de Remetentes"/>
+                            </row>
                         </row>
                     </box>
                 </div>
@@ -211,5 +210,9 @@ export default {
                 font-weight: bold;
             }
         }
+    }
+    hr {
+        margin-top: 2em;
+        margin-bottom: 2em;
     }
 </style>

@@ -21,17 +21,18 @@
                                 <require-text :error="errors.has('EletronicDocument-Subject')" :text="errors.first('EletronicDocument-Subject')"/>
                             </row>
 
+                            <hr>
+
                             <row label='Tipo'>
-                                <box class="box-aviso" style="">
-                                    <icon icon="exclamation" /><p>Novo tipo de documento: Comunicação Interna.</p>
-                                </box>
-                                <v-select :disabled="false" label="name" v-model="document.type" :options="values.types"></v-select>
+                                <v-select @change="setDescricao" :disabled="false" label="name" v-model="document.type" :options="values.types"></v-select>
+                                <ul style="margin-top: 1em;">
+                                    <li>{{ descricao }}</li>
+                                </ul>
                             </row>
 
-                        </box>
+                            <hr>
 
-                        <row>
-                            <box>
+                            <row>
                                 <info-icon id="info-icon" title="VAMOS COMEÇAR?" size="1" ref="infoIcon">
                                     Para criar sua lista de envio para os responsáveis que devem autorizar
                                     o documento basta seguir o passo a passo:
@@ -51,10 +52,10 @@
                                     </ul>
                                 </info-icon>
                                 <row>
-                                    <add-and-remove-users v-model="document.signatureList" title="Lista de Responsáveis"/>
+                                    <add-and-remove-users v-model="document.signatureList" title="Lista de Remetentes"/>
                                 </row>
-                            </box>
-                        </row>
+                            </row>
+                        </box>
 
                     </box>
                 </div>
@@ -120,6 +121,7 @@ export default {
             constructModal: false,
             anyOneBeCare: false,
             block: false,
+            descricao: '',
         }
     },
     methods: {
@@ -189,6 +191,16 @@ export default {
         },
         hasAnyOneBeCare(val) {
             this.anyOneBeCare = val
+        },
+        setDescricao(tipo) {
+            switch(tipo.code){
+                case "COMU":
+                    this.descricao = "Documento é enviado a todos os remetentes escolhidos, sem necessidade de assinar."
+                    break;
+                default:
+                    this.descricao = "Documento é enviado conforme ordem das assinaturas."
+                    break;
+            }
         }
     },
     mounted() {
@@ -229,5 +241,9 @@ export default {
         display: inline;
         padding-left: 1em;
         font-weight: bold;
+    }
+    hr {
+        margin-top: 2em;
+        margin-bottom: 2em;
     }
 </style>

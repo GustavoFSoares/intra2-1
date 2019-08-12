@@ -5,7 +5,7 @@
         <row>
             <div class='row'>
                 <rows label='' class='col-md-8'>
-                    <input type="search" class="form-control" v-model="nameFinded"  placeholder="Nome Parcial:"/>    
+                    <input type="search" class="form-control" v-model="nameFinded"  placeholder="Nome:"/>    
                 </rows>
                 <rows label=''>
                     <button @click="findUserByName()" class="btn btn-outline-primary" :disabled="!canFind">
