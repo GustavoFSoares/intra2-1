@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid">
         
-        <div id = "carrosel">
-            <!-- <carosel :values="values.carrosel"/> -->
-        </div>
+        <!--<div id = "carrosel">
+            <carosel :values="values.carrosel"/>
+        </div>-->
         
         <div class="row grid-container">
             <div id="module">
@@ -26,7 +26,6 @@
 
 <script>
 import Carousel from "@/components/shared/Carousel.vue";
-// import ModuleList from "./Module-List.vue";
 import ModuleList from "@/components/modules/Panel.vue";
 import NotificationList from "./Notification-List.vue";
 import Schedule from "./Schedule.vue";

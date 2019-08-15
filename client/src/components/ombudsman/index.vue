@@ -98,7 +98,7 @@
                         <router-link :to='`ouvidoria/detalhe/${ombudsman.row.id}`'>
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
                         </router-link>
-                        <router-link :to='`ouvidoria/edit/${ombudsman.row.id}`' v-if="ombudsman.row.status!='finished' && gotPermission">
+                        <router-link :to='`ouvidoria/edit/${ombudsman.row.id}`' v-if="ombudsman.row.status != 'finished' && ombudsman.row.status != 'closed' && gotPermission">
                             <icon v-tooltip.top="'Editar'" icon="edit"/>
                         </router-link>
                         <router-link @click.native="remove(ombudsman.row.id, index)" to=""  v-if="ombudsman.row.status=='registered' && gotPermission">
