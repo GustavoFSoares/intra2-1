@@ -1,7 +1,7 @@
 {
   "name": "intra2",
   "version": "2.0.0",
-  "description": "Projeto para auxiliar nas tarefas administrativas diárivas",
+  "description": "Projeto para auxiliar nas tarefas administrativas diárias",
   "author": "Gustavo Soares <gustavo10.fsoares@gmail.com>",
   "private": true,
   "scripts": {

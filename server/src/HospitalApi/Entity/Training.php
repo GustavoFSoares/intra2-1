@@ -209,12 +209,4 @@ class Training extends SoftdeleteAbstract
 
         return $this;
     }
-
-    // public function _formatDate($date) {
-    //     $date = date("Y-m-d H:i:s", $date);
-    //     $date = \DateTime::createFromFormat("Y-m-d H:i:s", $date);
-
-    //     return $date;
-    // }
-
 }

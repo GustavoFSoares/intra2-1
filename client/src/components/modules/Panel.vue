@@ -1,9 +1,5 @@
 <template>
     <div>
-        <router-link @click.native="click" to=""> 
-            <icon id="icon" icon="arrow-circle-right" class="in"/>
-        </router-link>
-
         <div id="module-contents" class="list-group in">
             <router-link :to="routeName(module)" v-for="(module, index) in modules" :key="index" class="list-group-item list-group-item-action" data-toggle="collapse" :data-target="'#id-'+module.id" aria-expanded="true" :aria-controls="'id-'+module.id">
                 <icon :icon="module.icon"/> {{ module.name }}
@@ -31,10 +27,6 @@ export default {
         }
     },
     methods: {
-        click() {
-            $("#module-contents").toggleClass('in')
-            $("#icon").toggleClass('in')
-        },
         routeName: (mod) => mod.children ? "" : { name: mod.routeName }
     },
     mounted() {
@@ -44,15 +36,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    #icon {
-        color: black;
-        margin-left: 4px;
-        transition: all 0.5s ease;
-
-        &.in {
-            transform: rotate(90deg);
-        }
-    }
 
     #module-contents {
         transition: width 0.5s ease;
@@ -62,15 +45,11 @@ export default {
         white-space: nowrap;
         vertical-align: middle;
         line-height: 30px;
-        
         width: 0px;
         margin-left: 10px;
-
         max-width: 240px;
-
-        &.in {
-            width: 240px;
-        }
+        width: 240px;
+        
     }
 
     .chield-modules {

@@ -83,7 +83,7 @@
                 <div class="row">
                     <rows class="col-md-7">
                         <h5>{{ subtitles.date.day }}:</h5>
-                        <uiv-date-picker id="day" v-model="dateTraining"/>
+                        <uiv-date-picker id="day" v-model="dateTraining" />
                     </rows>
                     
                     <rows class="com-md-3">
@@ -148,7 +148,7 @@ import { FormRw, FormRws, Require, VueSelect } from "@/components/shared/Form";
 import model, { getter } from "@/model/training-model";
 const ModelGroupGetter = require("@/model/group-model").getter
 const ModelUserGetter = require("@/model/user-model").getter
-const ModelRoomTreining = require("@/model/room-training-model").getter
+const ModelRoomTraining = require("@/model/room-training-model").getter
 import Training from "@/entity/training";
 
 export default {
@@ -230,7 +230,7 @@ export default {
         loadValues() {
             ModelGroupGetter.getEnterprises().then(res => this.values.places = res)
             getter.getTrainingsType().then(res => this.values.trainingsType = res)
-            ModelRoomTreining.getRoomsTraining().then(res => this.values.roomTraining = res)
+            ModelRoomTraining.getRoomsTraining().then(res => this.values.roomTraining = res)
 
             if(this.isEdit()) {
                 getter.getTrainingById(this.id).then(res => {
@@ -272,7 +272,7 @@ export default {
         }, 
         removeInstructor(instructorIndex) {
             this.training.instructors.splice(instructorIndex, 1)
-        }
+        },
     },
     components: {
         'row': FormRw,

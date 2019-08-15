@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <h1>{{ title }}</h1>
-        
+
         <dir-tree :folder="archives" :filter="filter" class="mt-4"/>
     </div>
 </template>
