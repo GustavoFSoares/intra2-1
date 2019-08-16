@@ -9,4 +9,7 @@ server/public/.htaccess
 .vscode/launch.json
 server/files/
 server/src/HospitalApi/SpecialDataPermissions.yml
+<<<<<<< HEAD
 client/dist/static/img/links
+=======
+>>>>>>> 22202c091d276c48418d2748ead584a7078d6d1b
