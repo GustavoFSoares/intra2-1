@@ -9,4 +9,3 @@ server/public/.htaccess
 .vscode/launch.json
 server/files/
 server/src/HospitalApi/SpecialDataPermissions.yml
-client/static/img/links
