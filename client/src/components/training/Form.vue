@@ -37,7 +37,7 @@
                         <button id="filter-button" class="btn btn-outline-primary" @click="loadUsers()" :disabled="loading">
                             Buscar
                         </button>
-                        <icon v-if="loading" id="icon" icon="circle-notch" spin/> 
+                        <icon v-if="loading" id="icon" icon="circle-notch" spin/>
                     </div>
                 </div>
                 <div id="users-loaded" v-if="values.users.length">
@@ -71,10 +71,6 @@
             </div>
         </row>
 
-        <div class="row mt-3">
-            
-        </div>
-
         <div class="row">
             <rows id="times">
 
@@ -88,19 +84,18 @@
                     <rows class="com-md-3">
                         <row>
                             <h5 class="time-name">{{ subtitles.date.beginTime }}:</h5>
-                            <uiv-time-picker id="time" icon-control-up="glyphicon glyphicon-plus" icon-control-down="glyphicon glyphicon-minus" :show-meridian="false" v-model="training.beginTime"/>
+                            <uiv-time-picker :min-step="5" id="time" icon-control-up="glyphicon glyphicon-chevron-up" icon-control-down="glyphicon glyphicon-chevron-down" :show-meridian="false" v-model="training.beginTime"/>
                         </row>
 
                         <row>
                             <h5 class="time-name">{{ subtitles.date.endTime }}:</h5>
-                            <uiv-time-picker id="time" icon-control-up="glyphicon glyphicon-plus" icon-control-down="glyphicon glyphicon-minus" :show-meridian="false" v-model="training.endTime"/>
+                            <uiv-time-picker :min-step="5" id="time" icon-control-up="glyphicon glyphicon-chevron-up" icon-control-down="glyphicon glyphicon-chevron-down" :show-meridian="false" v-model="training.endTime"/>
                         </row>
                     </rows>
-
                 </div>
             </rows>
             
-            <rows label=''>
+            <rows>
 
                 <h5>{{ subtitles.place.title }}</h5>
                 <row :label="subtitles.place.enterprise">
@@ -268,7 +263,7 @@ export default {
                 this.instructorSelected = ''
                 this.values.users = ''
             }
-        }, 
+        },
         removeInstructor(instructorIndex) {
             this.training.instructors.splice(instructorIndex, 1)
         },

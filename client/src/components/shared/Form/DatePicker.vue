@@ -81,7 +81,6 @@ export default {
         loadValues() {
             $(`#${this.$props.id}`).daterangepicker({ 
                 "startDate": moment.now(),
-                // "endDate": moment.now(),
                 "autoApply": true,
                 "autoUpdateInput": true,
                 "alwaysShowCalendars": true,
