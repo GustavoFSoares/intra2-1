@@ -83,9 +83,9 @@ export default {
         },
         changeStatus(link) {
             model.changeStatus(link).catch( err => {
-                    Alert.Confirm(this.alert.info)
-                    link.active = !link.active
-                })
+                Alert.Confirm(this.alert.info)
+                link.active = !link.active
+            })
         }
     },
     mounted() {

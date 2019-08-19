@@ -63,7 +63,6 @@
                                     </span>
                                     <br><hr>
                                 </div>
-                                
                             </span>
                         </div>
 
@@ -83,7 +82,7 @@
                 <div class="row">
                     <rows class="col-md-7">
                         <h5>{{ subtitles.date.day }}:</h5>
-                        <uiv-date-picker id="day" v-model="dateTraining" />
+                        <uiv-date-picker id="day" v-model="dateTraining"/>
                     </rows>
                     
                     <rows class="com-md-3">
@@ -91,7 +90,7 @@
                             <h5 class="time-name">{{ subtitles.date.beginTime }}:</h5>
                             <uiv-time-picker id="time" icon-control-up="glyphicon glyphicon-plus" icon-control-down="glyphicon glyphicon-minus" :show-meridian="false" v-model="training.beginTime"/>
                         </row>
-                        
+
                         <row>
                             <h5 class="time-name">{{ subtitles.date.endTime }}:</h5>
                             <uiv-time-picker id="time" icon-control-up="glyphicon glyphicon-plus" icon-control-down="glyphicon glyphicon-minus" :show-meridian="false" v-model="training.endTime"/>
@@ -201,14 +200,14 @@ export default {
     methods: {
         isValidForm() {
             this.$validator.validateAll().then(success => success ? this.submit():"")
-        },      
+        },
         submit() {
             let training = model.mount(this.training, this.dateTraining)
             this.sending = true
             
             if(this.isEdit(this.id)){
                 model.doUpdate(this.id, training).then(res => {
-                    this.$alert.success('Treinamento Atualizado')
+                    this.$alert.success('Treinamento Atualizado. Lembre-se de marcá-lo como realizado ao final do processo!')
                     this.$router.go('-1')
                     this.sending = false
                 }, err => {
@@ -218,7 +217,7 @@ export default {
 
             } else {
                 model.doInsert(training).then(res => {
-                    this.$alert.success('Treinamento Inserido')
+                    this.$alert.success('Treinamento Inserido. Lembre-se de marcá-lo como realizado ao final do processo!')
                     this.$router.go('-1')
                     this.sending = false
                 }, err => {
