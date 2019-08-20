@@ -5,7 +5,11 @@
         <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'hht/add'}" tag="button">
             Cadastrar Treinamento
         </router-link>
-
+        <box class="reminder">
+            <div>
+                Lembre-se de marcar o treinamento como realizado ao final do processo!
+            </div>
+        </box>
         <table v-if="trainings" class="table table-striped">
             <thead>
                 <tr>
@@ -114,6 +118,14 @@ export default {
 
     .modal-header {
         display: block;
+    }
+    .reminder {
+        background-color: yellow;
+        width: fit-content;
+        font-weight: bold;
+        font-size: 1em;
+        margin: 0 auto;
+        margin-top: 1rem;
     }
 </style>
 
