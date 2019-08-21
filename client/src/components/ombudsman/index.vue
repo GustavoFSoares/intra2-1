@@ -68,9 +68,9 @@
                     <th scope="col">Ouvidor</th>
                     <th scope="col">Demandas</th>
                     <th scope="col">Relatado por:</th>
-                    <th scope="col">Nome do Paciente</th>
                     <th scope="col">Relevância:</th>
                     <th scope="col">Registrado em:</th>
+                    <th scope="col">Prazo:</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -91,9 +91,9 @@
                         </div>
                     </td>
                     <td>{{ ombudsman.row.reportedBy }}</td>                    
-                    <td>{{ ombudsman.row.ombudsmanUser.patientName.substr(0, 15) }}</td>                    
                     <td>{{ ombudsman.row.relevance }}</td>                    
                     <td>{{ ombudsman.row.registerTime.date | humanizeDate }}</td>
+                    <td>{{ getPrazo(ombudsman) }}</td>
                     <td>
                         <router-link :to='`ouvidoria/detalhe/${ombudsman.row.id}`'>
                             <icon v-tooltip.top="'Detalhe'" class="text-warning" icon="search"/>
@@ -200,13 +200,32 @@ export default {
                 this.filter[type] = filter
             }
         },
+        getPrazo(ombudsman) {
+            let date = new Date(ombudsman.row.registerTime.date)
+            this.prazo = new Date(date)
+            switch(ombudsman.row.relevance) {
+                case "Média":
+                    this.prazo.setDate(date.getDate() + 15)
+                    break;
+                case "Alta":
+                    this.prazo.setDate(date.getDate() + 5)
+                    break;
+                case "Urgente":
+                    this.prazo.setDate(date.getDate() + 1)
+                    break;
+                default:
+                    this.prazo.setDate(date.getDate() + 30)
+                    break;
+            }
+            return this.prazo.toLocaleString()
+        }
     },
     created() {
-        this.socket = new Socket(`om`, this.user)
+       //this.socket = new Socket(`om`, this.user)
     },
     mounted() {
         getter.getOmbudsmansReported().then(res => { this.ombudsmans = res; this.loaded = true; })        
-        this.socket.io.on(`om`, (message) => {
+        /*this.socket.io.on(`om`, (message) => {
             message.id = message.id.substr(2)
             
             if( !this.socket.isYou(message.user) ) {
@@ -217,7 +236,7 @@ export default {
                     }
                 })
             }
-        });
+        });*/
     },
     computed: {
         searchList() {
