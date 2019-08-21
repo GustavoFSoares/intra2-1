@@ -84,12 +84,12 @@
                     <rows class="com-md-3">
                         <row>
                             <h5 class="time-name">{{ subtitles.date.beginTime }}:</h5>
-                            <uiv-time-picker :min-step="5" id="time" icon-control-up="glyphicon glyphicon-chevron-up" icon-control-down="glyphicon glyphicon-chevron-down" :show-meridian="false" v-model="training.beginTime"/>
+                            <uiv-time-picker :min-step="5" id="time" :show-meridian="false" v-model="training.beginTime" />
                         </row>
 
                         <row>
                             <h5 class="time-name">{{ subtitles.date.endTime }}:</h5>
-                            <uiv-time-picker :min-step="5" id="time" icon-control-up="glyphicon glyphicon-chevron-up" icon-control-down="glyphicon glyphicon-chevron-down" :show-meridian="false" v-model="training.endTime"/>
+                            <uiv-time-picker :min-step="5" id="time" :show-meridian="false" v-model="training.endTime"/>
                         </row>
                     </rows>
                 </div>
@@ -266,7 +266,7 @@ export default {
         },
         removeInstructor(instructorIndex) {
             this.training.instructors.splice(instructorIndex, 1)
-        },
+        }
     },
     components: {
         'row': FormRw,
@@ -290,7 +290,7 @@ export default {
             }
             return false
         },
-        workload: function() {
+        workload: function() {      
             let diff = Math.abs(this.training.beginTime - this.training.endTime) / 36e5;
         
             this.training.beginTime.setSeconds(0)
@@ -303,7 +303,7 @@ export default {
             this.training.workload = workload.total
 
             return workload
-        }
+        },
     }
 }
 </script>
