@@ -1,7 +1,7 @@
 export default class Access {
         constructor() {
             this.id = null
-            this.path = ''
+            this.path = ""
             this.permissions = [ ]
         }
         
