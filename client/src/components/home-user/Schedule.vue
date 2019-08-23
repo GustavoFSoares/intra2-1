@@ -58,3 +58,9 @@ export default {
 }
 </script>
 
+<style lang="scss">
+    thead {
+        background-color: #e3f2fd;
+        
+    }
+</style>
