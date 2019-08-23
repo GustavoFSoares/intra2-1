@@ -2,7 +2,7 @@
   "name": "intra2",
   "version": "2.0.0",
   "description": "Projeto para auxiliar nas tarefas administrativas diárias",
-  "author": "Gustavo Soares <gustavo10.fsoares@gmail.com>, Bruno Souza <brunosouza22397@gmail.com>",
+  "author": "Gustavo Soares <gustavo10.fsoares@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
