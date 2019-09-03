@@ -27,6 +27,7 @@ import roomTrainingRoutes from './room-training-routes'
 import rotinesRoutes from './rotines-routes'
 import trainingRoutes from './training-routes'
 import userRoutes from './user-routes'
+import cardapioRoutes from './cardapio-routes'
 
 import Access from "@/entity/Access";
 
@@ -79,6 +80,7 @@ Routes.addRoutes(roomTrainingRoutes)
 Routes.addRoutes(rotinesRoutes)
 Routes.addRoutes(trainingRoutes)
 Routes.addRoutes(userRoutes)
+Routes.addRoutes(cardapioRoutes)
 
 Routes.beforeEach((to, from, next) => {
     const Session = (window.sessionStorage.getItem('vue-session-key') != '{}') ?

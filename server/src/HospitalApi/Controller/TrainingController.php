@@ -18,10 +18,10 @@ class TrainingController extends ControllerAbstractLongEntity
 
         return $res->withJson($data);
     }
-    
+
     public function isDone($req, $res, $args) {
         $id = $args['id'];
-        
+
         $return = $this->getModel()->isDone($id);
         return $res->withJson($return);
     }

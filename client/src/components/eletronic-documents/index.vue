@@ -1,12 +1,5 @@
 <template>
     <div class="container-fluid">
-        <!-- <div id="universal" v-bind:class="{ 'show':showUniversal && show.completList }">
-            <div class="universal-container">
-                <div class="img">
-                    <img src="https://pngimage.net/wp-content/uploads/2018/06/logo-da-iurd-png-5.png">
-                </div>
-            </div>
-        </div> -->
         <h1>{{ title }}</h1>
 
         <row :text_left="false">

@@ -53,7 +53,7 @@ class OmbudsmanModel extends SoftdeleteModel
         return $values;
     }
 
-     public function findBy($filter) {
+    public function findBy($filter) {
         $select = $this->em->createQueryBuilder();
         $select->select([
                 'o as row',
