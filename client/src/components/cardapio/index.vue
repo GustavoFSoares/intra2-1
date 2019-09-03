@@ -2,9 +2,11 @@
     <div class="container-fluid">
         <h1>Cardápio Online</h1>
 
-        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'cardapio/'}" tag="button" v-if="gotPermission">
+        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'cardapio/add/'}" tag="button" v-if="gotPermission">
             Cadastrar Refeições
         </router-link>
+
+        <hr>
 
         <div>
             <h2>{{ dia[0] }}</h2>
@@ -29,19 +31,29 @@ export default {
             menu: [],
             almoco: '',
             jantar: '',
-            permission: 'undefined',
+            permission: ['bruno.souza', 'testeintra'],//controla quem pode visualizar botão de cadastrar
+            user: $session.get('user'),
         }
     },
     mounted() {
         getter.getCardapioMenu().then( res => {this.menu = res})
     },
     computed: {
+        /**
+         * Controla visualização do botao de cadastro.
+         * Se usuario esta logado
+         * compara id do user com lista de permissões 
+         **/
         gotPermission() {
-            if(this.permission == 'undefined') {
-                model.gotPermission().then(permission => { this.permission = permission; } )
-            } else {
-                return (this.permission != 'USER' && this.permission) ? true : false
+            if (this.user){
+                for (var i=0; i<this.permission.length;i++) {
+                    if (this.user.id == this.permission[i]) {
+                        return true;
+                    }
+                }
+                return false;
             }
+            return false;
         }
     }
 }
