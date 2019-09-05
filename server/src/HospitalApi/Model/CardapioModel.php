@@ -26,16 +26,18 @@ class CardapioModel extends SoftdeleteModel
         return $values;
     }
 
+    public getMeal($values) {
+        
+    }
+
     public function getNextMeal() {
-        $date = new DateTime();
-        $date->format('Y-m-d');
 
         $query = $this->em->createQueryBuilder();
         $query->select('c')
             ->from('HospitalApi\Entity\Cardapio', 'c')
             ->where('c.data = :today')
             ->setMaxResults('2')
-            ->setParameter('today', '2019-09-02');
+            ->setParameter('today', date("Y-m-d", time()));
         return $query->getQuery()->getResult();
     }
 }

@@ -56,7 +56,6 @@ export default {
         return {
             id: this.$route.params.id,
             itens: [],
-            dateCardapio: new Date(),
             turno: 'ALMOÇO',
             cardapio: new Cardapio(),
             sending: false,
@@ -76,7 +75,7 @@ export default {
         },
         submit() {
             this.setListaItens()
-            let cardapio = model.mount(this.cardapio, this.dateCardapio)
+            let cardapio = model.mount(this.cardapio)
             this.sending = true
 
             if(this.isEdit()) {
