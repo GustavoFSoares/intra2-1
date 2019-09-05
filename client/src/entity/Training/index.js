@@ -3,7 +3,7 @@ export default class Training {
     constructor(training = { place: '', enterprise: '', room: '' }) {
         this.id = training.id
         this.name = training.name
-        this.place = { 
+        this.place = {
             group: training.enterprise ? { 'enterprise': training.enterprise } : training.enterprise,
             room: training.room
         }

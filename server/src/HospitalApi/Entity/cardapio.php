@@ -19,7 +19,7 @@ class Cardapio extends EntityAbstract
     protected $id;
 
     /**
-     * @var Date @Column(name="data", type="datetime", options={ "default": "CURRENT_TIMESTAMP" })
+     * @var Date @Column(name="data", type="date", nullable=true)
      */
     protected $data;
 
@@ -37,6 +37,7 @@ class Cardapio extends EntityAbstract
         parent::__construct();
         $this->id = $id;
         $this->data = new \DateTime();
+        $this->data->format('Y-m-d');
         $this->refeicao = 'ALMOÇO';
         $this->cardapio = null;
     }

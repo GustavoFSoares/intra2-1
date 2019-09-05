@@ -206,7 +206,7 @@ export default {
                     this.$router.go('-1')
                     this.sending = false
                 }, err => {
-                    this.$alert.danger('Erro ao Atualizado')
+                    this.$alert.danger('Erro ao Atualizar')
                     this.sending = false
                 })
 
