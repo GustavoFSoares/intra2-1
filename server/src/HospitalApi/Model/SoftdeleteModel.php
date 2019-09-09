@@ -42,7 +42,7 @@ abstract class SoftdeleteModel extends ModelAbstract
         
         return $collection;
     }
-
+    
     public function doUpdate($obj) {
         if( method_exists($obj, 'setC_removed') ) {
             $obj->setC_removed($obj->isRemoved() ? true : false);

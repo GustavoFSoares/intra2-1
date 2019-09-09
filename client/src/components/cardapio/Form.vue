@@ -29,7 +29,7 @@
             
             <ul>
                 <li v-for="(item, index) in itens">
-                    <input type="text" v-model="item.one">
+                    <input v-model.trim="item.one">
                     <button class="button btn" @click="deleteItem(index)"><icon icon="minus"/></button>
                 </li>
             </ul>
@@ -78,12 +78,12 @@ export default {
             this.sending = true
 
             if(this.isEdit()) {
-                model.doUpdate(this.id, cardapio).then(res => {
+                model.doUpdate(this.cardapio).then(res => {
                     this.$alert.success("Cardapio Atualizado")
                     this.$router.go("-1")
                     this.sending = false
                 }, err => {
-                    this.$alert.danger("Erro ao Atualizar")
+                    this.$alert.danger("Erro ao Atualizar: " + err)
                     this.cardapio.cardapio = undefined
                     this.sending = false
                 })
@@ -93,7 +93,7 @@ export default {
                     this.$router.go(-1)
                     this.sending = false
                 }, err => {
-                    this.$alert.danger("Erro ao Inserir")
+                    this.$alert.danger("Erro ao Inserir: " + err)
                     this.cardapio.cardapio = undefined
                     this.sending = false
                 })
@@ -109,9 +109,27 @@ export default {
             let i = 0
             this.cardapio.cardapio = this.itens[i].one
             for(i = 1;i<this.itens.length;i++){
-                this.cardapio.cardapio = this.cardapio.cardapio + "\n" + this.itens[i].one
+                this.cardapio.cardapio = this.cardapio.cardapio + "&" + this.itens[i].one
+            }
+        },
+        loadValues() {
+            if(this.id) {
+                this.sending = true
+                getter.getCardapioById(this.id).then( res => {
+                    this.cardapio = new Cardapio(res)
+                    let itemArray = this.cardapio.cardapio.split('&')
+                    let i
+                    for(i = 0; i < itemArray.length ; i++) {
+                        this.itens.push({one: itemArray[i]})
+                    }
+
+                    this.sending = false
+                })
             }
         }
+    },
+    mounted() {
+        this.loadValues()
     },
     components: {
         'row': FormRw,

@@ -12,6 +12,11 @@ class CardapioController extends ControllerAbstractLongEntity
         parent::__construct(new CardapioModel());
     }
 
+    public function update($req, $res, $args) {
+        $response = parent::update($req, $res, $args);
+        return $response;
+    }
+
     public function getNextMeal($req, $res, $args) {
         $collection = $this->getModel()->getNextMeal();
         $data = $this->translateCollection($collection);

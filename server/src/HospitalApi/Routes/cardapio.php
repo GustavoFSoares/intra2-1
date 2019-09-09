@@ -6,6 +6,7 @@ use Doctrine\DBAL\Driver\PDOException;
 $app->group('/cardapio', function () {
     $this->get('/menu/', "HospitalApi\Controller\CardapioController:getNextMeal", function (Request $req, Response $res, array $args) { });
     $this->get('/get/', "HospitalApi\Controller\CardapioController:getCardapios", function(Request $req, Response $res, array $args) { });
+    $this->get('[/{params:.*}]', "HospitalApi\Controller\CardapioController:get", function(Request $req, Response $res, array $args) { });
 
     $this->post('/', "HospitalApi\Controller\CardapioController:insert", function (Request $req, Response $res, array $args) { });
 

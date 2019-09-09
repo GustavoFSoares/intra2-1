@@ -22,7 +22,7 @@
                     <td>{{ cardapio.refeicao }}</td>
                     <td>{{ cardapio.cardapio }}</td>
                     <td>
-                        <a href="" @click.stop.prevent="$router.push(`cardapio/edit/${cardapio.id}`)">
+                        <a href="" @click.stop.prevent="$router.push(`edit/${cardapio.id}`)">
                             <icon v-tooltip.top="'Editar'" icon="edit" />
                         </a>
                     </td>

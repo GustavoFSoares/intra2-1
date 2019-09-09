@@ -45,4 +45,13 @@ class CardapioModel extends SoftdeleteModel
         return $select->getQuery()->getResult();
 
     }
+
+    public function findById($id) {
+        $select = $this->em->createQueryBuilder();
+        $select->select('c')
+            ->from($this->getEntityPath(), 'c')
+            ->where('c.id = :id')
+            ->setParameter('id', $id);
+        return $select->getQuery()->getOneOrNullResult();
+    }
 }

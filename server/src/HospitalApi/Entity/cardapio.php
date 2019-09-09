@@ -8,7 +8,7 @@ use DateTime;
  * @Table(name="cardapio")
  * <b>Cardapio</b>
  */
-class Cardapio extends EntityAbstract 
+class Cardapio extends SoftDeleteAbstract 
 {
 
     /**
@@ -32,6 +32,8 @@ class Cardapio extends EntityAbstract
      * @var String @Column(name="cardapio", type="string", length=450, nullable=true)
      */
     protected $cardapio;
+
+
 
     public function __construct($id = '') {
         parent::__construct();

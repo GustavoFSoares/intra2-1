@@ -3,11 +3,12 @@ import service from "@/services/cardapio"
 export const getter = {
     getCardapioMenu: () => service.getCardapioMenu(),
     getCardapios: () => service.getCardapios(),
+    getCardapioById: (id) => service.getCardapioById({ 'id': id }),
 }
 
 const model = {
     doInsert: (data) => service.doInsert(data),
-    doUpdate: (id, data) => service.doUpdate(id, data),
+    doUpdate: (cardapio) => service.doUpdate(cardapio.id, cardapio),
     doDelete: (id) => service.doDelete(id),
 
     mount(data) {
