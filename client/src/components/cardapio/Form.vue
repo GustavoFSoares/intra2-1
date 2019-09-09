@@ -56,7 +56,6 @@ export default {
         return {
             id: this.$route.params.id,
             itens: [],
-            turno: 'ALMOÇO',
             cardapio: new Cardapio(),
             sending: false,
         }

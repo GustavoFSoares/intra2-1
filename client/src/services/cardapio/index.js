@@ -1,6 +1,10 @@
 import http from '../client'
 
 export default {
+    getCardapios: () => {
+        window.httpMessage = { show: true, error: "Erro ao buscar Documento" }
+        return http.get(`/cardapio/get/`).then(res => res.data)
+    },
     getCardapioMenu: () => {
         return http.get(`/cardapio/menu/`).then(res => res.data)
     },

@@ -2,8 +2,8 @@
     <div class="container-fluid">
         <h1>Cardápio Online</h1>
 
-        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'cardapio/add'}" tag="button" v-if="gotPermission">
-            Cadastrar Refeições
+        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'cardapio/lista'}" tag="button" v-if="gotPermission">
+            Gerenciar
         </router-link>
 
         <hr>

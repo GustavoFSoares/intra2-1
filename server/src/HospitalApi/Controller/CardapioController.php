@@ -18,4 +18,11 @@ class CardapioController extends ControllerAbstractLongEntity
         
         return $res->withJson($data);
     }
+
+    public function getCardapios($req, $res, $args) {
+        $collection = $this->getModel()->getCardapios();
+        $data = $this->translateCollection($collection);
+
+        return $res->withJson($data);
+    }
 }

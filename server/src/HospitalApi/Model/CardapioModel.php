@@ -26,10 +26,6 @@ class CardapioModel extends SoftdeleteModel
         return $values;
     }
 
-    public getMeal($values) {
-        
-    }
-
     public function getNextMeal() {
 
         $query = $this->em->createQueryBuilder();
@@ -39,5 +35,14 @@ class CardapioModel extends SoftdeleteModel
             ->setMaxResults('2')
             ->setParameter('today', date("Y-m-d", time()));
         return $query->getQuery()->getResult();
+    }
+
+    public function getCardapios() {
+        $select = $this->em->createQueryBuilder();
+        $select->select('c')
+            ->from($this->getEntityPath(), 'c')
+            ->orderBy('c.data', 'ASC');
+        return $select->getQuery()->getResult();
+
     }
 }

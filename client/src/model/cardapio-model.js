@@ -2,6 +2,7 @@ import service from "@/services/cardapio"
 
 export const getter = {
     getCardapioMenu: () => service.getCardapioMenu(),
+    getCardapios: () => service.getCardapios(),
 }
 
 const model = {

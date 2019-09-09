@@ -8,6 +8,7 @@
             </router-link>            
         </row>
 
+        <!-- BOTÕES DE FILTRO -->
         <div class='row' v-show="loaded">
             <rows label=''>
                 <div class="buttons">
