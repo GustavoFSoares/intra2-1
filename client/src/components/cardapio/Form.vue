@@ -7,7 +7,7 @@
             
             <rows class="col-sm">
                 <h5>Data da Refeição</h5>
-                <uiv-date-picker id="date" v-model="cardapio.data"/>
+                <uiv-date-picker :limit-from="today" id="date" v-model="cardapio.data"/>
             </rows>
 
             <rows class="col-sm">
@@ -37,8 +37,8 @@
             <h5>Itens:</h5>
             
             <ul>
-                <li v-for="(item, index) in itens">
-                    <input v-model.trim="item.one">
+                <li class="input-group mb-2" v-for="item in itens" :key="item">
+                    <input class="form-control" v-model.trim="item.one" >
                     <button class="button btn" @click="deleteItem(index)"><icon icon="minus"/></button>
                 </li>
             </ul>
@@ -51,6 +51,9 @@
             <button class="btn btn-outline-primary btn-lg" id="submit-button" type="button" :disabled="sending" @click="isValidForm">
                 Cadastrar
             </button>
+            <router-link class="btn btn-outline-secondary btn-lg" :to="{name: 'cardapio/lista'}" tag="button" :disabled="sending">
+                Voltar
+            </router-link>
         </div>
     </div>
 </template>
@@ -63,10 +66,12 @@ import Cardapio from "@/entity/cardapio";
 export default {
     data() {
         return {
+            today: new Date().toLocaleDateString('en-za'),
             id: this.$route.params.id,
             itens: [],
             cardapio: new Cardapio(),
             sending: false,
+            cards: [],
         }
     },
     methods: {
@@ -82,14 +87,15 @@ export default {
             this.$validator.validateAll().then(success => success ? this.submit():"")
         },
         submit() {
+            this.sending = true
+            this.filtrarCardapio()
             this.setListaItens()
             let cardapio = model.mount(this.cardapio)
-            this.sending = true
 
-            if(this.isEdit()) {
+            if(this.id) {
                 model.doUpdate(this.cardapio).then(res => {
                     this.$alert.success("Cardapio Atualizado")
-                    this.$router.go("cardapio/lista")
+                    this.$router.go("-1")
                     this.sending = false
                 }, err => {
                     this.$alert.danger("Erro ao Atualizar: " + err)
@@ -99,7 +105,7 @@ export default {
             } else {
                 model.doInsert(cardapio).then(res => {
                     this.$alert.success("Cardapio Inserido")
-                    this.$router.go("cardapio/lista")
+                    this.$router.go("-1")
                     this.sending = false
                 }, err => {
                     this.$alert.danger("Erro ao Inserir: " + err)
@@ -107,12 +113,6 @@ export default {
                     this.sending = false
                 })
             }
-        },
-        isEdit() {
-            if(this.id) {
-                return true
-            }
-            return false
         },
         setListaItens() {
             let i = 0
@@ -135,10 +135,67 @@ export default {
                     this.sending = false
                 })
             }
-        }
+        },
+        getCardapios() {
+            getter.getCardapios().then(res => {
+                this.cards = res
+            })
+        },
+        filtrarCardapio() {
+
+            //verifica se foi selecionada uma data
+            if(this.cardapio.data == "") {
+                this.$alert.danger("Escolha uma data!")
+                this.sending = false
+                throw new Error("Escolha uma data!")
+            }
+
+            //verifica se foi adicionado ao menos um item
+            if(this.itens.length == 0) {
+                this.$alert.danger("Adicione ao menos <b>1</b> item ao cardápio!")
+                this.sending = false
+                throw new Error("Adicione ao menos <b>1</b> item ao cardápio!")
+            }
+
+            //verifica conteudo da lista
+            let a
+            for(a = 0; a < this.itens.length; a++) {
+                //se vazio
+                if( this.itens[a].one == "") {
+                    this.$alert.danger("Item vazio.")
+                    this.sending = false
+                    throw new Error("Item vazio")
+                //senao se possui '&'
+                } else if ( this.itens[a].one.search("&") != -1 ) {
+                    this.$alert.danger("Por favor não utilize o caractere <b>&</b>")
+                    this.sending = false
+                    throw new Error("Por favor não utilize o caractere <b>&</b>")
+                }
+            }
+
+            //compara cardapio com cardapios no banco
+            let i
+            for( i = 0; i < this.cards.length; i++) {
+
+                let d = new Date(this.cards[i].data.date)
+                d = d.toLocaleDateString('en-za').replace(/\//g, "-")
+
+                if (d == this.cardapio.data) {
+                    //se o dia for igual, compara a refeicao
+                    if (this.cards[i].refeicao == this.cardapio.refeicao) {
+                        //se a refeicao for igual, bloqueia
+                        this.$alert.danger("Refeição já cadastrada!")
+                        this.sending = false
+                        throw new Error("Refeição já cadastrada!")
+                    }
+                }
+            }
+
+        },
     },
     mounted() {
         this.loadValues()
+        this.getCardapios()
     },
     components: {
         'row': FormRw,
@@ -176,7 +233,6 @@ h5 {
 
 .radio .cr {
     position: relative;
-    display: inline-block;
     border: 1px solid #a9a9a9;
     border-radius: .25em;
     width: 1.3em;

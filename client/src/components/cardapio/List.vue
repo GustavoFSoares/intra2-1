@@ -14,10 +14,11 @@
                     <th scope="col">Data</th>
                     <th scope="col">Turno</th>
                     <th scope="col">Refeição</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(cardapio, index) in cardapios" :key="cardapio.id" class="row-list">
+                <tr v-for="cardapio in cardapios" :key="cardapio.id" class="row-list">
                     <td>{{ formatDate(cardapio.data) }}</td>
                     <td>{{ cardapio.refeicao }}</td>
                     <td>{{ cardapio.cardapio.replace(/&/g, ', ') }}</td>
