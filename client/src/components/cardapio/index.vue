@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <h1>Cardápio Online</h1>
 
-        <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'cardapio/lista'}" tag="button" v-if="gotPermission">
+        <router-link class="button btn btn-outline-primary btn-lg" :to="{name: 'cardapio/lista'}" tag="button" v-if="gotPermission">
             Gerenciar
         </router-link>
 
@@ -13,9 +13,15 @@
         </div>
 
         <div class="row">
-            <div class="col-sm" v-for="item in menu">
-                <h1>{{ item.refeicao }}</h1>
-                <p>{{ item.cardapio }}</p>
+            <div class="col-sm">
+                <h1>Almoço</h1>
+                <hr>
+                <p v-for="i in almoco">{{ i }}</p>
+            </div>
+            <div class="col-sm">
+                <h1>Jantar</h1>
+                <hr>
+                <p v-for="i in jantar">{{ i }}</p>
             </div>
         </div>
     </div>
@@ -28,15 +34,30 @@ export default {
     data() {
         return {
             dia: new Date().toLocaleDateString("pt-BR"),
-            menu: [],
             almoco: '',
             jantar: '',
             permission: ['bruno.souza', 'testeintra'],//controla quem pode visualizar botão de cadastrar
             user: $session.get('user'),
         }
     },
+    methods: {
+
+    },
     mounted() {
-        getter.getCardapioMenu().then( res => {this.menu = res})
+        getter.getCardapioMenu().then( res => {
+            let i            
+            for(i=0;i<res.length;i++) {
+                switch (res[i].refeicao) {
+                    case "JANTAR":
+                        this.jantar = res[i].cardapio.split('&')
+                        break;
+                    default:
+                        this.almoco = res[i].cardapio.split('&')
+                        break;
+                }
+            }
+        })
+        
     },
     computed: {
         /**
@@ -58,3 +79,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+p {
+    font-size: 1.5rem;
+}
+</style>

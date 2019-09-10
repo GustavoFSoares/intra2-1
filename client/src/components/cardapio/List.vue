@@ -3,12 +3,12 @@
         <h1>Cardápios</h1>
 
         <row :text_left="false">
-            <router-link class="button btn btn-outline-secondary btn-lg" :to="{name: 'cardapio/add'}" tag="button">
+            <router-link class="button btn btn-outline-primary btn-lg" :to="{name: 'cardapio/add'}" tag="button">
                 Cadastrar Cardápio
             </router-link>
         </row>
 
-        <big-table field_length="180" class="table-hover">
+        <big-table field_length="180" class="table-hover table-striped">
             <thead>
                 <tr>
                     <th scope="col">Data</th>
@@ -20,7 +20,7 @@
                 <tr v-for="(cardapio, index) in cardapios" :key="cardapio.id" class="row-list">
                     <td>{{ formatDate(cardapio.data) }}</td>
                     <td>{{ cardapio.refeicao }}</td>
-                    <td>{{ cardapio.cardapio }}</td>
+                    <td>{{ cardapio.cardapio.replace(/&/g, ', ') }}</td>
                     <td>
                         <a href="" @click.stop.prevent="$router.push(`edit/${cardapio.id}`)">
                             <icon v-tooltip.top="'Editar'" icon="edit" />
@@ -54,14 +54,13 @@ export default {
         formatDate(data) {
             let date = new Date(data.date).toLocaleDateString("pt-BR")
             return date
-        }
+        },
     },
     mounted() {
         getter.getCardapios().then(res => {
             this.loaded = true
             this.cardapios = res
         })
-        this.formatDate()
     },
     components: {
         'big-table': BigTable,
