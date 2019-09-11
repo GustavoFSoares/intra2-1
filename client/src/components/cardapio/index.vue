@@ -36,7 +36,7 @@ export default {
             dia: new Date().toLocaleDateString("pt-BR"),
             almoco: '',
             jantar: '',
-            permission: ['bruno.souza', 'testeintra'],//controla quem pode visualizar botão de cadastrar
+            permission: ['bruno.souza', 'testeintra', 'barbara.kehl', 'tatiana.nantal', 'ana.hirtz'],//controla quem pode visualizar botão de cadastrar
             user: $session.get('user'),
         }
     },

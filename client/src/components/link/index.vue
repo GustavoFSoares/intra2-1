@@ -70,6 +70,7 @@ export default {
                     message: "Ao confirmar você exclui o Link da lista. Tem certeza que deseja prosseguir?",
                 },
             },
+            
         }
     },
     methods: {
