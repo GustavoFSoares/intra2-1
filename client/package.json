@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "Projeto para auxiliar nas tarefas administrativas diárias",
   "author": "Gustavo Soares <gustavo10.fsoares@gmail.com>",
+  "contributors": [
+    "Bruno Oliveira de Souza <brunosouza22397@gmail.com>"
+  ],
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -22,6 +25,7 @@
     "bootbox": "^4.4.0",
     "bootstrap": "^4.1.0",
     "browserslist": "^4.1.1",
+    "core-js": "^3.1.4",
     "daterangepicker": "^3.0.1",
     "font-awesome": "^4.7.0",
     "glyphicons-only-bootstrap": "^1.0.1",
@@ -30,11 +34,12 @@
     "moment": "^2.22.1",
     "popper.js": "^1.14.0",
     "quill": "^1.3.6",
+    "regenerator-runtime": "^0.13.3",
     "socket.io": "^2.1.1",
     "uiv": "^0.28.0",
     "vee-validate": "^2.0.6",
     "vue": "^2.5.2",
-    "vue-directive-tooltip": "^1.5.0",
+    "vue-directive-tooltip": "^1.6.2",
     "vue-google-charts": "^0.3.1",
     "vue-resource": "^1.3.5",
     "vue-router": "^3.0.1",
@@ -64,7 +69,7 @@
     "chromedriver": "^2.27.2",
     "copy-webpack-plugin": "^4.0.1",
     "cross-spawn": "^5.0.1",
-    "css-loader": "^0.28.0",
+    "css-loader": "^3.2.0",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
@@ -104,7 +109,7 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-bundle-analyzer": "^3.5.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
@@ -115,6 +120,7 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 8"
+    "not ie <= 8",
+    "ie >= 11"
   ]
 }

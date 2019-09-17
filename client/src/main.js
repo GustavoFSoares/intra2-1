@@ -19,9 +19,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'glyphicons-only-bootstrap/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'font-awesome/css/font-awesome.min.css'
-import 'vue-directive-tooltip/css/index.min.css';
+import 'vue-directive-tooltip/src/css/index.scss';
 import '@/../static/directives-styles/VTooltip.css';
 import '@/../static/default-styles/TextEditor.styl'
+
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
