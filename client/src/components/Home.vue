@@ -13,13 +13,10 @@ export default {
     data() {
         return {
             title: "Links Úteis",
-            user: $session.get('user'),
         }
     },
     components: {
         'list': List,
     },
-    mounted() { },
-
 }
 </script>
