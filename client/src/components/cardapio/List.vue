@@ -11,22 +11,22 @@
         <big-table field_length="180" class="table-hover table-striped">
             <thead>
                 <tr>
+                    <th scope="col"></th>
                     <th scope="col">Data</th>
                     <th scope="col">Turno</th>
                     <th scope="col">Refeição</th>
-                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="cardapio in cardapios" :key="cardapio.id" class="row-list">
-                    <td>{{ formatDate(cardapio.data) }}</td>
-                    <td>{{ cardapio.refeicao }}</td>
-                    <td>{{ cardapio.cardapio.replace(/&/g, ', ') }}</td>
                     <td>
                         <a href="" @click.stop.prevent="$router.push(`edit/${cardapio.id}`)">
                             <icon v-tooltip.top="'Editar'" icon="edit" />
                         </a>
                     </td>
+                    <td>{{ formatDate(cardapio.data) }}</td>
+                    <td>{{ cardapio.refeicao }}</td>
+                    <td>{{ cardapio.cardapio.replace(/&/g, ', ') }}</td>
                 </tr>
                 <!-- CASO NÃO ENCONTRE REGISTROS NO BANCO -->
                 <tr class="row-list" v-if="cardapios.length == 0 && loaded">
