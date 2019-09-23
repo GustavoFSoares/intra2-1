@@ -25,7 +25,7 @@ class EletronicDocument extends SoftdeleteAbstract
     protected $user;
 
     /**
-     * @Column(name="prox_assinatura", type="string")
+     * @Column(name="prox_assinatura", type="string", nullable=true )
      */
     protected $nextSignature;
 
