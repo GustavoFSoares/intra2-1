@@ -19,7 +19,13 @@ class GroupController extends ControllerAbstract
         $collection = $this->getModel()->getRepository()->findByEnterprise($enterprise);
 
         $data = $this->translateCollection($collection);
-        return $res->withJson($data);
+        $transData = [];
+        foreach ($data as $item) {
+            if ($item['c_removed'] == 0) {
+                array_push($transData, $item);
+            }
+        }
+        return $res->withJson($transData);
     }
 
 }
