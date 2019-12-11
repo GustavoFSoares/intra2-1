@@ -83,7 +83,7 @@ class GroupController extends BasicApplicationAbstract
             if($group){
                 $group->setC_removed(true);
                 $this->model->doUpdate($group);
-                echo \Helper\LoggerHelper::writeFile("Exluido - Grupo $toDelete\n");
+                echo \Helper\LoggerHelper::writeFile("Excluido - Grupo $toDelete\n");
             }
         }
         

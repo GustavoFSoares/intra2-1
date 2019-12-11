@@ -28,7 +28,7 @@
                     <draggable v-model="usersSelected" @update="update">
                         <transition-group id="users-selected">
 
-                            <div v-for="(signature, index) in usersSelected" :key="index" class="card">
+                            <div v-for="(signature, index) in usersSelected" class="card">
                                 <router-link to="" class="text-left list-group-item list-group-item-action" data-toggle="collapse" :data-target="`#id${signature.user.id.substr(0, 3)}${index}${componentKey}`" aria-expanded="true" :aria-controls="`id${signature.user.id.substr(0, 3)}${index}${componentKey}`">
                                     <span class="float-left"><b>{{ index+1 }}º</b> - {{ signature.user.name }}</span>
                                     <router-link class="float-right" to="" @click.native="removeUser(signature.user, index)">

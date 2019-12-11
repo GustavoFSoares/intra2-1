@@ -45,7 +45,18 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
-      },
+      },/*
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ["@babel/plugin-transform-arrow-functions"]
+          }
+        }
+      },*/
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -80,7 +91,7 @@ module.exports = {
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
-    setImmediate: false,
+    setImmediate: true,
     // prevent webpack from injecting mocks to Node native modules
     // that does not make sense for the client
     dgram: 'empty',
