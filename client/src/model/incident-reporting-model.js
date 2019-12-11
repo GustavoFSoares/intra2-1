@@ -23,7 +23,7 @@ var model = {
     loadSectors: (id) => {
         let data
         return new Promise((resolve) => {
-            GroupModel.getGroupsByEnterprise(id).then(res => {
+            GroupModel.getOriginsByEnterprise(id).then(res => {
                 data = null
                 if (id == 'HU' || id == 'HPSC') {
                     data = { sectors: true, value: res }

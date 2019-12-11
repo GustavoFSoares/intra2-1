@@ -6,4 +6,6 @@ export default {
         http.get(`/group/enterprises/`).then(res => res.data),
     getGroupsByEnterprise: (enterprise) => 
         http.get(`/group/enterprise/${enterprise}`).then(res => res.data),
+    getOriginsByEnterprise: (enterprise) =>
+        http.get(`/incident-origin/enterprise/${enterprise}`).then(res => res.data),
 }
