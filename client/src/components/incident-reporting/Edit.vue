@@ -284,6 +284,7 @@ export default {
     },
     mounted() {
         this.loadValues()
+        this.loadFailedSectors()
     },
     components: {
         'row': FormRw,
