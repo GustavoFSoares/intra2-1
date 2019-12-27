@@ -18,7 +18,7 @@ class IncidentOrigin extends SoftdeleteAbstract
 
     /**
      * @var String
-     *      @Column(name="origem_id", type="string", length=255)
+     *      @Column(name="origem_id", type="string", nullable=true, length=255)
      */
     protected $originId;
 

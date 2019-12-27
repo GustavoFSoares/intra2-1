@@ -35,7 +35,7 @@
                         <span class="text-danger bold" v-else> NÃO </span>
                     </td>
                     <td>{{ link.c_modified.date | humanizeDate }}</td>
-                    <td @dblclick="changeStatus(link)" v-tooltip.top="'Mudar Status'" class='td-icon'>
+                    <td @click="changeStatus(link)" v-tooltip.top="'Clique para Mudar Status'" class='td-icon'>
                         <icon class="text-success" icon="check-circle" v-if="link.active"/>
                         <icon class="text-danger" icon="times-circle" v-else/>
                     </td>
