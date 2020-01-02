@@ -22,7 +22,7 @@ class IncidentOriginController extends ControllerAbstract
         $transData = [];
         foreach ($data as $item) {
             if ($item['c_removed'] == 0) {
-                array_push($transData, $item['name']);
+                array_push($transData, $item);
             }
         }
         return $res->withJson($transData);
